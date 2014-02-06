@@ -10,10 +10,13 @@ require 'stfl_base'
 require 'layout'
 require 'vbox'
 require 'hbox'
+require 'table'
 
 require 'widget'
 require 'label'
+require 'menuaction'
 
+require 'window'
 require 'mainwindow'
 
 module TASKMAN
@@ -38,15 +41,14 @@ module TASKMAN
 
 		def exec
 			w= MainWindow.new
-			stfl= nil
-			stfl= Stfl.create w.to_s
+			$stfl= nil
+			$stfl= Stfl.create w.to_s
 
-			if stfl
+			if $stfl
 				loop do
-					event = stfl.run(0)
-					focus = stfl.get_focus
-					Stfl.set( stfl, 'folder_count', '9')
-					pfl :IN
+					event = $stfl.run(0)
+					focus = $stfl.get_focus
+					$stfl.set( 'folder_count_text', '9')
 				end
 			else
 				pfl w

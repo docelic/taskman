@@ -20,11 +20,11 @@ module TASKMAN
 
 		def to_s
 			'{'+
-			( @widget ? @widget : self.class.to_s.gsub(/^.+::/, '').lc)+
+			( @widget ? @widget : self.class.to_s.gsub( /^.+::/, '').lc)+
 			( @name ? "[#{@name}]" : '')+
 			' '+
-			@variables.map{|k, v| k.to_s+ ':'+ v}.join( ' ')+
-			@children.map{|i| i.to_s}.join+
+			@variables.map{ |k, v| k.to_s+ ':'+ Stfl.quote( v.to_s)}.join( ' ')+
+			@children.map{ |i| i.to_s}.join+
 			'}'
 		end
 	end
