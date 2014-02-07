@@ -26,5 +26,6 @@ module TASKMAN
 			@children.map{ |i| i.to_stfl}.join+
 			'}'
 		end
+
 	end
 end

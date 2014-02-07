@@ -58,6 +58,10 @@ class Array
 		self
 	end
 
+	def to_stfl
+		self.map{ |i| i.to_stfl }.join ''
+	end
+
 end
 
 class Symbol

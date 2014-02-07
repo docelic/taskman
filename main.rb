@@ -46,9 +46,10 @@ module TASKMAN
 
 		def exec
 			w= MainWindow.new
-			$stfl= nil
 
-			$stfl= Stfl.create w.to_stfl
+			stfl_text=  w.to_stfl
+			$stfl= Stfl.create stfl_text
+
 			w.apply_menu
 
 			if $stfl
