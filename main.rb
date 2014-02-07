@@ -5,19 +5,24 @@ require 'stfl'
 $:.unshift File.dirname $0
 
 require 'extensions'
+
 require 'stfl_base'
 
 require 'layout'
-require 'vbox'
-require 'hbox'
-require 'table'
+require 'layout/vbox'
+require 'layout/hbox'
+require 'layout/table'
 
 require 'widget'
-require 'label'
-require 'menuaction'
+require 'widget/label'
+require 'widget/menuaction'
 
 require 'window'
-require 'mainwindow'
+
+theme = 'alpine'
+colorscheme = 'default'
+
+require File.join :theme, theme, :mainwindow
 
 module TASKMAN
 
@@ -42,13 +47,19 @@ module TASKMAN
 		def exec
 			w= MainWindow.new
 			$stfl= nil
-			$stfl= Stfl.create w.to_s
+
+			$stfl= Stfl.create w.to_stfl
+			w.apply_menu
 
 			if $stfl
 				loop do
 					event = $stfl.run(0)
 					focus = $stfl.get_focus
-					$stfl.set( 'folder_count_text', '9')
+					#pfl w.actions
+					#pfl :EVENT_IS, event.to_s
+					if w.actions.has_key? event
+						w.actions[event].yield( event)
+					end
 				end
 			else
 				pfl w
@@ -63,4 +74,3 @@ app= TASKMAN::Application.new ARGV
 if __FILE__== $0
 	app.start
 end
-
