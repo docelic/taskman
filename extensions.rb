@@ -60,6 +60,12 @@ class Array
 
 end
 
+class Symbol
+
+	def to_str() to_s end
+
+end
+
 # Debugging aid - Print File, Line & Method, plus listed arguments inspected.
 def pfl *arg
 	print caller[0], '-> ', arg.inspect[1..-2]
