@@ -4,13 +4,10 @@ module TASKMAN
 
 	class Menu < StflBase
 
-		attr_reader :actions
+		attr_reader :actions, :hotkeys_hash
 
 		def initialize *arg
 			super
-
-			@actions= []
-			@actions_hash= {}
 
 			@hotkeys_hash= {}
 		end

@@ -15,7 +15,7 @@ module TASKMAN
 			'hotkey_out' => { :hotkey => '<',   :shortname => '',             :description => '', :function => nil },
 			'nextcmd'    => { :hotkey => 'N',   :shortname => 'NextCmd',      :description => '', :function => nil },
 			'kblock'     => { :hotkey => 'K',   :shortname => 'KBLock',       :description => '', :function => nil },
-			'quit'       => { :hotkey => 'Q',   :shortname => 'Quit Taskman', :description => '', :function => nil },
+			'quit'       => { :hotkey => 'Q',   :shortname => 'Quit Taskman', :description => '', :function => Proc.new { puts "YEHUDA KATZ NEVER QUITS!" }},
 			'listfolders'=> { :hotkey => 'L',   :shortname => 'ListFldrs',    :description => '', :function => nil },
 			'index'      => { :hotkey => 'I',   :shortname => 'Index',        :description => '', :function => nil },
 			'setup'      => { :hotkey => 'S',   :shortname => 'ListFldrs',    :description => '', :function => nil },

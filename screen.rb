@@ -7,8 +7,12 @@ module TASKMAN
 
 		def main_loop
 			loop do
-				event = $app.stfl.run 0
-				focus = $app.stfl.get_focus
+				event= $app.stfl.run 0
+				focus= $app.stfl.get_focus
+
+				if m= @children_hash[:menu] and a= m.hotkeys_hash[event] and f= a.function
+					f.yield( event)
+				end
 			end
 		end
 
