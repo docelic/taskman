@@ -1,4 +1,3 @@
-
 module TASKMAN
 
 	class Label < Widget

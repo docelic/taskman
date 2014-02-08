@@ -1,31 +1,92 @@
+# File implementing STFL base and extensions
+
+require 'stfl'
+
 module TASKMAN
+
 	class StflBase < Object
 
-		attr_reader :name
-		attr_accessor :variables, :children
+		# All widgets and attributes will have a name
+		# automatically assigned if unspecified
+		@@auto_widget_name= 'widget'
+		@@auto_widget_id= 0
 
+		include Stfl
+
+		attr_reader :name, :stfl
+		attr_accessor :variables, :children, :children_hash
+
+		# The variables are STFL-valid hash consisting of :variable => value.
+		# If :name is specified, it is deleted from variables and treated
+		# differently. If name is unspecified, it is automatically assigned.
+		# Variable names and values can be strings or symbols interchangeably.
 		def initialize variables= {}
 			super()
 
+			# Child widgets container, array and by-name
 			@children= []
+			@children_hash= {}
 			
-			@widget= nil # Override, or will default to module_name.downcase
-			@name= variables.delete :name
+			# Name of STFL widget that this object translates to. If @widget
+			# is nil, the widget container is omitted and only children elements
+			# are dumped. E.g.:
+			# @widget= "vbox" -> to_stfl -> {vbox variables... {{child1}{child2}...}}
+			# @widget= nil    -> to_stfl -> {child1}{child2}...
+			@widget= nil
+
+			# Name is always there for all objects. If unspecified,
+			# automatic name is assigned
+			unless @name= variables.delete( :name)
+				@name= [ @@auto_widget_name, @@auto_widget_id].join '_'
+				@@auto_widget_id+= 1
+			end
+
+			# STFl variables. May be empty
 			@variables= variables
 		end
 
-		def <<( arg) self.children<< arg end
-		def >>( arg) self.children>> arg end
+		# Shorthand for adding and removing child widgets from an object.
+		# This is the preferred method; we generally do not use an explicit
+		# Obj.children.push() or Obj.children.delete() anywhere.
+		def << arg
+			@children<< arg
+			@children_hash[arg.name]= arg
+		end
+		def >> arg
+			@children>> arg
+			@children_hash>> arg.name
+		end
 
+		# Generic function translating an object into STFL representation.
+		# As mentioned, if the object has @widget == nil, only the child
+		# elements are dumped, with no toplevel container.
 		def to_stfl
-			'{'+
-			( @widget ? @widget : self.class.to_s.gsub( /^.+::/, '').lc)+
-			( @name ? "[#{@name}]" : '')+
-			' '+
-			@variables.map{ |k, v| k.to_s+ ':'+ Stfl.quote( v.to_s)}.join( ' ')+
-			@children.map{ |i| i.to_stfl}.join+
-			'}'
+			children= @children.to_stfl
+
+			return children unless @widget
+
+			variables= @variables.map{ |k, v|
+				variable_name= "#{@name}_#{k}"
+				k.to_s+ "[#{Stfl.quote( variable_name)}]:"+ Stfl.quote( v.to_s)
+			}.join ' '
+			variables+= ' ' if variables.length> 0
+
+			return "{#{@widget}[#{@name}] #{variables}#{children}}"
+		end
+
+		def show
+			stfl_text= to_stfl
+			$app.stfl= Stfl.create stfl_text
 		end
 
 	end
+
+end
+
+class Array
+
+	# Ability to convert array to STFL, assuming all its elements
+	# are STFL-based objects and respond to .to_stfl().
+	def to_stfl() map{ |i| i.to_stfl}.join end
+
 end

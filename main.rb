@@ -1,12 +1,14 @@
 #!/usr/bin/env ruby
 
-require 'stfl'
-
 $:.unshift File.dirname $0
 
 require 'extensions'
 
 require 'stfl_base'
+
+require 'terminal'
+require 'screen'
+require 'window'
 
 require 'layout'
 require 'layout/vbox'
@@ -16,28 +18,20 @@ require 'layout/table'
 require 'widget'
 require 'widget/label'
 require 'widget/menuaction'
+require 'widget/list'
 
-require 'window'
-
-theme = 'alpine'
-colorscheme = 'default'
-
-require File.join :theme, theme, :mainwindow
+require 'theme'
+require 'menu'
 
 module TASKMAN
 
 	class Application < Object
 
+		attr_reader :screen
+		attr_accessor :stfl
+
 		def initialize *arg
 			super()
-		end
-
-		def layout
-			return @layout if @layout
-
-			@layout= Vbox.new
-
-			@layout
 		end
 
 		def start
@@ -45,33 +39,21 @@ module TASKMAN
 		end
 
 		def exec
-			w= MainWindow.new
+			theme = 'alpine'
+			require File.join :theme, theme, :screen
 
-			stfl_text=  w.to_stfl
-			$stfl= Stfl.create stfl_text
+			@screen= Theme::Screen.new
+			@screen.show
 
-			w.apply_menu
-
-			if $stfl
-				loop do
-					event = $stfl.run(0)
-					focus = $stfl.get_focus
-					#pfl w.actions
-					#pfl :EVENT_IS, event.to_s
-					if w.actions.has_key? event
-						w.actions[event].yield( event)
-					end
-				end
-			else
-				pfl w
-			end
+			@screen.main_loop
 		end
+
 	end
 
 end
 
-app= TASKMAN::Application.new ARGV
+$app= TASKMAN::Application.new ARGV
 
 if __FILE__== $0
-	app.start
+	$app.start
 end

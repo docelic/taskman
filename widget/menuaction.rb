@@ -4,6 +4,7 @@ module TASKMAN
 
 		attr_accessor :name, :hotkey, :shortname, :description, :function
 		
+		# TODO move this to outside file
 		@@Menus= {
 			'help'       => { :hotkey => '?',   :shortname => 'Help',         :description => '', :function => Proc.new { puts "YEHUDA KATZ!" }},
 			''           => { :hotkey => '',    :shortname => '',             :description => '', :function => nil }, # Empty one
@@ -29,8 +30,20 @@ module TASKMAN
 			@name= arg[:name]= arg[:name].to_s
 			@hotkey= arg.has_key?( :hotkey) ? arg.delete( :hotkey): @@Menus[@name][:hotkey]
 			@shortname= arg.has_key?( :shortname) ? arg.delete( :shortname): @@Menus[@name][:shortname]
+			@description= arg.has_key?( :description) ? arg.delete( :description): @@Menus[@name][:description]
 			@function= arg.has_key?( :function) ? arg.delete( :function): @@Menus[@name][:function]
+
 			super
+
+			setup_children
+		end
+
+		def setup_children
+			name= [ :menu, @name].join '_'
+			hotkey_name= [ name, 'hotkey'].join '_'
+			shortname_name= [ name, 'shortname'].join '_'
+			self<< Label.new( :name => hotkey_name,    '.expand' => '0', :@style_normal => 'bg=red,fg=white', :text => @hotkey)
+			self<< Label.new( :name => shortname_name, '.expand' => 'h', :@style_normal => 'bg=black,fg=white', :text => @shortname)
 		end
 
 	end

@@ -1,23 +1,18 @@
-class String
-	## Extend String class to include uppercase-first function.
-	#def ucfirst
-	#	self.dup.ucfirst!
-	#end
+# File implementing various generic extensions to Ruby classes
 
-	#def ucfirst!
-	#	self[0,1]= self[0,1].upcase
-	#	self
-	#end
+class String
+
+	def ucfirst
+		self.dup.ucfirst!
+	end
+
+	def ucfirst!
+		self[0,1]= self[0,1].upcase
+		self
+	end
 
 	def lc() self.dup.downcase! end
 	def lc!() self.downcase! end
-
-	## Support to-boolean conversion
-	#def to_bool
-	#	return false if self == false || self =~ /^false$/i || self== ''
-	#	return true  if self == true  || self =~ /^true$/i
-	#	raise ArgumentError.new "Invalid value for Boolean: '#{self}'"
-	#end
 
   def unindent
 		#require "active_support/core_ext/string"
@@ -29,9 +24,9 @@ class String
 	def retab
 		gsub(/^\t+/, ' ')
 	end
+
 end
 
-# Extend Object class with some coding convenience
 class Object
 
 	alias_method :self, :instance_exec
@@ -50,16 +45,12 @@ class Object
 
 end
 
-# Support >> notation for removing elements from array
 class Array
 
+	# Support >> notation for removing elements from array
 	def >> arg
 		delete arg
 		self
-	end
-
-	def to_stfl
-		self.map{ |i| i.to_stfl }.join ''
 	end
 
 end
@@ -72,6 +63,5 @@ end
 
 # Debugging aid - Print File, Line & Method, plus listed arguments inspected.
 def pfl *arg
-	print caller[0], '-> ', arg.inspect[1..-2]
-	puts
+	print caller[0], '-> ', arg.inspect[1..-2], "\n"
 end

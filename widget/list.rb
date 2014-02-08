@@ -1,21 +1,19 @@
 module TASKMAN
 
-	class Table < Layout
+	class List < Widget
 
 		def initialize *arg
 			super
-
-			@widget= 'table'
+			@widget= 'list'
 		end
 
 	end
 
-	class Tablebr < Layout
+	class ListItem < Widget
 
 		def initialize *arg
 			super
-
-			@widget= 'tablebr'
+			@widget= 'listitem'
 		end
 
 	end

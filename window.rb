@@ -1,16 +1,19 @@
+# File implementing generic window functions.
+# ('Window' in our terminology being what STFL calls 'form')
+# Or another way of thinking about it is a portion of the
+# screen. (For example, the alpine theme consists of a 'screen'
+# with header, body, status and menu windows)
+
 module TASKMAN
 
-	class Window < Vbox
+	class Window < StflBase
 
 		attr_reader :actions
 
-		def set_focus
-			# Apply header
+		def initialize *arg
+			@widget= :vbox
 
-			# Apply body
-
-			# Apply menus
-
+			super
 		end
 
 	end
