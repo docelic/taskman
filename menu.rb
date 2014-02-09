@@ -2,7 +2,7 @@
 
 module TASKMAN
 
-	class Menu < UiBase
+	class Menu < StflBase
 
 		attr_reader :actions, :hotkeys_hash
 

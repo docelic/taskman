@@ -3,7 +3,7 @@
 
 module TASKMAN
 
-	class Screen < UiBase
+	class Screen < StflBase
 
 		def main_loop
 			pos= 0

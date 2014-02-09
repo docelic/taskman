@@ -4,7 +4,7 @@ $:.unshift File.dirname $0
 
 require 'extensions'
 
-require 'ui_base'
+require 'stfl_base'
 
 require 'terminal'
 require 'screen'

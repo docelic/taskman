@@ -5,7 +5,7 @@
 
 module TASKMAN
 
-	class Layout < UiBase
+	class Layout < StflBase
 
 	end
 

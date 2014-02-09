@@ -5,7 +5,7 @@
 
 module TASKMAN
 
-	class Widget < UiBase
+	class Widget < StflBase
 
 	end
 

@@ -6,7 +6,7 @@
 
 module TASKMAN
 
-	class Window < UiBase
+	class Window < StflBase
 
 		attr_reader :actions
 
