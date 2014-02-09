@@ -3,13 +3,13 @@
 
 module TASKMAN
 
-	class Screen < StflBase
+	class Screen < UiBase
 
 		def main_loop
 			pos= 0
 			loop do
-				event= $app.stfl.run 0
-				focus= $app.stfl.get_focus
+				event= $app.ui.run 0
+				focus= $app.ui.get_focus
 
 				if m= @children_hash[:menu] and a= m.hotkeys_hash[event]
 					if Symbol=== f= a.function

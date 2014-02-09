@@ -4,7 +4,7 @@ $:.unshift File.dirname $0
 
 require 'extensions'
 
-require 'stfl_base'
+require 'ui_base'
 
 require 'terminal'
 require 'screen'
@@ -27,8 +27,8 @@ module TASKMAN
 
 	class Application < Object
 
-		attr_reader :screen
-		attr_accessor :stfl
+		attr_reader :theme
+		attr_accessor :screen, :ui
 
 		def initialize *arg
 			super()
@@ -40,10 +40,11 @@ module TASKMAN
 
 		def exec
 			theme = 'alpine'
-			require File.join :theme, theme, :screen
+			require File.join :theme, theme, :init
 
-			@screen= Theme::Screen.new( :name => :screen)
-			@stfl= @screen.create
+			@theme= Theme::Init.new
+
+			@ui= @screen.create
 
 			@screen.main_loop
 		end

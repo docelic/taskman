@@ -13,7 +13,7 @@ module TASKMAN
 
 		include Stfl
 
-		attr_reader :name, :stfl
+		attr_reader :name, :ui
 		attr_accessor :variables, :children, :children_hash
 
 		# The variables are STFL-valid hash consisting of :variable => value.
@@ -87,7 +87,7 @@ module TASKMAN
 
 		def redraw
 			stfl_text= self.to_stfl
-			$app.stfl.modify @name.to_s, 'replace', stfl_text
+			$app.ui.modify @name.to_s, 'replace', stfl_text
 		end
 
 	end
