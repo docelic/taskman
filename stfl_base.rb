@@ -42,7 +42,13 @@ module TASKMAN
 			end
 
 			# STFl variables. May be empty
-			@variables= variables
+			@variables= {}
+			variables.each do |k, v|
+				@variables[k.to_s]= v
+			end
+
+			# STFL defaults
+			@variables['.display']||= 1
 		end
 
 		# Shorthand for adding and removing child widgets from an object.
@@ -74,9 +80,14 @@ module TASKMAN
 			return "{#{@widget}[#{@name}] #{variables}#{children}}"
 		end
 
-		def show
+		def create
 			stfl_text= to_stfl
-			$app.stfl= Stfl.create stfl_text
+			Stfl.create stfl_text
+		end
+
+		def redraw
+			stfl_text= self.to_stfl
+			$app.stfl.modify @name.to_s, 'replace', stfl_text
 		end
 
 	end

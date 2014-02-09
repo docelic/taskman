@@ -20,7 +20,32 @@ module TASKMAN
 			self<< Theme::Status.new( :name => :status)
 			self<< Theme::Menu.new( :name => :menu)
 
-			@children_hash[:menu].add_action( :help, :quit)
+			@children_hash[:menu].add_action(
+				:help,
+				:'',
+				:prevcmd,
+				:'',
+				:relnodes,
+				:'',
+				:other,
+				:hotkey_in,
+				:nextcmd,
+				:'',
+				:kblock,
+				:'',
+				:help,
+				:quit,
+				:listfolders,
+				:index,
+				:setup,
+				:role,
+				:other,
+				:create,
+				:gotofolder,
+				:journal,
+				:addrbook,
+				:'',
+			)
 		end
 
 	end

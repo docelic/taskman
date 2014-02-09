@@ -42,8 +42,8 @@ module TASKMAN
 			theme = 'alpine'
 			require File.join :theme, theme, :screen
 
-			@screen= Theme::Screen.new
-			@screen.show
+			@screen= Theme::Screen.new( :name => :screen)
+			@stfl= @screen.create
 
 			@screen.main_loop
 		end
