@@ -21,15 +21,13 @@ module TASKMAN
 			end
 		end
 
-		# Need an override here for taking into account the @hotkeys_hash
+		# Overriding here to take into account the @hotkeys_hash
 		def << arg
-			@children<< arg
-			@children_hash[arg.name]= arg
+			super
 			@hotkeys_hash[arg.hotkey]= arg
 		end
 		def >> arg
-			@children>> arg
-			@children_hash>> arg.name
+			super
 			@hotkeys_hash>> arg.name
 		end
 

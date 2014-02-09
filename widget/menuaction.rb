@@ -24,6 +24,9 @@ module TASKMAN
 			'gotofolder' => { :hotkey => 'G',   :shortname => 'GotoFldr',     :description => '', :function => nil },
 			'journal'    => { :hotkey => 'J',   :shortname => 'Journal',      :description => '', :function => nil },
 			'addrbook'   => { :hotkey => 'A',   :shortname => 'AddrBook',     :description => '', :function => nil },
+
+			# Testing shortcuts
+			'inc_folder_count'   => { :hotkey => 'SR',   :shortname => 'Folder Cnt+1',     :description => '', :function => :inc_folder_count },
 		}
 
 		def initialize arg= {}
@@ -57,6 +60,13 @@ module TASKMAN
 		def menu_next_page arg= {}
 			arg[:menu].next_page
 			arg[:menu].redraw
+		end
+
+		############################### Testing Functions ################################
+
+		def inc_folder_count arg= {}
+			c= $app.ui.get 'folder_count_text'
+			$app.ui.set 'folder_count_text', ( c.to_i+ 1).to_s
 		end
 
 	end

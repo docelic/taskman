@@ -15,7 +15,6 @@ module TASKMAN
 			l<< ListItem.new( '.height' => 3, :height => 3, :text => 'BADABADABOY!!!5')
 			l<< ListItem.new( '.height' => 3, :height => 3, :text => 'BADABADABOY!!!6')
 
-
 			self<< v
 		end
 

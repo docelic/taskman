@@ -6,7 +6,6 @@ module TASKMAN
 	class Screen < StflBase
 
 		def main_loop
-			pos= 0
 			loop do
 				event= $app.ui.run 0
 				focus= $app.ui.get_focus
@@ -18,9 +17,6 @@ module TASKMAN
 						f.yield( :screen => self, :menu => m, :action => a, :function => f, :event => event)
 					end
 				end
-
-				pos+= 1
-				#pfl $app.screen.children_hash['widget_0'] #.set( 'text', pos)
 			end
 		end
 

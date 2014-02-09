@@ -14,7 +14,6 @@ module TASKMAN
 			h<< Label.new( :name => 'folder_unit',          '.tie' => 'l', '.expand' => '0', 'text' => ' Items  ')
 
 			self<< h
-
 		end
 
 	end

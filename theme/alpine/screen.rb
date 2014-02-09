@@ -37,6 +37,7 @@ module TASKMAN
 				:journal,
 				:addrbook,
 				:'',
+				:inc_folder_count,
 			)
 		end
 
