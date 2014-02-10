@@ -38,6 +38,7 @@ module TASKMAN
 				:addrbook,
 				:'',
 				:inc_folder_count,
+				:all_children_hash,
 			)
 		end
 

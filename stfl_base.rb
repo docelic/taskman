@@ -90,6 +90,24 @@ module TASKMAN
 			$app.ui.modify @name.to_s, 'replace', stfl_text
 		end
 
+		def find_widget name
+			pfl :IN
+			if w= @children_hash[name.to_s]
+				return w
+#			else
+#				@children.each do |c|
+#					if w= c.find_widget( name)
+#						return w
+#					end
+#				end
+			end
+			nil
+		end
+
+		def get arg
+			$app.screen.get [ @name, arg].join '_'
+		end
+
 	end
 
 end

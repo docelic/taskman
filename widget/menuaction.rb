@@ -27,6 +27,7 @@ module TASKMAN
 
 			# Testing shortcuts
 			'inc_folder_count'   => { :hotkey => 'SR',   :shortname => 'Folder Cnt+1',     :description => '', :function => :inc_folder_count },
+			'all_children_hash'   => { :hotkey => 'SF',   :shortname => 'All Children',     :description => '', :function => :all_children_hash },
 		}
 
 		def initialize arg= {}
@@ -65,8 +66,12 @@ module TASKMAN
 		############################### Testing Functions ################################
 
 		def inc_folder_count arg= {}
-			c= $app.ui.get 'folder_count_text'
-			$app.ui.set 'folder_count_text', ( c.to_i+ 1).to_s
+			pfl $app.screen.children_hash.keys
+		end
+		def all_children_hash arg= {}
+			w= $app.screen.find_widget( 'folder_count')
+			#w.set( :text, (w.get( :text).to_i+ 1).to_s)
+			pfl w.get( :text)
 		end
 
 	end
