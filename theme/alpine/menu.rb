@@ -9,12 +9,6 @@ module TASKMAN
 			@page_size= 12
 		end
 
-		def add_action *arg
-			arg.each do |a|
-				self<< Theme::MenuAction.new( :name => a.to_s)
-			end
-		end
-
 		def to_stfl
 			v= Vbox.new( :name => :menu, '.expand' => 0, '.height' => '2', :@style_normal => 'bg=red,fg=white')
 			t= Table.new( '.expand' => 'h', '.height' => '1', :@style_normal => 'bg=blue,fg=white', '.display' => 1)

@@ -31,6 +31,12 @@ module TASKMAN
 			@hotkeys_hash>> arg.name
 		end
 
+		def add_action *arg
+			arg.each do |a|
+				self<< Theme::MenuAction.new( :name => a.to_s)
+			end
+		end
+
 	end
 
 end
