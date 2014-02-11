@@ -49,6 +49,20 @@ module TASKMAN
 
 			# STFL defaults
 			@variables['.display']||= 1
+
+			# Now create accessor functions for all variables currently existing
+			@variables.each do |k, v|
+				fn= k.gsub /\W/, '_'
+				unless respond_to? k
+					self.class.send( :define_method, "var_#{fn}".to_sym) {
+						@variables[k].to_i
+					}
+					self.class.send( :define_method, "var_#{fn}=".to_sym) { |arg|
+						$app.ui.set "#{name}_#{k}", arg.to_s
+						@variables[k]= arg
+					}
+				end
+			end
 		end
 
 		# Shorthand for adding and removing child widgets from an object.
@@ -99,7 +113,7 @@ module TASKMAN
 		end
 
 		def get arg
-			$app.screen.get [ @name, arg].join '_'
+			@variables[arg]
 		end
 
 	end

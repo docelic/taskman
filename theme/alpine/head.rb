@@ -10,7 +10,7 @@ module TASKMAN
 			h<< Label.new( :name => 'program_location',     '.tie' => 'l',                   'text' => 'MAIN MENU')
 			h<< Label.new(                                  '.tie' => 'r',                   :text => 'Folder: ')
 			h<< Label.new( :name => 'folder_name',          '.tie' => 'l',                   'text' => 'INBOX')
-			h<< Label.new( :name => 'folder_count',         '.tie' => 'r',                   'text' => '1')
+			h<< Label.new( :name => 'folder_count',         '.tie' => 'r',                   'text' => 1)
 			h<< Label.new( :name => 'folder_unit',          '.tie' => 'l', '.expand' => '0', 'text' => ' Items  ')
 
 			self<< h

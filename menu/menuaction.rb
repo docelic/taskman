@@ -66,7 +66,7 @@ module TASKMAN
 		############################### Testing Functions ################################
 
 		def inc_folder_count arg= {}
-			pfl $app.screen.children_hash.keys
+			$app.screen.all_children_hash['folder_count'].var_text+= 1
 		end
 		# This cannot be named "all_children_hash" or endless loop will ensue :)
 		# (Due to the widget above being called "all_children_hash" as well)
