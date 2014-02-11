@@ -14,7 +14,7 @@ module TASKMAN
 		include Stfl
 
 		attr_reader :name, :ui
-		attr_accessor :variables, :children, :children_hash
+		attr_accessor :variables, :widgets, :widgets_hash
 
 		# The variables are STFL-valid hash consisting of :variable => value.
 		# If :name is specified, it is deleted from variables and treated
@@ -24,11 +24,11 @@ module TASKMAN
 			super()
 
 			# Child widgets container, array and by-name
-			@children= []
-			@children_hash= {}
+			@widgets= []
+			@widgets_hash= {}
 			
 			# Name of STFL widget that this object translates to. If @widget
-			# is nil, the widget container is omitted and only children elements
+			# is nil, the widget container is omitted and only widgets elements
 			# are dumped. E.g.:
 			# @widget= "vbox" -> to_stfl -> {vbox variables... {{child1}{child2}...}}
 			# @widget= nil    -> to_stfl -> {child1}{child2}...
@@ -67,23 +67,23 @@ module TASKMAN
 
 		# Shorthand for adding and removing child widgets from an object.
 		# This is the preferred method; we generally do not use an explicit
-		# Obj.children.push() or Obj.children.delete() anywhere.
+		# Obj.widgets.push() or Obj.widgets.delete() anywhere.
 		def << arg
-			@children<< arg
-			@children_hash[arg.name]= arg
+			@widgets<< arg
+			@widgets_hash[arg.name]= arg
 		end
 		def >> arg
-			@children>> arg
-			@children_hash>> arg.name
+			@widgets>> arg
+			@widgets_hash>> arg.name
 		end
 
 		# Generic function translating an object into STFL representation.
 		# If the object has @widget == nil, only the child elements are dumped,
 		# with no toplevel container.
 		def to_stfl
-			children= @children.to_stfl
+			widgets= @widgets.to_stfl
 
-			return children unless @widget
+			return widgets unless @widget
 
 			variables= @variables.map{ |k, v|
 				variable_name= "#{@name}_#{k}"
@@ -91,7 +91,7 @@ module TASKMAN
 			}.join ' '
 			variables+= ' ' if variables.length> 0
 
-			return "{#{@widget}[#{@name}] #{variables}#{children}}"
+			return "{#{@widget}[#{@name}] #{variables}#{widgets}}"
 		end
 
 		def create
@@ -104,10 +104,10 @@ module TASKMAN
 			$app.ui.modify @name.to_s, 'replace', stfl_text
 		end
 
-		def all_children_hash hash= {}
+		def all_widgets_hash hash= {}
 			hash.merge!( { @name => self })
-			@children.each do |c|
-				hash.merge! c.all_children_hash
+			@widgets.each do |c|
+				hash.merge! c.all_widgets_hash
 			end
 			hash
 		end

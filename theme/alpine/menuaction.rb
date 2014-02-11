@@ -2,7 +2,7 @@ module TASKMAN
 
 	class Theme::MenuAction < MenuAction
 
-		def setup_children
+		def setup_widgets
 			name= [ :menu, @name].join '_'
 			hotkey_name= [ name, 'hotkey'].join '_'
 			shortname_name= [ name, 'shortname'].join '_'

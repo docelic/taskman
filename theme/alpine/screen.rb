@@ -12,7 +12,7 @@ module TASKMAN
 			self<< Theme::Status.new( :name => :status)
 			self<< Theme::Menu.new( :name => :menu)
 
-			@children_hash[:menu].add_action(
+			@widgets_hash[:menu].add_action(
 				:help,
 				:'',
 				:prevcmd,
@@ -38,7 +38,7 @@ module TASKMAN
 				:addrbook,
 				:'',
 				:inc_folder_count,
-				:all_children_hash,
+				:all_widgets_hash,
 			)
 		end
 

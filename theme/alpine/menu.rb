@@ -22,7 +22,7 @@ module TASKMAN
 			pos= 0
 			2.times do |i|
 				6.times do
-					t<< ( @children[@offset+ pos]|| Theme::MenuAction.new( :name => ''))
+					t<< ( @widgets[@offset+ pos]|| Theme::MenuAction.new( :name => ''))
 					pos+= 1
 				end
 				t<< Tablebr.new if i== 0
