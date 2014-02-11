@@ -64,8 +64,8 @@ module TASKMAN
 		end
 
 		# Generic function translating an object into STFL representation.
-		# As mentioned, if the object has @widget == nil, only the child
-		# elements are dumped, with no toplevel container.
+		# If the object has @widget == nil, only the child elements are dumped,
+		# with no toplevel container.
 		def to_stfl
 			children= @children.to_stfl
 
@@ -90,18 +90,12 @@ module TASKMAN
 			$app.ui.modify @name.to_s, 'replace', stfl_text
 		end
 
-		def find_widget name
-			pfl :IN
-			if w= @children_hash[name.to_s]
-				return w
-#			else
-#				@children.each do |c|
-#					if w= c.find_widget( name)
-#						return w
-#					end
-#				end
+		def all_children_hash hash= {}
+			hash.merge!( { @name => self })
+			@children.each do |c|
+				hash.merge! c.all_children_hash
 			end
-			nil
+			hash
 		end
 
 		def get arg
