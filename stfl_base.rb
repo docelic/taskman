@@ -55,7 +55,7 @@ module TASKMAN
 				fn= k.gsub /\W/, '_'
 				unless respond_to? k
 					self.class.send( :define_method, "var_#{fn}".to_sym) {
-						@variables[k].to_i
+						@variables[k]
 					}
 					self.class.send( :define_method, "var_#{fn}=".to_sym) { |arg|
 						$app.ui.set "#{name}_#{k}", arg.to_s
