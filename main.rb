@@ -6,6 +6,7 @@ $:.unshift File.dirname $0
 
 require 'extensions'
 require 'defaults'
+require 'item'
 
 require 'stfl_base'
 
