@@ -14,7 +14,7 @@ module TASKMAN
 		include Stfl
 
 		attr_reader :name, :ui
-		attr_accessor :variables, :children, :children_hash
+		attr_accessor :variables, :widgets, :widgets_hash
 
 		# The variables are STFL-valid hash consisting of :variable => value.
 		# If :name is specified, it is deleted from variables and treated
@@ -24,11 +24,11 @@ module TASKMAN
 			super()
 
 			# Child widgets container, array and by-name
-			@children= []
-			@children_hash= {}
+			@widgets= []
+			@widgets_hash= {}
 			
 			# Name of STFL widget that this object translates to. If @widget
-			# is nil, the widget container is omitted and only children elements
+			# is nil, the widget container is omitted and only widgets elements
 			# are dumped. E.g.:
 			# @widget= "vbox" -> to_stfl -> {vbox variables... {{child1}{child2}...}}
 			# @widget= nil    -> to_stfl -> {child1}{child2}...
@@ -49,27 +49,41 @@ module TASKMAN
 
 			# STFL defaults
 			@variables['.display']||= 1
+
+			# Now create accessor functions for all variables currently existing
+			@variables.each do |k, v|
+				fn= k.gsub /\W/, '_'
+				unless respond_to? k
+					self.class.send( :define_method, "var_#{fn}".to_sym) {
+						@variables[k]
+					}
+					self.class.send( :define_method, "var_#{fn}=".to_sym) { |arg|
+						$app.ui.set "#{name}_#{k}", arg.to_s
+						@variables[k]= arg
+					}
+				end
+			end
 		end
 
 		# Shorthand for adding and removing child widgets from an object.
 		# This is the preferred method; we generally do not use an explicit
-		# Obj.children.push() or Obj.children.delete() anywhere.
+		# Obj.widgets.push() or Obj.widgets.delete() anywhere.
 		def << arg
-			@children<< arg
-			@children_hash[arg.name]= arg
+			@widgets<< arg
+			@widgets_hash[arg.name]= arg
 		end
 		def >> arg
-			@children>> arg
-			@children_hash>> arg.name
+			@widgets>> arg
+			@widgets_hash>> arg.name
 		end
 
 		# Generic function translating an object into STFL representation.
-		# As mentioned, if the object has @widget == nil, only the child
-		# elements are dumped, with no toplevel container.
+		# If the object has @widget == nil, only the child elements are dumped,
+		# with no toplevel container.
 		def to_stfl
-			children= @children.to_stfl
+			widgets= @widgets.to_stfl
 
-			return children unless @widget
+			return widgets unless @widget
 
 			variables= @variables.map{ |k, v|
 				variable_name= "#{@name}_#{k}"
@@ -77,7 +91,7 @@ module TASKMAN
 			}.join ' '
 			variables+= ' ' if variables.length> 0
 
-			return "{#{@widget}[#{@name}] #{variables}#{children}}"
+			return "{#{@widget}[#{@name}] #{variables}#{widgets}}"
 		end
 
 		def create
@@ -90,22 +104,16 @@ module TASKMAN
 			$app.ui.modify @name.to_s, 'replace', stfl_text
 		end
 
-		def find_widget name
-			pfl :IN
-			if w= @children_hash[name.to_s]
-				return w
-#			else
-#				@children.each do |c|
-#					if w= c.find_widget( name)
-#						return w
-#					end
-#				end
+		def all_widgets_hash hash= {}
+			hash.merge!( { @name => self })
+			@widgets.each do |c|
+				hash.merge! c.all_widgets_hash
 			end
-			nil
+			hash
 		end
 
 		def get arg
-			$app.screen.get [ @name, arg].join '_'
+			@variables[arg]
 		end
 
 	end

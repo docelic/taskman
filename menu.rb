@@ -16,7 +16,7 @@ module TASKMAN
 
 		def next_page
 			@offset+= @page_size
-			if @offset>= @children.size
+			if @offset>= @widgets.size
 				@offset= 0
 			end
 		end

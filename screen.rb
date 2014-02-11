@@ -10,7 +10,14 @@ module TASKMAN
 				event= $app.ui.run 0
 				focus= $app.ui.get_focus
 
-				if m= @children_hash[:menu] and a= m.hotkeys_hash[event]
+				if event== 'SLEFT'
+					@show_next_key= true
+				elsif @show_next_key
+					pfl event
+					@show_next_key= false
+				end
+
+				if m= @widgets_hash[:menu] and a= m.hotkeys_hash[event]
 					if Symbol=== f= a.function
 						a.send( f, :screen => self, :menu => m, :action => a, :function => f, :event => event)
 					elsif Proc=== f= a.function

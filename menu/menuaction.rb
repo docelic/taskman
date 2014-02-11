@@ -27,7 +27,7 @@ module TASKMAN
 
 			# Testing shortcuts
 			'inc_folder_count'   => { :hotkey => 'SR',   :shortname => 'Folder Cnt+1',     :description => '', :function => :inc_folder_count },
-			'all_children_hash'   => { :hotkey => 'SF',   :shortname => 'All Children',     :description => '', :function => :all_children_hash },
+			'all_widgets_hash'   => { :hotkey => 'SF',   :shortname => 'All Children',     :description => '', :function => :all_widgets},
 		}
 
 		def initialize arg= {}
@@ -39,10 +39,10 @@ module TASKMAN
 
 			super
 
-			setup_children
+			setup_widgets
 		end
 
-		def setup_children
+		def setup_widgets
 			name= [ :menu, @name].join '_'
 			hotkey_name= [ name, 'hotkey'].join '_'
 			shortname_name= [ name, 'shortname'].join '_'
@@ -66,12 +66,12 @@ module TASKMAN
 		############################### Testing Functions ################################
 
 		def inc_folder_count arg= {}
-			pfl $app.screen.children_hash.keys
+			$app.screen.all_widgets_hash['folder_count'].var_text+= 1
 		end
-		def all_children_hash arg= {}
-			w= $app.screen.find_widget( 'folder_count')
-			#w.set( :text, (w.get( :text).to_i+ 1).to_s)
-			pfl w.get( :text)
+		# This cannot be named "all_widgets_hash" or endless loop will ensue :)
+		# (Due to the widget above being called "all_widgets_hash" as well)
+		def all_widgets arg= {}
+			pfl $app.screen.all_widgets_hash.keys
 		end
 
 	end
