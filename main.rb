@@ -17,11 +17,12 @@ require 'layout/table'
 
 require 'widget'
 require 'widget/label'
-require 'widget/menuaction'
 require 'widget/list'
 
-require 'theme'
 require 'menu'
+require 'menu/menuaction'
+
+require 'theme'
 
 module TASKMAN
 
@@ -39,10 +40,7 @@ module TASKMAN
 		end
 
 		def exec
-			theme = 'alpine'
-			require File.join :theme, theme, :init
-
-			@theme= Theme::Init.new
+			@theme= Theme.new
 
 			@ui= @screen.create
 
