@@ -74,7 +74,7 @@ module TASKMAN
 		end
 		def >> arg
 			@widgets>> arg
-			@widgets_hash>> arg.name
+			@widgets_hash.delete arg.name
 		end
 
 		# Generic function translating an object into STFL representation.

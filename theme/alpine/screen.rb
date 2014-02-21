@@ -8,7 +8,7 @@ module TASKMAN
 			@widget= 'vbox'
 
 			self<< Theme::Head.new( :name => :head)
-			self<< Theme::Body.new( :name => :body)
+			self<< Theme::Body.new( :name => :body, :body => 'Colors' )
 			self<< Theme::Status.new( :name => :status)
 			self<< Theme::Menu.new( :name => :menu)
 

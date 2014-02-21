@@ -20,7 +20,7 @@ module TASKMAN
 			'index'      => { :hotkey => 'I',   :shortname => 'Index',        :description => '', :function => nil },
 			'setup'      => { :hotkey => 'S',   :shortname => 'ListFldrs',    :description => '', :function => nil },
 			'role'       => { :hotkey => '#',   :shortname => 'Role',         :description => '', :function => nil },
-			'create'     => { :hotkey => 'C',   :shortname => 'Create',       :description => '', :function => nil },
+			'create'     => { :hotkey => 'C',   :shortname => 'Create',       :description => '', :function => :create },
 			'gotofolder' => { :hotkey => 'G',   :shortname => 'GotoFldr',     :description => '', :function => nil },
 			'journal'    => { :hotkey => 'J',   :shortname => 'Journal',      :description => '', :function => nil },
 			'addrbook'   => { :hotkey => 'A',   :shortname => 'AddrBook',     :description => '', :function => nil },
@@ -72,6 +72,15 @@ module TASKMAN
 		# (Due to the widget above being called "all_widgets_hash" as well)
 		def all_widgets arg= {}
 			pfl $app.screen.all_widgets_hash.keys
+		end
+
+		def create arg= {}
+			require 'theme/alpine/create'
+			new_body= Theme::Create.new
+			old_body= $app.screen.widgets_hash[:body]
+			$app.screen>> old_body
+			$app.screen<< new_body
+			$app.screen.redraw
 		end
 
 	end

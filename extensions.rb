@@ -29,6 +29,10 @@ class String
 		gsub(/^\t+/, ' ')
 	end
 
+	def to_class
+		Object.const_get self
+	end
+
 end
 
 class Object

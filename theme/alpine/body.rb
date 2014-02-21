@@ -2,8 +2,8 @@ module TASKMAN
 
 	class Theme::Body < Window
 
-		def initialize *arg
-			super()
+		def initialize arg= {}
+			super
 
 			#v= Vbox.new( :@style_normal => 'bg=black,fg=white')
 			#v<< l= List.new
@@ -17,9 +17,10 @@ module TASKMAN
 
 			@widget= nil
 
-			require 'colors'
-			colors= Colors.new
-			self<< colors
+			require arg[:body].to_s.lc
+			w= eval "#{arg[:body].ucfirst}.new"
+			#w= arg[:body].ucfirst.to_class.new
+			self<< w
 		end
 
 	end
