@@ -39,8 +39,8 @@ opts= [
 #	[ '--server' ,             '-s',         GetoptLong::NO_ARGUMENT],
 #	[ '--client' ,             '-c',         GetoptLong::NO_ARGUMENT],
 #	[ '--profile',             '-p',         GetoptLong::REQUIRED_ARGUMENT],
-#	[ '--version',             '-V',         GetoptLong::NO_ARGUMENT],
-#	[ '--debug',               '-d',         GetoptLong::NO_ARGUMENT],
+	[ '--version',             '-V',         GetoptLong::NO_ARGUMENT],
+	[ '--debug',               '-d',         GetoptLong::NO_ARGUMENT],
 #	[ '--verbose',             '-v',         GetoptLong::NO_ARGUMENT],
 	[ '--garbage-collector',   '--gc',       GetoptLong::NO_ARGUMENT],
 	[ '--stress-collector',    '--stress',   GetoptLong::NO_ARGUMENT],
@@ -101,6 +101,8 @@ end
 
 if $opts['debug']
 	pfl $opts
+	puts 'Press ENTER to continue'
+	gets
 end
 
 #if $opts['data-dir'] and not File.directory? $opts['data-dir']
