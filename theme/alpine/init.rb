@@ -1,4 +1,4 @@
-require 'theme/alpine/screen'
+require 'theme/alpine/mainwindow'
 require 'theme/alpine/window'
 
 require 'theme/alpine/head'
@@ -14,7 +14,7 @@ module TASKMAN
 		def initialize *arg
 			super()
 
-			$app.screen= Theme::Screen.new( :name => :screen)
+			$app.screen= Theme::MainWindow.new( :name => :main)
 		end
 
 	end

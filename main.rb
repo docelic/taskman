@@ -11,7 +11,6 @@ require 'item'
 require 'stfl_base'
 
 require 'terminal'
-require 'screen'
 require 'window'
 
 require 'layout'
