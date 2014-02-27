@@ -33,7 +33,11 @@ module TASKMAN
 
 		def add_action *arg
 			arg.each do |a|
-				self<< Theme::MenuAction.new( :name => a.to_s)
+				if ma= Theme::MenuAction.new( :name => a.to_s)
+					self<< ma
+				else
+					$stderr.puts "Menu action #{a.to_s} does not exist; skipping."
+				end
 			end
 		end
 
