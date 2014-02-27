@@ -3,7 +3,7 @@
 module TASKMAN
 
 	class Theme::Window < Window
-
+		
 	end
 
 end

@@ -10,11 +10,11 @@ module TASKMAN
 
 		attr_reader :actions
 
-		def initialize *arg
-			@widget= :vbox
+		#def initialize *arg
+		#	@widget= :vbox
 
-			super
-		end
+		#	super
+		#end
 
 		def main_loop
 			loop do

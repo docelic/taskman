@@ -125,12 +125,12 @@ module TASKMAN
 			super()
 
 			@style= {
-				"main widget_0 widget_1 folder_count" => {
+				"main head" => {
 					:var_style_normal= => 'fg=color48,bg=color20',
 				},
-				"main" => {
-					:var_style_normal= => 'fg=color48,bg=color20',
-				},
+				#"main" => {
+				#	:var_style_normal= => 'fg=color48,bg=color20',
+				#},
 			}
 		end
 
@@ -144,9 +144,11 @@ module TASKMAN
 			@ui= @screen.create
 
 			$app.screen.all_widgets_hash.each do |name, w|
-				if name== 'folder_count'
-					pfl w.parent_tree.map{ |x| x.name}
-				end
+			# TODO Add controlable widget identifier here
+				#if name== 'folder_count'
+				#	#pfl w.parent_tree.map{ |x| x.name}
+				#	#sleep 2
+				#end
 				w.apply_style
 			end
 
