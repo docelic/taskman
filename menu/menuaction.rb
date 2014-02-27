@@ -20,7 +20,7 @@ module TASKMAN
 			'index'      => { :hotkey => 'I',   :shortname => 'Index',        :description => '', :function => nil },
 			'setup'      => { :hotkey => 'S',   :shortname => 'ListFldrs',    :description => '', :function => nil },
 			'role'       => { :hotkey => '#',   :shortname => 'Role',         :description => '', :function => nil },
-			'create'     => { :hotkey => 'C',   :shortname => 'Create',       :description => '', :function => nil },
+			'create'     => { :hotkey => 'C',   :shortname => 'Create',       :description => '', :function => :create },
 			'gotofolder' => { :hotkey => 'G',   :shortname => 'GotoFldr',     :description => '', :function => nil },
 			'journal'    => { :hotkey => 'J',   :shortname => 'Journal',      :description => '', :function => nil },
 			'addrbook'   => { :hotkey => 'A',   :shortname => 'AddrBook',     :description => '', :function => nil },

@@ -31,6 +31,7 @@ class String
 
 	def to_class
 		self.split( '::').inject( Object) {|o,c| o.const_get c}
+		#Object.const_get self
 	end
 
 end

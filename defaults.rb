@@ -9,10 +9,10 @@ module TASKMAN
 		#	'profile'          => nil,   # Settings profile name
 		#	'data-dir'         => File.join( ENV['HOME'], '.taskman'),
 		#	'data-file'        => 'tasks.yaml',
-		#	'debug'            => false,
+			'debug'            => false,
 			'garbage-collector'=> true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector' => false, # Stress Ruby garbage collector? (DEBUG OPTION)
-		#	'version'          => '0.01',
+			'version'          => '0.01',
 		#	'term_width'       => 78,
 		#	'local'            => false,
 		#	'default-time'     => false,
