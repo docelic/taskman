@@ -1,6 +1,6 @@
 module TASKMAN
 
-	class Theme::Body < Window
+	class Theme::Window::Main::Body < Window
 
 		def initialize *arg
 			super()

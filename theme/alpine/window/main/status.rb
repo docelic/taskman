@@ -2,7 +2,7 @@ require 'theme/alpine/window'
 
 module TASKMAN
 
-	class Theme::Status < Theme::Window
+	class Theme::Window::Main::Status < Theme::Window
 
 		def initialize *arg
 			super()

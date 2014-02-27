@@ -1,6 +1,6 @@
 module TASKMAN
 
-	class Theme::Menu < Menu
+	class Theme::Window::Main::Menu < Menu
 
 		def initialize *arg
 			super

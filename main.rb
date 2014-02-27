@@ -11,7 +11,6 @@ require 'item'
 require 'stfl_base'
 
 require 'terminal'
-require 'screen'
 require 'window'
 
 require 'layout'
@@ -61,7 +60,7 @@ begin
 #		# after the parsing here is completed. Useful for "virtual"
 #		# options that do not exist in $opts.
 		propagate= true
-#
+
 #		# Only options that require special handling need to be listed explicitly,
 #		# the rest get taken care of automatically.
 		case opt
