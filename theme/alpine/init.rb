@@ -24,8 +24,12 @@ module TASKMAN
 
 	class Theme::Init < Object
 
+		attr_reader :style
+
 		def initialize *arg
 			super()
+
+			@style= {}
 		end
 
 	end

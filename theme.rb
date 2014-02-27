@@ -4,6 +4,8 @@ module TASKMAN
 
 	class Theme < Object
 
+		attr_reader :init
+
 		def initialize arg
 			super()
 

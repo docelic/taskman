@@ -74,12 +74,12 @@ module TASKMAN
 		def parse_time_ssm= ( l) self.parse_time_ssm l end
 		# Initialize a reminder for an item.
 		# Supported syntax:
-		# 1) +-0.0UNIT*+-0.0INTERVALxHOW_MANY
+		# 1) [+-]0.0UNIT[*[+-]0.0INTERVALxHOW_MANY]
 		#    Example: -90M*10Mx3
 		#    Start reminding 90 minutes before the event,
 		#    and remind 3 times, once every 10 minutes
 		# 2) Specific date and time, e.g. Jan 15, 2012 12:00
-		# 2) Specific date, starting with a year, e.g. 2012 Feb 10
+		# 3) Specific date parseable by Date.parse, limited to YYYY ..., YYYYMMDD, and day/mon abrev ...
 		def parse_remind l
 			a= l.split( /,/).map{|x| x.strip}
 			x= nil

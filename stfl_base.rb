@@ -15,6 +15,7 @@ module TASKMAN
 
 		attr_reader :name, :ui
 		attr_accessor :variables, :widgets, :widgets_hash
+		attr_accessor :parent
 
 		# The variables are STFL-valid hash consisting of :variable => value.
 		# If :name is specified, it is deleted from variables and treated
@@ -49,6 +50,7 @@ module TASKMAN
 
 			# STFL defaults
 			@variables['.display']||= 1
+			@variables['style_normal']||= 1
 
 			# Now create accessor functions for all variables currently existing
 			@variables.each do |k, v|
@@ -71,10 +73,16 @@ module TASKMAN
 		def << arg
 			@widgets<< arg
 			@widgets_hash[arg.name]= arg
+
+			arg.parent= self
+
+			arg
 		end
 		def >> arg
 			@widgets>> arg
 			@widgets_hash.delete arg.name
+			arg.parent= nil
+			arg
 		end
 
 		# Generic function translating an object into STFL representation.
@@ -114,6 +122,36 @@ module TASKMAN
 
 		def get arg
 			@variables[arg]
+		end
+
+		def parent_tree tree= [ self]
+			if @parent
+				tree.unshift @parent
+				@parent.parent_tree tree
+			else
+				return tree
+			end
+		end
+
+		def apply_style type= [ 'normal', 'focus', 'selected']
+			s= {}
+			tree= parent_tree
+			type.each do |t|
+				list= tree.map{ |x| x.name}
+				while list.size> 0
+					key= list.join ' '
+					if s2= $app.style[key]
+						s2.each do |k, v|
+							self.send k, v
+						end
+						#puts :FOUND, key
+						#sleep 1
+						return s
+					end
+					list.pop
+				end
+			end
+			s
 		end
 
 	end

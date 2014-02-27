@@ -118,11 +118,20 @@ module TASKMAN
 
 	class Application < Object
 
-		attr_reader :theme
+		attr_reader :theme, :style
 		attr_accessor :screen, :ui
 
 		def initialize *arg
 			super()
+
+			@style= {
+				"main widget_0 widget_1 folder_count" => {
+					:var_style_normal= => 'fg=color48,bg=color20',
+				},
+				"main" => {
+					:var_style_normal= => 'fg=color48,bg=color20',
+				},
+			}
 		end
 
 		def start
@@ -133,6 +142,13 @@ module TASKMAN
 			@theme= Theme.new( :theme => $opts['theme'], :window => $opts['window'])
 
 			@ui= @screen.create
+
+			$app.screen.all_widgets_hash.each do |name, w|
+				if name== 'folder_count'
+					pfl w.parent_tree.map{ |x| x.name}
+				end
+				w.apply_style
+			end
 
 			@screen.main_loop
 		end
