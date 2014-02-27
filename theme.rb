@@ -4,13 +4,15 @@ module TASKMAN
 
 	class Theme < Object
 
-		def initialize *arg
-			super
+		def initialize arg
+			super()
 
-			theme = 'alpine'
-			require File.join :theme, theme, :init
+			require File.join :theme, arg[:theme], :init
 
 			@init= Theme::Init.new
+
+			window= ( 'TASKMAN::Theme::Window::'+ $opts['window'].ucfirst).to_class
+			$app.screen= window.new( :name => $opts['window'])
 		end
 
 	end

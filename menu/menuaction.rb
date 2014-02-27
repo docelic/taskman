@@ -28,6 +28,11 @@ module TASKMAN
 			# Testing shortcuts
 			'inc_folder_count'   => { :hotkey => 'SR',   :shortname => 'Folder Cnt+1',     :description => '', :function => :inc_folder_count },
 			'all_widgets_hash'   => { :hotkey => 'SF',   :shortname => 'All Children',     :description => '', :function => :all_widgets},
+
+			'get_create_help'    => { :hotkey => '^G',   :shortname => 'Get Help',         :description => '', :function => :get_create_help},
+			'create'             => { :hotkey => '^X',   :shortname => 'Create',           :description => '', :function => :create},
+			'postpone'           => { :hotkey => '^O',   :shortname => 'Postpone',         :description => '', :function => :postpone},
+			'cancel'             => { :hotkey => '^C',   :shortname => 'Cancel',           :description => '', :function => :cancel},
 		}
 
 		def initialize arg= {}
@@ -72,6 +77,18 @@ module TASKMAN
 		# (Due to the widget above being called "all_widgets_hash" as well)
 		def all_widgets arg= {}
 			pfl $app.screen.all_widgets_hash.keys
+		end
+
+		def get_create_help
+		end
+
+		def create
+		end
+
+		def postpone
+		end
+
+		def cancel
 		end
 
 	end

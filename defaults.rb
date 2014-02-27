@@ -28,6 +28,9 @@ module TASKMAN
 		#
 		#	'server'           => true,
 		#	'client'           => true,
+
+			'window'           => 'main',
+			'theme'            => 'alpine',
 		}
 
 		def initialize *arg

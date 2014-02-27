@@ -20,6 +20,7 @@ require 'layout/table'
 
 require 'widget'
 require 'widget/label'
+require 'widget/input'
 require 'widget/list'
 
 require 'menu'
@@ -46,6 +47,8 @@ opts= [
 #	[ '--state',               '--st',       GetoptLong::NO_ARGUMENT],
 #	[ '--state-load',          '--sl',       GetoptLong::NO_ARGUMENT],
 #	[ '--state-save',          '--ss',       GetoptLong::NO_ARGUMENT],
+	[ '--window',              '-w',         GetoptLong::REQUIRED_ARGUMENT],
+	[ '--theme',               '-t',         GetoptLong::REQUIRED_ARGUMENT],
 ]
 
 args= GetoptLong.new *opts
@@ -125,7 +128,7 @@ module TASKMAN
 		end
 
 		def exec
-			@theme= Theme.new
+			@theme= Theme.new( :theme => $opts['theme'], :window => $opts['window'])
 
 			@ui= @screen.create
 
