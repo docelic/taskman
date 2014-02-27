@@ -7,8 +7,8 @@ module TASKMAN
 
 			@widget= nil
 
-			require 'colors'
-			colors= Colors.new
+			require 'theme/alpine/window/colortest/colors'
+			colors= Theme::Window::Colortest::Colors.new
 			self<< colors
 		end
 
