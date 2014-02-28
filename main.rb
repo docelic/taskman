@@ -128,9 +128,9 @@ module TASKMAN
 				"main head" => {
 					:var_style_normal= => 'fg=color48,bg=color20',
 				},
-				#"main" => {
-				#	:var_style_normal= => 'fg=color48,bg=color20',
-				#},
+				"main" => {
+					:var_style_normal= => 'fg=black,bg=red',
+				},
 			}
 		end
 
@@ -150,6 +150,8 @@ module TASKMAN
 				#	#sleep 2
 				#end
 				w.apply_style
+				#pfl name, w.variables
+				#sleep 1
 			end
 
 			@screen.main_loop

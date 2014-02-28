@@ -5,7 +5,8 @@ module TASKMAN
 		def initialize *arg
 			super
 
-			@widget= 'vbox'
+			@widget= nil
+
 			@page_size= 12
 		end
 

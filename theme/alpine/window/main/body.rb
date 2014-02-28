@@ -5,7 +5,7 @@ module TASKMAN
 		def initialize *arg
 			super()
 
-			@widget= nil
+			@widget= :label
 		end
 
 	end
