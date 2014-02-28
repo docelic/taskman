@@ -24,6 +24,10 @@ module TASKMAN
 		def initialize variables= {}
 			super()
 
+			# For widgets that support "paging"
+			@offset= 0
+			@page_size= nil
+
 			# Child widgets container, array and by-name
 			@widgets= []
 			@widgets_hash= {}
@@ -89,7 +93,8 @@ module TASKMAN
 		# If the object has @widget == nil, only the child elements are dumped,
 		# with no toplevel container.
 		def to_stfl
-			widgets= @widgets.to_stfl
+			pfl @offset, (@page_size ? @offset+ @page_size- 1 : -1)
+			widgets= @widgets[@offset..(@page_size ? @offset+ @page_size- 1 : -1)].to_stfl
 
 			return widgets unless @widget
 

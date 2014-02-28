@@ -44,16 +44,16 @@ module TASKMAN
 
 			super
 
-			setup_widgets
+			#setup_widgets
 		end
 
-		def setup_widgets
-			name= [ :menu, @name].join '_'
-			hotkey_name= [ name, 'hotkey'].join '_'
-			shortname_name= [ name, 'shortname'].join '_'
-			self<< Label.new( :name => hotkey_name,    '.expand' => '0', :text => @hotkey)
-			self<< Label.new( :name => shortname_name, '.expand' => '0', :text => @shortname)
-		end
+#		def setup_widgets
+#			name= [ :menu, @name].join '_'
+#			hotkey_name= [ name, 'hotkey'].join '_'
+#			shortname_name= [ name, 'shortname'].join '_'
+#			self<< Label.new( :name => hotkey_name,    '.expand' => '0', :text => @hotkey)
+#			self<< Label.new( :name => shortname_name, '.expand' => '0', :text => @shortname)
+#		end
 
 		################################### Functions ###################################
 

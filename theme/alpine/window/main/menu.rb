@@ -5,26 +5,22 @@ module TASKMAN
 		def initialize *arg
 			super
 
-			@widget= nil
+			@widget= :table
+			@variables['.expand']= 'h'
+			@variables['.height']= 1
 
 			@page_size= 12
-		end
+			@offset= 0
+			@cols= 6
 
-		def to_stfl
-			v= Vbox.new( :name => :menu, '.expand' => 0, '.height' => '2', :@style_normal => 'bg=red,fg=white')
-			t= Table.new( '.expand' => 'h', '.height' => '1', :@style_normal => 'bg=blue,fg=white', '.display' => 1)
-
-			pos= 0
-			2.times do |i|
-				6.times do
-					t<< ( @widgets[@offset+ pos]|| Theme::MenuAction.new( :name => ''))
-					pos+= 1
-				end
-				t<< Tablebr.new if i== 0
-			end
-			v<< t
-
-			v.to_stfl
+			#pos= 0
+			#2.times do |i|
+			#	6.times do
+			#		self<< Theme::MenuAction.new( :name => ''))
+			#		pos+= 1
+			#	end
+			#	self<< Tablebr.new if i== 0
+			#end
 		end
 	
 	end
