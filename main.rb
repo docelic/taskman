@@ -22,6 +22,7 @@ require 'widget'
 require 'widget/label'
 require 'widget/input'
 require 'widget/list'
+require 'widget/textedit'
 
 require 'menu'
 require 'menu/menuaction'

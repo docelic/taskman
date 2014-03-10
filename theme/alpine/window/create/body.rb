@@ -42,7 +42,12 @@ module TASKMAN
 			h2<< Input.new( :name => :time,    '.expand' => 'h', :text => '')
 			v<< h2
 
-			v<< Label.new(                    '.expand' => 'h', :text => '----- Message Text -----')
+			v<< Label.new(                     '.expand' => 'h', :text => '----- Message Text -----')
+
+			t= Textedit.new( :name => :message)
+			t<< ListItem.new
+
+			v<< t
 
 			h<< v
 			self<< h
