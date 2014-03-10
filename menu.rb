@@ -10,13 +10,6 @@ module TASKMAN
 			@hotkeys_hash= {}
 		end
 
-		#def next_page
-		#	@offset+= @page_size
-		#	if @offset>= @widgets.size
-		#		@offset= 0
-		#	end
-		#end
-
 		# Overriding here to take into account the @hotkeys_hash
 		def << arg
 			super
@@ -34,9 +27,6 @@ module TASKMAN
 		def add_action *arg
 			arg.each do |a|
 				if ma= Theme::MenuAction.new( :name => a.to_s)
-					if @cols and @widgets.size== @cols
-						self<< Tablebr.new
-					end
 					self<< ma
 				else
 					$stderr.puts "Menu action #{a.to_s} does not exist; skipping."

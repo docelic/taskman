@@ -18,7 +18,7 @@ module TASKMAN
 			'quit'       => { :hotkey => 'Q',   :shortname => 'Quit Taskman', :description => '', :function => :quit },
 			'listfolders'=> { :hotkey => 'L',   :shortname => 'ListFldrs',    :description => '', :function => nil },
 			'index'      => { :hotkey => 'I',   :shortname => 'Index',        :description => '', :function => nil },
-			'setup'      => { :hotkey => 'S',   :shortname => 'ListFldrs',    :description => '', :function => nil },
+			'setup'      => { :hotkey => 'S',   :shortname => 'Setup',        :description => '', :function => nil },
 			'role'       => { :hotkey => '#',   :shortname => 'Role',         :description => '', :function => nil },
 			'create'     => { :hotkey => 'C',   :shortname => 'Create',       :description => '', :function => :create },
 			'gotofolder' => { :hotkey => 'G',   :shortname => 'GotoFldr',     :description => '', :function => nil },
