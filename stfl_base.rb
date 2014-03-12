@@ -153,6 +153,8 @@ module TASKMAN
 						#sleep 1
 						return s
 					end
+#					puts :LOOKING_FOR, key
+#					sleep 0.5
 					list.pop
 				end
 			end

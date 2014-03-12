@@ -25,7 +25,7 @@ require 'widget/list'
 require 'widget/textedit'
 
 require 'menu'
-require 'menu/menuaction'
+require 'menuaction'
 
 require 'theme'
 
