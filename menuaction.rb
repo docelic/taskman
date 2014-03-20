@@ -80,16 +80,16 @@ module TASKMAN
 			pfl $app.screen.all_widgets_hash.keys
 		end
 
-		def get_create_help
+		def get_create_help arg= {}
 		end
 
-		def create
+		def create arg= {}
 		end
 
-		def postpone
+		def postpone arg= {}
 		end
 
-		def cancel
+		def cancel arg= {}
 		end
 
 	end

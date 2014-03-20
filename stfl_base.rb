@@ -54,7 +54,9 @@ module TASKMAN
 
 			# STFL defaults
 			@variables['.display']||= 1
-			@variables['style_normal']||= 1
+			@variables['style_normal']||= ''
+			@variables['style_focus']||= ''
+			@variables['autobind']||= 1
 
 			# Now create accessor functions for all variables currently existing
 			@variables.each do |k, v|
