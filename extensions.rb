@@ -31,7 +31,6 @@ class String
 
 	def to_class
 		self.split( '::').inject( Object) {|o,c| o.const_get c}
-		#Object.const_get self
 	end
 
 end
@@ -136,9 +135,7 @@ class Array
 end
 
 class Symbol
-
 	def to_str() to_s end
-
 end
 
 module Enumerable 

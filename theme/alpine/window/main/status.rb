@@ -2,18 +2,20 @@ require 'theme/alpine/window'
 
 module TASKMAN
 
-	class Theme::Window::Main::Status < Theme::Window
+	class Theme::Window::Main::Status < Hbox
 
 		def initialize *arg
 			super()
 
-			s= Hbox.new(                      '.expand' => 'h', :@style_normal => 'bg=red,fg=white')
-			s<< Label.new(                    '.expand' => '0', :@style_normal => 'bg=blue,fg=white',  :text => ' ')
-			s<< Label.new(                                      :@style_normal => 'bg=black,fg=white', :text => '')
-			s<< Label.new( :name => 'status', '.expand' => '0', :@style_normal => 'bg=blue,fg=white',  :text => '')
-			s<< Label.new(                                      :@style_normal => 'bg=black,fg=white', :text => '')
+			@variables['.expand']= 'h'
 
-			self<< s
+			#s= Hbox.new(                      '.expand' => 'h')
+			#s<< Label.new(                    '.expand' => '0', :@style_normal => 'bg=blue,fg=white',  :text => ' ')
+			#s<< Label.new(                                      :@style_normal => 'bg=black,fg=white', :text => '')
+			#s<< Label.new( :name => 'status', '.expand' => '0', :@style_normal => 'bg=blue,fg=white',  :text => '')
+			#s<< Label.new(                                      :@style_normal => 'bg=black,fg=white', :text => '')
+
+			#self<< s
 
 		end
 

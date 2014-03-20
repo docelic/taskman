@@ -1,3 +1,6 @@
+# Option names and their default values. If these need to be overridable
+# on the command line, add them to getopt in main.rb
+
 module TASKMAN
 
 	class Defaults < Object
@@ -10,6 +13,7 @@ module TASKMAN
 		#	'data-dir'         => File.join( ENV['HOME'], '.taskman'),
 		#	'data-file'        => 'tasks.yaml',
 			'debug'            => false,
+			'debug-style'      => nil, # Debug style selector for particular widget name
 			'garbage-collector'=> true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector' => false, # Stress Ruby garbage collector? (DEBUG OPTION)
 			'version'          => '0.01',
@@ -35,7 +39,6 @@ module TASKMAN
 
 		def initialize *arg
 			super
-
 			@opts= @@opts.dup
 		end
 

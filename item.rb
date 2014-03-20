@@ -1,3 +1,6 @@
+# Representation of the task/item as definition of class VirtualDate
+# (Search 'class VirtualDate' below for VirtualDate)
+
 module TASKMAN
 
 	require 'date'

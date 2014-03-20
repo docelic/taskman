@@ -144,20 +144,34 @@ module TASKMAN
 			s= {}
 			tree= parent_tree
 			widget_name= nil
+			debug= false
+
+			puts $opts['debug-style']+ ' AND '+ @name
+			#sleep 0.2
+			if $opts['debug-style'] and $opts['debug-style']== @name
+				debug= true
+				pfl :found, @name
+				exit 1
+			end
+
 			type.each do |t|
 				list= tree.map{ |x| x.name}
 				while list.size> 0 or widget_name
 					key= if list.size> 0 then list.join( ' ') else n= widget_name; widget_name= nil; n end
 					if s2= $app.style[key]
-						s2.each do |k, v|
-							self.send k, v
-						end
-						#puts :FOUND, key
-						#sleep 0.3
+						s2.each {|k, v| self.send k, v}
+						puts "[DEBUG] Style: found '#{key}'"
 						return s
 					end
-					#puts :LOOKING_FOR, key
-					#sleep 0.3
+					# Support menu1 -> menu
+					if s2= $app.style[key[0..-2]]
+						s2.each {|k, v| self.send k, v}
+						puts "[DEBUG] Style: found '#{key[0..-2]}'"
+						return s
+					end
+					if debug
+						puts "[DEBUG] Style: searching for '#{key}'"
+					end
 					
 					# pop the last item from the list and continue searching forward.
 					# However, if we just popped the second element of the list, treat
@@ -168,6 +182,10 @@ module TASKMAN
 					end
 					list.pop
 				end
+			end
+
+			if debug
+				exit 1
 			end
 
 			# Now search for style definition for that widget name in
