@@ -16,7 +16,7 @@ module TASKMAN
 				:create,
 				:'',
 				:'',
-				:'',
+				:inc_folder_count,
 				:postpone,
 
 				:cancel,

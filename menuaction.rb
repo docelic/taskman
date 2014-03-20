@@ -72,7 +72,7 @@ module TASKMAN
 
 		def inc_folder_count arg= {}
 			$app.screen.all_widgets_hash['folder_count'].var_text+= 1
-			pfl $app.screen.all_widgets_hash['folder_count'].parent_tree.map { |x| x.name }
+			#pfl $app.screen.all_widgets_hash['folder_count'].parent_tree.map { |x| x.name }
 		end
 		# This cannot be named "all_widgets_hash" or endless loop will ensue :)
 		# (Due to the widget above being called "all_widgets_hash" as well)

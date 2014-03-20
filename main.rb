@@ -126,12 +126,12 @@ module TASKMAN
 			super()
 
 			@style= {
-				"main head" => {
-					:var_style_normal= => 'fg=color48,bg=color20',
+				"widget_head" => {
+					:var_style_normal= => 'fg=black,bg=white',
 				},
-				"main" => {
-					:var_style_normal= => 'fg=black,bg=red',
-				},
+				#"main" => {
+				#	:var_style_normal= => 'fg=white,bg=black',
+				#},
 			}
 		end
 

@@ -143,23 +143,36 @@ module TASKMAN
 		def apply_style type= [ 'normal', 'focus', 'selected']
 			s= {}
 			tree= parent_tree
+			widget_name= nil
 			type.each do |t|
 				list= tree.map{ |x| x.name}
-				while list.size> 0
-					key= list.join ' '
+				while list.size> 0 or widget_name
+					key= if list.size> 0 then list.join( ' ') else n= widget_name; widget_name= nil; n end
 					if s2= $app.style[key]
 						s2.each do |k, v|
 							self.send k, v
 						end
 						#puts :FOUND, key
-						#sleep 1
+						#sleep 0.3
 						return s
 					end
-#					puts :LOOKING_FOR, key
-#					sleep 0.5
+					#puts :LOOKING_FOR, key
+					#sleep 0.3
+					
+					# pop the last item from the list and continue searching forward.
+					# However, if we just popped the second element of the list, treat
+					# it as a generic widget name (regardless of window in which it is
+					# found) and search for that later on, if no match is found.
+					if list.size== 2
+						widget_name= 'widget_'+ list[1]
+					end
 					list.pop
 				end
 			end
+
+			# Now search for style definition for that widget name in
+			# any window. We take it the widget name is second argument
+			# in the list.
 			s
 		end
 

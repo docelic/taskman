@@ -21,7 +21,7 @@ module TASKMAN
 				event= $app.ui.run 0
 				focus= $app.ui.get_focus
 
-				pfl :KEYPRESS, focus, event
+				#pfl :KEYPRESS, focus, event
 
 				# Next if the event has been handled by the widget
 				next if event.length== 0
@@ -30,7 +30,7 @@ module TASKMAN
 				if event== 'SLEFT'
 					@show_next_key= true
 				elsif @show_next_key
-					pfl event
+					pfl focus, event
 					@show_next_key= false
 				end
 
