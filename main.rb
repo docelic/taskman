@@ -41,8 +41,6 @@ opts= [
 #	[ '--client' ,             '-c',         GetoptLong::NO_ARGUMENT],
 #	[ '--profile',             '-p',         GetoptLong::REQUIRED_ARGUMENT],
 	[ '--version',             '-V',         GetoptLong::NO_ARGUMENT],
-	[ '--debug',               '-d',         GetoptLong::NO_ARGUMENT],
-	[ '--debug-style',         '--ds',       GetoptLong::REQUIRED_ARGUMENT],
 #	[ '--verbose',             '-v',         GetoptLong::NO_ARGUMENT],
 	[ '--garbage-collector',   '--gc',       GetoptLong::NO_ARGUMENT],
 	[ '--stress-collector',    '--stress',   GetoptLong::NO_ARGUMENT],
@@ -51,6 +49,11 @@ opts= [
 #	[ '--state-save',          '--ss',       GetoptLong::NO_ARGUMENT],
 	[ '--window',              '-w',         GetoptLong::REQUIRED_ARGUMENT],
 	[ '--theme',               '-t',         GetoptLong::REQUIRED_ARGUMENT],
+
+	[ '--debug',               '-d',         GetoptLong::NO_ARGUMENT],
+	[ '--debug-keys',         '--dk',        GetoptLong::NO_ARGUMENT],
+	[ '--debug-opts',         '--do',        GetoptLong::NO_ARGUMENT],
+	[ '--debug-style',        '--ds',        GetoptLong::NO_ARGUMENT],
 ]
 
 args= GetoptLong.new *opts
@@ -103,10 +106,8 @@ rescue GetoptLong::InvalidOption
 	exit 1
 end
 
-if $opts['debug']
+if $opts['debug-opts']
 	pfl $opts
-	puts 'Press ENTER to continue'
-	gets
 end
 
 #if $opts['data-dir'] and not File.directory? $opts['data-dir']
@@ -127,16 +128,13 @@ module TASKMAN
 			super()
 
 			@style= {
-				"widget_head" => {
+				"head" => {
 					:var_style_normal= => 'fg=black,bg=white',
 				},
-				"widget_body" => {
+				"body" => {
 					:var_style_normal= => 'fg=white,bg=black',
 				},
-				"widget_menu" => {
-					:var_style_normal= => 'fg=red,bg=yellow',
-				},
-				"main menu1 nextcmd" => {
+				"menu" => {
 					:var_style_normal= => 'fg=red,bg=yellow',
 				},
 			}
