@@ -12,11 +12,14 @@ module TASKMAN
 		#	'profile'          => nil,   # Settings profile name
 		#	'data-dir'         => File.join( ENV['HOME'], '.taskman'),
 		#	'data-file'        => 'tasks.yaml',
+
 			'debug'            => false,
-			'debug-style'      => nil, # Debug style selector for particular widget name
+			'debug-keys'       => false, # Debug key presses
+			'debug-opts'       => false, # Debug options
+
 			'garbage-collector'=> true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector' => false, # Stress Ruby garbage collector? (DEBUG OPTION)
-			'version'          => '0.01',
+			'version'          => '0.02',
 		#	'term_width'       => 78,
 		#	'local'            => false,
 		#	'default-time'     => false,
