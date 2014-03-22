@@ -176,5 +176,5 @@ end
 
 # Debugging aid - Print File, Line & Method, plus listed arguments inspected.
 def pfl *arg
-	print caller[0], '-> ', arg.inspect[1..-2], "\n"
+	$stderr.print caller[0], '-> ', arg.inspect[1..-2], "\n"
 end
