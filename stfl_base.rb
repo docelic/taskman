@@ -13,8 +13,8 @@ module TASKMAN
 
 		include Stfl
 
-		attr_reader :name, :ui
-		attr_accessor :variables, :widgets, :widgets_hash
+		attr_reader :name, :style_name, :ui
+		attr_accessor :variables, :widgets, :widgets_hash, :hotkeys_hash, :widget
 		attr_accessor :parent
 
 		# The variables are STFL-valid hash consisting of :variable => value.
@@ -31,6 +31,9 @@ module TASKMAN
 			# Child widgets container, array and by-name
 			@widgets= []
 			@widgets_hash= {}
+
+			# For actions associated to widgets
+			@hotkeys_hash= {}
 			
 			# Name of STFL widget that this object translates to. If @widget
 			# is nil, the widget container is omitted and only widgets elements
@@ -45,6 +48,8 @@ module TASKMAN
 				@name= [ @@auto_widget_name, @@auto_widget_id].join '_'
 				@@auto_widget_id+= 1
 			end
+			@name= @name.to_s
+			@style_name= @name
 
 			# STFl variables. May be empty
 			@variables= {}
@@ -57,6 +62,7 @@ module TASKMAN
 			@variables['style_normal']||= ''
 			@variables['style_focus']||= ''
 			@variables['autobind']||= 1
+			@variables['modal']||= 1
 
 			# Now create accessor functions for all variables currently existing
 			@variables.each do |k, v|
@@ -79,27 +85,45 @@ module TASKMAN
 		def << arg
 			@widgets<< arg
 			@widgets_hash[arg.name]= arg
-
+			pfl "Setting #{arg.name} parent to #{self.name}"
 			arg.parent= self
-
+			if MenuAction=== arg
+				@hotkeys_hash[arg.hotkey]= arg
+			end
 			arg
 		end
 		def >> arg
 			@widgets>> arg
 			@widgets_hash.delete arg.name
 			arg.parent= nil
+			if MenuAction=== arg
+				@hotkeys_hash>> arg.name
+			end
 			arg
+		end
+
+		def add_action *arg
+			arg.each do |a|
+				if ma= Theme::MenuAction.new( :name => a.to_s)
+					self<< ma
+				else
+					$stderr.puts "Menu action #{a.to_s} does not exist; skipping."
+				end
+			end
 		end
 
 		# Generic function translating an object into STFL representation.
 		# If the object has @widget == nil, only the child elements are dumped,
 		# with no toplevel container.
 		def to_stfl
-			pfl @offset, (@page_size ? @offset+ @page_size- 1 : -1)
-			widgets= @widgets[@offset..(@page_size ? @offset+ @page_size- 1 : -1)].to_stfl
+			widgets= @widgets.to_stfl
 
+			# If this container widget should be transparent (if it's
+			# not to be rendered as any visible widget), simply return
+			# its children stfl-ed.
 			return widgets unless @widget
 
+			# Otherwise stfl itself, and return that + children stfl-ed
 			variables= @variables.map{ |k, v|
 				variable_name= "#{@name}_#{k}"
 				k.to_s+ "[#{Stfl.quote( variable_name)}]:"+ Stfl.quote( v.to_s)
@@ -119,6 +143,7 @@ module TASKMAN
 			$app.ui.modify @name.to_s, 'replace', stfl_text
 		end
 
+		# XXX Memoize if necessary
 		def all_widgets_hash hash= {}
 			hash.merge!( { @name => self })
 			@widgets.each do |c|
@@ -133,7 +158,7 @@ module TASKMAN
 
 		def parent_tree tree= [ self]
 			if @parent
-				tree.unshift @parent
+				tree.push @parent
 				@parent.parent_tree tree
 			else
 				return tree
@@ -142,61 +167,41 @@ module TASKMAN
 
 		def apply_style type= [ 'normal', 'focus', 'selected']
 			s= {}
-			tree= parent_tree
+			tree= parent_tree.reverse
 			widget_name= nil
-			debug= false
-
-			puts $opts['debug-style']+ ' AND '+ @name
-			#sleep 0.2
-			if $opts['debug-style'] and $opts['debug-style']== @name
-				debug= true
-				pfl :found, @name
-				exit 1
-			end
 
 			type.each do |t|
-				list= tree.map{ |x| x.name}
-				while list.size> 0 or widget_name
-					key= if list.size> 0 then list.join( ' ') else n= widget_name; widget_name= nil; n end
-					if s2= $app.style[key]
-						s2.each {|k, v| self.send k, v}
-						puts "[DEBUG] Style: found '#{key}'"
-						return s
-					end
-					# Support menu1 -> menu
-					if s2= $app.style[key[0..-2]]
-						s2.each {|k, v| self.send k, v}
-						puts "[DEBUG] Style: found '#{key[0..-2]}'"
-						return s
-					end
-					if debug
-						puts "[DEBUG] Style: searching for '#{key}'"
-					end
-					
-					# pop the last item from the list and continue searching forward.
-					# However, if we just popped the second element of the list, treat
-					# it as a generic widget name (regardless of window in which it is
-					# found) and search for that later on, if no match is found.
-					if list.size== 2
-						widget_name= 'widget_'+ list[1]
-					end
-					list.pop
+				if $opts['debug-style']
+					pfl "Applying style #{t} to widget #{@name}"
 				end
-			end
 
-			if debug
-				exit 1
-			end
+				list= tree.dup.map{ |w| w.style_name|| w.name}
+				pops= list.size
+				variation= [ list.pop]
+				if @widget
+					variation.push "@#{@widget}"
+				end
 
-			# Now search for style definition for that widget name in
-			# any window. We take it the widget name is second argument
-			# in the list.
-			s
-		end
-
-	end
-
-end
+				pops.times do
+					variation.each do |v|
+						key= if list.size> 0 then [ list, v].join( ' ') else v end
+						if $opts['debug-style']
+							pfl "Searching for style key #{key}"
+						end
+						if s2= $app.style[key]
+							if $opts['debug-style']
+								pfl "Found style key #{key}"
+							end
+							s2.each {|k, v| self.send k, v}
+							return s2
+						end # if s2
+					end # variation.each
+					list.shift
+				end # pops.times
+			end # types.each
+		end # def apply_style
+	end # class
+end # module
 
 class Array
 
