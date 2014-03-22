@@ -163,26 +163,58 @@ module TASKMAN
 			end
 		end
 
+		# This function applies style to a widget by using a couple fallbacks.
+		# Style is attempted to be applied for all three STFL style types.
 		def apply_style type= [ 'normal', 'focus', 'selected']
 			s= {}
-			tree= parent_tree.reverse
-			widget_name= nil
 
+			# Produce the list of parent element names. This will be the basis of
+			# our fallbacking and searching for styles and inheriting them from
+			# parent widgets.
+			tree= parent_tree.reverse.map{ |w| w.name}
+
+			# For each style type (normal, focus, selected)...
 			type.each do |t|
+
 				if $opts['debug-style']
 					pfl "Applying style #{t} to widget #{@name}"
 				end
 
-				list= tree.dup.map{ |w| w.name}
+				# Make a copy of the list as we will be modifying it in each
+				# loop and remember the initial size
+				list= tree.dup
 				pops= list.size
+
+				# A "variation" is the thing allowing searching for a specific
+				# widget name at the end, but then also searching for widget
+				# type and/or removinfg the last element if not found.
+				# (For example, if a final widget is called "x" and is of type
+				# "hbox", then the variation fill first search for "... x", and
+				# if not found, then for "... @hbox", and if still not found,
+				# it will then search for just "..." without the final element
+				# or type.)
 				variation= [ list.pop]
 				if @widget
 					variation.push "@#{@widget}"
 				end
+				variation.push nil
 
 				pops.times do
 					variation.each do |v|
-						key= if list.size> 0 then [ list, v].join( ' ') else v end
+
+						# Produce a key by which we will look up a style
+						# Not sure why list2= [ list] works without having to say *list?
+						list2= [ list]
+						if v then list2.push v end
+						key= if list.size> 0 then list2.join( ' ') else v end
+
+						# key will be nil when we are testing the variation only
+						# (no list) and that variation is 'nil'. We skip those
+						# cases, even though theoretically we could try not
+						# skipping it, so that one could define one, global default
+						# style using key '' (or nil?).
+						next unless key
+
 						if $opts['debug-style']
 							pfl "Searching for style key #{key}"
 						end
