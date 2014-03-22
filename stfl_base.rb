@@ -13,7 +13,7 @@ module TASKMAN
 
 		include Stfl
 
-		attr_reader :name, :style_name, :ui
+		attr_reader :name, :ui
 		attr_accessor :variables, :widgets, :widgets_hash, :hotkeys_hash, :widget
 		attr_accessor :parent
 
@@ -49,7 +49,6 @@ module TASKMAN
 				@@auto_widget_id+= 1
 			end
 			@name= @name.to_s
-			@style_name= @name
 
 			# STFl variables. May be empty
 			@variables= {}
@@ -85,7 +84,6 @@ module TASKMAN
 		def << arg
 			@widgets<< arg
 			@widgets_hash[arg.name]= arg
-			pfl "Setting #{arg.name} parent to #{self.name}"
 			arg.parent= self
 			if MenuAction=== arg
 				@hotkeys_hash[arg.hotkey]= arg
@@ -175,7 +173,7 @@ module TASKMAN
 					pfl "Applying style #{t} to widget #{@name}"
 				end
 
-				list= tree.dup.map{ |w| w.style_name|| w.name}
+				list= tree.dup.map{ |w| w.name}
 				pops= list.size
 				variation= [ list.pop]
 				if @widget
