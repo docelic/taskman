@@ -15,7 +15,7 @@ module TASKMAN
 			'hotkey_out' => { :hotkey => '<',   :shortname => '',             :description => '', :function => nil },
 			'nextcmd'    => { :hotkey => 'N',   :shortname => 'NextCmd',      :description => '', :function => nil },
 			'kblock'     => { :hotkey => 'K',   :shortname => 'KBLock',       :description => '', :function => nil },
-			'quit'       => { :hotkey => 'Q',   :shortname => 'Quit Taskman', :description => '', :function => :quit },
+			'quit'       => { :hotkey => '^W',  :shortname => 'Quit Taskman', :description => '', :function => :quit },
 			'listfolders'=> { :hotkey => 'L',   :shortname => 'ListFldrs',    :description => '', :function => nil },
 			'index'      => { :hotkey => 'I',   :shortname => 'Index',        :description => '', :function => nil },
 			'setup'      => { :hotkey => 'S',   :shortname => 'Setup',        :description => '', :function => nil },
@@ -25,14 +25,16 @@ module TASKMAN
 			'journal'    => { :hotkey => 'J',   :shortname => 'Journal',      :description => '', :function => nil },
 			'addrbook'   => { :hotkey => 'A',   :shortname => 'AddrBook',     :description => '', :function => nil },
 
-			# Testing shortcuts
-			'inc_folder_count'   => { :hotkey => 'SR',   :shortname => 'Folder Cnt+1',     :description => '', :function => :inc_folder_count },
-			'all_widgets_hash'   => { :hotkey => 'SF',   :shortname => 'All Children',     :description => '', :function => :all_widgets},
 
 			'get_create_help'    => { :hotkey => '^G',   :shortname => 'Get Help',         :description => '', :function => :get_create_help},
 			'create'             => { :hotkey => '^X',   :shortname => 'Create',           :description => '', :function => :create},
 			'postpone'           => { :hotkey => '^O',   :shortname => 'Postpone',         :description => '', :function => :postpone},
 			'cancel'             => { :hotkey => '^C',   :shortname => 'Cancel',           :description => '', :function => :cancel},
+
+			# Testing shortcuts
+			'inc_folder_count'   => { :hotkey => 'SR',   :shortname => 'Folder Cnt+1',     :description => '', :function => :inc_folder_count },
+			'all_widgets_hash'   => { :hotkey => 'SF',   :shortname => 'All Children',     :description => '', :function => :all_widgets},
+			'parent_names'       => { :hotkey => '^P',   :shortname => 'Parent Tree',      :description => '', :function => :parent_names},
 		}
 
 		def initialize arg= {}
@@ -46,14 +48,6 @@ module TASKMAN
 
 			#setup_widgets
 		end
-
-#		def setup_widgets
-#			name= [ :menu, @name].join '_'
-#			hotkey_name= [ name, 'hotkey'].join '_'
-#			shortname_name= [ name, 'shortname'].join '_'
-#			self<< Label.new( :name => hotkey_name,    '.expand' => '0', :text => @hotkey)
-#			self<< Label.new( :name => shortname_name, '.expand' => '0', :text => @shortname)
-#		end
 
 		################################### Functions ###################################
 
@@ -90,6 +84,12 @@ module TASKMAN
 		end
 
 		def cancel arg= {}
+		end
+
+		def parent_names arg= {}
+			w= arg[:widget]
+			pt= w.parent_tree
+			pfl pt.map{ |x| x.name}
 		end
 
 	end
