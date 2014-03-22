@@ -10,50 +10,52 @@ module TASKMAN
 
 		attr_reader :actions
 
-		#def initialize *arg
-		#	@widget= :vbox
-
-		#	super
-		#end
-
 		def main_loop
 			loop do
 				event= $app.ui.run 0
 				focus= $app.ui.get_focus
 
-				#pfl :KEYPRESS, focus, event
+				if $opts['debug-keys']
+					pfl "Window #{@name}, widget #{focus}, key #{event}"
+				end
 
 				# Next if the event has been handled by the widget
 				next if event.length== 0
 
-				# Handle specific events in a generic way
-				if event== 'SLEFT'
-					@show_next_key= true
-				elsif @show_next_key
-					pfl focus, event
-					@show_next_key= false
-				end
-
-				# Support windows to have multiple menus, and search
-				# in all of them for a match
-				if menus= @widgets_hash.keys.grep( /menu/)
-					menus.each do |mn|
-						m= @widgets_hash[mn]
-						if a= m.hotkeys_hash[event]
-							if Symbol=== f= a.function
-								a.send( f, :screen => self, :menu => m, :action => a, :function => f, :event => event)
-							elsif Proc=== f= a.function
-								f.yield( :screen => self, :menu => m, :action => a, :function => f, :event => event)
-							end
+				# Handling the keypress goes by checking the hotkeys associated
+				# with the widget itself, then with the window menus, and then
+				# with the parent widgets of the one receiving the keypress.
+				# First match is executed.
+				widget= all_widgets_hash()[focus]
+				[ widget, *menus(), *widget.parent_tree()].each do |w|
+					if a= w.hotkeys_hash[event]
+						if Symbol=== f= a.function
+							a.send( f, :screen => self, :widget => widget, :action => a, :function => f, :event => event)
+							break
+						elsif Proc=== f= a.function
+							f.yield( :screen => self, :widget => widget, :action => a, :function => f, :event => event)
+							break
 						end
 					end
 				end
+
+				## Handle specific events in a generic way
+				#if event== 'SLEFT'
+				#	@show_next_key= true
+				#elsif @show_next_key
+				#	pfl focus, event
+				#	@show_next_key= false
+				#end
 
 				# Events reaching here are unhandled/default. For example,
 				# pressing RIGHT when already at the end of the input box
 				# text etc.
 
 			end
+		end
+
+		def menus
+			@widgets.select{ |w| w.name=~ /^menu/}
 		end
 
 	end
