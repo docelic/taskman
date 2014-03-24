@@ -9,7 +9,7 @@ module TASKMAN
 
 			l1= Label.new( '.expand' => 'vh')
 
-			list= List.new( '.tie' => 'c')
+			list= List.new( :name => 'lst', '.tie' => 'tb')
 			list<< ListItem.new( :text => 'One', :can_focus => 1)
 			list<< ListItem.new( :text => '', :can_focus => 0)
 			list<< ListItem.new( :text => 'Two', :can_focus => 1)

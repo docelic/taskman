@@ -198,6 +198,13 @@ module TASKMAN
 			# No action if this object won't be rendering on its own
 			return unless @widget
 
+			debug= if
+				$opts['debug-style'] or 
+					( $opts['debug-style-widget'] and $opts['debug-style-widget']== @name)
+				then true
+				else false
+				end
+
 			s= {}
 
 			# Produce the list of parent element names. This will be the basis of
@@ -208,7 +215,7 @@ module TASKMAN
 			# For each style type (normal, focus, selected)...
 			type.each do |t|
 
-				if $opts['debug-style']
+				if debug
 					pfl "Applying style #{t} to widget #{@name}"
 				end
 
@@ -219,7 +226,7 @@ module TASKMAN
 				# Assume that all widgets with a number at the end are just
 				# "instances" of a basic widget, and want their basic style
 				# applied. (E.g. widget name 'menu2' wants 'menu', not 'menu2)).
-				list.map!{ |x| x.gsub /\d+$/, ''}
+				list.map!{ |x| x.gsub /(?<!_)\d+$/, ''}
 
 				pops= list.size
 
@@ -253,15 +260,15 @@ module TASKMAN
 						# style using key '' (or nil?).
 						next unless key
 
-						if $opts['debug-style']
+						if debug
 							pfl "Searching for style key #{key}"
 						end
 						if s2= $app.style[key]
-							if $opts['debug-style']
+							if debug
 								pfl "Found style key #{key}"
 							end
 							s2.each do |k, v|
-								if $opts['debug-style']
+								if debug
 									pfl "Applying style to #{@name}: #{k}#{v}"
 								end
 								self.send k, v

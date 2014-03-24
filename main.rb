@@ -54,6 +54,7 @@ opts= [
 	[ '--debug-keys',         '--dk',        GetoptLong::NO_ARGUMENT],
 	[ '--debug-opts',         '--do',        GetoptLong::NO_ARGUMENT],
 	[ '--debug-style',        '--ds',        GetoptLong::NO_ARGUMENT],
+	[ '--debug-style-widget', '--dsw',       GetoptLong::REQUIRED_ARGUMENT],
 	[ '--debug-stfl',         '--dstfl',     GetoptLong::NO_ARGUMENT],
 ]
 
@@ -144,6 +145,12 @@ module TASKMAN
 				"menu @label_shortname" => {
 					:var_style_normal= => 'fg=white,bg=black',
 				},
+
+				"@listitem" => {
+					:var_style_normal= => 'fg=red,bg=yellow',
+					:var_style_focus= => 'fg=red,bg=yellow',
+					:var_style_selected= => 'fg=red,bg=yellow',
+				}
 			}
 		end
 

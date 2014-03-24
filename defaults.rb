@@ -6,39 +6,41 @@ module TASKMAN
 	class Defaults < Object
 
 		@@opts= {
-		#	'state'            => true,
-		#	'state-load'       => true,  # Load app state on startup?
-		#	'state-save'       => true,  # Save app state on exit?
-		#	'profile'          => nil,   # Settings profile name
-		#	'data-dir'         => File.join( ENV['HOME'], '.taskman'),
-		#	'data-file'        => 'tasks.yaml',
+		#	'state'              => true,
+		#	'state-load'         => true,  # Load app state on startup?
+		#	'state-save'         => true,  # Save app state on exit?
+		#	'profile'            => nil,   # Settings profile name
+		#	'data-dir'           => File.join( ENV['HOME'], '.taskman'),
+		#	'data-file'          => 'tasks.yaml',
 
-			'debug'            => false,
-			'debug-keys'       => false, # Debug key presses
-			'debug-opts'       => false, # Debug options
-			'debug-stfl'       => false, # Debug STFL text
+			'debug'              => false,
+			'debug-keys'         => false, # Debug key presses
+			'debug-opts'         => false, # Debug options
+			'debug-stfl'         => false, # Debug STFL text
+			'debug-style'        => false, # Debug STFL text
+			'debug-style-widget' => nil, # Particular widget to debug style on
 
-			'garbage-collector'=> true,  # Use Ruby garbage collector? (DEBUG OPTION)
-			'stress-collector' => false, # Stress Ruby garbage collector? (DEBUG OPTION)
-			'version'          => '0.02',
-		#	'term_width'       => 78,
-		#	'local'            => false,
-		#	'default-time'     => false,
-		#	'default-time'     => false,
-		#	'default-time'     => false,
+			'garbage-collector'  => true,  # Use Ruby garbage collector? (DEBUG OPTION)
+			'stress-collector'   => false, # Stress Ruby garbage collector? (DEBUG OPTION)
+			'version'            => '0.02',
+		#	'term_width'         => 78,
+		#	'local'              => false,
+		#	'default-time'       => false,
+		#	'default-time'       => false,
+		#	'default-time'       => false,
 		#
-		#	'server-host'      => 'localhost',
-		#	'server-port'      => '4044',
-		#	'autoconnect'      => 1,
+		#	'server-host'        => 'localhost',
+		#	'server-port'        => '4044',
+		#	'autoconnect'        => 1,
 		#
-		#	'default_time'     => 12* 3600, # noon
-		#	'verbose'          => true,
+		#	'default_time'       => 12* 3600, # noon
+		#	'verbose'            => true,
 		#
-		#	'server'           => true,
-		#	'client'           => true,
+		#	'server'             => true,
+		#	'client'             => true,
 
-			'window'           => 'main',
-			'theme'            => 'alpine',
+			'window'             => 'main',
+			'theme'              => 'alpine',
 		}
 
 		def initialize *arg

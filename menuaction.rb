@@ -62,6 +62,11 @@ module TASKMAN
 		################################### Functions ###################################
 
 		def quit arg= {}
+			w= arg[:window]
+			pfl w.widgets_hash.keys
+			if w.widgets_hash['status']
+				puts :YES
+			end
 			Stfl.reset
 			puts "Taskman finished -- Closed empty folder \"INBOX\""
 			exit 0
