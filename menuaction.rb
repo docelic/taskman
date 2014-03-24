@@ -60,8 +60,8 @@ module TASKMAN
 		end
 
 		def menu_text
-			# 2 - 5 - 15 - 4" - "2 - 31
-			"%2s     %-15s    -  %-33s" % [ @hotkey.uc, ( @menuname|| @shortname).uc, @description]
+			# 2 - 5 - 15 - 4" - "2 - 33
+			"%2s     %-15s    -  %-33s" % [ @hotkey.upcase, ( @menuname|| @shortname).upcase, @description]
 		end
 
 		################################### Functions ###################################

@@ -11,11 +11,6 @@ class String
 		self
 	end
 
-	def uc() self.dup.upcase! end
-	def uc!() self.upcase! end
-	def lc() self.dup.downcase! end
-	def lc!() self.downcase! end
-
 	def to_date
 		Date.parse( self).to_date
 	end

@@ -56,6 +56,7 @@ opts= [
 	[ '--debug-style',        '--ds',        GetoptLong::NO_ARGUMENT],
 	[ '--debug-style-widget', '--dsw',       GetoptLong::REQUIRED_ARGUMENT],
 	[ '--debug-stfl',         '--dstfl',     GetoptLong::NO_ARGUMENT],
+	[ '--debug-stfl-widget' , '--dstflw',    GetoptLong::REQUIRED_ARGUMENT],
 ]
 
 args= GetoptLong.new *opts

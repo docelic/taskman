@@ -23,7 +23,11 @@ module TASKMAN
 			end
 			v<< t
 
-			v.to_stfl
+			ret= v.to_stfl
+			if debug?( :stfl)
+				pfl "Widget #{@name} STFL: #{ret}"
+			end
+			ret
 		end
 	
 	end

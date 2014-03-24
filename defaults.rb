@@ -17,6 +17,7 @@ module TASKMAN
 			'debug-keys'         => false, # Debug key presses
 			'debug-opts'         => false, # Debug options
 			'debug-stfl'         => false, # Debug STFL text
+			'debug-stfl-widget'  => nil, # Particular widget to debug STFL on
 			'debug-style'        => false, # Debug STFL text
 			'debug-style-widget' => nil, # Particular widget to debug style on
 

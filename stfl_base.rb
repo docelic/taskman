@@ -144,7 +144,11 @@ module TASKMAN
 			}.join ' '
 			variables+= ' ' if variables.length> 0
 
-			return "{#{@widget}[#{@name}] #{variables}#{widgets}}"
+			ret= "{#{@widget}[#{@name}] #{variables}#{widgets}}"
+			if debug?( :stfl)
+				pfl "Widget #{@name} STFL: #{ret}"
+			end
+			ret
 		end
 
 		def create
@@ -193,6 +197,16 @@ module TASKMAN
 			end
 		end
 
+		def debug? type= nil
+			opt= 'debug'+ ( type ? "-#{type}" : '')
+			opt_widget= opt+ '-widget'
+			if $opts[opt] or ( $opts[opt_widget] and $opts[opt_widget]== @name) then
+				true
+			else
+				false
+			end
+		end
+
 		# This function applies style to a widget by using a couple fallbacks.
 		# Style is attempted to be applied for all three STFL style types.
 		def apply_style type= [ 'normal', 'focus', 'selected']
@@ -200,12 +214,7 @@ module TASKMAN
 			# No action if this object won't be rendering on its own
 			return unless @widget
 
-			debug= if
-				$opts['debug-style'] or 
-					( $opts['debug-style-widget'] and $opts['debug-style-widget']== @name)
-				then true
-				else false
-				end
+			debug= debug?( :style)
 
 			s= {}
 
@@ -240,7 +249,7 @@ module TASKMAN
 				# if not found, then for "... @hbox", and if still not found,
 				# it will then search for just "..." without the final element
 				# or type.)
-				variation= [ list.pop, "@#{self.class_name.lc}"]
+				variation= [ list.pop, "@#{self.class_name.downcase}"]
 				if @widget
 					variation.push "@#{@widget}"
 				end
