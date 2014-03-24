@@ -30,10 +30,10 @@ module TASKMAN
 				[ widget, *menus(), *widget.parent_tree()].each do |w|
 					if a= w.hotkeys_hash[event]
 						if Symbol=== f= a.function
-							a.send( f, :screen => self, :widget => widget, :action => a, :function => f, :event => event)
+							a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)
 							break
 						elsif Proc=== f= a.function
-							f.yield( :screen => self, :widget => widget, :action => a, :function => f, :event => event)
+							f.yield( :window => self, :widget => widget, :action => a, :function => f, :event => event)
 							break
 						end
 					end

@@ -11,6 +11,8 @@ class String
 		self
 	end
 
+	def uc() self.dup.upcase! end
+	def uc!() self.upcase! end
 	def lc() self.dup.downcase! end
 	def lc!() self.downcase! end
 
@@ -84,6 +86,10 @@ class Object
 		else
 			self.to_s
 		end
+	end
+
+	def class_name
+		self.class.to_s.gsub /.+::/, ''
 	end
 
 end

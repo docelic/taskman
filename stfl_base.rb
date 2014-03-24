@@ -44,7 +44,7 @@ module TASKMAN
 
 			# Name is always there for all objects. If unspecified,
 			# automatic name is assigned
-			unless @name= variables.delete( :name)
+			if not( @name= variables.delete( :name)) or @name.length< 1
 				@name= [ @@auto_widget_name, @@auto_widget_id].join '_'
 				@@auto_widget_id+= 1
 			end
@@ -60,10 +60,19 @@ module TASKMAN
 			@variables['.display']||= 1
 			@variables['style_normal']||= ''
 			@variables['style_focus']||= ''
+			@variables['style_selected']||= ''
 			@variables['autobind']||= 1
 			@variables['modal']||= 1
 
-			# Now create accessor functions for all variables currently existing
+			# Now create accessor functions for all variables currently existing.
+			# Get function simply reads the variable value.
+			# Set function sets the variable and applies it into STFL.
+			# An additional feature of the set function is that it can be aware of
+			# a different representation of an object in STFL. For example, the
+			# MenuAction object 'x' would actually render as 3 labels in STFL,
+			# x_hotkey, x_spacer and x_shortname.
+			# Setting @stfl_names to those names allows the set function to know
+			# what STFL widget names need to be set.
 			@variables.each do |k, v|
 				fn= k.gsub /\W/, '_'
 				unless respond_to? k
@@ -71,8 +80,11 @@ module TASKMAN
 						@variables[k]
 					}
 					self.class.send( :define_method, "var_#{fn}=".to_sym) { |arg|
-						$app.ui.set "#{name}_#{k}", arg.to_s
 						@variables[k]= arg
+						names= if @stfl_names then @stfl_names else [ name] end
+						names.each do |n|
+							$app.ui.set "#{n}_#{k}", arg.to_s
+						end
 					}
 				end
 			end
@@ -102,7 +114,9 @@ module TASKMAN
 
 		def add_action *arg
 			arg.each do |a|
-				if ma= Theme::MenuAction.new( :name => a.to_s)
+				if a== :tablebr
+					self<< Tablebr.new
+				elsif ma= Theme::MenuAction.new( :name => a.to_s)
 					self<< ma
 				else
 					$stderr.puts "Menu action #{a.to_s} does not exist; skipping."
@@ -133,6 +147,9 @@ module TASKMAN
 
 		def create
 			stfl_text= to_stfl
+			if $opts['debug-stfl']
+				pfl stfl_text
+			end
 			Stfl.create stfl_text
 		end
 
@@ -163,15 +180,30 @@ module TASKMAN
 			end
 		end
 
+		def stfl_tree tree= [ self]
+			if @parent and @parent.widget
+				tree.push @parent
+				@parent.stfl_tree tree
+			elsif @parent
+				@parent.stfl_tree tree
+			else
+				return tree
+			end
+		end
+
 		# This function applies style to a widget by using a couple fallbacks.
 		# Style is attempted to be applied for all three STFL style types.
 		def apply_style type= [ 'normal', 'focus', 'selected']
+
+			# No action if this object won't be rendering on its own
+			return unless @widget
+
 			s= {}
 
 			# Produce the list of parent element names. This will be the basis of
 			# our fallbacking and searching for styles and inheriting them from
 			# parent widgets.
-			tree= parent_tree.reverse.map{ |w| w.name}
+			tree= stfl_tree.reverse.map{ |w| w.name}
 
 			# For each style type (normal, focus, selected)...
 			type.each do |t|
@@ -183,6 +215,12 @@ module TASKMAN
 				# Make a copy of the list as we will be modifying it in each
 				# loop and remember the initial size
 				list= tree.dup
+
+				# Assume that all widgets with a number at the end are just
+				# "instances" of a basic widget, and want their basic style
+				# applied. (E.g. widget name 'menu2' wants 'menu', not 'menu2)).
+				list.map!{ |x| x.gsub /\d+$/, ''}
+
 				pops= list.size
 
 				# A "variation" is the thing allowing searching for a specific
@@ -193,7 +231,7 @@ module TASKMAN
 				# if not found, then for "... @hbox", and if still not found,
 				# it will then search for just "..." without the final element
 				# or type.)
-				variation= [ list.pop]
+				variation= [ list.pop, "@#{self.class_name.lc}"]
 				if @widget
 					variation.push "@#{@widget}"
 				end
@@ -222,7 +260,12 @@ module TASKMAN
 							if $opts['debug-style']
 								pfl "Found style key #{key}"
 							end
-							s2.each {|k, v| self.send k, v}
+							s2.each do |k, v|
+								if $opts['debug-style']
+									pfl "Applying style to #{@name}: #{k}#{v}"
+								end
+								self.send k, v
+							end
 							return s2
 						end # if s2
 					end # variation.each

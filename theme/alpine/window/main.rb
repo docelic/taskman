@@ -13,36 +13,40 @@ module TASKMAN
 
 			m1= Theme::Window::Main::Menu.new( :name => :menu1)
 			m1.add_action(
-				:parent_names,
-#				:help,
-#				:prevcmd,
-#				:relnodes,
-#				:other,
-#				:hotkey_in,
-#				:nextcmd
-				)
+				:help,
+				:'',
+				:prevcmd,
+				:'',
+				:relnodes,
+				:'',
+				:tablebr, ##
+				:other,
+				:hotkey_in,
+				:nextcmd,
+				:'',
+				:kblock,
+				:'',
+			)
 
-#			m2= Theme::Window::Main::Menu.new( :name => :menu2)
-			#m2.add_action(
-#				:kblock,
-#				:help,
-				#:quit,
-#				:listfolders,
-#				:index,
-#				:setup)
-		#		:role,
-		#		:other,
-		#		:create,
-		#		:gotofolder,
-		#		:journal,
-		#		:addrbook,
-		#		#:'',
-		#		#:inc_folder_count,
-		#		#:all_widgets_hash,
-			#)
+			m2= Theme::Window::Main::Menu.new( :name => :menu2, '.display' => 0)
+			m2.add_action(
+				:help2,
+				:quit,
+				:listfolders,
+				:index,
+				:setup,
+				:role,
+				:tablebr, ##
+				:other2,
+				:create,
+				:gotofolder,
+				:journal,
+				:addrbook,
+				:'',
+			)
 
 			self<< m1
-#			self<< m2
+			self<< m2
 		end
 
 	end

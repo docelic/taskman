@@ -54,6 +54,7 @@ opts= [
 	[ '--debug-keys',         '--dk',        GetoptLong::NO_ARGUMENT],
 	[ '--debug-opts',         '--do',        GetoptLong::NO_ARGUMENT],
 	[ '--debug-style',        '--ds',        GetoptLong::NO_ARGUMENT],
+	[ '--debug-stfl',         '--dstfl',     GetoptLong::NO_ARGUMENT],
 ]
 
 args= GetoptLong.new *opts
@@ -134,8 +135,14 @@ module TASKMAN
 				"body" => {
 					:var_style_normal= => 'fg=white,bg=black',
 				},
-				"menu" => {
-					:var_style_normal= => 'fg=red,bg=yellow',
+				"menu @label_hotkey" => {
+					:var_style_normal= => 'fg=black,bg=white',
+				},
+				"menu @label_spacer" => {
+					:var_style_normal= => 'fg=white,bg=black',
+				},
+				"menu @label_shortname" => {
+					:var_style_normal= => 'fg=white,bg=black',
 				},
 			}
 		end
@@ -150,14 +157,7 @@ module TASKMAN
 			@ui= @screen.create
 
 			$app.screen.all_widgets_hash.each do |name, w|
-			# TODO Add controlable widget identifier here
-				#if name== 'folder_count'
-				#	#pfl w.parent_tree.map{ |x| x.name}
-				#	#sleep 2
-				#end
 				w.apply_style
-				#pfl name, w.variables
-				#sleep 1
 			end
 
 			@screen.main_loop

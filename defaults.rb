@@ -16,6 +16,7 @@ module TASKMAN
 			'debug'            => false,
 			'debug-keys'       => false, # Debug key presses
 			'debug-opts'       => false, # Debug options
+			'debug-stfl'       => false, # Debug STFL text
 
 			'garbage-collector'=> true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector' => false, # Stress Ruby garbage collector? (DEBUG OPTION)
