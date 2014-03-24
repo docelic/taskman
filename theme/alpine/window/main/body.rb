@@ -7,19 +7,26 @@ module TASKMAN
 
 			@name= 'body'
 
+			# Spacer 1
 			l1= Label.new( '.expand' => 'vh')
 
-			list= List.new( :name => 'lst', '.tie' => 'tb')
-			list<< ListItem.new( :text => 'One', :can_focus => 1)
-			list<< ListItem.new( :text => '', :can_focus => 0)
-			list<< ListItem.new( :text => 'Two', :can_focus => 1)
-			list<< ListItem.new( :text => '', :can_focus => 0)
-			list<< ListItem.new( :text => 'Three', :can_focus => 1)
-			list<< ListItem.new( :text => '', :can_focus => 0)
-			list<< ListItem.new( :text => 'Four', :can_focus => 1)
-			list<< ListItem.new( :text => '', :can_focus => 0)
-			list<< ListItem.new( :text => 'Five', :can_focus => 1)
+			# Main list ###########
+			list= List.new( :name => :lst, '.tie' => 'tb', 'on_p' => 'UP', 'on_n' => 'DOWN')
+			menu= [
+				MenuAction.new( :name => :help),
+				MenuAction.new( :name => :create),
+				MenuAction.new( :name => :index),
+				MenuAction.new( :name => :quit),
+			]
+			# Show items in the list
+			menu.each do |a|
+				li= ListItem.new( :text => a.menu_text, :can_focus => 1)
+				li<< a
+				list<< li
+				list<< ListItem.new( :can_focus => 0) # Spacer
+			end
 
+			# Spacer 2
 			l2= Label.new( '.expand' => 'vh')
 
 			self<< l1

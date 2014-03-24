@@ -26,7 +26,33 @@ module TASKMAN
 				# with the widget itself, then with the window menus, and then
 				# with the parent widgets of the one receiving the keypress.
 				# First match is executed.
-				widget= all_widgets_hash()[focus]
+				wh= all_widgets_hash()
+				widget= wh[focus]
+				if widget.widget== 'list'
+					w= $app.ui.get "#{widget.name}_pos_name"
+					unless wh[w]
+						pfl "Cannot find widget #{w} inside list widget #{widget.name}"
+					end
+					widget= wh[w]
+				end
+
+				# Unhandled ENTER on a widget will call its first action,
+				# if one is defined.
+				if event== 'ENTER'
+					widget.widgets.each do |a|
+						if TASKMAN::MenuAction=== a
+							if Symbol=== f= a.function
+								a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)
+								break
+							elsif Proc=== f= a.function
+								f.yield( :window => self, :widget => widget, :action => a, :function => f, :event => event)
+								break
+							end
+						end
+					end
+				end
+
+				# Other keypresses are handled normally
 				[ widget, *menus(), *widget.parent_tree()].each do |w|
 					if a= w.hotkeys_hash[event]
 						if Symbol=== f= a.function

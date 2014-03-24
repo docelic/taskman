@@ -133,9 +133,9 @@ module TASKMAN
 				"head" => {
 					:var_style_normal= => 'fg=black,bg=white',
 				},
-				"body" => {
-					:var_style_normal= => 'fg=white,bg=black',
-				},
+				#"body" => {
+				#	:var_style_normal= => 'fg=white,bg=black',
+				#},
 				"menu @label_hotkey" => {
 					:var_style_normal= => 'fg=black,bg=white',
 				},
@@ -146,10 +146,8 @@ module TASKMAN
 					:var_style_normal= => 'fg=white,bg=black',
 				},
 
-				"@listitem" => {
-					:var_style_normal= => 'fg=red,bg=yellow',
-					:var_style_focus= => 'fg=red,bg=yellow',
-					:var_style_selected= => 'fg=red,bg=yellow',
+				"@list" => {
+					:var_style_focus= => 'fg=black,bg=white',
 				}
 			}
 		end

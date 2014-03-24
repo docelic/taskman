@@ -11,20 +11,20 @@ module TASKMAN
 			self<< Theme::Window::Main::Body.new( :name => :body)
 			self<< Theme::Window::Main::Status.new( :name => :status)
 
-			m1= Theme::Window::Main::Menu.new( :name => :menu1)
+			m1= Theme::Window::Main::Menu.new( :name => :menu1, '.display' => 1)
 			m1.add_action(
 				:help,
 				:'',
 				:prevcmd,
 				:'',
-				:relnodes,
+				:'', #:relnodes,
 				:'',
 				:tablebr, ##
 				:other,
 				:hotkey_in,
 				:nextcmd,
 				:'',
-				:kblock,
+				:'', #:kblock,
 				:'',
 			)
 

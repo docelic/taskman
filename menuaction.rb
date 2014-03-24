@@ -7,33 +7,33 @@ module TASKMAN
 		# TODO move this to outside file
 		@@Menus= {
 			# To have multiple "same" menus, you must use different names
-			'help'       => { :hotkey => '?',   :shortname => 'Help',         :description => '', :function => Proc.new { puts "YEHUDA KATZ!" }},
-			'help2'      => { :hotkey => '?',   :shortname => 'Help',         :description => '', :function => Proc.new { puts "YEHUDA KATZ!" }},
+			'help'       => { :hotkey => '?',   :shortname => 'Help',        :menuname => 'Help',        :description => 'Get help using Taskman', :function => Proc.new { puts "YEHUDA KATZ!" }},
+			'help2'      => { :hotkey => '?',   :shortname => 'Help',        :menuname => 'Help',        :description => 'Get help using Taskman', :function => Proc.new { puts "YEHUDA KATZ!" }},
 
 			# For the empty slot, no need to use a different name even if
 			# it appears multiple times, because empty name results in the
 			# name being auto-generated
-			''           => { :hotkey => '',    :shortname => '',             :description => '', :function => nil }, # Empty one
+			''           => { :hotkey => '',    :shortname => '',            :menuname => '',            :description => '', :function => nil }, # Empty one
 
-			'prevcmd'    => { :hotkey => 'p',   :shortname => 'PrevCmd',      :description => '', :function => nil },
-			'relnodes'   => { :hotkey => 'r',   :shortname => 'RelNotes',     :description => '', :function => nil },
+			'prevcmd'    => { :hotkey => 'p',   :shortname => 'PrevCmd',     :menuname => 'PrevCmd',     :description => '', :function => nil },
+			'relnodes'   => { :hotkey => 'r',   :shortname => 'RelNotes',    :menuname => 'RelNotes',    :description => '', :function => nil },
 
-			'other'      => { :hotkey => 'o',   :shortname => 'OTHER CMDS',   :description => '', :function => :menu_next_page },
-			'other2'     => { :hotkey => 'o',   :shortname => 'OTHER CMDS',   :description => '', :function => :menu_next_page },
+			'other'      => { :hotkey => 'o',   :shortname => 'OTHER CMDS',  :menuname => 'OTHER CMDS',  :description => '', :function => :menu_next_page },
+			'other2'     => { :hotkey => 'o',   :shortname => 'OTHER CMDS',  :menuname => 'OTHER CMDS',  :description => '', :function => :menu_next_page },
 
-			'hotkey_in'  => { :hotkey => '>',   :shortname => '',             :description => '', :function => nil },
-			'hotkey_out' => { :hotkey => '<',   :shortname => '',             :description => '', :function => nil },
-			'nextcmd'    => { :hotkey => 'n',   :shortname => 'NextCmd',      :description => '', :function => nil },
-			'kblock'     => { :hotkey => 'k',   :shortname => 'KBLock',       :description => '', :function => nil },
-			'quit'       => { :hotkey => 'q',   :shortname => 'Quit',         :description => '', :function => :quit },
-			'listfolders'=> { :hotkey => 'l',   :shortname => 'ListFldrs',    :description => '', :function => nil },
-			'index'      => { :hotkey => 'i',   :shortname => 'Index',        :description => '', :function => nil },
-			'setup'      => { :hotkey => 's',   :shortname => 'Setup',        :description => '', :function => nil },
-			'role'       => { :hotkey => '#',   :shortname => 'Role',         :description => '', :function => nil },
-			'create'     => { :hotkey => 'c',   :shortname => 'Create',       :description => '', :function => :create },
-			'gotofolder' => { :hotkey => 'g',   :shortname => 'GotoFldr',     :description => '', :function => nil },
-			'journal'    => { :hotkey => 'j',   :shortname => 'Journal',      :description => '', :function => nil },
-			'addrbook'   => { :hotkey => 'a',   :shortname => 'AddrBook',     :description => '', :function => nil },
+			'hotkey_in'  => { :hotkey => '>',   :shortname => '',            :menuname => '',            :description => '', :function => nil },
+			'hotkey_out' => { :hotkey => '<',   :shortname => '',            :menuname => '',            :description => '', :function => nil },
+			'nextcmd'    => { :hotkey => 'n',   :shortname => 'NextCmd',     :menuname => 'NextCmd',     :description => '', :function => nil },
+			'kblock'     => { :hotkey => 'k',   :shortname => 'KBLock',      :menuname => 'KBLock',      :description => '', :function => nil },
+			'quit'       => { :hotkey => 'q',   :shortname => 'Quit',        :menuname => 'Quit',        :description => 'Leave the Taskman program', :function => :quit },
+			'listfolders'=> { :hotkey => 'l',   :shortname => 'ListFldrs',   :menuname => 'ListFldrs',   :description => '', :function => nil },
+			'index'      => { :hotkey => 'i',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => nil },
+			'setup'      => { :hotkey => 's',   :shortname => 'Setup',       :menuname => 'Setup',       :description => '', :function => nil },
+			'role'       => { :hotkey => '#',   :shortname => 'Role',        :menuname => 'Role',        :description => '', :function => nil },
+			'create'     => { :hotkey => 'c',   :shortname => 'Create',      :menuname => 'Create Task', :description => 'Create a task', :function => :create },
+			'gotofolder' => { :hotkey => 'g',   :shortname => 'GotoFldr',    :menuname => 'GotoFldr',    :description => '', :function => nil },
+			'journal'    => { :hotkey => 'j',   :shortname => 'Journal',     :menuname => 'Journal',     :description => '', :function => nil },
+			'addrbook'   => { :hotkey => 'a',   :shortname => 'AddrBook',    :menuname => 'AddrBook',    :description => '', :function => nil },
 
 
 			'get_create_help'    => { :hotkey => '^G',   :shortname => 'Get Help',         :description => '', :function => :get_create_help},
@@ -57,6 +57,11 @@ module TASKMAN
 			@function= arg.has_key?( :function) ? arg.delete( :function): @@Menus[name][:function]
 
 			super
+		end
+
+		def menu_text
+			# 2 - 5 - 15 - 4" - "2 - 31
+			"%2s     %-15s    -  %-33s" % [ @hotkey.uc, ( @menuname|| @shortname).uc, @description]
 		end
 
 		################################### Functions ###################################

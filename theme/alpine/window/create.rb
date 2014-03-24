@@ -11,21 +11,21 @@ module TASKMAN
 			self<< Theme::Window::Create::Body.new( :name => :body)
 			self<< Theme::Window::Create::Status.new( :name => :status)
 			self<< Theme::Window::Create::Menu.new( :name => :menu)
-			@widgets_hash[:menu].add_action(
-				:get_create_help,
-				:create,
-				:'',
-				:'',
-				:inc_folder_count,
-				:postpone,
-
-				:cancel,
-				:'',
-				:'',
-				:'',
-				:'',
-				:'',
-			)
+#			@widgets_hash[:menu].add_action(
+#				#:get_create_help,
+##				:create,
+##				:'',
+##				:'',
+##				:inc_folder_count,
+##				:postpone,
+##
+##				:cancel,
+##				:'',
+##				:'',
+##				:'',
+##				:'',
+##				:'',
+#			)
 		end
 
 	end

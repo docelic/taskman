@@ -62,7 +62,9 @@ module TASKMAN
 			@variables['style_focus']||= ''
 			@variables['style_selected']||= ''
 			@variables['autobind']||= 1
-			@variables['modal']||= 1
+			@variables['modal']||= 0
+			@variables['pos_name']||= ''
+			@variables['pos']||= ''
 
 			# Now create accessor functions for all variables currently existing.
 			# Get function simply reads the variable value.
@@ -244,8 +246,9 @@ module TASKMAN
 				end
 				variation.push nil
 
-				pops.times do
-					variation.each do |v|
+				pops.times do |i|
+					var= variation
+					var.each do |v|
 
 						# Produce a key by which we will look up a style
 						# Not sure why list2= [ list] works without having to say *list?
