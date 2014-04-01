@@ -9,14 +9,13 @@ module TASKMAN
 
 			@variables['.expand']= 'h'
 
-			#s= Hbox.new(                      '.expand' => 'h')
-			#s<< Label.new(                    '.expand' => '0', :@style_normal => 'bg=blue,fg=white',  :text => ' ')
-			#s<< Label.new(                                      :@style_normal => 'bg=black,fg=white', :text => '')
-			#s<< Label.new( :name => 'status', '.expand' => '0', :@style_normal => 'bg=blue,fg=white',  :text => '')
-			#s<< Label.new(                                      :@style_normal => 'bg=black,fg=white', :text => '')
+			s= Hbox.new(                      '.expand' => 'h')
+			s<< Label.new(                    '.expand' => '0', :text => ' ')
+			s<< Label.new(                                      :text => '')
+			s<< Label.new( :name => 'status', '.expand' => '0', :text => '')
+			s<< Label.new(                                      :text => '')
 
-			#self<< s
-
+			self<< s
 		end
 
 	end

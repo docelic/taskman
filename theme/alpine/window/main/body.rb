@@ -13,7 +13,7 @@ module TASKMAN
 			# Main list ###########
 			list= List.new( :name => :lst, '.tie' => 'tb', 'on_p' => 'UP', 'on_n' => 'DOWN')
 			menu= [
-				MenuAction.new( :name => :help),
+				#MenuAction.new( :name => :help),
 				MenuAction.new( :name => :create),
 				MenuAction.new( :name => :index),
 				MenuAction.new( :name => :quit),

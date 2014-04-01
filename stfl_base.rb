@@ -15,7 +15,7 @@ module TASKMAN
 
 		attr_reader :name, :ui
 		attr_accessor :variables, :widgets, :widgets_hash, :hotkeys_hash, :widget
-		attr_accessor :parent
+		attr_accessor :parent, :tooltip
 
 		# The variables are STFL-valid hash consisting of :variable => value.
 		# If :name is specified, it is deleted from variables and treated
@@ -41,6 +41,8 @@ module TASKMAN
 			# @widget= "vbox" -> to_stfl -> {vbox variables... {{child1}{child2}...}}
 			# @widget= nil    -> to_stfl -> {child1}{child2}...
 			@widget= nil
+
+			@tooltip= variables.delete :tooltip
 
 			# Name is always there for all objects. If unspecified,
 			# automatic name is assigned

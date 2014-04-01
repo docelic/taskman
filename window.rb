@@ -12,15 +12,10 @@ module TASKMAN
 
 		def main_loop
 			loop do
+			pfl :IN_LOOP
 				event= $app.ui.run 0
 				focus= $app.ui.get_focus
-
-				if $opts['debug-keys']
-					pfl "Window #{@name}, widget #{focus}, key #{event}"
-				end
-
-				# Next if the event has been handled by the widget
-				next if event.length== 0
+				pfl :IN_AFTER
 
 				# Handling the keypress goes by checking the hotkeys associated
 				# with the widget itself, then with the window menus, and then
@@ -36,8 +31,44 @@ module TASKMAN
 					widget= wh[w]
 				end
 
+				if $opts['debug-keys']
+					pfl "Window #{@name}, widget #{focus}/#{widget.name}, key #{event}"
+				end
+
+				# Whatever the key press is, clear the window's status box,
+				# if one exists.
+				if wh['status']
+					wh['status'].var_text= ''
+				end
+				# Now, if the widget focused has a tooltip assigned to it,
+				# show it in the status box.
+				if widget.tooltip
+					wh['status'].var_text= '['+ widget.tooltip+ ']'
+				end
+				pfl :AYAY4
+
+				# Next if the event has been handled by the widget
+				next if event.length== 0
+
+#				# If the currently focused widget has actions associated to it, and
+#				# there is 'hotkey_in' action somewhere in the menu, modify it to
+#				# represent the entry under cursor
+#				actions= widget.widgets.select{ |x| MenuAction=== x}|| []
+#				hotkey_ins= []
+#				menus().each do |m|
+#					hotkey_ins.push m.widgets.collect{ |x| x.name=~ /^hotkey_in(?:\d+)?$/}
+#				end
+#				if actions.size> 0 and hotkey_ins.compact.size> 0
+#					hotkey_ins.compact! or next
+#					hotkey_ins.each do |hk|
+#						hk.var_text= actions[0].shortname
+#						hk.function= actions[0].function
+#					end
+#				end
+
 				# Unhandled ENTER on a widget will call its first action,
 				# if one is defined.
+				pfl :AYAY3
 				if event== 'ENTER'
 					widget.widgets.each do |a|
 						if TASKMAN::MenuAction=== a
@@ -52,6 +83,7 @@ module TASKMAN
 					end
 				end
 
+				pfl :AYAY2
 				# Other keypresses are handled normally
 				[ widget, *menus(), *widget.parent_tree()].each do |w|
 					if a= w.hotkeys_hash[event]

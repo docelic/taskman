@@ -149,7 +149,15 @@ module TASKMAN
 
 				"@list" => {
 					:var_style_focus= => 'fg=black,bg=white',
-				}
+				},
+
+				"help" => {
+					:var_style_normal= => 'fg=white,bg=red',
+				},
+
+				'status' => {
+					:var_style_normal= => 'fg=black,bg=white',
+				},
 			}
 		end
 
@@ -157,8 +165,9 @@ module TASKMAN
 			exec
 		end
 
-		def exec
-			@theme= Theme.new( :theme => $opts['theme'], :window => $opts['window'])
+		def exec arg= {}
+			wname= arg[:window] ? arg[:window] : $opts['window']
+			@theme= Theme.new( :theme => $opts['theme'], :window => wname)
 
 			@ui= @screen.create
 

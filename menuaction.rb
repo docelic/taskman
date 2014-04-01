@@ -30,13 +30,20 @@ module TASKMAN
 			'index'      => { :hotkey => 'i',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => nil },
 			'setup'      => { :hotkey => 's',   :shortname => 'Setup',       :menuname => 'Setup',       :description => '', :function => nil },
 			'role'       => { :hotkey => '#',   :shortname => 'Role',        :menuname => 'Role',        :description => '', :function => nil },
-			'create'     => { :hotkey => 'c',   :shortname => 'Create',      :menuname => 'Create Task', :description => 'Create a task', :function => :create },
 			'gotofolder' => { :hotkey => 'g',   :shortname => 'GotoFldr',    :menuname => 'GotoFldr',    :description => '', :function => nil },
 			'journal'    => { :hotkey => 'j',   :shortname => 'Journal',     :menuname => 'Journal',     :description => '', :function => nil },
 			'addrbook'   => { :hotkey => 'a',   :shortname => 'AddrBook',    :menuname => 'AddrBook',    :description => '', :function => nil },
 
+			'create'     => { :hotkey => 'c',   :shortname => 'Create',      :menuname => 'Create Task', :description => 'Create a task', :function => :create },
+			'main'     => { :hotkey => '^M',   :shortname => 'Main Menu',    :menuname => 'Main Menu',   :description => 'Main Menu', :function => :main },
 
-			'get_create_help'    => { :hotkey => '^G',   :shortname => 'Get Help',         :description => '', :function => :get_create_help},
+
+			'create_task'=> { :hotkey => '^X',  :shortname => 'Create',    :menuname => 'Create a Task', :description => '', :function => :create_task},
+			'create_help'=> { :hotkey => '^G',  :shortname => 'Get Help',    :menuname => 'Get Syntax Help', :description => 'Get help using Taskman', :function => :create_help},
+
+			'top_list'=> { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_list},
+			'bottom_list'=> { :hotkey => 'DOWN',  :shortname => '',    :menuname => '', :description => '', :function => :bottom_list},
+
 			'postpone'           => { :hotkey => '^O',   :shortname => 'Postpone',         :description => '', :function => :postpone},
 			'cancel'             => { :hotkey => '^C',   :shortname => 'Cancel',           :description => '', :function => :cancel},
 
@@ -65,6 +72,19 @@ module TASKMAN
 		end
 
 		################################### Functions ###################################
+
+		def top_list arg= {}
+			w= arg[:window]
+			if wh= w.all_widgets_hash['status']
+				wh.var_text= '[Already at top of list]'
+			end
+		end
+		def bottom_list arg= {}
+			w= arg[:window]
+			if wh= w.all_widgets_hash['status']
+				wh.var_text= '[Already at bottom of list]'
+			end
+		end
 
 		def quit arg= {}
 			w= arg[:window]
@@ -121,9 +141,17 @@ module TASKMAN
 #		def get_create_help arg= {}
 #		end
 #
-#		def create arg= {}
-#		end
-#
+		def create arg= {}
+			$app.exec( :window => 'create')
+		end
+		def main arg= {}
+			$app.exec( :window => 'main')
+		end
+
+		def create_task arg= {}
+			puts :AY_AY
+		end
+
 #		def postpone arg= {}
 #		end
 #
@@ -136,6 +164,10 @@ module TASKMAN
 #			pfl pt.map{ |x| x.name}
 #		end
 #
+	end
+
+	def create_help arg= {}
+		puts :BABY_BOY
 	end
 
 end
