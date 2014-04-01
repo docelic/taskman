@@ -12,10 +12,8 @@ module TASKMAN
 
 		def main_loop
 			loop do
-			pfl :IN_LOOP
 				event= $app.ui.run 0
 				focus= $app.ui.get_focus
-				pfl :IN_AFTER
 
 				# Handling the keypress goes by checking the hotkeys associated
 				# with the widget itself, then with the window menus, and then
@@ -23,29 +21,39 @@ module TASKMAN
 				# First match is executed.
 				wh= all_widgets_hash()
 				widget= wh[focus]
-				if widget.widget== 'list'
-					w= $app.ui.get "#{widget.name}_pos_name"
-					unless wh[w]
-						pfl "Cannot find widget #{w} inside list widget #{widget.name}"
+
+				# This only makes sense if a particular widget was focused
+				if focus and widget
+					if widget.widget== 'list'
+						w= $app.ui.get "#{widget.name}_pos_name"
+						unless wh[w]
+							pfl "Cannot find widget #{w} inside list widget #{widget.name}"
+						end
+						widget= wh[w]
 					end
-					widget= wh[w]
-				end
 
-				if $opts['debug-keys']
-					pfl "Window #{@name}, widget #{focus}/#{widget.name}, key #{event}"
-				end
+					if $opts['debug-keys']
+						pfl "Window #{@name}, widget #{focus}/#{widget.name}, key #{event}"
+					end
 
-				# Whatever the key press is, clear the window's status box,
-				# if one exists.
-				if wh['status']
-					wh['status'].var_text= ''
+					# Whatever the key press is, clear the window's status box,
+					# if one exists.
+					if wh['status']
+						wh['status'].var_text= ''
+					end
+					# Now, if the widget focused has a tooltip assigned to it,
+					# show it in the status box.
+					if widget.tooltip
+						wh['status'].var_text= '['+ widget.tooltip+ ']'
+					end
+				else
+					if not focus
+						pfl 'No particular widget focused, skipping keypress'
+					elsif not widget
+						pfl "Widget #{focus} focused, but not found in widget list, skipping keypress"
+					end
+					next
 				end
-				# Now, if the widget focused has a tooltip assigned to it,
-				# show it in the status box.
-				if widget.tooltip
-					wh['status'].var_text= '['+ widget.tooltip+ ']'
-				end
-				pfl :AYAY4
 
 				# Next if the event has been handled by the widget
 				next if event.length== 0
@@ -68,7 +76,6 @@ module TASKMAN
 
 				# Unhandled ENTER on a widget will call its first action,
 				# if one is defined.
-				pfl :AYAY3
 				if event== 'ENTER'
 					widget.widgets.each do |a|
 						if TASKMAN::MenuAction=== a
@@ -83,7 +90,6 @@ module TASKMAN
 					end
 				end
 
-				pfl :AYAY2
 				# Other keypresses are handled normally
 				[ widget, *menus(), *widget.parent_tree()].each do |w|
 					if a= w.hotkeys_hash[event]
