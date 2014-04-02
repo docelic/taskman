@@ -17,9 +17,10 @@ module TASKMAN
 
 		attr_accessor :start, :stop, :due, :omit, :omit_shift, :remind, :omit_remind, :time_ssm
 
-		attr_accessor :message
+		attr_accessor :subject, :message
 		
 		def initialize
+			@subject= ''
 			@start= nil # definitely not before this Date
 			@stop= nil # definitely not after this Date
 			@due= [] # list of VirtualDate this entry is due
@@ -28,7 +29,7 @@ module TASKMAN
 			@time_ssm= nil # activation time, in seconds since midnight 
 			@remind= [] # list of Dates or Times to activate the reminder on, or seconds relative to the the due date/time
 			@omit_remind= false # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
-			@message= ""
+			@message= ''
 		end 
 
 		# Parser functions:
@@ -128,6 +129,9 @@ module TASKMAN
 		def parse_remind= ( l) self.parse_remind l end
 		def parse_omit_remind( l) @omit_remind= l end
 		def parse_omit_remind=( l) self.parse_omit_remind l end
+
+		def parse_subject( l) @subject<< l end
+		def parse_subject=( l) @subject= [ l] end
 		def parse_message( l) @message<< l end
 		def parse_message=( l) @message= [ l] end
 
@@ -422,6 +426,20 @@ module TASKMAN
 			t.parse_from hash
 			t
 		end
+
+		def to_json
+			hash = {}
+			self.instance_variables.each do |var|
+				hash[var] = self.instance_variable_get var
+			end
+			hash.to_json
+		end
+		def from_json! string
+			JSON.load(string).each do |var, val|
+				self.instance_variable_set var, val
+			end
+		end
+
 	end
 
 

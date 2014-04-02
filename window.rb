@@ -10,9 +10,9 @@ module TASKMAN
 
 		attr_reader :actions
 
-		def main_loop
+		def main_loop code= 0
 			loop do
-				event= $app.ui.run 0
+				event= $app.ui.run code
 				focus= $app.ui.get_focus
 
 				# Handling the keypress goes by checking the hotkeys associated
@@ -22,7 +22,8 @@ module TASKMAN
 				wh= all_widgets_hash()
 				widget= wh[focus]
 
-				# This only makes sense if a particular widget was focused
+				# Searching for actions to execute only makes sense if a
+				# particular widget was focused
 				if focus and widget
 					if widget.widget== 'list'
 						w= $app.ui.get "#{widget.name}_pos_name"
@@ -55,8 +56,13 @@ module TASKMAN
 					next
 				end
 
-				# Next if the event has been handled by the widget
-				next if event.length== 0
+				# Break if a single-loop was requested (code!= 0)
+				# Next if the event has been handled by the widget and key is empty
+				if code!= 0
+					break
+				elsif event.length== 0
+					next
+				end
 
 #				# If the currently focused widget has actions associated to it, and
 #				# there is 'hotkey_in' action somewhere in the menu, modify it to
@@ -114,7 +120,6 @@ module TASKMAN
 				# Events reaching here are unhandled/default. For example,
 				# pressing RIGHT when already at the end of the input box
 				# text etc.
-
 			end
 		end
 

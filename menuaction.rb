@@ -149,7 +149,37 @@ module TASKMAN
 		end
 
 		def create_task arg= {}
-			puts :AY_AY
+
+			i= Item.new
+			wh= all_widgets_hash
+
+			[
+				:subject,
+				:start,
+				:end,
+				:time,
+				:omit_shift,
+				:remind_shift,
+				:message
+			].each do |f|
+				v= ( $app.ui.get "#{f.to_s}_text").strip
+				next unless v.length> 0
+				i.send "parse_#{f}", v
+			end
+			[
+				:due,
+				:omit,
+				:remind,
+			].each do |f|
+				list= ( $app.ui.get "#{f}_text").split /,/
+				list.each do |v|
+					v.strip!
+					next unless v.length> 0
+					i.send "parse_#{f}", v
+				end
+			end
+
+			pfl i.to_json
 		end
 
 #		def postpone arg= {}

@@ -29,6 +29,8 @@ require 'menuaction'
 
 require 'theme'
 
+require 'json'
+
 $opts= TASKMAN::Defaults.new
 opts= [
 # # Important options
@@ -175,6 +177,7 @@ module TASKMAN
 				w.apply_style
 			end
 
+			@screen.main_loop -1
 			@screen.main_loop
 		end
 
