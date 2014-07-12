@@ -1,6 +1,22 @@
 #!/usr/bin/env ruby
 
 require 'getoptlong'
+require 'json'
+
+begin
+	require 'terminfo'
+	#require 'readline'
+	Signal.trap 'SIGWINCH', proc{
+		#Readline.set_screen_size(TermInfo.screen_size[0], TermInfo.screen_size[1])
+		$LINES, $COLUMNS= TermInfo.screen_size
+	}
+	$LINES, $COLUMNS= TermInfo.screen_size
+rescue
+	Signal.trap 'SIGWINCH', proc{
+		$LINES, $COLUMNS= $ENV['COLUMNS'], $ENV['LINES']
+	}
+	$LINES, $COLUMNS= $ENV['COLUMNS'], $ENV['LINES']
+end
 
 $:.unshift File.dirname $0
 

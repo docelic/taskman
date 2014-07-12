@@ -42,7 +42,7 @@ module TASKMAN
 			# @widget= nil    -> to_stfl -> {child1}{child2}...
 			@widget= nil
 
-			@tooltip= variables.delete :tooltip
+			@tooltip= variables.delete( :tooltip)
 
 			# Name is always there for all objects. If unspecified,
 			# automatic name is assigned

@@ -30,6 +30,10 @@ class String
 		self.split( '::').inject( Object) {|o,c| o.const_get c}
 	end
 
+	def truncate length= $COLUMNS- 2, ellipsis= '...'
+		self.length> length ? self[0..length].gsub(/\s*\S*\z/, '').rstrip+ellipsis : self.rstrip
+	end
+
 end
 
 class Fixnum

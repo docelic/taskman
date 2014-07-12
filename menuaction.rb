@@ -26,7 +26,7 @@ module TASKMAN
 			'nextcmd'    => { :hotkey => 'n',   :shortname => 'NextCmd',     :menuname => 'NextCmd',     :description => '', :function => nil },
 			'kblock'     => { :hotkey => 'k',   :shortname => 'KBLock',      :menuname => 'KBLock',      :description => '', :function => nil },
 			'quit'       => { :hotkey => 'q',   :shortname => 'Quit',        :menuname => 'Quit',        :description => 'Leave the Taskman program', :function => :quit },
-			'folder_list'=> { :hotkey => 'l',   :shortname => 'ListFldrs',   :menuname => 'FOLDER LIST',   :description => 'Select a folder to view', :function => nil },
+			'folder_list'=> { :hotkey => 'l',   :shortname => 'ListFldrs',   :menuname => 'FOLDER LIST', :description => 'Select a folder to view', :function => nil },
 			'index'      => { :hotkey => 'i',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => nil },
 			'setup'      => { :hotkey => 's',   :shortname => 'Setup',       :menuname => 'Setup',       :description => '', :function => nil },
 			'role'       => { :hotkey => '#',   :shortname => 'Role',        :menuname => 'Role',        :description => '', :function => nil },
@@ -35,14 +35,18 @@ module TASKMAN
 			'addrbook'   => { :hotkey => 'a',   :shortname => 'AddrBook',    :menuname => 'AddrBook',    :description => '', :function => nil },
 
 			'create'     => { :hotkey => 'c',   :shortname => 'Create',      :menuname => 'Create Task', :description => 'Create a task', :function => :create },
-			'main'     => { :hotkey => '^M',   :shortname => 'Main Menu',    :menuname => 'Main Menu',   :description => 'Main Menu', :function => :main },
+			'main'       => { :hotkey => '^M',   :shortname => 'Main Menu',    :menuname => 'Main Menu',   :description => 'Main Menu', :function => :main },
 
 
 			'create_task'=> { :hotkey => '^X',  :shortname => 'Create',    :menuname => 'Create a Task', :description => '', :function => :create_task},
 			'create_help'=> { :hotkey => '^G',  :shortname => 'Get Help',    :menuname => 'Get Syntax Help', :description => 'Get help using Taskman', :function => :create_help},
 
+			# Actions related to messages when a person tries to move
+			# beyond widget/page/window limits
 			'top_list'=> { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_list},
 			'bottom_list'=> { :hotkey => 'DOWN',  :shortname => '',    :menuname => '', :description => '', :function => :bottom_list},
+			'top_header'=> { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_header},
+			#'bottom_page'=> { :hotkey => 'DOWN',  :shortname => '',    :menuname => '', :description => ''},
 
 			'postpone'           => { :hotkey => '^O',   :shortname => 'Postpone',         :description => '', :function => :postpone},
 			'cancel'             => { :hotkey => '^C',   :shortname => 'Cancel',           :description => '', :function => :cancel},
@@ -51,6 +55,10 @@ module TASKMAN
 			'inc_folder_count'   => { :hotkey => 'SR',   :shortname => 'Folder Cnt+1',     :description => '', :function => :inc_folder_count },
 			'all_widgets_hash'   => { :hotkey => 'SF',   :shortname => 'All Children',     :description => '', :function => :all_widgets},
 			'parent_names'       => { :hotkey => '^P',   :shortname => 'Parent Tree',      :description => '', :function => :parent_names},
+
+			# Various
+			'toggle_timing_options'=> { :description => 'Toggle Timing Options', :function => :toggle_timing_options},
+			'toggle_remind_options'=> { :description => 'Toggle Remind Options', :function => :toggle_remind_options},
 		}
 
 		def initialize arg= {}
@@ -61,8 +69,12 @@ module TASKMAN
 			@hotkey= arg.has_key?( :hotkey) ? arg.delete( :hotkey): @@Menus[name][:hotkey]
 			@shortname= arg.has_key?( :shortname) ? arg.delete( :shortname): @@Menus[name][:shortname]
 			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name][:menuname]
-			@description= arg.has_key?( :description) ? arg.delete( :description): @@Menus[name][:description]
-			@function= arg.has_key?( :function) ? arg.delete( :function): @@Menus[name][:function]
+			@description= arg.has_key?( :description) ? arg.delete( :description).truncate: @@Menus[name][:description].truncate
+
+			# Function to execute can be specified in a parameter or come from a default.
+			# If none of that is specified, it defaults to a function named the same as
+			# the menuaction itself.
+			@function= arg.has_key?( :function) ? arg.delete( :function) : @@Menus[name][:function]
 
 			super
 		end
@@ -84,6 +96,18 @@ module TASKMAN
 			w= arg[:window]
 			if wh= w.all_widgets_hash['status']
 				wh.var_text= '[Already at bottom of list]'
+			end
+		end
+		def top_header arg= {}
+			w= arg[:window]
+			if wh= w.all_widgets_hash['status']
+				wh.var_text= "[ Can't move beyond top of header ]"
+			end
+		end
+		def bottom_page arg= {}
+			w= arg[:window]
+			if wh= w.all_widgets_hash['status']
+				wh.var_text= "[ Can't move beyond bottom of page ]"
 			end
 		end
 
@@ -187,6 +211,22 @@ module TASKMAN
 			rescue Exception => e
 				pfl e
 			end
+		end
+
+		def toggle_timing_options arg= {}
+			w= arg[:window]
+			wh= w.all_widgets_hash
+			wh['timing'].toggle
+			v= wh['timing'].var_value
+			wh['timing_options'].var__display= v
+		end
+
+		def toggle_remind_options arg= {}
+			w= arg[:window]
+			wh= w.all_widgets_hash
+			wh['remind'].toggle
+			v= wh['remind'].var_value
+			wh['remind_options'].var__display= v
 		end
 
 #		def postpone arg= {}

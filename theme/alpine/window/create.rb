@@ -7,7 +7,7 @@ module TASKMAN
 
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Head.new( :name => :head)
+			self<< Theme::Window::Main::Head.new( :name => :head, :title => 'CREATE TASK')
 			self<< Theme::Window::Create::Body.new( :name => :body)
 			self<< Theme::Window::Main::Status.new( :name => :status)
 			m1= Theme::Window::Create::Menu.new( :name => :menu)

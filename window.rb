@@ -22,8 +22,8 @@ module TASKMAN
 				wh= all_widgets_hash()
 				widget= wh[focus]
 
-				# Searching for actions to execute only makes sense if a
-				# particular widget was focused
+				# Searching for actions to execute (and doing other work)
+				# only makes sense if some widget was focused
 				if focus and widget
 					if widget.widget== 'list'
 						w= $app.ui.get "#{widget.name}_pos_name"
@@ -45,14 +45,31 @@ module TASKMAN
 					# Now, if the widget focused has a tooltip assigned to it,
 					# show it in the status box.
 					if widget.tooltip
-						wh['status'].var_text= '['+ widget.tooltip+ ']'
+						wh['status'].var_text= '['+ widget.tooltip.truncate+ ']'
 					end
-				else
+
+				else # (If we don't have anything focused or focused widget not found)
 					if not focus
 						pfl 'No particular widget focused, skipping keypress'
-					elsif not widget
-						pfl "Widget #{focus} focused, but not found in widget list, skipping keypress"
+					else
+						if not widget
+							pfl "Widget #{focus} focused, but not found in widget list, skipping keypress"
+						end
 					end
+					## We only run another loop if the run mode (code) is 0 -- that's the
+					## only mode intended to be ran in a loop. On all other codes, we
+					## assume it was only intended to run once, so we break.
+					#next if code== 0
+					# (Actually we disable it here since we're doing it in the block just
+					# below)
+					#break
+				end
+
+				# Break if a single-loop was requested (code!= 0)
+				# Next if the event has been handled by the widget and key is empty
+				if code!= 0
+					break
+				elsif event.length== 0 or not( focus and widget)
 					next
 				end
 
@@ -62,15 +79,7 @@ module TASKMAN
 				if hk= $app.screen.all_widgets_hash['hotkey_in']
 					hk.widgets_hash['menu_hotkey_in_shortname'].var_text= widget.action.shortname
 					hk.widgets_hash['menu_hotkey_in_shortname'].var_function= widget.action.function
-					# XXX REDRAW MISSING
-				end
-
-				# Break if a single-loop was requested (code!= 0)
-				# Next if the event has been handled by the widget and key is empty
-				if code!= 0
-					break
-				elsif event.length== 0
-					next
+					# XXX REDRAW MISSING?
 				end
 
 				# Unhandled ENTER on a widget will call its first action,

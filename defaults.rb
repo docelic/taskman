@@ -27,7 +27,7 @@ module TASKMAN
 			'stress-collector'   => false, # Stress Ruby garbage collector? (DEBUG OPTION)
 
 			'version'            => '0.02',
-			'version_string'     => '  TASKMAN 0.07(12)    ',
+			'version_string'     => '  TASKMAN 0.09(15)    ',
 
 		#	'term_width'         => 78,
 		#	'local'              => false,
