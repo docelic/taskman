@@ -24,8 +24,6 @@ module TASKMAN
 
 				# Searching for actions to execute only makes sense if a
 				# particular widget was focused
-				# XXX FOR SOME REASON, _pos works, but _pos_name seems to
-				# be delayed by one position.
 				if focus and widget
 					if widget.widget== 'list'
 						w= $app.ui.get "#{widget.name}_pos_name"
@@ -34,7 +32,6 @@ module TASKMAN
 						end
 						widget= wh[w]
 					end
-					pfl "SEL ON #{widget.name}"
 
 					if $opts['debug-keys']
 						pfl "Window #{@name}, widget #{focus}/#{widget.name}, key #{event}"
@@ -63,9 +60,9 @@ module TASKMAN
 				# there is 'hotkey_in' action somewhere in the menu, modify it to
 				# represent the entry under cursor
 				if hk= $app.screen.all_widgets_hash['hotkey_in']
-					pfl "AT #{widget.action.shortname}"
 					hk.widgets_hash['menu_hotkey_in_shortname'].var_text= widget.action.shortname
 					hk.widgets_hash['menu_hotkey_in_shortname'].var_function= widget.action.function
+					# XXX REDRAW MISSING
 				end
 
 				# Break if a single-loop was requested (code!= 0)

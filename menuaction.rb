@@ -94,7 +94,7 @@ module TASKMAN
 				puts :YES
 			end
 			Stfl.reset
-			puts "Taskman finished -- Closed empty folder \"INBOX\""
+			puts "Taskman finished."
 			exit 0
 		end
 
