@@ -13,27 +13,15 @@ module TASKMAN
 
 			m1= Theme::Window::Main::Menu.new( :name => :menu1, '.display' => 1)
 			m1.add_action(
-				#:'', #:help,
-				#:'', #:quit,
-				:create,
-				:index,
-				:listfolders,
-#				:'',
-#				:prevcmd,
-#				:'',
-				:'', #:relnotes,
+				:'', #:help,
+				:'',
+				:'', #:prevcmd,
 				:'',
 				:'',
-				#:'',
-				:tablebr, ##
-				:quit, #:other,
 				:'',
-				:gotofolder,
-#				:hotkey_in,
-#				:nextcmd,
+				:tablebr,
 				:'',
-				:'', #:kblock,
-				:'',
+				:hotkey_in,
 			)
 
 #			m2= Theme::Window::Main::Menu.new( :name => :menu2, '.display' => 0)

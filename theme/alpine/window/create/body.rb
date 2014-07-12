@@ -5,9 +5,7 @@ module TASKMAN
 		def initialize *arg
 			super()
 
-			@widget= nil
-
-			h= Hbox.new
+			@widget= 'table'
 
 			v= Vbox.new
 			v<< Label.new(                     '.expand' => 'h', )
@@ -57,16 +55,27 @@ module TASKMAN
 			h2<< Input.new( :name => :remind_shift,    '.expand' => 'h', :text => '', :tooltip => 'Omit remind if date omitted, e.g. 1 | t | true | 0 | f | false')
 			v<< h2
 
-			v<< Label.new(                     '.expand' => 'h', :text => '----- Message Text -----')
+			# Help box
 
-			t= Textedit.new( :name => :message)
+			h3= Hbox.new( '.border' => 'lrtb')
+			help= List.new( :name => 'help', 'richtext' => 1, :can_focus => 0)
+			help<< ListItem.new( :text => '<bold>Examples</bold>', '.expand' => 0)
+			h3<< help
+
+			# Message input box
+
+			v2= Vbox.new( '.colspan' => 2, '.expand' => 'vh')
+			v2<< Label.new(                     '.expand' => 'h', :text => '----- Message Text -----')
+			t= Textedit.new( :name => :message, '.expand' => 'vh')
 			t<< ListItem.new
+			v2<< t
 
-			v<< t
+			# Wrap up
 
-			h<< v
-
-			self<< h
+			self<< v
+			self<< h3
+			self<< Tablebr.new
+			self<< v2
 		end
 
 	end

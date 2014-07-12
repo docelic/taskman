@@ -32,6 +32,18 @@ class String
 
 end
 
+class Fixnum
+
+	def unit u= 'Task', p= 's'
+		if self and self.to_s=~ /1$/
+			return u
+		else
+			return u+ p
+		end
+	end
+
+end
+
 class Object
 
 	alias_method :self, :instance_exec

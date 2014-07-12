@@ -8,7 +8,7 @@ module TASKMAN
 
 		# All widgets and attributes will have a name
 		# automatically assigned if unspecified
-		@@auto_widget_name= 'widget'
+		@@auto_widget_name= 'W'
 		@@auto_widget_id= 0
 
 		include Stfl
@@ -58,7 +58,9 @@ module TASKMAN
 				@variables[k.to_s]= v
 			end
 
-			# STFL defaults
+			# STFL defaults. For variables listed here, the convenience accessors
+			# named var_X/var_X= will be created automatically. E.g. 'text' becomes
+			# var_text, .display becomes var__display.
 			@variables['.display']||= 1
 			@variables['style_normal']||= ''
 			@variables['style_focus']||= ''
@@ -67,6 +69,8 @@ module TASKMAN
 			@variables['modal']||= 0
 			@variables['pos_name']||= ''
 			@variables['pos']||= ''
+			@variables['text']||= ''
+			@variables['function']||= nil
 
 			# Now create accessor functions for all variables currently existing.
 			# Get function simply reads the variable value.
@@ -207,6 +211,14 @@ module TASKMAN
 			else
 				false
 			end
+		end
+
+		def actions
+			self.widgets.select{ |w| TASKMAN::MenuAction=== w}
+		end
+		# Return actions associated to a widget
+		def action
+			actions.first
 		end
 
 		# This function applies style to a widget by using a couple fallbacks.

@@ -26,7 +26,7 @@ module TASKMAN
 				:'',
 				:help,
 				:quit,
-				:listfolders,
+				:folder_list,
 				:index,
 				:setup,
 				:role,

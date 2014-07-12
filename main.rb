@@ -23,6 +23,8 @@ require 'widget/label'
 require 'widget/input'
 require 'widget/list'
 require 'widget/textedit'
+require 'widget/checkbox'
+require 'widget/textview'
 
 require 'menu'
 require 'menuaction'
@@ -164,6 +166,7 @@ module TASKMAN
 		end
 
 		def start
+
 			exec
 		end
 

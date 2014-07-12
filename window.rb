@@ -8,7 +8,7 @@ module TASKMAN
 
 	class Window < StflBase
 
-		attr_reader :actions
+		#attr_reader :actions
 
 		def main_loop code= 0
 			loop do
@@ -24,6 +24,8 @@ module TASKMAN
 
 				# Searching for actions to execute only makes sense if a
 				# particular widget was focused
+				# XXX FOR SOME REASON, _pos works, but _pos_name seems to
+				# be delayed by one position.
 				if focus and widget
 					if widget.widget== 'list'
 						w= $app.ui.get "#{widget.name}_pos_name"
@@ -32,6 +34,7 @@ module TASKMAN
 						end
 						widget= wh[w]
 					end
+					pfl "SEL ON #{widget.name}"
 
 					if $opts['debug-keys']
 						pfl "Window #{@name}, widget #{focus}/#{widget.name}, key #{event}"
@@ -56,6 +59,15 @@ module TASKMAN
 					next
 				end
 
+				# If the currently focused widget has actions associated to it, and
+				# there is 'hotkey_in' action somewhere in the menu, modify it to
+				# represent the entry under cursor
+				if hk= $app.screen.all_widgets_hash['hotkey_in']
+					pfl "AT #{widget.action.shortname}"
+					hk.widgets_hash['menu_hotkey_in_shortname'].var_text= widget.action.shortname
+					hk.widgets_hash['menu_hotkey_in_shortname'].var_function= widget.action.function
+				end
+
 				# Break if a single-loop was requested (code!= 0)
 				# Next if the event has been handled by the widget and key is empty
 				if code!= 0
@@ -63,22 +75,6 @@ module TASKMAN
 				elsif event.length== 0
 					next
 				end
-
-#				# If the currently focused widget has actions associated to it, and
-#				# there is 'hotkey_in' action somewhere in the menu, modify it to
-#				# represent the entry under cursor
-#				actions= widget.widgets.select{ |x| MenuAction=== x}|| []
-#				hotkey_ins= []
-#				menus().each do |m|
-#					hotkey_ins.push m.widgets.collect{ |x| x.name=~ /^hotkey_in(?:\d+)?$/}
-#				end
-#				if actions.size> 0 and hotkey_ins.compact.size> 0
-#					hotkey_ins.compact! or next
-#					hotkey_ins.each do |hk|
-#						hk.var_text= actions[0].shortname
-#						hk.function= actions[0].function
-#					end
-#				end
 
 				# Unhandled ENTER on a widget will call its first action,
 				# if one is defined.

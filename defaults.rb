@@ -13,6 +13,8 @@ module TASKMAN
 		#	'data-dir'           => File.join( ENV['HOME'], '.taskman'),
 		#	'data-file'          => 'tasks.yaml',
 
+			'folder'             => true, # Default folder, true == all
+
 			'debug'              => false,
 			'debug-keys'         => false, # Debug key presses
 			'debug-opts'         => false, # Debug options
@@ -23,7 +25,10 @@ module TASKMAN
 
 			'garbage-collector'  => true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector'   => false, # Stress Ruby garbage collector? (DEBUG OPTION)
+
 			'version'            => '0.02',
+			'version_string'     => '  TASKMAN 0.07(12)    ',
+
 		#	'term_width'         => 78,
 		#	'local'              => false,
 		#	'default-time'       => false,

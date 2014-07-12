@@ -2,7 +2,7 @@ module TASKMAN
 
 	class MenuAction < Widget
 
-		attr_accessor :name, :hotkey, :shortname, :description, :function
+		attr_accessor :name, :hotkey, :shortname, :menuname, :description, :function
 		
 		# TODO move this to outside file
 		@@Menus= {
@@ -26,7 +26,7 @@ module TASKMAN
 			'nextcmd'    => { :hotkey => 'n',   :shortname => 'NextCmd',     :menuname => 'NextCmd',     :description => '', :function => nil },
 			'kblock'     => { :hotkey => 'k',   :shortname => 'KBLock',      :menuname => 'KBLock',      :description => '', :function => nil },
 			'quit'       => { :hotkey => 'q',   :shortname => 'Quit',        :menuname => 'Quit',        :description => 'Leave the Taskman program', :function => :quit },
-			'listfolders'=> { :hotkey => 'l',   :shortname => 'ListFldrs',   :menuname => 'ListFldrs',   :description => '', :function => nil },
+			'folder_list'=> { :hotkey => 'l',   :shortname => 'ListFldrs',   :menuname => 'FOLDER LIST',   :description => 'Select a folder to view', :function => nil },
 			'index'      => { :hotkey => 'i',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => nil },
 			'setup'      => { :hotkey => 's',   :shortname => 'Setup',       :menuname => 'Setup',       :description => '', :function => nil },
 			'role'       => { :hotkey => '#',   :shortname => 'Role',        :menuname => 'Role',        :description => '', :function => nil },
@@ -60,6 +60,7 @@ module TASKMAN
 			end
 			@hotkey= arg.has_key?( :hotkey) ? arg.delete( :hotkey): @@Menus[name][:hotkey]
 			@shortname= arg.has_key?( :shortname) ? arg.delete( :shortname): @@Menus[name][:shortname]
+			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name][:menuname]
 			@description= arg.has_key?( :description) ? arg.delete( :description): @@Menus[name][:description]
 			@function= arg.has_key?( :function) ? arg.delete( :function): @@Menus[name][:function]
 
@@ -153,33 +154,39 @@ module TASKMAN
 			i= Item.new
 			wh= all_widgets_hash
 
-			[
-				:subject,
-				:start,
-				:end,
-				:time,
-				:omit_shift,
-				:remind_shift,
-				:message
-			].each do |f|
-				v= ( $app.ui.get "#{f.to_s}_text").strip
-				next unless v.length> 0
-				i.send "parse_#{f}", v
-			end
-			[
-				:due,
-				:omit,
-				:remind,
-			].each do |f|
-				list= ( $app.ui.get "#{f}_text").split /,/
-				list.each do |v|
-					v.strip!
+			begin
+
+				[
+					:subject,
+					:start,
+					:end,
+					:time,
+					:omit_shift,
+					:remind_shift,
+					:message
+				].each do |f|
+					v= ( $app.ui.get "#{f.to_s}_text").strip
 					next unless v.length> 0
 					i.send "parse_#{f}", v
 				end
-			end
+				[
+					:due,
+					:omit,
+					:remind,
+				].each do |f|
+					list= ( $app.ui.get "#{f}_text").split /,/
+					list.each do |v|
+						v.strip!
+						next unless v.length> 0
+						i.send "parse_#{f}", v
+					end
+				end
 
-			pfl i.to_json
+				id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i
+				pfl :DONE
+			rescue Exception => e
+				pfl e
+			end
 		end
 
 #		def postpone arg= {}
