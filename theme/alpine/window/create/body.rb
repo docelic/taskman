@@ -45,12 +45,12 @@ module TASKMAN
 
 			h2= Hbox.new(                      '.expand' => 'h')
 			h2<< Label.new(                    '.expand' => '',  :text => 'Start       : ')
-			h2<< Input.new( :name => :start  , '.expand' => 'h', :text => '', :tooltip => 'Never alert or remind before this date, e.g. 2014-01-01 | 20140101 | 1st Jan 2014')
+			h2<< Input.new( :name => :start  , '.expand' => 'h', :text => '', :tooltip => 'Never alert or remind before this date, e.g. 2014-01-30 | 20140130 | 30th Dec 2014')
 			h3<< h2
 
 			h2= Hbox.new(                      '.expand' => 'h')
 			h2<< Label.new(                    '.expand' => '',  :text => 'End         : ')
-			h2<< Input.new( :name => :end,     '.expand' => 'h', :text => '', :tooltip => 'Never alert or remind after this date, e.g. 2015-01-01 | 20150101 | 1st Jan 2015')
+			h2<< Input.new( :name => :end,     '.expand' => 'h', :text => '', :tooltip => 'Never alert or remind after this date, e.g. 2015-01-30 | 20150130 | 30th Jan 2015')
 			h3<< h2
 
 			h2= Hbox.new(                      '.expand' => 'h')
