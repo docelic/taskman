@@ -30,8 +30,20 @@ class String
 		self.split( '::').inject( Object) {|o,c| o.const_get c}
 	end
 
-	def truncate length= $COLUMNS- 2, ellipsis= '...'
-		self.length> length ? self[0..length].gsub(/\s*\S*\z/, '').rstrip+ellipsis : self.rstrip
+	def center columns= $opts['term-width']
+		spacing= (( columns- self.length)/ 2).floor
+		spacing > 0 ? ( sprintf "%#{spacing+ self.length}s", self): self
+	end
+
+	def truncate diff= -1
+		available= $opts['term-width']+ diff
+		needed= self.length
+		offset= needed- available
+		if offset<= 0
+			self
+		else
+			'...'+ self[(offset+ 3)..-1]
+		end
 	end
 
 end
@@ -162,6 +174,14 @@ class Array
 		out
 	end
 
+end
+
+class Hash
+	def save
+		tf= File.join $opts['data-dir'], $opts['data-file']
+		content= self.to_yaml
+		File.write tf, content
+	end
 end
 
 class Symbol

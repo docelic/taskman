@@ -5,13 +5,15 @@ module TASKMAN
 
 	class Defaults < Object
 
+		attr_reader :opts
+
 		@@opts= {
 		#	'state'              => true,
 		#	'state-load'         => true,  # Load app state on startup?
 		#	'state-save'         => true,  # Save app state on exit?
 		#	'profile'            => nil,   # Settings profile name
-		#	'data-dir'           => File.join( ENV['HOME'], '.taskman'),
-		#	'data-file'          => 'tasks.yaml',
+			'data-dir'           => File.join( ENV['HOME'], '.taskman'),
+			'data-file'          => 'tasks.yaml',
 
 			'folder'             => true, # Default folder, true == all
 
@@ -26,10 +28,9 @@ module TASKMAN
 			'garbage-collector'  => true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector'   => false, # Stress Ruby garbage collector? (DEBUG OPTION)
 
-			'version'            => '0.02',
-			'version_string'     => '  TASKMAN 0.09(15)    ',
+			'version'	           => '0.12(8)',
 
-		#	'term_width'         => 78,
+			'term-width'         => ( $COLUMNS|| 80),
 		#	'local'              => false,
 		#	'default-time'       => false,
 		#	'default-time'       => false,
@@ -61,29 +62,38 @@ module TASKMAN
 
 end
 
-#$description= {
-##  'state'                => 'Load/save program state on start/exit',
-##  'state-load'           => 'Load program state on start',
-##  'state-save'           => 'Save program state on exit',
-##  'profile'              => 'Define settings profile to use',
-##  'debug'                => 'Enable program debug mode',
-##  'garbage-collector'    => 'Set Ruby debug option',
-##  'stress-collector'     => 'Set Ruby debug option',
-##  'help'                 => 'List common options',
-##  'help-all'             => 'List all options',
-##  'version'              => 'Show program version',
-##
-##  'default-time'         => 'Use 12:00 as default event time',
-##  'verbose'              => 'Enable verbose mode',
-##  'server'               => 'Run in server mode',
-##  'client'               => 'Run in client mode',
-##  'local'                => 'Run in local client+server mode',
-##	'no-state'             => "Don't load/save program state on start/exit",
-##	'no-state-load'        => "Don't load program state on start",
-##	'no-state-save'        => "Don't save program state on exit",
-##	'no-garbage-collector' => 'Set Ruby debug option',
-##	'no-stress-collector'  => 'Set Ruby debug option',
-##	'no-debug'             => 'Disable debug mode',
-##	'no-verbose'           => 'Disable verbose mode',
-#}
-#
+$description= {
+#  'state'                => 'Load/save program state on start/exit',
+#  'state-load'           => 'Load program state on start',
+#  'state-save'           => 'Save program state on exit',
+#  'profile'              => 'Define settings profile to use',
+  'garbage-collector'    => 'Run garbage collector?',
+  'stress-collector'     => 'Stress garbage collector?',
+  'help'                 => 'List program options',
+  'version'              => 'Display program version',
+  'window'               => 'Program window to open',
+  'theme'                => 'GUI theme to use',
+  'debug'                => 'Show general debug',
+  'debug-keys'           => 'Show keypresses',
+  'debug-opts'           => 'Show command line options',
+  'debug-style'          => 'Show application of style',
+  'debug-style-widget'   => 'Show style for named widget',
+  'debug-stfl'           => 'Show generated STFL',
+  'debug-stfl-widget'    => 'Show STFL for named widget',
+  'data-dir'             => 'Data directory',
+  'data-file'            => 'Tasklist file',
+
+#  'default-time'         => 'Use 12:00 as default event time',
+#  'verbose'              => 'Enable verbose mode',
+#  'server'               => 'Run in server mode',
+#  'client'               => 'Run in client mode',
+#  'local'                => 'Run in local client+server mode',
+#	'no-state'             => "Don't load/save program state on start/exit",
+#	'no-state-load'        => "Don't load program state on start",
+#	'no-state-save'        => "Don't save program state on exit",
+#	'no-garbage-collector' => 'Set Ruby debug option',
+#	'no-stress-collector'  => 'Set Ruby debug option',
+#	'no-debug'             => 'Disable debug mode',
+#	'no-verbose'           => 'Disable verbose mode',
+}
+

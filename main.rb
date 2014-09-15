@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'getoptlong'
-require 'json'
+require 'yaml'
 
 begin
 	require 'terminfo'
@@ -50,18 +50,17 @@ require 'theme'
 require 'json'
 
 $opts= TASKMAN::Defaults.new
-opts= [
+$getopts= [
 # # Important options
 #	[ '--default-time',        '--dt',       GetoptLong::REQUIRED_ARGUMENT],
 #	[ '--local' ,              '-l',         GetoptLong::NO_ARGUMENT],
-#	[ '--help',                '-h',         GetoptLong::NO_ARGUMENT],
+	[ '--help',                '-h',         GetoptLong::NO_ARGUMENT],
 #	[ '--help-all',            '-H',         GetoptLong::NO_ARGUMENT],
 #	# Misc / rarely used options
 #	[ '--server' ,             '-s',         GetoptLong::NO_ARGUMENT],
 #	[ '--client' ,             '-c',         GetoptLong::NO_ARGUMENT],
 #	[ '--profile',             '-p',         GetoptLong::REQUIRED_ARGUMENT],
-	[ '--version',             '-V',         GetoptLong::NO_ARGUMENT],
-#	[ '--verbose',             '-v',         GetoptLong::NO_ARGUMENT],
+	[ '--version',             '-v',         GetoptLong::NO_ARGUMENT],
 	[ '--garbage-collector',   '--gc',       GetoptLong::NO_ARGUMENT],
 	[ '--stress-collector',    '--stress',   GetoptLong::NO_ARGUMENT],
 #	[ '--state',               '--st',       GetoptLong::NO_ARGUMENT],
@@ -69,6 +68,9 @@ opts= [
 #	[ '--state-save',          '--ss',       GetoptLong::NO_ARGUMENT],
 	[ '--window',              '-w',         GetoptLong::REQUIRED_ARGUMENT],
 	[ '--theme',               '-t',         GetoptLong::REQUIRED_ARGUMENT],
+
+	[ '--data-dir',            '--dd',       GetoptLong::REQUIRED_ARGUMENT],
+	[ '--data-file',           '--df',       GetoptLong::REQUIRED_ARGUMENT],
 
 	[ '--debug',               '-d',         GetoptLong::NO_ARGUMENT],
 	[ '--debug-keys',         '--dk',        GetoptLong::NO_ARGUMENT],
@@ -79,7 +81,31 @@ opts= [
 	[ '--debug-stfl-widget' , '--dstflw',    GetoptLong::REQUIRED_ARGUMENT],
 ]
 
-args= GetoptLong.new *opts
+def usage
+	puts
+	puts 'Taskman'.center
+	puts "Ver. #{$opts['version']}".center
+	puts
+
+	head= 'OPTION                  SHORT       ARG?  DEFAULT  DESCRIPTION'
+	puts head
+
+	fmt= "%-22s  %-11s  %s    %-8s %s\n"
+	puts '-' * $opts['term-width']
+
+	$getopts.each {|o|
+		config_key= o[0][2..-1]
+		default= $opts[config_key]
+		#default= :nil if default== nil
+		arg= o[2] == GetoptLong::NO_ARGUMENT ? :N : :Y
+		printf fmt, o[0], o[1], arg, default, $description[config_key]
+	}
+
+	puts '-' * $opts['term-width']
+	puts
+end
+
+args= GetoptLong.new *$getopts
 
 begin
 	args.each do |opt, arg|
@@ -118,9 +144,9 @@ begin
 #				usage
 #				exit 0
 #
-#			when 'help'
-#				usage
-#				exit 0
+			when 'help'
+				usage
+				exit 0
 		end
 
 		$opts[opt]= arg if propagate
@@ -182,11 +208,23 @@ module TASKMAN
 		end
 
 		def start
+<<<<<<< HEAD
 
+=======
+>>>>>>> bf310c8... More work
 			exec
 		end
 
 		def exec arg= {}
+			# Tasks aspect
+			tf= File.join $opts['data-dir'], $opts['data-file']
+			$tasklist= if File.exists? tf
+				YAML.load tf
+			else
+				{}
+			end
+
+			# GUI aspect
 			wname= arg[:window] ? arg[:window] : $opts['window']
 			@theme= Theme.new( :theme => $opts['theme'], :window => wname)
 
@@ -209,41 +247,4 @@ $app= TASKMAN::Application.new ARGV
 if __FILE__== $0
 	$app.start
 end
-#if __FILE__ == $0
-#	IRB.start(__FILE__)
-#else
-#	# check -e option
-#	if /^-e$/ =~ $0
-#		IRB.start(__FILE__)
-#	else
-#		IRB.setup(__FILE__)
-#	end
-#end
 
-########################################################################
-# Helper functions below
-
-def usage
-#	puts
-#	puts 'Taskman'.center $opts['term_width']
-#	puts "Ver. #{$opts['version']}".center $opts['term_width']
-#	puts
-#
-#	head= 'OPTION                  SHORT       ARG?  DEFAULT  DESCRIPTION'
-#	puts head
-#
-#	fmt= "%-22s  %-11s  %s    %-8s %s\n"
-#	puts '-' * $opts['term_width']
-#
-#	$Opts[0...( $opts['help-all'] ? $Opts.size : $opt_break)].each {|o|
-#		config_key= o[0][2..-1]
-#		default= $default_opts[config_key]
-#		#default= :nil if default== nil
-#		arg= o[2] == GetoptLong::NO_ARGUMENT ? :N : :Y
-#		printf fmt, o[0], o[1], arg, default, $description[config_key]
-#	}
-#
-#	puts '-' * $opts['term_width']
-#	puts
-end
-#def u() usage() end

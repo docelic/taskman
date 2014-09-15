@@ -45,7 +45,7 @@ module TASKMAN
 					# Now, if the widget focused has a tooltip assigned to it,
 					# show it in the status box.
 					if widget.tooltip
-						wh['status'].var_text= '['+ widget.tooltip.truncate+ ']'
+						wh['status'].var_text= ( '['+ widget.tooltip+ ']').truncate
 					end
 
 				else # (If we don't have anything focused or focused widget not found)

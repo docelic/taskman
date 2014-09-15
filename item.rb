@@ -15,11 +15,11 @@ module TASKMAN
 		@@default_omit= []
 		@@default_time= 43200
 
-		attr_accessor :start, :stop, :due, :omit, :omit_shift, :remind, :omit_remind, :time_ssm
-
+		attr_accessor :id, :start, :stop, :due, :omit, :omit_shift, :remind, :omit_remind, :time_ssm
 		attr_accessor :subject, :message
 		
 		def initialize
+			@id= nil
 			@subject= ''
 			@start= nil # definitely not before this Date
 			@stop= nil # definitely not after this Date

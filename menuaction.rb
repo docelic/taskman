@@ -247,4 +247,8 @@ module TASKMAN
 		puts :BABY_BOY
 	end
 
+	def save_tasklist
+		$tasklist.save
+	end
+
 end
