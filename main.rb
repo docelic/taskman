@@ -219,7 +219,7 @@ module TASKMAN
 			# Tasks aspect
 			tf= File.join $opts['data-dir'], $opts['data-file']
 			$tasklist= if File.exists? tf
-				YAML.load tf
+				YAML.load_file tf
 			else
 				{}
 			end

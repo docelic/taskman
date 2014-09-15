@@ -207,7 +207,11 @@ module TASKMAN
 				end
 
 				id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i
-				pfl :DONE
+				i.id= id
+
+				$tasklist[id]= i
+				$tasklist.save
+
 			rescue Exception => e
 				pfl e
 			end
