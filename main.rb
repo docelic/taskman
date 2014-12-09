@@ -1,4 +1,11 @@
 #!/usr/bin/env ruby
+#
+# Taskman - personal task scheduler program
+#
+# Davor Ocelic, docelic@spinlocksolutions.com
+# http://techpubs.spinlocksolutions.com/taskman/
+# http://www.spinlocksolutions.com/
+#
 
 require 'getoptlong'
 require 'yaml'
@@ -38,7 +45,6 @@ require 'widget'
 require 'widget/label'
 require 'widget/input'
 require 'widget/list'
-#require 'widget/table'
 require 'widget/textedit'
 require 'widget/checkbox'
 require 'widget/textview'
@@ -57,10 +63,6 @@ $getopts= [
 #	[ '--local' ,              '-l',         GetoptLong::NO_ARGUMENT],
 	[ '--help',                '-h',         GetoptLong::NO_ARGUMENT],
 #	[ '--help-all',            '-H',         GetoptLong::NO_ARGUMENT],
-#	# Misc / rarely used options
-#	[ '--server' ,             '-s',         GetoptLong::NO_ARGUMENT],
-#	[ '--client' ,             '-c',         GetoptLong::NO_ARGUMENT],
-#	[ '--profile',             '-p',         GetoptLong::REQUIRED_ARGUMENT],
 	[ '--version',             '-v',         GetoptLong::NO_ARGUMENT],
 	[ '--garbage-collector',   '--gc',       GetoptLong::NO_ARGUMENT],
 	[ '--stress-collector',    '--stress',   GetoptLong::NO_ARGUMENT],
@@ -83,26 +85,28 @@ $getopts= [
 ]
 
 def usage
+	opts= TASKMAN::Defaults.new
+
 	puts
 	puts 'Taskman'.center
-	puts "Ver. #{$opts['version']}".center
+	puts "Ver. #{opts['version']}".center
 	puts
 
 	head= 'OPTION                  SHORT       ARG?  DEFAULT  DESCRIPTION'
 	puts head
 
 	fmt= "%-22s  %-11s  %s    %-8s %s\n"
-	puts '-' * $opts['term-width']
+	puts '-' * opts['term-width']
 
 	$getopts.each {|o|
 		config_key= o[0][2..-1]
-		default= $opts[config_key]
+		default= opts[config_key]
 		#default= :nil if default== nil
 		arg= o[2] == GetoptLong::NO_ARGUMENT ? :N : :Y
 		printf fmt, o[0], o[1], arg, default, $description[config_key]
 	}
 
-	puts '-' * $opts['term-width']
+	puts '-' * opts['term-width']
 	puts
 end
 
