@@ -20,9 +20,9 @@ begin
 	$LINES, $COLUMNS= TermInfo.screen_size
 rescue
 	Signal.trap 'SIGWINCH', proc{
-		$LINES, $COLUMNS= $ENV['COLUMNS'], $ENV['LINES']
+		$LINES, $COLUMNS= ENV['COLUMNS'], ENV['LINES']
 	}
-	$LINES, $COLUMNS= $ENV['COLUMNS'], $ENV['LINES']
+	$LINES, $COLUMNS= ENV['COLUMNS'], ENV['LINES']
 end
 
 $:.unshift File.dirname $0
@@ -75,13 +75,14 @@ $getopts= [
 	[ '--data-dir',            '--dd',       GetoptLong::REQUIRED_ARGUMENT],
 	[ '--data-file',           '--df',       GetoptLong::REQUIRED_ARGUMENT],
 
+	[ '--term-width',          '--tw',       GetoptLong::REQUIRED_ARGUMENT],
 	[ '--debug',               '-d',         GetoptLong::NO_ARGUMENT],
-	[ '--debug-keys',         '--dk',        GetoptLong::NO_ARGUMENT],
-	[ '--debug-opts',         '--do',        GetoptLong::NO_ARGUMENT],
-	[ '--debug-style',        '--ds',        GetoptLong::NO_ARGUMENT],
-	[ '--debug-style-widget', '--dsw',       GetoptLong::REQUIRED_ARGUMENT],
-	[ '--debug-stfl',         '--dstfl',     GetoptLong::NO_ARGUMENT],
-	[ '--debug-stfl-widget' , '--dstflw',    GetoptLong::REQUIRED_ARGUMENT],
+	[ '--debug-keys',          '--dk',       GetoptLong::NO_ARGUMENT],
+	[ '--debug-opts',          '--do',       GetoptLong::NO_ARGUMENT],
+	[ '--debug-style',         '--ds',       GetoptLong::NO_ARGUMENT],
+	[ '--debug-style-widget',  '--dsw',      GetoptLong::REQUIRED_ARGUMENT],
+	[ '--debug-stfl',          '--dstfl',    GetoptLong::NO_ARGUMENT],
+	[ '--debug-stfl-widget' ,  '--dstflw',   GetoptLong::REQUIRED_ARGUMENT],
 ]
 
 def usage
@@ -130,25 +131,11 @@ begin
 				puts $opts['version']
 				exit 0
 
-#			when 'state'
-#				$opts['state-load']= $opts['state-save']= arg
-#				propagate= false
-#
-#			when 'local'
-#				$opts['server']= true
-#				$opts['client']= true
-#				propagate= false
-#
-#			when 'server'
-#				$opts['server']= true
-#				$opts['client']= false
-#				propagate= false
-#
-#			when 'help-all'
-#				$opts['help-all']= true
-#				usage
-#				exit 0
-#
+			when 'term-width'
+				propagate= false
+				ENV['COLUMNS']= arg
+				$COLUMNS= $opts[opt]= arg.to_i
+
 			when 'help'
 				usage
 				exit 0
