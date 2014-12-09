@@ -10,6 +10,10 @@ require 'theme/alpine/window/create'
 require 'theme/alpine/window/create/body'
 require 'theme/alpine/window/create/menu'
 
+require 'theme/alpine/window/index'
+require 'theme/alpine/window/index/body'
+require 'theme/alpine/window/index/menu'
+
 require 'theme/alpine/window/colortest'
 require 'theme/alpine/window/colortest/body'
 require 'theme/alpine/window/colortest/menu'

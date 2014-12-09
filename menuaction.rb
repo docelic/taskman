@@ -27,15 +27,15 @@ module TASKMAN
 			'kblock'     => { :hotkey => 'k',   :shortname => 'KBLock',      :menuname => 'KBLock',      :description => '', :function => nil },
 			'quit'       => { :hotkey => 'q',   :shortname => 'Quit',        :menuname => 'Quit',        :description => 'Leave the Taskman program', :function => :quit },
 			'folder_list'=> { :hotkey => 'l',   :shortname => 'ListFldrs',   :menuname => 'FOLDER LIST', :description => 'Select a folder to view', :function => nil },
-			'index'      => { :hotkey => 'i',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => nil },
 			'setup'      => { :hotkey => 's',   :shortname => 'Setup',       :menuname => 'Setup',       :description => '', :function => nil },
 			'role'       => { :hotkey => '#',   :shortname => 'Role',        :menuname => 'Role',        :description => '', :function => nil },
 			'gotofolder' => { :hotkey => 'g',   :shortname => 'GotoFldr',    :menuname => 'GotoFldr',    :description => '', :function => nil },
 			'journal'    => { :hotkey => 'j',   :shortname => 'Journal',     :menuname => 'Journal',     :description => '', :function => nil },
 			'addrbook'   => { :hotkey => 'a',   :shortname => 'AddrBook',    :menuname => 'AddrBook',    :description => '', :function => nil },
 
+			'main'       => { :hotkey => '^M',  :shortname => 'Main Menu',   :menuname => 'Main Menu',   :description => 'Main Menu', :function => :main },
 			'create'     => { :hotkey => 'c',   :shortname => 'Create',      :menuname => 'Create Task', :description => 'Create a task', :function => :create },
-			'main'       => { :hotkey => '^M',   :shortname => 'Main Menu',    :menuname => 'Main Menu',   :description => 'Main Menu', :function => :main },
+			'index'      => { :hotkey => 'i',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => :index },
 
 
 			'create_task'=> { :hotkey => '^X',  :shortname => 'Create',    :menuname => 'Create a Task', :description => '', :function => :create_task},
@@ -166,11 +166,14 @@ module TASKMAN
 #		def get_create_help arg= {}
 #		end
 #
+		def main arg= {}
+			$app.exec( :window => 'main')
+		end
 		def create arg= {}
 			$app.exec( :window => 'create')
 		end
-		def main arg= {}
-			$app.exec( :window => 'main')
+		def index arg= {}
+			$app.exec( :window => 'index')
 		end
 
 		def create_task arg= {}

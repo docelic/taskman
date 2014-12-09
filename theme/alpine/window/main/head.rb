@@ -13,8 +13,8 @@ module TASKMAN
 			self<< Label.new( :name => 'program_location',     '.tie' => 'l',                   'text'=> @title)
 			self<< Label.new(                                  '.tie' => 'r',                   :text => 'Folder: ')
 			self<< Label.new( :name => 'folder_name',          '.tie' => 'l',                   'text'=> ($opts['folder'] == true ? 'ALL' : $opts['folder']))
-			self<< Label.new( :name => 'folder_count',         '.tie' => 'r',                   'text'=> 1)
-			self<< Label.new( :name => 'folder_unit',          '.tie' => 'l', '.expand' => '0', 'text'=> " #{1.unit}  ")
+			self<< Label.new( :name => 'folder_count',         '.tie' => 'r',                   'text'=> $tasklist.keys.count)
+			self<< Label.new( :name => 'folder_unit',          '.tie' => 'l', '.expand' => '0', 'text'=> " #{$tasklist.keys.count.unit}  ")
 		end
 
 	end

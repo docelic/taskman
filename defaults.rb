@@ -28,7 +28,7 @@ module TASKMAN
 			'garbage-collector'  => true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector'   => false, # Stress Ruby garbage collector? (DEBUG OPTION)
 
-			'version'	           => '0.12(8)',
+			'version'	           => '0.12(9)',
 
 			'term-width'         => ( $COLUMNS|| 80),
 		#	'local'              => false,

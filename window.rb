@@ -52,7 +52,7 @@ module TASKMAN
 					if not focus
 						pfl 'No particular widget focused, skipping keypress'
 					else
-						if not widget
+						if widget
 							pfl "Widget #{focus} focused, but not found in widget list, skipping keypress"
 						end
 					end
