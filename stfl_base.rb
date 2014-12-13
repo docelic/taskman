@@ -88,6 +88,9 @@ module TASKMAN
 					self.class.send( :define_method, "var_#{fn}".to_sym) {
 						@variables[k]
 					}
+					self.class.send( :define_method, "var_#{fn}_now".to_sym) {
+						@variables[k]= $app.ui.get "#{@name}_#{fn}"
+					}
 					self.class.send( :define_method, "var_#{fn}=".to_sym) { |arg|
 						@variables[k]= arg
 						names= if @stfl_names then @stfl_names else [ name] end

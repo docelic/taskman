@@ -80,34 +80,30 @@ module TASKMAN
 					# XXX REDRAW MISSING?
 				end
 
-				# Unhandled ENTER on a widget will call its first action,
-				# if one is defined.
+				# Unhandled ENTER on a widget will call its first action, if one is defined.
+				# Otherwise we go into our usual keypress resolution.
 				if event== 'ENTER'
-					widget.widgets.each do |a|
-						if TASKMAN::MenuAction=== a
+					if a= widget.action
+						if Symbol=== f= a.function
+							a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)
+						elsif Proc=== f= a.function
+							f.yield( :window => self, :widget => widget, :action => a, :function => f, :event => event)
+						end
+					end
+				else
+					[ widget, *menus(), *widget.parent_tree()].each do |w|
+						if a= w.hotkeys_hash[event]
 							if Symbol=== f= a.function
 								a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)
-								break
 							elsif Proc=== f= a.function
 								f.yield( :window => self, :widget => widget, :action => a, :function => f, :event => event)
-								break
 							end
 						end
 					end
 				end
 
-				# Other keypresses are handled normally
-				[ widget, *menus(), *widget.parent_tree()].each do |w|
-					if a= w.hotkeys_hash[event]
-						if Symbol=== f= a.function
-							a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)
-							break
-						elsif Proc=== f= a.function
-							f.yield( :window => self, :widget => widget, :action => a, :function => f, :event => event)
-							break
-						end
-					end
-				end
+				# NOTE: be aware that the code from IFs above will continue here.
+				# Guard appropriately if you do not want that.
 
 				## Handle specific events in a generic way
 				#if event== 'SLEFT'

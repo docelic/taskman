@@ -1,6 +1,11 @@
+
 module TASKMAN
 
 	class Theme::Window::Create < Theme::Window
+		require 'theme/alpine/window/main/head'
+		require 'theme/alpine/window/create/body'
+		require 'theme/alpine/window/main/status'
+		require 'theme/alpine/window/create/menu'
 
 		def initialize arg= {}
 			super arg

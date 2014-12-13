@@ -1,0 +1,184 @@
+
+
+
+
+Developer overview:
+
+Taskman execution starts in main.rb. It loads all Ruby and local modules,
+defines and parses command line options, prints --help if it was requested,
+and defines the TASKMAN::Application class, representing the application
+(similar to how Qt would do it).
+
+The following global variables are available at all times:
+
+$LINES (int), $COLUMNS (int) - terminal height, width
+$opts (hash) - current program options (defaults + any command line requests)
+$getopts (array) - getopt definition (probably not relevant if not doing
+  something specifically related to parsing command line options)
+usage() - function that displays help
+$app (object) - instance of TASKMAN::Application
+$tasklist (hash) - tasklist, with tasks in $tasklist[:tasks] hash. This
+  is basically what gets saved to/loaded from ~/.tasklist/tasks.yml.
+
+
+Once main.rb sets things up, it initializes $app and calls $app.start().
+
+$app.start() in current version just calls $app.exec(), which gets the
+wheels spinning. It loads tasklist, initializes the window that it has
+to display, and runs its main loop.
+
+Note that this same function (exec()) is used when switching from one
+window to another, and that the main loop is based around STFL's main
+loop implementation + a couple neat improvements:
+
+1) Our main_loop runs in the context of a window, instead of globally,
+so the current window object is always readily available as 'self'.
+
+2) The main loop automatically sets current widget object (instead of you
+having to look for it manually), and it automatically displays the focused
+widget's tooltip in the "status" line, if the status widget exists on the
+current form.
+An example of this is e.g. seeing syntax help in the status line while
+you are pressing Up/Down over various options when creating a new task.
+
+3) Also, if the widget currently under focus has an action associated with
+it, it automatically adjusts the "hotkey" entry in the window menu to the
+appropriate one, if "hotkey_in" menu entry exists on the current form.
+(If there are multiple actions associated, it takes the first one.)
+An example of this is e.g. when you are in program's main window and
+pressing Up/Down between the options (create task, task index, etc.) --
+the Hotkey field in the menu automatically changes.
+
+4) Also, if ENTER is pressed on a widget, then the main loop will
+automatically execute its first action, if one is associated with it.
+An example of this is e.g. when you are in the program's main window,
+and e.g. press ENTER on 'CREATE TASK'.
+
+5) Keypresses other than ENTER which are not handled by the widget go
+through a search list: we check whether the key pressed matches any
+of the hotkeys associated with the widget itself, then the window's
+menus, then all the widget's parents up to the top of the tree.
+An example of this is e.g. when you are in the CREATE TASK window,
+and press Ctrl+X to create the task. The Ctrl+X is a hotkey matching
+one of the entries in the window's menu, and it gets executed.
+
+
+In its essence, STFL is a textual GUI definition language and it is
+not object-oriented. In Taskman, a complete wrapper has been written
+so that you would only manipulate Ruby objects, and the STFL part
+would automagically take care of itself.
+
+For example, to create a window named "Hello" and display a label in it,
+you would simply call:
+
+module TASKMAN
+  class Theme::Window::Hello < Theme::Window
+
+		def initialize *arg
+			super
+			@widget= 'vbox'
+			self<< Label.new( :name => 'lbl1', :text => 'Hello, World!')
+		end
+
+	end
+end
+
+If you saved that to a file theme/alpine/window/hello.rb and ran
+'ruby main.rb -w hello', it would work!
+
+Looking into that example:
+
+1) Every class wishing to use STFL needs to inherit from one of STFL-derived
+classes (in this case Theme::Window), which ultimately all inherit from
+StflBase, which uses Stfl.rb coming from the STFL distribution.
+
+2) When a window (or any StflBase-derived object) needs to be converted to
+STFL text, it happens via calling .to_stfl() on it. That function is defined
+in stfl_base.pl and it outputs a desired STFL element with the corresponding
+name and options, and it also STFL-izes all its children elements and returns
+the complete STFL.
+
+3) The toplevel STFL element is coming from instance variable @widget, and
+all typical widget types (such as label, checkbox etc., found in the
+widget/ subdirectory) have their values for @widget appropriately set.
+But you could use an arbitrary name (for no obvious benefit though), or
+also @widget = nil to just STFL-ize the children without creating a STFL
+representation of the current object.
+
+4) In the example, we can also see the syntax "self<< Label.new( ...)".
+The "<<" is an operator defined also in stfl_base.rb, and it is used to
+add a widget (Label in our case) as a child of parent ('self' in our case).
+It does this by adding a widget to parent's variables @widgets and
+@widgets_hash, and also handles hotkeys if the child being added is a
+MenuAction instead of a simple widget. In any case, please always use <<
+instead of manual handling.
+
+5) Final thing to know is that STFL language is flat, there is no hierarchy
+and all elements can be accessed by their name directly from toplevel.
+
+$app.ui always points to the current STFL form, and it allows one to e.g.
+read form value of e.g. an input field by simply calling
+$app.ui.get 'OBJ_NAME_text'. This is basic, standard STFL usage as one
+would learn from reading STFL docs.
+
+On the other side, our Ruby wrapper is well aware of the hierarchy. Each
+widget has a .parent() pointing to its parent, and @widgets/@widgets_hash
+pointing to its children. When << is used, it forcibly sets child widget's
+parent to the widget it was added to. (Similar to how Qt does it.)
+It is also what allows one to call widget.to_stfl() and get the complete
+structure of Ruby objects (the parent and all children) converted to STFL
+text ready for displaying on the screen.
+
+$app.screen always points to the toplevel widget that was used in generating
+the STFL. (This is typically an object inheriting from Theme::Window, which
+inherits from Window, which inherits from StflBase, which uses Stfl. However,
+any StflBase-based object could be used.)
+
+Since $app.screen is a widget, it allows the usual access to @widgets and
+@widgets_hash to access all of the children (which means all of the widgets
+on the screen). Most of the time, however, the widget you want to access is
+not directly under the parent but under some intermediate elements, such as
+VBoxes, HBoxes, menus, etc. and it means you would have to search through a
+chain of children trees for it. To alleviate that, there is a function
+$app.screen.all_widgets_hash() which returns all of the widget's children
+and sub-children in a flat structure, so you can simply call
+$app.screen.all_widgets_hash['YOUR_WIDGET'] to obtain a reference to
+your object.
+
+Once you have the object, you can call arbitrary functions on it that affect
+the variables and display in real-time. For example, to read or set the text
+of a label you would call lbl.var_text and lbl.var_text = "New text!"
+respectively.
+Note that the setter function (.var_text=) operates in real-time-- it will
+set both the internal variable and the value in STFL, so the change will
+appear on the screen immediately,
+The getter function (.var_text) will only return the value of the widget's
+variable 'text', which does not necessarily match its current value on the
+form. To read the actual value from the form, as well as update the
+internal variable, call .var_NAME_now(), such as .var_text_now().
+
+This way, STFL has been completely abstracted and there's no need to be
+using it.
+
+To see how this works in a simple 'Hello, World!'-style example, please just
+run ruby main.rb -w hello2, and after seeing it run also examine the
+source file theme/alpine/window/hello2.rb.
+
+
+In addition to adding children widgets to parents (via parent<< child), 
+one can also add "actions" in the same way. 
+
+Actions work in the following way: actions are basically functions to
+execute on events, usually keypresses. For example, pressing an ENTER in
+a field could serve as form's OK function that triggers some further
+processing, or pressing Ctrl+X in create window would create a new task.
+
+Actions are basically invisible, but they can also have visual representation
+to be more obvious or indicate their availability. When they do, they are
+usually found in the window's menu bar. An example of it is e.g. Ctrl+X
+visible in the menu at the bottom of the create window (you could run
+ruby main.rb -w create to see it).
+
+
+
+

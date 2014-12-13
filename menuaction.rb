@@ -57,10 +57,12 @@ module TASKMAN
 			'inc_folder_count'   => { :hotkey => 'SR',   :shortname => 'Folder Cnt+1',     :description => '', :function => :inc_folder_count },
 			'all_widgets_hash'   => { :hotkey => 'SF',   :shortname => 'All Children',     :description => '', :function => :all_widgets},
 			'parent_names'       => { :hotkey => '^P',   :shortname => 'Parent Tree',      :description => '', :function => :parent_names},
+			'read_self_text'     => { :hotkey => '^P',:shortname => 'Read self text',   :description => '', :function => :read_self_text},
 
 			# Various
 			'toggle_timing_options'=> { :description => 'Toggle Timing Options', :function => :toggle_timing_options},
 			'toggle_remind_options'=> { :description => 'Toggle Remind Options', :function => :toggle_remind_options},
+
 		}
 
 		def initialize arg= {}
@@ -153,6 +155,14 @@ module TASKMAN
 			menus[0].var__display= 1
 		end
 
+		def read_self_text arg= {}
+			w= arg[:window]
+			wh= w.all_widgets_hash['input']
+			input= wh['input']
+			output= wh['output']
+			output.var_text= 'Value of input: '+ $app.ui.text( 'input') #input.var_text_now
+		end
+
 		############################### Testing Functions ################################
 
 #		def inc_folder_count arg= {}
@@ -190,7 +200,6 @@ module TASKMAN
 					:time,
 					:omit_shift,
 					:remind_shift,
-					:message
 				].each do |f|
 					v= ( $app.ui.get "#{f.to_s}_text").strip
 					next unless v.length> 0
@@ -199,6 +208,14 @@ module TASKMAN
 					i.send "_#{f}=", v
 					i.send "parse_#{f}", v
 				end
+
+				f= 'message'
+				v= ( $app.ui.text f).strip
+				if v.length> 0
+					i.send "_#{f}=", v
+					i.send "parse_#{f}", v
+				end
+
 				[
 					:due,
 					:omit,

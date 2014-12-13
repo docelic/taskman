@@ -14,6 +14,10 @@ module TASKMAN
 			@init||= Theme::Init.new
 
 			wname= arg[:window] ? arg[:window] : $opts['window']
+
+			mf= 'theme/'+ $opts['theme']+ '/window/'+ wname
+			require mf
+
 			window= ( 'TASKMAN::Theme::Window::'+ wname.ucfirst).to_class
 			arg[:name]= wname
 			$app.screen= window.new arg

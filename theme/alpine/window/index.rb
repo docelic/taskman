@@ -1,6 +1,10 @@
 module TASKMAN
 
 	class Theme::Window::Index < Theme::Window
+		require 'theme/alpine/window/main/head'
+		require 'theme/alpine/window/index/body'
+		require 'theme/alpine/window/main/status'
+		require 'theme/alpine/window/index/menu'
 
 		def initialize *arg
 			super

@@ -1,6 +1,10 @@
 module TASKMAN
 
 	class Theme::Window::Colortest < Theme::Window
+		require 'theme/alpine/window/main/head'
+		require 'theme/alpine/window/colortest/body'
+		require 'theme/alpine/window/main/status'
+		require 'theme/alpine/window/colortest/menu'
 
 		def initialize *arg
 			super
