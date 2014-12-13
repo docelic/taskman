@@ -23,7 +23,8 @@ module TASKMAN
 		attr_accessor :subject, :message
 		
 		def initialize
-			@id= nil
+			# Automatically assign ID to every new task
+			@id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i
 			@subject= ''
 			@start= nil # definitely not before this Date
 			@stop= nil # definitely not after this Date

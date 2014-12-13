@@ -25,6 +25,11 @@ module TASKMAN
 #			h2<< Input.new( :name => :cc, '.expand' => 'h', :text => '', :tooltip => nil)
 #			v<< h2
 
+			h2= Hbox.new(                      '.expand' => 'h', '.display' => 0)
+			h2<< Label.new(                    '.expand' => '',  :text => 'Task ID     : ')
+			h2<< Input.new( :name => :id,      '.expand' => 'h', :text => i.id, :tooltip => nil)
+			v<< h2
+
 			h2= Hbox.new(                      '.expand' => 'h')
 			h2<< Label.new(                    '.expand' => '',  :text => 'Subject     : ')
 			h2<< Input.new( :name => :subject, '.expand' => 'h', :text => i._subject, :tooltip => nil)

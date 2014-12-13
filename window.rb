@@ -8,8 +8,6 @@ module TASKMAN
 
 	class Window < StflBase
 
-		#attr_reader :actions
-
 		def main_loop code= 0
 			loop do
 				event= $app.ui.run code

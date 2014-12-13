@@ -179,9 +179,7 @@ module TASKMAN
 		end
 
 		def create_task arg= {}
-
-			i= Item.new
-			wh= all_widgets_hash
+			i= arg[:item]|| Item.new
 
 			begin
 
@@ -217,15 +215,17 @@ module TASKMAN
 					end
 				end
 
-				id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i
-				i.id= id
-
-				$tasklist[:tasks][id]= i
+				$tasklist[:tasks][i.id]= i
 				$tasklist.save
 
 			rescue Exception => e
 				pfl e
 			end
+		end
+
+		def update_task
+			# TODO: read ID from form, retrieve it from $tasklist and
+			# just re-call create_task( item) and it'll do the job.
 		end
 
 		def select_task arg= {}
