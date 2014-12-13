@@ -11,9 +11,9 @@ module TASKMAN
 			self<< Theme::Window::Index::Body.new( :name => :body)
 			self<< Theme::Window::Main::Status.new( :name => :status)
 			m1= Theme::Window::Index::Menu.new( :name => :menu)
-			#m1.add_action(
-			#	:create_task
-			#)
+			m1.add_action(
+				:select_task
+			)
 
 			self<< m1
 		end

@@ -209,16 +209,20 @@ module TASKMAN
 
 		def exec arg= {}
 			# Tasks aspect
-			tf= File.join $opts['data-dir'], $opts['data-file']
-			$tasklist= if File.exists? tf
-				YAML.load_file tf
-			else
-				{}
+			unless $tasklist
+				tf= File.join $opts['data-dir'], $opts['data-file']
+				$tasklist= if File.exists? tf
+					YAML.load_file tf
+				else
+					{ :tasks => { }}
+				end
 			end
 
 			# GUI aspect
 			wname= arg[:window] ? arg[:window] : $opts['window']
-			@theme= Theme.new( :theme => $opts['theme'], :window => wname)
+			arg[:theme]= $opts['theme']
+			arg[:window]= wname
+			@theme= Theme.new arg
 
 			@ui= @screen.create
 

@@ -42,8 +42,6 @@ module TASKMAN
 			# @widget= nil    -> to_stfl -> {child1}{child2}...
 			@widget= nil
 
-			@tooltip= variables.delete( :tooltip)
-
 			# Name is always there for all objects. If unspecified,
 			# automatic name is assigned
 			if not( @name= variables.delete( :name)) or @name.length< 1
@@ -51,6 +49,9 @@ module TASKMAN
 				@@auto_widget_id+= 1
 			end
 			@name= @name.to_s
+
+			@parent= variables.delete( :parent)
+			@tooltip= variables.delete( :tooltip)
 
 			# STFl variables. May be empty
 			@variables= {}
@@ -96,6 +97,15 @@ module TASKMAN
 					}
 				end
 			end
+		end
+
+		# Function to call after new(), to initialize anything that can't be
+		# initialized during new(). By default, no work here. You would use
+		# this if e.g. you want to run actions after the window is created.
+		# For now, this has to be manual, but I'm thinking of a way to
+		# support executing this automatically on X<< y
+		def init *arg
+			self
 		end
 
 		# Shorthand for adding and removing child widgets from an object.

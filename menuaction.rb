@@ -38,8 +38,10 @@ module TASKMAN
 			'index'      => { :hotkey => 'i',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => :index },
 
 
-			'create_task'=> { :hotkey => '^X',  :shortname => 'Create',    :menuname => 'Create a Task', :description => '', :function => :create_task},
+			'create_task'=> { :hotkey => '^X',  :shortname => 'Create',      :menuname => 'Create a Task', :description => '', :function => :create_task},
 			'create_help'=> { :hotkey => '^G',  :shortname => 'Get Help',    :menuname => 'Get Syntax Help', :description => 'Get help using Taskman', :function => :create_help},
+
+			'select_task'=> { :hotkey => 'ENTER',:shortname => 'Select',     :menuname => 'Select Task', :description => '', :function => :select_task},
 
 			# Actions related to messages when a person tries to move
 			# beyond widget/page/window limits
@@ -194,6 +196,9 @@ module TASKMAN
 				].each do |f|
 					v= ( $app.ui.get "#{f.to_s}_text").strip
 					next unless v.length> 0
+					# Save person's original input for eventual
+					# editing/modification later
+					i.send "_#{f}=", v
 					i.send "parse_#{f}", v
 				end
 				[
@@ -205,6 +210,9 @@ module TASKMAN
 					list.each do |v|
 						v.strip!
 						next unless v.length> 0
+						# Save person's original input for eventual
+						# editing/modification later
+						i.send "_#{f}=", v
 						i.send "parse_#{f}", v
 					end
 				end
@@ -212,12 +220,20 @@ module TASKMAN
 				id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i
 				i.id= id
 
-				$tasklist[id]= i
+				$tasklist[:tasks][id]= i
 				$tasklist.save
 
 			rescue Exception => e
 				pfl e
 			end
+		end
+
+		def select_task arg= {}
+			arg[:window]= 'create'
+			arg[:open_timing]= 1
+			arg[:open_remind]= 1
+			arg[:id]= $app.ui.get( 'list_pos_name').to_i
+			$app.exec arg
 		end
 
 		def toggle_timing_options arg= {}

@@ -2,15 +2,21 @@ module TASKMAN
 
 	class Theme::Window::Create < Theme::Window
 
-		def initialize *arg
-			super
+		def initialize arg= {}
+			super arg
 
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Head.new( :name => :head, :title => 'CREATE TASK')
-			self<< Theme::Window::Create::Body.new( :name => :body)
-			self<< Theme::Window::Main::Status.new( :name => :status)
-			m1= Theme::Window::Create::Menu.new( :name => :menu)
+			arg.merge!( :parent => self)
+
+			self<< Theme::Window::Main::Head.new(   arg.merge( :name => :head, :title => 'CREATE TASK'))
+
+			b= Theme::Window::Create::Body.new( arg.merge( :name => :body))
+			self<< b
+			b.init arg
+
+			self<< Theme::Window::Main::Status.new( arg.merge( :name => :status))
+			m1= Theme::Window::Create::Menu.new(    arg.merge( :name => :menu))
 			m1.add_action(
 				:create_task
 			)

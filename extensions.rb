@@ -178,6 +178,7 @@ end
 
 class Hash
 	def save
+		self[:VERSION]= '0.1'
 		tf= File.join $opts['data-dir'], $opts['data-file']
 		content= self.to_yaml
 		File.write tf, content

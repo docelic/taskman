@@ -15,7 +15,8 @@ module TASKMAN
 
 			wname= arg[:window] ? arg[:window] : $opts['window']
 			window= ( 'TASKMAN::Theme::Window::'+ wname.ucfirst).to_class
-			$app.screen= window.new( :name => wname)
+			arg[:name]= wname
+			$app.screen= window.new arg
 		end
 
 	end

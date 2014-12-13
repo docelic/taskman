@@ -16,7 +16,7 @@ module TASKMAN
 				#MenuAction.new( :name => :help),
 				MenuAction.new( :name => :create),
 				MenuAction.new( :name => :index),
-				MenuAction.new( :name => :folder_list),
+				#MenuAction.new( :name => :folder_list),
 				MenuAction.new( :name => :quit),
 			]
 			# Show items in the list

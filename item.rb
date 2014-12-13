@@ -15,6 +15,10 @@ module TASKMAN
 		@@default_omit= []
 		@@default_time= 43200
 
+		# These will contain person's original input
+		attr_accessor :_start, :_stop, :_due, :_omit, :_omit_shift, :_time_ssm, :_remind, :_omit_remind, :_subject, :_message
+
+		# These will contain value after parsing person's input
 		attr_accessor :id, :start, :stop, :due, :omit, :omit_shift, :remind, :omit_remind, :time_ssm
 		attr_accessor :subject, :message
 		
