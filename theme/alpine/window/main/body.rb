@@ -11,7 +11,7 @@ module TASKMAN
 			l1= Label.new( '.expand' => 'vh')
 
 			# Main list ###########
-			list= List.new( :name => :lst, '.tie' => 'tb', 'on_p' => 'UP', 'on_n' => 'DOWN')
+			list= List.new( :name => :lst, '.tie' => 'tb')
 			menu= [
 				MenuAction.new( :name => :help),
 				MenuAction.new( :name => :create),

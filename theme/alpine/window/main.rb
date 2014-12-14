@@ -21,14 +21,14 @@ module TASKMAN
 			m1.add_action(
 				:help,
 				:create,
-				:prevcmd,
+				:prevcmd2,
 				:listfolders,
 				:index,
 				:'',
 				:tablebr,
 				:quit,
 				:hotkey_in,
-				:nextcmd,
+				:nextcmd2,
 				:gotofolder,
 			)
 

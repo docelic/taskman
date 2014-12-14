@@ -15,7 +15,6 @@ module TASKMAN
 			# name being auto-generated
 			''           => { :hotkey => '',    :shortname => '',            :menuname => '',            :description => '', :function => nil }, # Empty one
 
-			'prevcmd'    => { :hotkey => 'P',   :shortname => 'PrevCmd',     :menuname => 'PrevCmd',     :description => '', :function => nil },
 			'relnodes'   => { :hotkey => 'R',   :shortname => 'RelNotes',    :menuname => 'RelNotes',    :description => '', :function => nil },
 
 			'other'      => { :hotkey => 'O',   :shortname => 'OTHER CMDS',  :menuname => 'OTHER CMDS',  :description => '', :function => :menu_next_page },
@@ -23,7 +22,8 @@ module TASKMAN
 
 			'hotkey_in'  => { :hotkey => '>',   :shortname => '',            :menuname => '',            :description => '', :function => nil },
 			'hotkey_out' => { :hotkey => '<',   :shortname => '',            :menuname => '',            :description => '', :function => nil },
-			'nextcmd'    => { :hotkey => 'N',   :shortname => 'NextCmd',     :menuname => 'NextCmd',     :description => '', :function => nil },
+			'nextcmd2'   => { :hotkey => 'N',   :shortname => 'NextCmd',     :menuname => 'NextCmd',     :description => '', :function => :nextcmd2 },
+			'prevcmd2'   => { :hotkey => 'P',   :shortname => 'PrevCmd',     :menuname => 'PrevCmd',     :description => '', :function => :prevcmd2 },
 			'kblock'     => { :hotkey => 'K',   :shortname => 'KBLock',      :menuname => 'KBLock',      :description => '', :function => nil },
 			'quit'       => { :hotkey => 'Q',   :shortname => 'Quit',        :menuname => 'Quit',        :description => 'Leave the Taskman program', :function => :quit },
 			'listfolders'=> { :hotkey => 'L',   :shortname => 'ListFldrs',   :menuname => 'FOLDER LIST', :description => 'Select a folder to view', :function => nil },
@@ -118,9 +118,6 @@ module TASKMAN
 		def quit arg= {}
 			w= arg[:window]
 			pfl w.widgets_hash.keys
-			if w.widgets_hash['status']
-				puts :YES
-			end
 			Stfl.reset
 			puts "Taskman finished."
 			exit 0
@@ -267,6 +264,19 @@ module TASKMAN
 			wh['reminding'].toggle
 			v= wh['reminding'].var_value
 			wh['reminding_options'].var__display= v
+		end
+
+		def nextcmd2 arg= {}
+			w= arg[:widget]
+			wp= w.parent
+			wp.var_pos+= 2 if wp.var_pos<= 7
+			$app.screen.main_loop -1
+		end
+		def prevcmd2 arg= {}
+			w= arg[:widget]
+			wp= w.parent
+			wp.var_pos-= 2 if wp.var_pos>= 2
+			$app.screen.main_loop -1
 		end
 
 #		def postpone arg= {}
