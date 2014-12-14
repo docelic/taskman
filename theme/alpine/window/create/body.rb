@@ -56,12 +56,12 @@ module TASKMAN
 
 			h2= Hbox.new(                      '.expand' => 'h')
 			h2<< Label.new(                    '.expand' => '',  :text => 'End         : ')
-			h2<< Input.new( :name => :end,     '.expand' => 'h', :text => i._stop, :tooltip => 'Never alert or remind after this date, e.g. 2015-01-30 | 20150130 | 30th Jan 2015')
+			h2<< Input.new( :name => :stop,     '.expand' => 'h', :text => i._stop, :tooltip => 'Never alert or remind after this date, e.g. 2015-01-30 | 20150130 | 30th Jan 2015')
 			h3<< h2
 
 			h2= Hbox.new(                      '.expand' => 'h')
 			h2<< Label.new(                    '.expand' => '',  :text => 'Time        : ')
-			h2<< Input.new( :name => :time,    '.expand' => 'h', :text => i._time_ssm, :tooltip => 'Time, e.g. 12:30 | 12:30:00 | -2:00 | -2:00:00')
+			h2<< Input.new( :name => :time_ssm,'.expand' => 'h', :text => i._time_ssm, :tooltip => 'Time, e.g. 12:30 | 12:30:00 | -2:00 | -2:00:00')
 			h3<< h2
 
 			h2= Hbox.new(                      '.expand' => 'h')
@@ -86,22 +86,22 @@ module TASKMAN
 			#
 
 			h2= Hbox.new(                      '.expand' => '')
-			c= Checkbox.new( :name => :remind,'.expand' => '', :value => 0, :pos => 1, :text_0 => '> Remind Options ', :text_1 => '< Remind Options ', :bind_toggle => '', :style_focus => 'fg=black,bg=white')
-			c<< MenuAction.new( :name => :toggle_remind_options)
+			c= Checkbox.new( :name => :reminding,'.expand' => '', :value => 0, :pos => 1, :text_0 => '> Remind Options ', :text_1 => '< Remind Options ', :bind_toggle => '', :style_focus => 'fg=black,bg=white')
+			c<< MenuAction.new( :name => :toggle_reminding_options)
 			h2<< c
 			h2<< Label.new(                    '.expand' => 'h')
 			v<< h2
 
-			h3= Vbox.new( :name => :remind_options, '.expand' => '', '.display' => 0)
+			h3= Vbox.new( :name => :reminding_options, '.expand' => '', '.display' => 0)
 
 			h2= Hbox.new(                      '.expand' => 'h')
 			h2<< Label.new(                    '.expand' => '',  :text => 'Remind      : ')
-			h2<< Input.new( :name => :remind_spec,  '.expand' => 'h', :text => i._remind, :tooltip => 'Reminder, e.g. -90M*10Mx3 | Jan 1 2014 12:00 | 2014-01-01 | 20140101')
+			h2<< Input.new( :name => :remind,  '.expand' => 'h', :text => i._remind, :tooltip => 'Reminder, e.g. -90M*10Mx3 | Jan 1 2014 12:00 | 2014-01-01')
 			h3<< h2
 
 			h2= Hbox.new(                      '.expand' => 'h')
 			h2<< Label.new(                    '.expand' => '',  :text => 'Omit remind : ')
-			h2<< Input.new( :name => :omit_remind,    '.expand' => 'h', :text => i._omit_remind, :tooltip => 'Omit remind if date omitted, e.g. 1 | t | true | 0 | f | false')
+			h2<< Input.new( :name => :omit_remind,    '.expand' => 'h', :text => i._omit_remind, :tooltip => 'Omit remind if date omitted, e.g. 1 | 0')
 			h3<< h2
 
 			v<< h3
@@ -128,10 +128,10 @@ module TASKMAN
 					f.yield( :window => self.parent) #, :widget => c, :action => a, :function => f, :event => 'ENTER')
 				end
 			end
-			if arg[:open_remind]== 1
+			if arg[:open_reminding]== 1
 				w= self.parent
 				wh= w.all_widgets_hash
-				a= wh['remind'].action
+				a= wh['reminding'].action
 				if Symbol=== f= a.function
 					a.send( f, :window => self.parent) #, :widget => arg[:widget], :action => a, :function => f, :event => 'ENTER')
 				elsif Proc=== f= a.function

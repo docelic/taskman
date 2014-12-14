@@ -61,7 +61,7 @@ module TASKMAN
 
 			# Various
 			'toggle_timing_options'=> { :description => 'Toggle Timing Options', :function => :toggle_timing_options},
-			'toggle_remind_options'=> { :description => 'Toggle Remind Options', :function => :toggle_remind_options},
+			'toggle_reminding_options'=> { :description => 'Toggle Remind Options', :function => :toggle_reminding_options},
 
 		}
 
@@ -197,9 +197,9 @@ module TASKMAN
 					:subject,
 					:start,
 					:stop,
-					:time,
+					:time_ssm,
 					:omit_shift,
-					:remind_shift,
+					:omit_remind,
 				].each do |f|
 					v= ( $app.ui.get "#{f.to_s}_text").strip
 					next unless v.length> 0
@@ -248,7 +248,7 @@ module TASKMAN
 		def select_task arg= {}
 			arg[:window]= 'create'
 			arg[:open_timing]= 1
-			arg[:open_remind]= 1
+			arg[:open_reminding]= 1
 			arg[:id]= $app.ui.get( 'list_pos_name').to_i
 			$app.exec arg
 		end
@@ -261,12 +261,12 @@ module TASKMAN
 			wh['timing_options'].var__display= v
 		end
 
-		def toggle_remind_options arg= {}
+		def toggle_reminding_options arg= {}
 			w= arg[:window]
 			wh= w.all_widgets_hash
-			wh['remind'].toggle
-			v= wh['remind'].var_value
-			wh['remind_options'].var__display= v
+			wh['reminding'].toggle
+			v= wh['reminding'].var_value
+			wh['reminding_options'].var__display= v
 		end
 
 #		def postpone arg= {}
