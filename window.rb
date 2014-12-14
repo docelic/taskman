@@ -75,7 +75,7 @@ module TASKMAN
 				# represent the entry under cursor
 				if hk= wh['hotkey_in']
 					hk.widgets_hash['menu_hotkey_in_shortname'].var_text= widget.action.shortname
-					hk.widgets_hash['menu_hotkey_in_shortname'].var_function= widget.action.function
+					hk.function= widget.action.function
 				end
 
 				# Break if a single-loop was requested (code!= 0)
@@ -87,6 +87,7 @@ module TASKMAN
 				end
 
 				event.upcase!
+				handled= false
 
 				# Unhandled ENTER on a widget will call its first action, if one is defined.
 				# Otherwise we go into our usual keypress resolution.
@@ -94,22 +95,27 @@ module TASKMAN
 					if a= widget.action
 						if Symbol=== f= a.function
 							a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)
+							handled= true
 						elsif Proc=== f= a.function
 							f.yield( :window => self, :widget => widget, :action => a, :function => f, :event => event)
+							handled= true
 						end
 					end
 				end
-				#else
+
+				unless handled
 					[ widget, *menus(), *widget.parent_tree()].each do |w|
 						if a= w.hotkeys_hash[event]
 							if Symbol=== f= a.function
 								a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)
+								handled= true
 							elsif Proc=== f= a.function
 								f.yield( :window => self, :widget => widget, :action => a, :function => f, :event => event)
+								handled= true
 							end
 						end
 					end
-				#end
+				end
 
 				# NOTE: be aware that the code from IFs above will continue here.
 				# Guard appropriately if you do not want that.
