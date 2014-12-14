@@ -15,27 +15,27 @@ module TASKMAN
 			# name being auto-generated
 			''           => { :hotkey => '',    :shortname => '',            :menuname => '',            :description => '', :function => nil }, # Empty one
 
-			'prevcmd'    => { :hotkey => 'p',   :shortname => 'PrevCmd',     :menuname => 'PrevCmd',     :description => '', :function => nil },
-			'relnodes'   => { :hotkey => 'r',   :shortname => 'RelNotes',    :menuname => 'RelNotes',    :description => '', :function => nil },
+			'prevcmd'    => { :hotkey => 'P',   :shortname => 'PrevCmd',     :menuname => 'PrevCmd',     :description => '', :function => nil },
+			'relnodes'   => { :hotkey => 'R',   :shortname => 'RelNotes',    :menuname => 'RelNotes',    :description => '', :function => nil },
 
-			'other'      => { :hotkey => 'o',   :shortname => 'OTHER CMDS',  :menuname => 'OTHER CMDS',  :description => '', :function => :menu_next_page },
-			'other2'     => { :hotkey => 'o',   :shortname => 'OTHER CMDS',  :menuname => 'OTHER CMDS',  :description => '', :function => :menu_next_page },
+			'other'      => { :hotkey => 'O',   :shortname => 'OTHER CMDS',  :menuname => 'OTHER CMDS',  :description => '', :function => :menu_next_page },
+			'other2'     => { :hotkey => 'O',   :shortname => 'OTHER CMDS',  :menuname => 'OTHER CMDS',  :description => '', :function => :menu_next_page },
 
 			'hotkey_in'  => { :hotkey => '>',   :shortname => '',            :menuname => '',            :description => '', :function => nil },
 			'hotkey_out' => { :hotkey => '<',   :shortname => '',            :menuname => '',            :description => '', :function => nil },
-			'nextcmd'    => { :hotkey => 'n',   :shortname => 'NextCmd',     :menuname => 'NextCmd',     :description => '', :function => nil },
-			'kblock'     => { :hotkey => 'k',   :shortname => 'KBLock',      :menuname => 'KBLock',      :description => '', :function => nil },
-			'quit'       => { :hotkey => 'q',   :shortname => 'Quit',        :menuname => 'Quit',        :description => 'Leave the Taskman program', :function => :quit },
-			'folder_list'=> { :hotkey => 'l',   :shortname => 'ListFldrs',   :menuname => 'FOLDER LIST', :description => 'Select a folder to view', :function => nil },
-			'setup'      => { :hotkey => 's',   :shortname => 'Setup',       :menuname => 'Setup',       :description => '', :function => nil },
+			'nextcmd'    => { :hotkey => 'N',   :shortname => 'NextCmd',     :menuname => 'NextCmd',     :description => '', :function => nil },
+			'kblock'     => { :hotkey => 'K',   :shortname => 'KBLock',      :menuname => 'KBLock',      :description => '', :function => nil },
+			'quit'       => { :hotkey => 'Q',   :shortname => 'Quit',        :menuname => 'Quit',        :description => 'Leave the Taskman program', :function => :quit },
+			'listfolders'=> { :hotkey => 'L',   :shortname => 'ListFldrs',   :menuname => 'FOLDER LIST', :description => 'Select a folder to view', :function => nil },
+			'setup'      => { :hotkey => 'S',   :shortname => 'Setup',       :menuname => 'Setup',       :description => '', :function => nil },
 			'role'       => { :hotkey => '#',   :shortname => 'Role',        :menuname => 'Role',        :description => '', :function => nil },
-			'gotofolder' => { :hotkey => 'g',   :shortname => 'GotoFldr',    :menuname => 'GotoFldr',    :description => '', :function => nil },
-			'journal'    => { :hotkey => 'j',   :shortname => 'Journal',     :menuname => 'Journal',     :description => '', :function => nil },
-			'addrbook'   => { :hotkey => 'a',   :shortname => 'AddrBook',    :menuname => 'AddrBook',    :description => '', :function => nil },
+			'gotofolder' => { :hotkey => 'G',   :shortname => 'GotoFldr',    :menuname => 'GotoFldr',    :description => '', :function => nil },
+			'journal'    => { :hotkey => 'J',   :shortname => 'Journal',     :menuname => 'Journal',     :description => '', :function => nil },
+			'addrbook'   => { :hotkey => 'A',   :shortname => 'AddrBook',    :menuname => 'AddrBook',    :description => '', :function => nil },
 
 			'main'       => { :hotkey => '^M',  :shortname => 'Main Menu',   :menuname => 'Main Menu',   :description => 'Main Menu', :function => :main },
-			'create'     => { :hotkey => 'c',   :shortname => 'Create',      :menuname => 'Create Task', :description => 'Create a task', :function => :create },
-			'index'      => { :hotkey => 'i',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => :index },
+			'create'     => { :hotkey => 'C',   :shortname => 'Create',      :menuname => 'Create Task', :description => 'Create a task', :function => :create },
+			'index'      => { :hotkey => 'I',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => :index },
 
 
 			'create_task'=> { :hotkey => '^X',  :shortname => 'Create',      :menuname => 'Create a Task', :description => '', :function => :create_task},
@@ -196,7 +196,7 @@ module TASKMAN
 				[
 					:subject,
 					:start,
-					:end,
+					:stop,
 					:time,
 					:omit_shift,
 					:remind_shift,

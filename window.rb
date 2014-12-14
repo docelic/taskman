@@ -3,6 +3,9 @@
 # Or another way of thinking about it is a portion of the
 # screen. (For example, the alpine theme consists of a 'screen'
 # with header, body, status and menu windows)
+#
+# The main difference between Window and just using StflBase
+# is that window implements main loop.
 
 module TASKMAN
 
@@ -22,16 +25,27 @@ module TASKMAN
 
 				# Searching for actions to execute (and doing other work)
 				# only makes sense if some widget was focused
+				# XXX rethink that? On a read only form one might still want to have
+				# an action from the menu available for execution.
 				if focus and widget
+
+					# If a widget is list, set 'widget' to element in the list to be
+					# more specific, don't just leave it at 'list'. (Or if finding a
+					# listitem fails, then we remain at 'list')
 					if widget.widget== 'list'
-						w= $app.ui.get "#{widget.name}_pos_name"
+
+						# There was a bug in STFL up to 2014-12-14 (STFL <= 0.23) which
+						# was causing pos_name to not work correctly. Discovered it and
+						# sent our buddy Clifford a patch today.
+						w= widget.var_pos_name_now
 						unless wh[w]
 							pfl "Cannot find widget #{w} inside list widget #{widget.name}"
+						else
+							widget= wh[w]
 						end
-						widget= wh[w]
 					end
 
-					if $opts['debug-keys']
+					if debug?( :keys)
 						pfl "Window #{@name}, widget #{focus}/#{widget.name}, key #{event}"
 					end
 
@@ -54,13 +68,14 @@ module TASKMAN
 							pfl "Widget #{focus} focused, but not found in widget list, skipping keypress"
 						end
 					end
-					## We only run another loop if the run mode (code) is 0 -- that's the
-					## only mode intended to be ran in a loop. On all other codes, we
-					## assume it was only intended to run once, so we break.
-					#next if code== 0
-					# (Actually we disable it here since we're doing it in the block just
-					# below)
-					#break
+				end
+
+				# If the currently focused widget has actions associated to it, and
+				# there is 'hotkey_in' action somewhere in the menu, modify it to
+				# represent the entry under cursor
+				if hk= wh['hotkey_in']
+					hk.widgets_hash['menu_hotkey_in_shortname'].var_text= widget.action.shortname
+					hk.widgets_hash['menu_hotkey_in_shortname'].var_function= widget.action.function
 				end
 
 				# Break if a single-loop was requested (code!= 0)
@@ -71,14 +86,7 @@ module TASKMAN
 					next
 				end
 
-				# If the currently focused widget has actions associated to it, and
-				# there is 'hotkey_in' action somewhere in the menu, modify it to
-				# represent the entry under cursor
-				if hk= $app.screen.all_widgets_hash['hotkey_in']
-					hk.widgets_hash['menu_hotkey_in_shortname'].var_text= widget.action.shortname
-					hk.widgets_hash['menu_hotkey_in_shortname'].var_function= widget.action.function
-					# XXX REDRAW MISSING?
-				end
+				event.upcase!
 
 				# Unhandled ENTER on a widget will call its first action, if one is defined.
 				# Otherwise we go into our usual keypress resolution.
@@ -90,7 +98,8 @@ module TASKMAN
 							f.yield( :window => self, :widget => widget, :action => a, :function => f, :event => event)
 						end
 					end
-				else
+				end
+				#else
 					[ widget, *menus(), *widget.parent_tree()].each do |w|
 						if a= w.hotkeys_hash[event]
 							if Symbol=== f= a.function
@@ -100,7 +109,7 @@ module TASKMAN
 							end
 						end
 					end
-				end
+				#end
 
 				# NOTE: be aware that the code from IFs above will continue here.
 				# Guard appropriately if you do not want that.

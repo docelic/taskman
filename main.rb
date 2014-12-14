@@ -33,7 +33,6 @@ require 'item'
 
 require 'stfl_base'
 
-require 'terminal'
 require 'window'
 
 require 'layout'
@@ -53,6 +52,7 @@ require 'menu'
 require 'menuaction'
 
 require 'theme'
+require 'style'
 
 require 'json'
 
@@ -71,6 +71,7 @@ $getopts= [
 #	[ '--state-save',          '--ss',       GetoptLong::NO_ARGUMENT],
 	[ '--window',              '-w',         GetoptLong::REQUIRED_ARGUMENT],
 	[ '--theme',               '-t',         GetoptLong::REQUIRED_ARGUMENT],
+	[ '--style',               '-s',         GetoptLong::REQUIRED_ARGUMENT],
 
 	[ '--data-dir',            '--dd',       GetoptLong::REQUIRED_ARGUMENT],
 	[ '--data-file',           '--df',       GetoptLong::REQUIRED_ARGUMENT],
@@ -167,36 +168,6 @@ module TASKMAN
 
 		def initialize *arg
 			super()
-
-			@style= {
-				"head" => {
-					:var_style_normal= => 'fg=black,bg=white',
-				},
-				#"body" => {
-				#	:var_style_normal= => 'fg=white,bg=black',
-				#},
-				"menu @label_hotkey" => {
-					:var_style_normal= => 'fg=black,bg=white',
-				},
-				"menu @label_spacer" => {
-					:var_style_normal= => 'fg=white,bg=black',
-				},
-				"menu @label_shortname" => {
-					:var_style_normal= => 'fg=white,bg=black',
-				},
-
-				"@list" => {
-					:var_style_focus= => 'fg=black,bg=white',
-				},
-
-				"help" => {
-					:var_style_normal= => 'fg=white,bg=red',
-				},
-
-				'status' => {
-					:var_style_normal= => 'fg=black,bg=white',
-				},
-			}
 		end
 
 		def start
@@ -218,12 +189,20 @@ module TASKMAN
 				end
 			end
 
-			# GUI aspect
+			# GUI layout
 			wname= arg[:window] ? arg[:window] : $opts['window']
-			arg[:theme]= $opts['theme']
 			arg[:window]= wname
+			arg[:theme]= $opts['theme']
 			@theme= Theme.new arg
 
+			# GUI color scheme
+			arg= { :style=> $opts['style']}
+			@style= Style.new arg
+
+			# @ui: lowlevel STFL object (e.g. Stfl.get() in the manual
+			# is $app.ui.get() in Taskman).
+			# @screen: toplevel element on screen and all its children;
+			# these are the actual STFL-based Ruby objects etc.
 			@ui= @screen.create
 
 			$app.screen.all_widgets_hash.each do |name, w|

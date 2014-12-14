@@ -10,7 +10,7 @@ module TASKMAN
 				@title= arg.has_key?( :title) ? arg.delete( :title).to_s : 'MAIN MENU'
 				@variables['.expand']= 0
 
-				self<< Label.new( :name => 'program_name_version', '.tie' => 'l', '.expand' => '0', :text => "   TASKMAN #{$opts['version']}   ")
+				self<< Label.new( :name => 'program_name_version', '.tie' => 'l', '.expand' => '0', :text => "  TASKMAN #{$opts['version']}  ")
 				self<< Label.new( :name => 'program_location',     '.tie' => 'l',                   'text'=> @title)
 				self<< Label.new(                                  '.tie' => 'r',                   :text => 'Folder: ')
 				self<< Label.new( :name => 'folder_name',          '.tie' => 'l',                   'text'=> ($opts['folder'] == true ? 'ALL' : $opts['folder']))

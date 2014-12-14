@@ -26,6 +26,7 @@ class String
 		gsub(/^\t+/, ' ')
 	end
 
+	# Convert string class name to class
 	def to_class
 		self.split( '::').inject( Object) {|o,c| o.const_get c}
 	end
@@ -35,6 +36,10 @@ class String
 		spacing > 0 ? ( sprintf "%#{spacing+ self.length}s", self): self
 	end
 
+	# Truncate not to exceed term width. Truncate the beginning instead
+	# of the end of the string. Done that way primarily to support
+	# descriptions in status line on Create window, where useful examples
+	# are found at the end of the line.
 	def truncate diff= -1
 		available= $opts['term-width']+ diff
 		needed= self.length
@@ -128,6 +133,20 @@ class Object
 		self.class.to_s.gsub /.+::/, ''
 	end
 
+	# Simply call e.g. if debug?( :stfl) then... end
+	# This will execute the if body if a person requested --debug-stfl on
+	# the command line, or they requested --debug-stfl-widget NAME, where
+	# your object has @name and @name== NAME
+	def debug? type= nil
+		opt= 'debug'+ ( type ? "-#{type}" : '')
+		opt_widget= opt+ '-widget'
+		if $opts[opt] or ( $opts[opt_widget] and @name and $opts[opt_widget]== @name)
+			true
+		else
+			false
+		end
+	end
+
 end
 
 class Array
@@ -178,7 +197,7 @@ end
 
 class Hash
 	def save
-		self[:VERSION]= '0.1'
+		self[:VERSION]= $opts['version']
 		tf= File.join $opts['data-dir'], $opts['data-file']
 		content= self.to_yaml
 		File.write tf, content
@@ -199,15 +218,15 @@ end
 class Numeric
 	def period? period, from, to= nil
 		if to
-			if to>from 
-				return false if self>to or self<from
+			if to> from
+				return false if self> to or self< from
 			else
-				return false if self<to or self>from
+				return false if self< to or self> from
 			end
 		elsif to== false
-			return false if self<from
+			return false if self< from
 		end 
-		(self-from) % period == 0
+		(self- from) % period == 0
 	end 
 end 
 

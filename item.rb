@@ -1,5 +1,6 @@
-# Representation of the task/item as definition of class VirtualDate
-# (Search 'class VirtualDate' below for VirtualDate)
+# Representation of the task/item as class Item.
+# Also, contains definition of class VirtualDate which represents
+# our custom date object (search 'class VirtualDate' below)
 
 module TASKMAN
 
@@ -34,7 +35,7 @@ module TASKMAN
 			@time_ssm= nil # activation time, in seconds since midnight 
 			@remind= [] # list of Dates or Times to activate the reminder on, or seconds relative to the the due date/time
 			@omit_remind= false # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
-			@message= ''
+			@message= '' # Body of the task
 		end 
 
 		# Parser functions:
@@ -42,10 +43,10 @@ module TASKMAN
 		# (e.g. e.due= [ ....], e.due<< ...,) or it can be initialized
 		# with a convenient, text value.
 
-		# To initialize from text value, call with .parse_, e.g.
+		# To initialize from text value, call with .parse_*(), e.g.
 		# e.parse_due( 'text'). The parse functions will append arrays
 		# with new definitions whenever possible; to re-set a certain
-		# field, use e.parse_*= value, e.g. e.parse_due= ...
+		# field to only what you gave it, use e.parse_*=(), e.g. e.parse_due= ...
 
 		# Supported syntax:
 		# Anything accepted by Date.parse()
@@ -88,7 +89,8 @@ module TASKMAN
 		#    Start reminding 90 minutes before the event,
 		#    and remind 3 times, once every 10 minutes
 		# 2) Specific date and time, e.g. Jan 15, 2012 12:00
-		# 3) Specific date parseable by Date.parse, limited to YYYY ..., YYYYMMDD, and day/mon abrev ...
+		# 3) Specific date parseable by Date.parse, limited to YYYY ...,
+		#    YYYYMMDD, and day/mon abbrev ...
 		def parse_remind l
 			a= l.split( /,/).map{|x| x.strip}
 			x= nil
@@ -238,11 +240,11 @@ module TASKMAN
 					per= $1.to_i
 					n= $2 ? $2[1..-1].to_i : nil
 					d= vd.day
-					d= force_array d unless Enumerable===d 
+					d= force_array d unless Enumerable=== d
 					m= vd.month
-					m= force_array m unless Enumerable===m 
+					m= force_array m unless Enumerable=== m
 					y= vd.year
-					y= force_array y unless Enumerable===y
+					y= force_array y unless Enumerable=== y
 					l= y.outer( m).outer( d, :flatten)
 					l.map!{ |x| Date.new( *x).jd}
 					if n
@@ -281,21 +283,21 @@ module TASKMAN
 		end  
 		
 		def time date= Date.today
-			date.to_date.to_time + ssm 
+			date.to_date.to_time+ ssm
 		end 
 		def time= time 
 			@time_ssm= case time
 			when Array
-				time[0]*3600+time[1]*60+time[2]
+				time[0]* 3600+ time[1]* 60+ time[2]
 			when Time  
-				time.hour*3600+time.min*60+time.sec			
+				time.hour* 3600+ time.min* 60+ time.sec
 			else nil
 			end
 			
 		end 
-		def hour() (ssm / 3600).to_i end 
-		def min() ((ssm % 3600) / 60).to_i end 
-		def sec() ssm % 60  end 
+		def hour() (ssm/ 3600).to_i end
+		def min() ((ssm% 3600)/ 60).to_i end
+		def sec() ssm% 60 end
 		
 		def start= date
 			@start= date.to_date
