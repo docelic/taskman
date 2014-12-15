@@ -261,23 +261,26 @@ module TASKMAN
 			255 => { :hex => 0xeeeeee, :rgb => [  238,238,238 ]},
 		}
 
-		def initialize *arg
+		def initialize arg= {}
 			super
-
 			@widget= :vbox
 
+			wpc= ( $COLUMNS/ 15).floor # cell width per color
 			c= 0
 			20.times do |i|
-				row= Hbox.new
+				row= Hbox.new( :'.expand'=> 'h')
 				15.times do |j|
-					l= Label.new( :text => c.to_s, '.width' => 5, :style_normal => "bg=color#{c},fg=black")
-					c+= 1 if c< 250
+					l= Label.new( :text=> c.to_s, '.width'=> wpc, :'.expand'=> 'h', :style_normal=> "bg=color#{c},fg=black")
+					# Not sure why we can't literally use c< 256 here, when the
+					# ncurses limit is 256. So, we use c< 252. Or rather I know,
+					# this window itself uses a couple pairs. If you change the
+					# window's code and then hit the "Ncurses limit" of 256,
+					# reduce this 252 to a lower number.
+					c+= 1 if c< 252
 					row<< l
 				end
 				self<<row
 			end
 		end
-
 	end
-
 end

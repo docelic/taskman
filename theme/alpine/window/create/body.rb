@@ -3,7 +3,7 @@ module TASKMAN
 	class Theme::Window::Create::Body < Window
 
 		def initialize arg= {}
-			super arg
+			super
 
 			@widget= nil
 			i= arg[:id] ? $tasklist[:tasks][arg[:id].to_i] : Item.new
@@ -66,7 +66,7 @@ module TASKMAN
 
 			h2= Hbox.new(                      '.expand' => 'h')
 			h2<< Label.new(                    '.expand' => '',  :text => 'Due dates   : ')
-			h2<< Input.new( :name => :due,     '.expand' => 'h', :text => i._due, :tooltip => 'Due dates, e.g. 3 | -1 | 2012, 2013 | MON, TUE | JAN, FEB | 12..22(2) ...') #, MON..FRI, JAN..DEC(2), 2012..2014, *+-aXb, >2014')
+			h2<< Input.new( :name => :due,     '.expand' => 'h', :text => i._due, :tooltip => 'Due dates, e.g. 3 | -1 | 2012, 2013 | MON, TUE | JAN, FEB | 12..22(2) ...')
 			h3<< h2
 
 			h2= Hbox.new(                      '.expand' => 'h')
@@ -138,9 +138,6 @@ module TASKMAN
 					f.yield( :window => self.parent) #, :widget => c, :action => a, :function => f, :event => 'ENTER')
 				end
 			end
-			self
 		end
-
 	end
-
 end

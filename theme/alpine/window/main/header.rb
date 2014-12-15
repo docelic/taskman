@@ -4,8 +4,7 @@ module TASKMAN
 		class Header < Hbox
 
 			def initialize arg= {}
-				super
-				@variables['.expand']= 0
+				super arg.merge( '.expand' => '0')
 
 				self<< Label.new( :name=> "#{@name}_program_name_version", '.tie'=> 'l', '.expand' => '0', :text=> "  TASKMAN #{$opts['version']}   ")
 				self<< Label.new( :name=> "#{@name}_program_location",     '.tie'=> 'l',                   :text=> @title)

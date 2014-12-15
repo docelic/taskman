@@ -2,7 +2,7 @@ module TASKMAN
 
 	class Theme::Window::Main::Body < Vbox
 
-		def initialize *arg
+		def initialize arg= {}
 			super
 
 			# Spacer 1
@@ -29,13 +29,11 @@ module TASKMAN
 			end
 
 			# Spacer 2
-			l2= Label.new(    :name=> "#{@name}_space2", '.expand' => 'vh')
+			l2= Label.new(   :name=> "#{@name}_space2", '.expand' => 'vh')
 
 			self<< l1
 			self<< list
 			self<< l2
 		end
-
 	end
-
 end

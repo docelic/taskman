@@ -2,14 +2,9 @@ module TASKMAN
 
 	class Theme::Window::Main::Menu < Menu
 
-		def initialize *arg
-			super
-
+		def initialize arg= {}
+			super arg.merge( :'.expand'=> 'h', :'.height'=> 1)
 			@widget= :table
-			@variables['.expand']= 'h'
-			@variables['.height']= 1
 		end
-	
 	end
-
 end

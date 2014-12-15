@@ -2,8 +2,8 @@ module TASKMAN
 
 	class Theme::Window::Index::Body < Window
 
-		def initialize *arg
-			super()
+		def initialize arg= {}
+			super
 
 			l= List.new( :name => 'list')
 
@@ -16,7 +16,5 @@ module TASKMAN
 
 			self<< l
 		end
-
 	end
-
 end
