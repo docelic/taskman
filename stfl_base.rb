@@ -321,6 +321,7 @@ module TASKMAN
 						if debug then pfl _('Found style key %s')% [ key] end
 						s.each do |k, v|
 							if debug then pfl _('Applying style to %s: %s%s')% [ @name, k, v] end
+							k= "var_style_#{k}=".to_sym
 							self.send k, v
 						end
 						return
