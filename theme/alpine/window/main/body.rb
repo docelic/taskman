@@ -21,7 +21,8 @@ module TASKMAN
 			i= 1
 			menu.each do |a|
 				li= ListItem.new( :name=> "#{@name}_list_#{a.name}", :text => a.menu_text, :can_focus => 1)
-				li<< a
+				# XXX re-enable
+				#li<< a
 				list<< li
 				list<< ListItem.new( :name=> "#{@name}_listitem#{i}", :can_focus => 0) # Spacer
 				i= i+ 1

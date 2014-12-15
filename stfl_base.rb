@@ -139,6 +139,13 @@ module TASKMAN
 		def _minw_now() $app.ui.get( "#{@name}:minw").to_i end
 		def _minh_now() $app.ui.get( "#{@name}:minh").to_i end
 
+		def [] arg
+			@widgets_hash[arg]
+		end
+		def focus
+			$app.ui.set_focus @name
+		end
+
 		# Function to call after new(), to initialize anything that can't be
 		# initialized during new(). By default, no work here. You would use
 		# this if e.g. you want to run actions after the window is created.

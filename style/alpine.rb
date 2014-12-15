@@ -10,7 +10,10 @@ module TASKMAN
 				:var_style_focus= => 'fg=black,bg=white',
 			},
 
-			'status status_label' => {
+			'status_label' => {
+				:var_style_normal= => 'fg=black,bg=white',
+			},
+			'status_prompt' => {
 				:var_style_normal= => 'fg=black,bg=white',
 			},
 

@@ -21,9 +21,16 @@ module TASKMAN
 			b.init arg
 
 			self<< Theme::Window::Main::Status.new( arg.merge( :name => :status))
-			m1= Theme::Window::Create::Menu.new(    arg.merge( :name => :menu))
+			m1= Theme::Window::Create::Menu.new(    arg.merge( :name => :menu1))
 			m1.add_action(
-				:create_task
+				:get_help,
+				:create_task,
+				:'',
+				:'',
+				:cut_line,
+				:'',
+				:tablebr,
+				:cancel,
 			)
 
 			self<< m1

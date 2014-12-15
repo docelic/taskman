@@ -8,6 +8,7 @@ module TASKMAN
 		@@Menus= {
 			# To have multiple "same" menus, you must use different names
 			'help'       => { :hotkey => '?',   :shortname => 'Help',        :menuname => 'Help',        :description => 'Get help using Taskman', :function => :help},
+			'get_help'   => { :hotkey => '^G',  :shortname => 'Get Help',    :menuname => 'Get Help',    :description => 'Get help', :function => :help},
 			'help2'      => { :hotkey => '?',   :shortname => 'Help',        :menuname => 'Help',        :description => 'Get help using Taskman', :function => :help},
 
 			# For the empty slot, no need to use a different name even if
@@ -59,8 +60,9 @@ module TASKMAN
 			'top_help'=>    { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_help},
 			'bottom_help'=> { :hotkey => 'DOWN',:shortname => '',    :menuname => '', :description => '', :function => :bottom_help},
 
+			'cut_line'           => { :hotkey => '^K',   :shortname => 'Cut Line',         :description => 'Cut line', :function => nil},
 			'postpone'           => { :hotkey => '^O',   :shortname => 'Postpone',         :description => '', :function => :postpone},
-			'cancel'             => { :hotkey => '^C',   :shortname => 'Cancel',           :description => '', :function => :cancel},
+			'cancel'             => { :hotkey => '^C',   :shortname => 'Cancel',           :description => '', :function => :main},
 
 			# Testing shortcuts
 			'inc_folder_count'   => { :hotkey => 'SR',   :shortname => 'Folder Cnt+1',     :description => '', :function => :inc_folder_count },
@@ -79,15 +81,15 @@ module TASKMAN
 			if name.length> 0
 				@name= name
 			end
-			@hotkey= arg.has_key?( :hotkey) ? arg.delete( :hotkey): @@Menus[name][:hotkey]
-			@shortname= arg.has_key?( :shortname) ? arg.delete( :shortname): @@Menus[name][:shortname]
-			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name][:menuname]
-			@description= arg.has_key?( :description) ? arg.delete( :description).truncate: @@Menus[name][:description].truncate
+			@hotkey= arg.has_key?( :hotkey) ? arg.delete( :hotkey): @@Menus[name] ? @@Menus[name][:hotkey] : nil
+			@shortname= arg.has_key?( :shortname) ? arg.delete( :shortname): @@Menus[name] ? @@Menus[name][:shortname] : nil
+			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name] ? @@Menus[name][:menuname] : nil
+			@description= arg.has_key?( :description) ? arg.delete( :description).truncate: @@Menus[name] ? @@Menus[name][:description].truncate : nil
 
 			# Function to execute can be specified in a parameter or come from a default.
 			# If none of that is specified, it defaults to a function named the same as
 			# the menuaction itself.
-			@function= arg.has_key?( :function) ? arg.delete( :function) : @@Menus[name][:function]
+			@function= arg.has_key?( :function) ? arg.delete( :function) : @@Menus[name] ? @@Menus[name][:function] : nil
 
 			super
 		end
@@ -139,15 +141,27 @@ module TASKMAN
 		def quit arg= {}
 			w= arg[:window]
 			wh= w.all_widgets_hash
-			p= wh['prompt']
+			p= wh['status']
 			a= false
 			if p
-				a= p.ask( :q=> :quit).to_bool
+				p['status_display'].var__display= 0
+				p['status_prompt'].var__display= 1
+				p.all_widgets_hash['status_question'].var_text= 'Really quit Taskman?'
+				p.all_widgets_hash['status_answer'].var_text= ''
+				p.all_widgets_hash['status_answer'].focus
+				p.all_widgets_hash['status_answer'].action.function= Proc.new { |arg|
+					# window, widget, action, function, event-- WWAFE
+					w= arg[:widget]
+					a= w.var_text_now.to_bool
+					if a
+						Stfl.reset
+						puts "Taskman finished."
+						exit 0
+					end
+					p['status_display'].var__display= 1
+					p['status_prompt'].var__display= 0
+				}
 			end
-			return unless a
-			Stfl.reset
-			puts "Taskman finished."
-			exit 0
 		end
 
 		# Hide the current menu and show the menu after it
