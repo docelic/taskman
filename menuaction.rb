@@ -7,74 +7,68 @@ module TASKMAN
 		# TODO move this to outside file
 		@@Menus= {
 			# To have multiple "same" menus, you must use different names
-			'help'       => { :hotkey => '?',   :shortname => 'Help',        :menuname => 'Help',        :description => 'Get help using Taskman', :function => :help},
-			'get_help'   => { :hotkey => '^G',  :shortname => 'Get Help',    :menuname => 'Get Help',    :description => 'Get help', :function => :help},
-			'help2'      => { :hotkey => '?',   :shortname => 'Help',        :menuname => 'Help',        :description => 'Get help using Taskman', :function => :help},
+			'help'      => { :hotkey=> '?',   :shortname=> 'Help',        :menuname=> 'Help',        :description=> 'Get help using Taskman', :function=> :help},
+			'help2'     => { :hotkey=> '?',   :shortname=> 'Help',        :menuname=> 'Help',        :description=> 'Get help using Taskman', :function=> :help},
+			'get_help'  => { :hotkey=> '^G',  :shortname=> 'Get Help',    :menuname=> 'Get Help',    :description=> 'Get help',               :function=> :help},
+			'exit_help' => { :hotkey=> 'E',   :shortname=> 'Exit Help',   :menuname=> 'Exit Help',   :description=> 'Exit Help', :function=> :main },
 
-			# For the empty slot, no need to use a different name even if
-			# it appears multiple times, because empty name results in the
-			# name being auto-generated
-			''           => { :hotkey => '',    :shortname => '',            :menuname => '',            :description => '', :function => nil }, # Empty one
+			# For the empty slot, no need to use a different name even if it appears multiple times, because empty name results in the name being auto-generated
+			''          => { :hotkey=> '',    :shortname=> '',            :menuname=> '',            :description=> '', :function=> nil }, # Empty one
 
-			'relnodes'   => { :hotkey => 'R',   :shortname => 'RelNotes',    :menuname => 'RelNotes',    :description => '', :function => nil },
+			# The current useful bulk of our actions
+			'hotkey_in' => { :hotkey=> '>',   :shortname=> '',            :menuname=> '',            :description=> '', :function=> nil },
 
-			'other'      => { :hotkey => 'O',   :shortname => 'OTHER CMDS',  :menuname => 'OTHER CMDS',  :description => '', :function => :menu_next_page },
-			'other2'     => { :hotkey => 'O',   :shortname => 'OTHER CMDS',  :menuname => 'OTHER CMDS',  :description => '', :function => :menu_next_page },
+			'nextcmd2'  => { :hotkey=> 'N',   :shortname=> 'NextCmd',     :menuname=> 'NextCmd',     :description=> '', :function=> :nextcmd2 },
+			'prevcmd2'  => { :hotkey=> 'P',   :shortname=> 'PrevCmd',     :menuname=> 'PrevCmd',     :description=> '', :function=> :prevcmd2 },
+			'firstpage' => { :hotkey=> 'HOME',:shortname=> 'FirstPage',   :menuname=> 'FirstPage',   :description=> '', :function=> :firstpage },
+			'lastpage'  => { :hotkey=> 'END', :shortname=> 'LastPage',    :menuname=> 'LastPage',    :description=> '', :function=> :lastpage },
+			'nextpage'  => { :hotkey=> 'SPACE',:shortname=> 'NextPage',   :menuname=> 'NextPage',    :description=> '', :function=> :nextpage },
+			'prevpage'  => { :hotkey=> '-',   :shortname=> 'PrevPage',    :menuname=> 'PrevPage',    :description=> '', :function=> :prevpage },
 
-			'hotkey_in'  => { :hotkey => '>',   :shortname => '',            :menuname => '',            :description => '', :function => nil },
-			'hotkey_out' => { :hotkey => '<',   :shortname => '',            :menuname => '',            :description => '', :function => nil },
-			'nextcmd2'   => { :hotkey => 'N',   :shortname => 'NextCmd',     :menuname => 'NextCmd',     :description => '', :function => :nextcmd2 },
-			'prevcmd2'   => { :hotkey => 'P',   :shortname => 'PrevCmd',     :menuname => 'PrevCmd',     :description => '', :function => :prevcmd2 },
-			'firstpage'  => { :hotkey => 'HOME',:shortname => 'FirstPage',   :menuname => 'FirstPage',   :description => '', :function => :firstpage },
-			'lastpage'   => { :hotkey => 'END', :shortname => 'LastPage',    :menuname => 'LastPage',    :description => '', :function => :lastpage },
-			'nextpage'   => { :hotkey => 'SPACE',:shortname => 'NextPage',   :menuname => 'NextPage',    :description => '', :function => :nextpage },
-			'prevpage'   => { :hotkey => '-',   :shortname => 'PrevPage',    :menuname => 'PrevPage',    :description => '', :function => :prevpage },
-			'kblock'     => { :hotkey => 'K',   :shortname => 'KBLock',      :menuname => 'KBLock',      :description => '', :function => nil },
-			'quit'       => { :hotkey => 'Q',   :shortname => 'Quit',        :menuname => 'Quit',        :description => 'Leave the Taskman program', :function => :quit },
-			'listfolders'=> { :hotkey => 'L',   :shortname => 'ListFldrs',   :menuname => 'FOLDER LIST', :description => 'Select a folder to view', :function => nil },
-			'setup'      => { :hotkey => 'S',   :shortname => 'Setup',       :menuname => 'Setup',       :description => '', :function => nil },
-			'role'       => { :hotkey => '#',   :shortname => 'Role',        :menuname => 'Role',        :description => '', :function => nil },
-			'gotofolder' => { :hotkey => 'G',   :shortname => 'GotoFldr',    :menuname => 'GotoFldr',    :description => '', :function => nil },
-			'journal'    => { :hotkey => 'J',   :shortname => 'Journal',     :menuname => 'Journal',     :description => '', :function => nil },
-			'addrbook'   => { :hotkey => 'A',   :shortname => 'AddrBook',    :menuname => 'AddrBook',    :description => '', :function => nil },
+			'main'      => { :hotkey=> '^M',  :shortname=> 'Main Menu',   :menuname=> 'Main Menu',   :description=> 'Main Menu', :function=> :main },
+			'create'    => { :hotkey=> 'C',   :shortname=> 'Create',      :menuname=> 'Create Task', :description=> 'Create a task', :function=> :create },
+			'index'     => { :hotkey=> 'I',   :shortname=> 'Index',       :menuname=> 'Task Index',  :description=> 'View tasks in current folder', :function=> :index },
 
-			'main'       => { :hotkey => '^M',  :shortname => 'Main Menu',   :menuname => 'Main Menu',   :description => 'Main Menu', :function => :main },
-			'create'     => { :hotkey => 'C',   :shortname => 'Create',      :menuname => 'Create Task', :description => 'Create a task', :function => :create },
-			'index'      => { :hotkey => 'I',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => :index },
+			'create_task'=> { :hotkey=> '^X',  :shortname=> 'Create',      :menuname=> 'Create a Task',:description=> '', :function=> :create_task},
+			'select_task'=> { :hotkey=> 'ENTER',:shortname=> 'Select',     :menuname=> 'Select Task', :description=> '', :function=> :select_task},
+			'save_task' => { :hotkey=> '^X',  :shortname=> 'Save',        :menuname=> 'Save Changes',:description=> '', :function=> :create_task},
 
-			# This can be implemented when we implement prompter widget
-			'whereis'    => { :hotkey => 'W',   :shortname => 'WhereIs',     :menuname => 'Find String', :description => 'Find a string', :function => nil },
+			'quit'      => { :hotkey=> 'Q',   :shortname=> 'Quit',        :menuname=> 'Quit',        :description=> 'Leave the Taskman program', :function=> :quit },
 
-			'create_task'=> { :hotkey => '^X',  :shortname => 'Create',      :menuname => 'Create a Task', :description => '', :function => :create_task},
-			'save_task'  => { :hotkey => '^X',  :shortname => 'Save',        :menuname => 'Save Changes', :description => '', :function => :create_task},
+			# Actions related to status messages when a person tries to move beyond widget/page/window limits
+			'top_list'=>    { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_list},
+			'bottom_list'=> { :hotkey=> 'DOWN',:shortname=> '',    :menuname=> '', :description=> '', :function=> :bottom_list},
+			'top_header'=>  { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_header},
+			#'bottom_page'=> { :hotkey=> 'DOWN',:shortname=> '',    :menuname=> '', :description=> ''},
+			'top_help'=>    { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_help},
+			'bottom_help'=> { :hotkey=> 'DOWN',:shortname=> '',    :menuname=> '', :description=> '', :function=> :bottom_help},
 
-			'select_task'=> { :hotkey => 'ENTER',:shortname => 'Select',     :menuname => 'Select Task', :description => '', :function => :select_task},
-
-			'exit_help'  => { :hotkey => 'E',   :shortname => 'Exit Help',   :menuname => 'Exit Help',   :description => 'Exit Help', :function => :main },
-
-			# Actions related to messages when a person tries to move
-			# beyond widget/page/window limits
-			'top_list'=>    { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_list},
-			'bottom_list'=> { :hotkey => 'DOWN',:shortname => '',    :menuname => '', :description => '', :function => :bottom_list},
-			'top_header'=>  { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_header},
-			#'bottom_page'=> { :hotkey => 'DOWN',:shortname => '',    :menuname => '', :description => ''},
-			'top_help'=>    { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_help},
-			'bottom_help'=> { :hotkey => 'DOWN',:shortname => '',    :menuname => '', :description => '', :function => :bottom_help},
-
-			'cut_line'           => { :hotkey => '^K',   :shortname => 'Cut Line',         :description => 'Cut line', :function => nil},
-			'postpone'           => { :hotkey => '^O',   :shortname => 'Postpone',         :description => '', :function => :postpone},
-			'cancel'             => { :hotkey => '^C',   :shortname => 'Cancel',           :description => '', :function => :main},
+			# Misc
+			'toggle_timing_options'=> { :description=> 'Toggle Timing Options', :function=> :toggle_timing_options},
+			'toggle_reminding_options'=> { :description=> 'Toggle Remind Options', :function=> :toggle_reminding_options},
 
 			# Testing shortcuts
-			'inc_folder_count'   => { :hotkey => 'SR',   :shortname => 'Folder Cnt+1',     :description => '', :function => :inc_folder_count },
-			'all_widgets_hash'   => { :hotkey => 'SF',   :shortname => 'All Children',     :description => '', :function => :all_widgets},
-			'parent_names'       => { :hotkey => '^P',   :shortname => 'Parent Tree',      :description => '', :function => :parent_names},
-			'read_self_text'     => { :hotkey => '^P',:shortname => 'Read self text',   :description => '', :function => :read_self_text},
+			'inc_folder_count'  => { :hotkey=> 'SR',   :shortname=> 'Folder Cnt+1',     :description=> '', :function=> :inc_folder_count },
+			'all_widgets_hash'  => { :hotkey=> 'SF',   :shortname=> 'All Children',     :description=> '', :function=> :all_widgets},
+			'parent_names'      => { :hotkey=> '^P',   :shortname=> 'Parent Tree',      :description=> '', :function=> :parent_names},
+			'read_self_text'    => { :hotkey=> '^P',:shortname=> 'Read self text',   :description=> '', :function=> :read_self_text},
 
-			# Various
-			'toggle_timing_options'=> { :description => 'Toggle Timing Options', :function => :toggle_timing_options},
-			'toggle_reminding_options'=> { :description => 'Toggle Remind Options', :function => :toggle_reminding_options},
-
+			# OLD / Unused / Unfinished / Untested
+			'other'     => { :hotkey=> 'O',   :shortname=> 'OTHER CMDS',  :menuname=> 'OTHER CMDS',  :description=> '', :function=> :menu_next_page },
+			'other2'    => { :hotkey=> 'O',   :shortname=> 'OTHER CMDS',  :menuname=> 'OTHER CMDS',  :description=> '', :function=> :menu_next_page },
+			'relnotes'  => { :hotkey=> 'R',   :shortname=> 'RelNotes',    :menuname=> 'RelNotes',    :description=> '', :function=> nil },
+			'hotkey_out'=> { :hotkey=> '<',   :shortname=> '',            :menuname=> '',            :description=> '', :function=> nil },
+			'kblock'    => { :hotkey=> 'K',   :shortname=> 'KBLock',      :menuname=> 'KBLock',      :description=> '', :function=> nil },
+			'setup'     => { :hotkey=> 'S',   :shortname=> 'Setup',       :menuname=> 'Setup',       :description=> '', :function=> nil },
+			'role'      => { :hotkey=> '#',   :shortname=> 'Role',        :menuname=> 'Role',        :description=> '', :function=> nil },
+			'gotofolder'=> { :hotkey=> 'G',   :shortname=> 'GotoFldr',    :menuname=> 'GotoFldr',    :description=> '', :function=> nil },
+			'journal'   => { :hotkey=> 'J',   :shortname=> 'Journal',     :menuname=> 'Journal',     :description=> '', :function=> nil },
+			'addrbook'  => { :hotkey=> 'A',   :shortname=> 'AddrBook',    :menuname=> 'AddrBook',    :description=> '', :function=> nil },
+			'whereis'   => { :hotkey=> 'W',   :shortname=> 'WhereIs',     :menuname=> 'Find String', :description=> 'Find a string', :function=> nil },
+			'cut_line'          => { :hotkey=> '^K',   :shortname=> 'Cut Line',         :description=> 'Cut line', :function=> nil},
+			'postpone'          => { :hotkey=> '^O',   :shortname=> 'Postpone',         :description=> '', :function=> :postpone},
+			'cancel'            => { :hotkey=> '^C',   :shortname=> 'Cancel',           :description=> '', :function=> :main},
+			'listfolders'=> { :hotkey=> 'L',   :shortname=> 'ListFldrs',   :menuname=> 'FOLDER LIST', :description=> 'Select a folder to view', :function=> nil },
 		}
 
 		def initialize arg= {}
