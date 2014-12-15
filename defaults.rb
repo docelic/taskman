@@ -27,13 +27,16 @@ module TASKMAN
 
 			'version'	           => '0.12(14)',
 
-			'term-width'         => ( $COLUMNS|| 80),
 		#	'local'              => false,
 		#	'default-time'       => false,
 
 			'window'             => 'main',
 			'theme'              => 'alpine',
 			'style'              => 'alpine',
+
+			'term-width'         => ( $COLUMNS|| 80),
+			'colors'             => 256,
+			'term'               => nil,
 		}
 
 		def initialize *arg
@@ -57,6 +60,9 @@ $description= {
   'window'               => 'Program window to open',
   'theme'                => 'GUI layout scheme to use',
   'style'                => 'GUI color scheme to use',
+  'colors'               => 'Number of colors to use (16, 256)',
+  'term'                 => 'Value for TERM= emulator',
+  'term-width'           => 'Term width to use',
   'debug'                => 'Show general debug',
   'debug-keys'           => 'Show keypresses',
   'debug-opts'           => 'Show command line options',

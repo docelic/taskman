@@ -140,7 +140,7 @@ module TASKMAN
 		def _minh_now() $app.ui.get( "#{@name}:minh").to_i end
 
 		def [] arg
-			@widgets_hash[arg]
+			self.all_widgets_hash[arg]
 		end
 		def focus
 			$app.ui.set_focus @name

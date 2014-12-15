@@ -78,7 +78,10 @@ $getopts= [
 	[ '--data-dir',            '--dd',       GetoptLong::REQUIRED_ARGUMENT],
 	[ '--data-file',           '--df',       GetoptLong::REQUIRED_ARGUMENT],
 
+	[ '--term',                '--te',       GetoptLong::REQUIRED_ARGUMENT],
 	[ '--term-width',          '--tw',       GetoptLong::REQUIRED_ARGUMENT],
+	[ '--colors',              '--co',       GetoptLong::REQUIRED_ARGUMENT],
+
 	[ '--debug',               '-d',         GetoptLong::NO_ARGUMENT],
 	[ '--debug-keys',          '--dk',       GetoptLong::NO_ARGUMENT],
 	[ '--debug-opts',          '--do',       GetoptLong::NO_ARGUMENT],
@@ -139,6 +142,11 @@ begin
 				ENV['COLUMNS']= arg
 				$COLUMNS= $opts[opt]= arg.to_i
 
+			when 'colors'
+				propagate= false
+				$opts[opt]= arg.to_i
+				$opts['color_set']= 1
+
 			when 'help'
 				usage
 				exit 0
@@ -152,6 +160,30 @@ end
 
 if $opts['debug-opts']
 	pfl $opts
+end
+
+if $opts['term']
+	ENV['TERM']= $opts['term']
+	if not $opts['color_set']
+		if $opts['term'].match( /(\d+)/)
+			case $1
+				when 8, 16, 88, 256
+					$opts['colors']= m
+					$opts['colors_set']= 1
+			end
+		end
+		if not $opts['colors_set']
+			c= `tput colors`.chomp.to_i
+			if not c> 0
+				c= 8
+				$stderr.puts "Assuming '#{$opts['term']}' with #{c} colors. Please invoke with --colors NUMBER if incorrect."
+				sleep 2
+			end
+			$opts['colors']= c
+		end
+	end
+elsif $opts['colors']> 8
+	ENV['TERM']= "screen-#{$opts['colors']}color"
 end
 
 #if $opts['data-dir'] and not File.directory? $opts['data-dir']
