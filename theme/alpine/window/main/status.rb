@@ -5,17 +5,14 @@ module TASKMAN
 	class Theme::Window::Main::Status < Hbox
 
 		def initialize *arg
-			super()
+			super
 
 			@variables['.expand']= 'h'
 
-			s= Hbox.new(                      '.expand' => 'h')
-			s<< Label.new(                    '.expand' => '0', :text => ' ')
-			s<< Label.new(                                      :text => '')
-			s<< Label.new( :name => 'status', '.expand' => '0', :text => '')
-			s<< Label.new(                                      :text => '')
-
-			self<< s
+			self<< Label.new( :name=> "#{@name}_space1", '.expand'=> '0', :text=> ' ')
+			self<< Label.new( :name=> "#{@name}_space2",                  :text=> '')
+			self<< Label.new( :name=> "#{@name}_label",  '.expand'=> '0', :text=> '')
+			self<< Label.new( :name=> "#{@name}_space3",                  :text=> '')
 		end
 
 	end

@@ -1,7 +1,7 @@
 module TASKMAN
 
 	class Theme::Window::Colortest < Theme::Window
-		require 'theme/alpine/window/main/head'
+		require 'theme/alpine/window/main/header'
 		require 'theme/alpine/window/colortest/body'
 		require 'theme/alpine/window/main/status'
 		require 'theme/alpine/window/colortest/menu'
@@ -11,38 +11,19 @@ module TASKMAN
 
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Head.new( :name => :head, :title => 'COLOR TEST')
+			self<< Theme::Window::Main::Head.new( :name => :header, :title => 'COLOR TEST')
 			self<< Theme::Window::Colortest::Body.new( :name => :body)
 			self<< Theme::Window::Main::Status.new( :name => :status)
 			self<< Theme::Window::Colortest::Menu.new( :name => :menu)
-			pfl @widgets_hash.keys
 			@widgets_hash['menu'].add_action(
 				:help,
 				:'',
-				:prevcmd,
+				#:back,
 				:'',
-				:relnodes,
 				:'',
-				:other,
-				:hotkey_in,
-				:nextcmd,
 				:'',
-				:kblock,
 				:'',
-				:help,
 				:quit,
-				:folder_list,
-				:index,
-				:setup,
-				:role,
-				:other,
-				:create,
-				:gotofolder,
-				:journal,
-				:addrbook,
-				:'',
-				:inc_folder_count,
-				:all_widgets_hash,
 			)
 		end
 

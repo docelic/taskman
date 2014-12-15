@@ -1,7 +1,8 @@
 module TASKMAN
 	class Style
 		@@Def= {
-			'head' => {
+
+			'header' => {
 				:var_style_normal= => 'fg=black,bg=white',
 			},
 
@@ -9,13 +10,12 @@ module TASKMAN
 				:var_style_focus= => 'fg=black,bg=white',
 			},
 
-			'status' => {
+			'status status_label' => {
 				:var_style_normal= => 'fg=black,bg=white',
 			},
-
-			'menu @label_hotkey' => {
-				:var_style_normal= => 'fg=black,bg=white',
-			},
+#			'menu @label_hotkey' => {
+#				:var_style_normal= => 'fg=black,bg=white',
+#			},
 			#'menu @label_spacer' => {
 			#	:var_style_normal= => 'fg=white,bg=black',
 			#},

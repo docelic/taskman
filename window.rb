@@ -50,14 +50,14 @@ module TASKMAN
 					end
 
 					# Whatever the key press is, clear the window's status box,
-					# if one exists.
-					if wh['status']
-						wh['status'].var_text= ''
-					end
-					# Now, if the widget focused has a tooltip assigned to it,
-					# show it in the status box.
-					if widget.tooltip
-						wh['status'].var_text= ( '['+ widget.tooltip+ ']').truncate
+					# if one exists. (Or set it to the current item's tooltip, if any).
+					if wh['status_label']
+						wh['status_label'].var_text= ''
+						# Now, if the widget focused has a tooltip assigned to it,
+						# show it in the status box.
+						if widget.tooltip
+							wh['status_label'].var_text= ( '['+ widget.tooltip+ ']').truncate
+						end
 					end
 
 				else # (If we don't have anything focused or focused widget not found)

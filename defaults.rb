@@ -9,6 +9,7 @@ module TASKMAN
 
 		@@opts= {
 			'data-dir'           => File.join( ENV['HOME'], '.taskman'),
+			'lib-dir'            => File.join( ENV['HOME'], '.taskman', 'lib'),
 			'data-file'          => 'tasks.yaml',
 
 			'folder'             => true, # Default folder, true == all

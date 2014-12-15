@@ -7,8 +7,8 @@ module TASKMAN
 		# TODO move this to outside file
 		@@Menus= {
 			# To have multiple "same" menus, you must use different names
-			'help'       => { :hotkey => '?',   :shortname => 'Help',        :menuname => 'Help',        :description => 'Get help using Taskman', :function => Proc.new { puts "YEHUDA KATZ!" }},
-			'help2'      => { :hotkey => '?',   :shortname => 'Help',        :menuname => 'Help',        :description => 'Get help using Taskman', :function => Proc.new { puts "YEHUDA KATZ!" }},
+			'help'       => { :hotkey => '?',   :shortname => 'Help',        :menuname => 'Help',        :description => 'Get help using Taskman', :function => :help},
+			'help2'      => { :hotkey => '?',   :shortname => 'Help',        :menuname => 'Help',        :description => 'Get help using Taskman', :function => :help},
 
 			# For the empty slot, no need to use a different name even if
 			# it appears multiple times, because empty name results in the
@@ -24,6 +24,10 @@ module TASKMAN
 			'hotkey_out' => { :hotkey => '<',   :shortname => '',            :menuname => '',            :description => '', :function => nil },
 			'nextcmd2'   => { :hotkey => 'N',   :shortname => 'NextCmd',     :menuname => 'NextCmd',     :description => '', :function => :nextcmd2 },
 			'prevcmd2'   => { :hotkey => 'P',   :shortname => 'PrevCmd',     :menuname => 'PrevCmd',     :description => '', :function => :prevcmd2 },
+			'firstpage'  => { :hotkey => 'HOME',:shortname => 'FirstPage',   :menuname => 'FirstPage',   :description => '', :function => :firstpage },
+			'lastpage'   => { :hotkey => 'END', :shortname => 'LastPage',    :menuname => 'LastPage',    :description => '', :function => :lastpage },
+			'nextpage'   => { :hotkey => 'SPACE',:shortname => 'NextPage',   :menuname => 'NextPage',    :description => '', :function => :nextpage },
+			'prevpage'   => { :hotkey => '-',   :shortname => 'PrevPage',    :menuname => 'PrevPage',    :description => '', :function => :prevpage },
 			'kblock'     => { :hotkey => 'K',   :shortname => 'KBLock',      :menuname => 'KBLock',      :description => '', :function => nil },
 			'quit'       => { :hotkey => 'Q',   :shortname => 'Quit',        :menuname => 'Quit',        :description => 'Leave the Taskman program', :function => :quit },
 			'listfolders'=> { :hotkey => 'L',   :shortname => 'ListFldrs',   :menuname => 'FOLDER LIST', :description => 'Select a folder to view', :function => nil },
@@ -37,18 +41,23 @@ module TASKMAN
 			'create'     => { :hotkey => 'C',   :shortname => 'Create',      :menuname => 'Create Task', :description => 'Create a task', :function => :create },
 			'index'      => { :hotkey => 'I',   :shortname => 'Index',       :menuname => 'Task Index',  :description => 'View tasks in current folder', :function => :index },
 
+			# This can be implemented when we implement prompter widget
+			'whereis'    => { :hotkey => 'W',   :shortname => 'WhereIs',     :menuname => 'Find String', :description => 'Find a string', :function => nil },
 
 			'create_task'=> { :hotkey => '^X',  :shortname => 'Create',      :menuname => 'Create a Task', :description => '', :function => :create_task},
-			'create_help'=> { :hotkey => '^G',  :shortname => 'Get Help',    :menuname => 'Get Syntax Help', :description => 'Get help using Taskman', :function => :create_help},
 
 			'select_task'=> { :hotkey => 'ENTER',:shortname => 'Select',     :menuname => 'Select Task', :description => '', :function => :select_task},
 
+			'exit_help'  => { :hotkey => 'E',   :shortname => 'Exit Help',   :menuname => 'Exit Help',   :description => 'Exit Help', :function => :main },
+
 			# Actions related to messages when a person tries to move
 			# beyond widget/page/window limits
-			'top_list'=> { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_list},
-			'bottom_list'=> { :hotkey => 'DOWN',  :shortname => '',    :menuname => '', :description => '', :function => :bottom_list},
-			'top_header'=> { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_header},
-			#'bottom_page'=> { :hotkey => 'DOWN',  :shortname => '',    :menuname => '', :description => ''},
+			'top_list'=>    { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_list},
+			'bottom_list'=> { :hotkey => 'DOWN',:shortname => '',    :menuname => '', :description => '', :function => :bottom_list},
+			'top_header'=>  { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_header},
+			#'bottom_page'=> { :hotkey => 'DOWN',:shortname => '',    :menuname => '', :description => ''},
+			'top_help'=>    { :hotkey => 'UP',  :shortname => '',    :menuname => '', :description => '', :function => :top_help},
+			'bottom_help'=> { :hotkey => 'DOWN',:shortname => '',    :menuname => '', :description => '', :function => :bottom_help},
 
 			'postpone'           => { :hotkey => '^O',   :shortname => 'Postpone',         :description => '', :function => :postpone},
 			'cancel'             => { :hotkey => '^C',   :shortname => 'Cancel',           :description => '', :function => :cancel},
@@ -92,32 +101,50 @@ module TASKMAN
 
 		def top_list arg= {}
 			w= arg[:window]
-			if wh= w.all_widgets_hash['status']
+			if wh= w.all_widgets_hash['status_label']
 				wh.var_text= '[Already at top of list]'
 			end
 		end
 		def bottom_list arg= {}
 			w= arg[:window]
-			if wh= w.all_widgets_hash['status']
+			if wh= w.all_widgets_hash['status_label']
 				wh.var_text= '[Already at bottom of list]'
+			end
+		end
+		def top_help arg= {}
+			w= arg[:window]
+			if wh= w.all_widgets_hash['status_label']
+				wh.var_text= '[Already at start of help text]'
+			end
+		end
+		def bottom_help arg= {}
+			w= arg[:window]
+			if wh= w.all_widgets_hash['status_label']
+				wh.var_text= '[Already at end of help text]'
 			end
 		end
 		def top_header arg= {}
 			w= arg[:window]
-			if wh= w.all_widgets_hash['status']
+			if wh= w.all_widgets_hash['status_label']
 				wh.var_text= "[ Can't move beyond top of header ]"
 			end
 		end
 		def bottom_page arg= {}
 			w= arg[:window]
-			if wh= w.all_widgets_hash['status']
+			if wh= w.all_widgets_hash['status_label']
 				wh.var_text= "[ Can't move beyond bottom of page ]"
 			end
 		end
 
 		def quit arg= {}
 			w= arg[:window]
-			pfl w.widgets_hash.keys
+			wh= w.all_widgets_hash
+			p= wh['prompt']
+			a= false
+			if p
+				a= p.ask( :q=> :quit).to_bool
+			end
+			return unless a
 			Stfl.reset
 			puts "Taskman finished."
 			exit 0
@@ -183,6 +210,9 @@ module TASKMAN
 		end
 		def index arg= {}
 			$app.exec( :window => 'index')
+		end
+		def help arg= {}
+			$app.exec( :window => 'help')
 		end
 
 		def create_task arg= {}
@@ -279,6 +309,37 @@ module TASKMAN
 			$app.screen.main_loop -1
 		end
 
+		# These two need no implementation because they are currently used in
+		# textviews only, and those widgets handle HOME/END for first/last
+		# page on their own.
+		# But, if the implementation will be needed (for e.g. use in some other
+		# widgets, or for textviews with auto key bindings disabled), then
+		# implement similar to nextpage/prevpage below.
+		def firstpage arg= {}
+		end
+		def lastpage arg= {}
+		end
+
+		def nextpage arg= {}
+			w= arg[:widget]
+			c= w.var_text_now.lines.count # Lines count
+			h= w._h_now # Height of widget
+			o= w.var_offset_now.to_i # Current offset
+			mo= c- h+ 1 # Max valid offset
+			no= o+ h # Would-be new offset
+			no2= if no> mo then mo else no end # Valid new offset
+			w.var_offset= no2
+		end
+		def prevpage arg= {}
+			w= arg[:widget]
+			h= w._h_now # Height of widget
+			o= w.var_offset_now.to_i # Current offset
+			mo= 0 # Min valid offset
+			no= o- h # Would-be new offset
+			no2= if no< mo then mo else no end # Valid new offset
+			w.var_offset= no2
+		end
+
 #		def postpone arg= {}
 #		end
 #
@@ -291,10 +352,6 @@ module TASKMAN
 #			pfl pt.map{ |x| x.name}
 #		end
 #
-	end
-
-	def create_help arg= {}
-		puts :BABY_BOY
 	end
 
 	def save_tasklist

@@ -3,32 +3,32 @@ module TASKMAN
 	class Theme::Window::Main::Body < Vbox
 
 		def initialize *arg
-			super()
-
-			@name= 'body'
+			super
 
 			# Spacer 1
-			l1= Label.new( '.expand' => 'vh')
+			l1= Label.new(    :name=> "#{@name}_space1", '.expand' => 'vh')
 
 			# Main list ###########
-			list= List.new( :name => :lst, '.tie' => 'tb')
+			list= List.new(   :name=> "#{@name}_list", '.tie'=> 'tb', :pos=> 4)
 			menu= [
-				MenuAction.new( :name => :help),
-				MenuAction.new( :name => :create),
-				MenuAction.new( :name => :index),
-				MenuAction.new( :name => :listfolders),
-				MenuAction.new( :name => :quit),
+				MenuAction.new( :name=> :help),
+				MenuAction.new( :name=> :create),
+				MenuAction.new( :name=> :index),
+				MenuAction.new( :name=> :listfolders),
+				MenuAction.new( :name=> :quit),
 			]
 			# Show items in the list
+			i= 1
 			menu.each do |a|
-				li= ListItem.new( :text => a.menu_text, :can_focus => 1)
+				li= ListItem.new( :name=> "#{@name}_list_#{a.name}", :text => a.menu_text, :can_focus => 1)
 				li<< a
 				list<< li
-				list<< ListItem.new( :can_focus => 0) # Spacer
+				list<< ListItem.new( :name=> "#{@name}_listitem#{i}", :can_focus => 0) # Spacer
+				i= i+ 1
 			end
 
 			# Spacer 2
-			l2= Label.new( '.expand' => 'vh')
+			l2= Label.new(    :name=> "#{@name}_space2", '.expand' => 'vh')
 
 			self<< l1
 			self<< list

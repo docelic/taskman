@@ -10,13 +10,13 @@ module TASKMAN
 		end
 
 		def to_stfl
-			v= Vbox.new( :name => :menu, '.expand' => 0, '.height' => '2', :@style_normal => 'bg=red,fg=white')
-			t= Table.new( '.expand' => 'h', '.height' => '1', :@style_normal => 'bg=blue,fg=white', '.display' => 1)
+			v= Vbox.new ( :name=> :menu, '.expand'=> 0,   '.height'=> '2')
+			t= Table.new(                '.expand'=> 'h', '.height'=> '1', '.display'=> 1)
 
 			pos= 0
 			2.times do |i|
 				6.times do
-					t<< ( @widgets[@offset+ pos]|| Theme::MenuAction.new( :name => ''))
+					t<< ( @widgets[@offset+ pos]|| Theme::MenuAction.new( :name=> ''))
 					pos+= 1
 				end
 				t<< Tablebr.new if i== 0

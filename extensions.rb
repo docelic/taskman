@@ -51,6 +51,12 @@ class String
 		end
 	end
 
+	def to_bool
+		return true if self== true or self=~ /t|y|1/i
+		return false #if self== false or self=~ /f|n|0/i or self== ''
+		#raise ArgumentError.new "Invalid value for Boolean: '#{self}'"
+	end
+
 end
 
 class Fixnum

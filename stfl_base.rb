@@ -72,6 +72,7 @@ module TASKMAN
 			@variables['modal']||= 0
 			@variables['pos_name']||= ''
 			@variables['pos']||= 0
+			@variables['offset']||= 0
 			@variables['text']||= ''
 			@variables['function']||= nil
 
@@ -133,6 +134,14 @@ module TASKMAN
 			end
 		end
 
+		# Implement all pseudo-variables supported by STFL as read-only functions
+		def _x_now()    $app.ui.get( "#{@name}:x"   ).to_i end
+		def _y_now()    $app.ui.get( "#{@name}:y"   ).to_i end
+		def _w_now()    $app.ui.get( "#{@name}:w"   ).to_i end
+		def _h_now()    $app.ui.get( "#{@name}:h"   ).to_i end
+		def _minw_now() $app.ui.get( "#{@name}:minw").to_i end
+		def _minh_now() $app.ui.get( "#{@name}:minh").to_i end
+
 		# Function to call after new(), to initialize anything that can't be
 		# initialized during new(). By default, no work here. You would use
 		# this if e.g. you want to run actions after the window is created.
@@ -168,6 +177,8 @@ module TASKMAN
 			arg.each do |a|
 				if a== :tablebr
 					self<< Tablebr.new
+				elsif Theme::MenuAction=== a
+					self<< a
 				elsif ma= Theme::MenuAction.new( :name => a.to_s)
 					self<< ma
 				else
@@ -276,7 +287,7 @@ module TASKMAN
 			# For each style type (normal, focus, selected)...
 			type.each do |t|
 
-				if debug
+				if debug?( :style)
 					pfl "Applying style #{t} to widget #{@name}"
 				end
 
@@ -299,10 +310,18 @@ module TASKMAN
 				# for "... x", and if not found, then for "... @hbox", and if
 				# still not found, it will then search for just "..." without
 				# the final element or type.)
-				cnd= self.class_name.downcase
-				variation= [ list.pop, "@#{cnd}"]
+				# (Previously, this code was also searching for class name
+				# lowercased, but apart from being basically equivalent to
+				# searching for @widget, it was also working correctly in case
+				# of widgets like TASKMAN::Label, but not in case of elements
+				# such as Theme::Window::Main::Status (it was searching for
+				# @status). So, we've commented the 'cnd' part for now and
+				# rely on known-good @widget only.
+
+				#cnd= self.class_name.downcase
+				variation= [ list.pop] #, "@#{cnd}"]
 				if @widget
-					variation.push "@#{@widget}" unless @widget== cnd
+					variation.push "@#{@widget}" #unless @widget== cnd
 				end
 				variation.push nil
 

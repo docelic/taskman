@@ -76,7 +76,7 @@ module TASKMAN
 
 			h2= Hbox.new(                      '.expand' => 'h')
 			h2<< Label.new(                    '.expand' => '',  :text => 'Omit shift  : ')
-			h2<< Input.new( :name => :omit_shift,    '.expand' => 'h', :text => i._omit_shift, :tooltip => 'Reschedule if omitted, e.g. 1 | -1')
+			h2<< Input.new( :name => :omit_shift,    '.expand' => 'h', :text => i._omit_shift, :tooltip => 'Reschedule if omitted, e.g. 1 | 0 | -1')
 			h3<< h2
 
 			v<< h3
