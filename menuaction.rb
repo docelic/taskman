@@ -217,16 +217,16 @@ module TASKMAN
 #		end
 #
 		def main arg= {}
-			$app.exec( :window => 'main')
+			$app.exec( :window=> 'main')
 		end
 		def create arg= {}
-			$app.exec( :window => 'create')
+			$app.exec( :window=> 'create')
 		end
 		def index arg= {}
-			$app.exec( :window => 'index')
+			$app.exec( :window=> 'index')
 		end
 		def help arg= {}
-			$app.exec( :window => 'help')
+			$app.exec( :window=> 'help')
 		end
 
 		def create_task arg= {}
@@ -287,11 +287,14 @@ module TASKMAN
 		end
 
 		def select_task arg= {}
-			arg[:window]= 'create'
-			arg[:open_timing]= 1
-			arg[:open_reminding]= 1
-			arg[:id]= $app.ui.get( 'list_pos_name').to_i
-			$app.exec arg
+			arg2= {
+				:window=> 'create',
+				:title=> 'VIEW / EDIT TASK',
+				:open_timing=> 1,
+				:open_reminding=> 1,
+				:id=> $app.ui.get( 'list_pos_name').to_i
+			}
+			$app.exec arg2
 		end
 
 		def toggle_timing_options arg= {}
