@@ -5,7 +5,7 @@ module TASKMAN
 	class Theme::Window::Main::Status < Vbox
 
 		def initialize arg= {}
-			super arg.merge( '.expand' => 'h')
+			super arg.merge( '.expand'=> 'h')
 
 			# Block dealing with displaying status information
 			h1= Hbox.new(   :name=> "#{@name}_display",                               '.display'=> 1)
@@ -19,7 +19,7 @@ module TASKMAN
 			h2<< Label.new( :name=> "#{@name}_question",'.expand'=> '0', :text=> '')
 			h2<< Label.new( :name=> "#{@name}_space4",  '.expand'=> '0', :text=> ' ')
 			pa= Theme::MenuAction.new( :name=> "#{@name}_handle_answer",                              :hotkey=> 'ENTER')
-			i= Input.new(   :name => "#{@name}_answer", '.expand'=> 'h', :text=> '')
+			i= Input.new(   :name=> "#{@name}_answer",  '.expand'=> 'h', :text=> '')
 			i.add_action pa
 			h2<< i
 

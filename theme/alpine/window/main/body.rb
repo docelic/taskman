@@ -25,7 +25,7 @@ module TASKMAN
 				#li<< a
 				list<< li
 				list<< ListItem.new( :name=> "#{@name}_listitem#{i}", :can_focus => 0) # Spacer
-				i= i+ 1
+				i+= 1
 			end
 
 			# Spacer 2
