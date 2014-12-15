@@ -10,6 +10,9 @@
 require 'getoptlong'
 require 'yaml'
 
+require 'gettext'
+include GetText
+
 begin
 	require 'terminfo'
 	#require 'readline'
@@ -96,13 +99,14 @@ def usage
 
 	puts
 	puts 'Taskman'.center
-	puts "Ver. #{opts['version']}".center
+	puts (_("Ver.")+ " #{opts['version']}").center
 	puts
 
-	head= 'OPTION                  SHORT       ARG?  DEFAULT  DESCRIPTION'
-	puts head
+	fmt= "%-22s%-12s%-6s%-9s%s\n"
+	head= _('OPTION'), _('SHORT'), _('ARG?'), _('DEFAULT'), _('DESCRIPTION')
+	puts fmt % head
 
-	fmt= "%-22s  %-11s  %s    %-8s %s\n"
+	fmt= "%-22s%-13s%-5s%-9s%s\n"
 	puts '-' * opts['term-width']
 
 	$getopts.each {|o|
@@ -176,7 +180,7 @@ if $opts['term']
 			c= `tput colors`.chomp.to_i
 			if not c> 0
 				c= 8
-				$stderr.puts "Assuming '#{$opts['term']}' with #{c} colors. Please invoke with --colors NUMBER if incorrect."
+				$stderr.puts( _("Assuming '%s' with %d colors. Please invoke with --colors NUMBER if incorrect.") % [ $opts['term'], c])
 				sleep 2
 			end
 			$opts['colors']= c
@@ -237,9 +241,8 @@ module TASKMAN
 			# is $app.ui.get() in Taskman).
 			# @screen: toplevel element on screen and all its children;
 			# these are the actual STFL-based Ruby objects etc.
-			@ui= @screen.create
-			unless @ui
-				$stderr.puts 'Error creating STFL form; exiting.'
+			unless @ui= @screen.create
+				$stderr.puts _('Error creating STFL form; exiting.')
 				exit 1
 			end
 

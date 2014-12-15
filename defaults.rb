@@ -60,7 +60,7 @@ $description= {
   'window'               => 'Program window to open',
   'theme'                => 'GUI layout scheme to use',
   'style'                => 'GUI color scheme to use',
-  'colors'               => 'Number of colors to use (16, 256)',
+  'colors'               => 'Nr. of colors (16, 256)',
   'term'                 => 'Value for TERM= emulator',
   'term-width'           => 'Term width to use',
   'debug'                => 'Show general debug',
