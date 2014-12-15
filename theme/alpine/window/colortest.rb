@@ -4,18 +4,19 @@ module TASKMAN
 		require 'theme/alpine/window/main/header'
 		require 'theme/alpine/window/colortest/body'
 		require 'theme/alpine/window/main/status'
-		require 'theme/alpine/window/colortest/menu'
+		require 'theme/alpine/window/main/menu'
 
-		def initialize *arg
+		def initialize arg= {}
 			super
-
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Header.new( :name => :header, :title => 'COLOR TEST')
-			self<< Theme::Window::Colortest::Body.new( :name => :body)
-			self<< Theme::Window::Main::Status.new( :name => :status)
-			self<< Theme::Window::Colortest::Menu.new( :name => :menu)
-			@widgets_hash['menu'].add_action(
+			self<< Theme::Window::Main::Header.new(    arg.merge( :name=> :header, :title=> _('COLOR TEST')))
+			self<< Theme::Window::Colortest::Body.new( arg.merge( :name=> :body))
+			self<< Theme::Window::Main::Status.new(    arg.merge( :name=> :status))
+
+
+			m1= Theme::Window::Main::Menu.new(         arg.merge( :name=> :menu1))
+			m1.add_action(
 				:help,
 				:'',
 				#:back,
@@ -25,8 +26,8 @@ module TASKMAN
 				:'',
 				:quit,
 			)
+
+			self<< m1
 		end
-
 	end
-
 end

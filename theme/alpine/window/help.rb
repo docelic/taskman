@@ -311,17 +311,15 @@ On themes
 On actions-- how the idea is to have them in menuaction, and themes free of code
 ^
 
-		require 'theme/alpine/window/main'
+		require 'theme/alpine/window/main/header'
 		require 'theme/alpine/window/main/status'
 		require 'theme/alpine/window/main/menu'
 
-		def initialize *arg
+		def initialize arg= {}
 			super
-
 			@widget= 'vbox'
 
-
-			self<< Theme::Window::Main::Header.new( :name => :header)
+			self<< Theme::Window::Main::Header.new(   arg.merge( :name=> :header, :title=> ( arg[:title]|| _('HELP'))))
 
 			#########################################################
 			# In-place definition of body
@@ -383,6 +381,5 @@ On actions-- how the idea is to have them in menuaction, and themes free of code
 
 			self<< m1
 		end
-
 	end
 end

@@ -4,17 +4,18 @@ module TASKMAN
 		require 'theme/alpine/window/main/header'
 		require 'theme/alpine/window/index/body'
 		require 'theme/alpine/window/main/status'
-		require 'theme/alpine/window/index/menu'
+		require 'theme/alpine/window/main/menu'
 
-		def initialize *arg
+		def initialize arg= {}
 			super
-
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Header.new( :name => :header, :title => 'TASK INDEX')
-			self<< Theme::Window::Index::Body.new( :name => :body)
-			self<< Theme::Window::Main::Status.new( :name => :status)
-			m1= Theme::Window::Index::Menu.new( :name => :menu)
+			self<< Theme::Window::Main::Header.new( arg.merge( :name=> :header, :title => _('TASK INDEX')))
+			self<< Theme::Window::Index::Body.new(  arg.merge( :name=> :body))
+			self<< Theme::Window::Main::Status.new( arg.merge( :name=> :status))
+
+
+			m1= Theme::Window::Main::Menu.new(      arg.merge( :name=> :menu1))
 			m1.add_action(
 				:help,
 				:'', # Hotkey out that goes to fldr list window
