@@ -150,7 +150,8 @@ module TASKMAN
 					a= w.var_text_now.to_bool
 					if a
 						Stfl.reset
-						puts "Taskman finished."
+						#puts "Taskman finished. (#{$cnt}, #{$ctm})"
+						puts 'Taskman finished.'
 						exit 0
 					end
 					p['status_display'].var__display= 1

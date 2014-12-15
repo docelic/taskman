@@ -34,6 +34,13 @@ module TASKMAN
 			@widgets= []
 			@widgets_hash= {}
 
+			# .all_widgets_hash() cache. This simple optimization in the function
+			# reduces in ~5 times less computations of the function and about ~10
+			# times performance increase on cumulative time spent in it.
+			# The cache is cleared when list of child widgets is manipulated
+			# in any way.
+			@avhc= nil
+
 			# For actions associated to widgets
 			@hotkeys_hash= {}
 			
@@ -165,6 +172,7 @@ module TASKMAN
 			if MenuAction=== arg
 				@hotkeys_hash[arg.hotkey]= arg
 			end
+			@avhc= nil
 			arg
 		end
 		def >> arg
@@ -174,6 +182,7 @@ module TASKMAN
 			if MenuAction=== arg
 				@hotkeys_hash>> arg.name
 			end
+			@avhc= nil
 			arg
 		end
 
@@ -224,22 +233,27 @@ module TASKMAN
 			Stfl.create stfl_text
 		end
 
-		def redraw
-			stfl_text= self.to_stfl
-			$app.ui.modify @name.to_s, 'replace', stfl_text
-		end
+		# Not a real redraw
+		#def redraw
+		#	stfl_text= self.to_stfl
+		#	$app.ui.modify @name.to_s, 'replace', stfl_text
+		#end
 
-		# XXX Memoize if necessary
-		def all_widgets_hash hash= {}
+		#$cnt= 0
+		#$ctm= 0
+		def all_widgets_hash hash= {} #, count= true
+			# If cache is available, use it
+			if @avhc then return @avhc end
+			#$cnt+= 1
+			#if count then s= Time.now.to_f end
 			hash.merge!( { @name => self })
 			@widgets.each do |c|
-				hash.merge! c.all_widgets_hash
+				hash.merge! c.all_widgets_hash #( {}, false)
 			end
-			hash
-		end
-
-		def get arg
-			@variables[arg]
+			#if count
+			#	$ctm+= ( Time.now.to_f- s)
+			#end
+			@avhc= hash
 		end
 
 		# This function retrieves logical tree up to the top, including
