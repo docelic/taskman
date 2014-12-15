@@ -6,7 +6,7 @@ module TASKMAN
 			super arg
 
 			@widget= nil
-			i= arg[:id] ? $tasklist[:tasks][arg[:id]] : Item.new
+			i= arg[:id] ? $tasklist[:tasks][arg[:id].to_i] : Item.new
 
 			self<< MenuAction.new( :name => :top_header)
 

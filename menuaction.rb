@@ -46,6 +46,7 @@ module TASKMAN
 			'whereis'    => { :hotkey => 'W',   :shortname => 'WhereIs',     :menuname => 'Find String', :description => 'Find a string', :function => nil },
 
 			'create_task'=> { :hotkey => '^X',  :shortname => 'Create',      :menuname => 'Create a Task', :description => '', :function => :create_task},
+			'save_task'  => { :hotkey => '^X',  :shortname => 'Save',        :menuname => 'Save Changes', :description => '', :function => :create_task},
 
 			'select_task'=> { :hotkey => 'ENTER',:shortname => 'Select',     :menuname => 'Select Task', :description => '', :function => :select_task},
 
@@ -231,6 +232,8 @@ module TASKMAN
 
 		def create_task arg= {}
 			i= arg[:item]|| Item.new
+			id= $app.screen['id'].var_text_now.to_i
+			if id> 0 then i.id= id end
 
 			begin
 

@@ -24,7 +24,7 @@ module TASKMAN
 			m1= Theme::Window::Create::Menu.new(    arg.merge( :name => :menu1))
 			m1.add_action(
 				:get_help,
-				:create_task,
+				( arg[:id] ? :save_task : :create_task),
 				:'',
 				:'',
 				:'', #:cut_line,
