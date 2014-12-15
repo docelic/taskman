@@ -242,6 +242,9 @@ module TASKMAN
 			@variables[arg]
 		end
 
+		# This function retrieves logical tree up to the top, including
+		# parents that do not necessarily render in STFL (those that
+		# have @widget= nil)
 		def parent_tree tree= [ self]
 			if @parent
 				tree.push @parent
@@ -250,7 +253,9 @@ module TASKMAN
 				return tree
 			end
 		end
-
+		# And this is similar to the above, but only includes those
+		# parents that do have some representation in STFL (i.e. their
+		# @widget is not nil)
 		def stfl_tree tree= [ self]
 			if @parent and @parent.widget
 				tree.push @parent
