@@ -1,0 +1,5 @@
+#!/bin/sh
+
+main=$PWD/main.rb
+
+ruby -I../stfl/ruby $main $*
