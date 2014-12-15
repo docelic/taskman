@@ -3,7 +3,8 @@ module TASKMAN
 	class Vspace < Label
 
 		def initialize arg= {}
-			super arg.merge( :'.expand'=> 'v')
+			arg[:'.expand']||= 'v'
+			super
 		end
 
 	end

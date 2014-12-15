@@ -10,9 +10,9 @@ module TASKMAN
 
 			self<< Theme::Window::Main::Header.new(   arg.merge( :name=> :header, :title=> ( arg[:title]|| _('HELLO, WORLD!'))))
 
-			i= Textedit.new(  :name=> 'input',  '.expand'=> 'h')
-			i<< ListItem.new(                                    :text=> _('Input: (Type text and press Ctrl+P)'))
-			o= Label.new(     :name=> 'output', '.expand'=> 'h', :text=> _('Value of input: '))
+			i= Textedit.new(  :name=> 'input',  :'.expand'=> 'h')
+			i<< ListItem.new(                                     :text=> _('Input: (Type text and press Ctrl+P)'))
+			o= Label.new(     :name=> 'output', :'.expand'=> 'h', :text=> _('Value of input: '))
 
 			i.add_action( :read_self_text)
 

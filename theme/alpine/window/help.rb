@@ -358,7 +358,7 @@ On actions-- how the idea is to have them in menuaction, and themes free of code
 			# to m1.add_action() below as we need custom options here.
 			m= Theme::MenuAction.new( :name=> 'main', :hotkey=> 'M')
 
-			m1= Theme::Window::Main::Menu.new( :name=> :menu1, '.display'=> 1)
+			m1= Theme::Window::Main::Menu.new( :name=> :menu1, :'.display'=> 1)
 			m1.add_action(
 				m,
 				:exit_help,

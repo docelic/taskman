@@ -30,7 +30,7 @@ module TASKMAN
 				:gotofolder,
 			)
 
-#			m2= Theme::Window::Main::Menu.new( :name => :menu2, '.display' => 0)
+#			m2= Theme::Window::Main::Menu.new( :name=> :menu2, :'.display'=> 0)
 #			m2.add_action(
 #				:'', #:help2,
 #				:'', #:setup

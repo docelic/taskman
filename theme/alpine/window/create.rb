@@ -25,6 +25,11 @@ module TASKMAN
 				:'',
 				:tablebr,
 				:cancel,
+				:'',
+				:'',
+				:'',
+				:'',
+				:'',
 			)
 
 			self<< m1
