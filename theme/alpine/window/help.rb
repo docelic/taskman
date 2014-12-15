@@ -229,34 +229,18 @@ The most important thing in writing a style is knowing what the element you want
 
 Another thing to understand is how styles are applied. For each widget, Taskman determines its hierarchical position in the form and then tries finding a matching style definition with less and less specificity.
 
-For example: when you start Taskman using the default Alpine theme, you will notice the program name and version displayed in the top-left of the window. This widget is called "program_name_version", it is of type 'label', and it serves an obvious purpose.
+For example: when you start Taskman using the default Alpine theme, you will notice the program name and version displayed in the top-left of the window. This widget is called "header_program_name_version", it is of type 'label', and it serves an obvious purpose.
 
-Taskman is dynamically aware that this widget is a child of 'head' (the header), which in turn is a child of 'main' (the main program window), and it tries to apply style to it by searching for the following style keys:
+Taskman is dynamically aware that this widget is a child of 'header', which in turn is a child of 'main' (the main program window), and it tries to apply style to it by searching for the following style keys:
 
-"main head program_name_version"
-"main head @label"
-"main head"
-"head program_name_version"
-"head @label"
-"head"
-"program_name_version"
+"main header header_program_name_version"
+"main header @label"
+"main header"
+"header header_program_name_version"
+"header @label"
+"header"
+"header_program_name_version"
 "@label"
-
-Similarly, in the default Taskman theme there is a widget called 'status' found on the third line from the bottom of the screen. It is automatically displaying various status messages, tooltips etc. when present. Taskman tries the following selectors in applying a style to it:
-
-"main W_15 W_16 status"
-"main W_15 W_16 @label"
-"main W_15 W_16"
-"W_15 W_16 status"
-"W_15 W_16 @label"
-"W_15 W_16"
-"W_16 status"
-"W_16 @label"
-"W_16"
-"status"
-"@label"
-
-(The widgets W_15 and W_16 in the above example were irrelevant and had no particular name, so Taskman named them automatically.)
 
 The first selector that is found "wins" and no further lookups are made for that widget.
 

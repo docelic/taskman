@@ -268,7 +268,7 @@ module TASKMAN
 
 		# This function applies style to a widget by using a couple fallbacks.
 		# Style is attempted to be applied for all three STFL style types.
-		def apply_style type= [ 'normal', 'focus', 'selected']
+		def apply_style
 
 			# No action if this object won't ever be rendering / be visible.
 			# (If you will want to show it conditionally, then don't set
@@ -279,28 +279,53 @@ module TASKMAN
 
 			s= {}
 
+			# Parent tree:
 			# Produce the list of parent element names. This will be the basis of
 			# our fallbacking and searching for styles and inheriting them from
 			# parent widgets.
-			tree= stfl_tree.reverse.map{ |w| w.name}
+			tree= stfl_tree.reverse.map{ |w| w.name} # From top to bottom (self)
+			# Assume that all widgets with a number at the end are just
+			# "instances" of a basic widget, and want their basic style
+			# applied. (E.g. widget name 'menu2' wants 'menu', not 'menu2')).
+			tree.map!{ |x| x.gsub /(?<=[a-zA-Z])\d+$/, ''}
 
-			# For each style type (normal, focus, selected)...
-			type.each do |t|
+			# Variations-- this is the final element in the search tree where
+			# we search first for "...tree... <my name>", then for
+			# "...tree... <my STFL type>" and then just for "....tree...".
+			# So variation for e.g. a label would be [ label_name, "@label", nil]
+			variation= [ tree.pop]
+			if @widget then variation.push "@#{@widget}" end
+			variation.push nil
 
-				if debug?( :style)
-					pfl "Applying style #{t} to widget #{@name}"
-				end
+			list= tree.dup # Start with a new tree
+			( list.count+ 1).times do
+				variation.each do |v|
+					keys= [ list, v].flatten
+					key= keys.join( ' ').strip
+					break if key.length== 0
+					if debug?( :style) then pfl "Searching for style key #{key}" end
+					if s= $app.style[key]
+						if debug then pfl "Found style key #{key}" end
+						s.each do |k, v|
+							if debug then pfl "Applying style to #{@name}: #{k}#{v}" end
+							self.send k, v
+						end
+						return
+					end # if s (if style found)
+				end # variation.each
+				list.shift
+			end # list.count.times
+		end # def apply_style
+	end # class
+end # module
 
-				# Make a copy of the list as we will be modifying it in each
-				# loop and remember the initial size
-				list= tree.dup
+class Array
 
-				# Assume that all widgets with a number at the end are just
-				# "instances" of a basic widget, and want their basic style
-				# applied. (E.g. widget name 'menu2' wants 'menu', not 'menu2')).
-				list.map!{ |x| x.gsub /(?<=[a-zA-Z])\d+$/, ''}
+	# Ability to convert array to STFL, assuming all its elements
+	# are STFL-based objects and respond to .to_stfl().
+	def to_stfl() map{ |i| i.to_stfl}.join end
 
-				pops= list.size
+end
 
 				# A "variation" is the thing allowing searching for a specific
 				# widget name at the end, but then also searching for widget
@@ -318,58 +343,4 @@ module TASKMAN
 				# @status). So, we've commented the 'cnd' part for now and
 				# rely on known-good @widget only.
 
-				#cnd= self.class_name.downcase
-				variation= [ list.pop] #, "@#{cnd}"]
-				if @widget
-					variation.push "@#{@widget}" #unless @widget== cnd
-				end
-				variation.push nil
 
-				pops.times do |i|
-					var= variation
-					var.each do |v|
-
-						# Produce a key by which we will look up a style
-						# Not sure why list2= [ list] works without having to say *list?
-						list2= [ list]
-						if v then list2.push v end
-						key= if list.size> 0 then list2.join( ' ') else v end
-
-						# The key will be nil only when we are testing a variation of
-						# the widget with no parents or tree and, the variation itself
-						# is nil (as seen above-- variation.push nil). We skip those
-						# cases for now, even though theoretically we could try not
-						# skipping it, so that one could define one, global default
-						# style using key '' (or nil?).
-						next unless key
-
-						if debug
-							pfl "Searching for style key #{key}"
-						end
-						if s2= $app.style[key]
-							if debug
-								pfl "Found style key #{key}"
-							end
-							s2.each do |k, v|
-								if debug
-									pfl "Applying style to #{@name}: #{k}#{v}"
-								end
-								self.send k, v
-							end
-							return s2
-						end # if s2
-					end # variation.each
-					list.shift
-				end # pops.times
-			end # types.each
-		end # def apply_style
-	end # class
-end # module
-
-class Array
-
-	# Ability to convert array to STFL, assuming all its elements
-	# are STFL-based objects and respond to .to_stfl().
-	def to_stfl() map{ |i| i.to_stfl}.join end
-
-end
