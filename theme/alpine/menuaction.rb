@@ -6,7 +6,7 @@ module TASKMAN
 			super
 			name= [ :menu, @name].join '_'
 			@hotkey_name= [ name, 'hotkey'].join '_'
-			@spacer_name= [ name, 'spacer'].join '_'
+			@spacer_name= [ name, 'hspace'].join '_'
 			@shortname_name= [ name, 'shortname'].join '_'
 
 			w= @hotkey.length> 1 ? @hotkey.length : 0

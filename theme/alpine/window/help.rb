@@ -242,6 +242,22 @@ Taskman is dynamically aware that this widget is a child of 'header', which in t
 "header_program_name_version"
 "@label"
 
+Similarly, here's a lookup that takes place when one part (the hotkey label) of one of the available menu actions is being rendered:
+
+"main menu menu_create_hotkey"
+"main menu @hotkey"
+"main menu @label"
+"main menu"
+"menu menu_create_hotkey"
+"menu @hotkey"
+"menu @label"
+"menu"
+"menu_create_hotkey"
+"@hotkey"
+"@label"
+
+Here, we notice that Taskman searched not only for widget name and its type (@label), but also for its class name (@hotkey). When the widget's class name does not match its STFL element, we also search for the class name, allowing for very convenient styling that would otherwise be hard to apply to multiple widgets in a single rule.
+
 The first selector that is found "wins" and no further lookups are made for that widget.
 
 It is also useful to know that style is not applied to widgets that are not to be rendered in STFL (those with @widget= nil). Also, if you change the STFL widget type of an object (for example, if you create a Label but set its @widget to be e.g. 'input'), then after all the "@label" lookups above Taskman would also search for "@input" before shifting the leftmost element from the path and trying another round.
@@ -348,19 +364,19 @@ On actions-- how the idea is to have them in menuaction, and themes free of code
 				:exit_help,
 				:'',
 				:prevpage,
+				:'',
 				# Note that this firstpage/lastpage won't actually execute their action,
 				# since HOME/END are handled by textview itself and our main loop will
 				# get an empty event. However, we add them here just so that they would
 				# appear as available in the window menu.
 				:firstpage,
-				:'',
 				:tablebr,
 				:'',
 				:quit,
 				:'',
 				:nextpage,
+				:'', #to be :whereis, and placed last
 				:lastpage,
-				:'', #:whereis,
 			)
 
 			self<< m1
