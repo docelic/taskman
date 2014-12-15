@@ -11,7 +11,7 @@ module TASKMAN
 
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Head.new( :name => :header, :title => 'COLOR TEST')
+			self<< Theme::Window::Main::Header.new( :name => :header, :title => 'COLOR TEST')
 			self<< Theme::Window::Colortest::Body.new( :name => :body)
 			self<< Theme::Window::Main::Status.new( :name => :status)
 			self<< Theme::Window::Colortest::Menu.new( :name => :menu)

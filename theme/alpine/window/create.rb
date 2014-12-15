@@ -14,7 +14,7 @@ module TASKMAN
 
 			arg.merge!( :parent => self)
 
-			self<< Theme::Window::Main::Head.new(   arg.merge( :name => :header, :title => 'CREATE TASK'))
+			self<< Theme::Window::Main::Header.new(   arg.merge( :name => :header, :title => 'CREATE TASK'))
 
 			b= Theme::Window::Create::Body.new( arg.merge( :name => :body))
 			self<< b

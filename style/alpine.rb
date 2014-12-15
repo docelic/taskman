@@ -14,15 +14,15 @@ module TASKMAN
 				:var_style_normal= => 'fg=black,bg=white',
 			},
 
-#			'menu @label_hotkey' => {
-#				:var_style_normal= => 'fg=black,bg=white',
-#			},
-#			'menu @label_spacer' => {
-#				:var_style_normal= => 'fg=white,bg=black',
-#			},
-#			'menu @label_shortname' => {
-#				:var_style_normal= => 'fg=white,bg=black',
-#			},
+			'menu @hotkey' => {
+				:var_style_normal= => 'fg=black,bg=white',
+			},
+			'menu @hspace' => {
+				:var_style_normal= => 'fg=white,bg=black',
+			},
+			'menu @shortname' => {
+				:var_style_normal= => 'fg=white,bg=black',
+			},
 		}
 	end
 end

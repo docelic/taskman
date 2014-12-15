@@ -303,7 +303,7 @@ On actions-- how the idea is to have them in menuaction, and themes free of code
 			@widget= 'vbox'
 
 
-			self<< Theme::Window::Main::Head.new( :name => :head)
+			self<< Theme::Window::Main::Header.new( :name => :header)
 
 			#########################################################
 			# In-place definition of body

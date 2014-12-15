@@ -11,7 +11,7 @@ module TASKMAN
 
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Head.new( :name => :header, :title => 'TASK INDEX')
+			self<< Theme::Window::Main::Header.new( :name => :header, :title => 'TASK INDEX')
 			self<< Theme::Window::Index::Body.new( :name => :body)
 			self<< Theme::Window::Main::Status.new( :name => :status)
 			m1= Theme::Window::Index::Menu.new( :name => :menu)

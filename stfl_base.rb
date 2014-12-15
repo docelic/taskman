@@ -84,7 +84,7 @@ module TASKMAN
 			# An additional feature of the set function is that it can be aware of
 			# a different representation of an object in STFL. For example, in
 			# theme 'alpine' the MenuAction object 'x' renders as 3 labels in STFL,
-			# x_hotkey, x_spacer and x_shortname (see theme/alpine/menuaction.rb).
+			# x_hotkey, x_hspace and x_shortname (see theme/alpine/menuaction.rb).
 			# Setting @stfl_names to those names allows the set function to know
 			# what STFL widget names need to be set.
 			#
@@ -124,10 +124,7 @@ module TASKMAN
 					else
 						self.class.send( :define_method, "var_#{fn}=".to_sym) { |arg|
 							@variables[k]= arg
-							names= if @stfl_names then @stfl_names else [ name] end
-							names.each do |n|
-								$app.ui.set "#{n}_#{k}", arg.to_s
-							end
+							$app.ui.set "#{name}_#{k}", arg.to_s
 						}
 					end
 				end
@@ -291,9 +288,13 @@ module TASKMAN
 
 			# Variations-- this is the final element in the search tree where
 			# we search first for "...tree... <my name>", then for
-			# "...tree... <my STFL type>" and then just for "....tree...".
-			# So variation for e.g. a label would be [ label_name, "@label", nil]
+			# "...tree... <my classname>", then "...tree... <my STFL type>"
+			# and then just for "....tree...".
+			# So variation for e.g. a label of class Label_space
+			# would be [ label_name, "@label_space", "@label", nil]
 			variation= [ tree.pop]
+			cnd= self.class_name.downcase
+			variation.push "@#{cnd}" if cnd!= @widget
 			if @widget then variation.push "@#{@widget}" end
 			variation.push nil
 

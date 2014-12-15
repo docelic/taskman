@@ -47,6 +47,8 @@ require 'widget/list'
 require 'widget/textedit'
 require 'widget/checkbox'
 require 'widget/textview'
+require 'widget/hspace'
+require 'widget/vspace'
 
 require 'menu'
 require 'menuaction'
@@ -204,6 +206,10 @@ module TASKMAN
 			# @screen: toplevel element on screen and all its children;
 			# these are the actual STFL-based Ruby objects etc.
 			@ui= @screen.create
+			unless @ui
+				$stderr.puts 'Error creating STFL form; exiting.'
+				exit 1
+			end
 
 			$app.screen.all_widgets_hash.each do |name, w|
 				w.apply_style

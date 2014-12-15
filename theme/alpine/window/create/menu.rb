@@ -10,7 +10,7 @@ module TASKMAN
 		end
 
 		def to_stfl
-			v= Vbox.new ( :name=> :menu, '.expand'=> 0,   '.height'=> '2')
+			v= Vbox.new( :name=> :menu, '.expand'=> 0,   '.height'=> '2')
 			t= Table.new(                '.expand'=> 'h', '.height'=> '1', '.display'=> 1)
 
 			pos= 0

@@ -146,7 +146,7 @@ class Object
 	def debug? type= nil
 		opt= 'debug'+ ( type ? "-#{type}" : '')
 		opt_widget= opt+ '-widget'
-		if $opts[opt] or ( $opts[opt_widget] and @name and $opts[opt_widget]== @name)
+		if $opts[opt] or ( $opts[opt_widget] and @name and @name.match( $opts[opt_widget]))
 			true
 		else
 			false

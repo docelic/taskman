@@ -1,5 +1,4 @@
 module TASKMAN
-
 	class Label < Widget
 
 		def initialize *arg
@@ -8,14 +7,4 @@ module TASKMAN
 		end
 
 	end
-
-	class Label_hotkey < Label
-	end
-
-	class Label_spacer < Label
-	end
-
-	class Label_shortname < Label
-	end
-
 end

@@ -17,13 +17,4 @@ module TASKMAN
 
 	end
 
-	class Checkbox_hotkey < Checkbox
-	end
-
-	class Checkbox_spacer < Checkbox
-	end
-
-	class Checkbox_shortname < Checkbox
-	end
-
 end
