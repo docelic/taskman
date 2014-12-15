@@ -186,7 +186,7 @@ module TASKMAN
 				elsif ma= Theme::MenuAction.new( :name => a.to_s)
 					self<< ma
 				else
-					$stderr.puts "Menu action #{a.to_s} does not exist; skipping."
+					$stderr.puts _('Menu action "%s" does not exist; skipping.')% [ a.to_s]
 				end
 			end
 		end
@@ -211,7 +211,7 @@ module TASKMAN
 
 			ret= "{#{@widget}[#{@name}] #{variables}#{widgets}}"
 			if debug?( :stfl)
-				pfl "Widget #{@name} STFL: #{ret}"
+				pfl _("Widget %s STFL: %s")% [ @name, ret]
 			end
 			ret
 		end
@@ -316,11 +316,11 @@ module TASKMAN
 					keys= [ list, v].flatten
 					key= keys.join( ' ').strip
 					break if key.length== 0
-					if debug?( :style) then pfl "Searching for style key #{key}" end
+					if debug?( :style) then pfl _('Searching for style key %s')% [ key] end
 					if s= $app.style[key]
-						if debug then pfl "Found style key #{key}" end
+						if debug then pfl _('Found style key %s')% [ key] end
 						s.each do |k, v|
-							if debug then pfl "Applying style to #{@name}: #{k}#{v}" end
+							if debug then pfl _('Applying style to %s: %s%s')% [ @name, k, v] end
 							self.send k, v
 						end
 						return
@@ -339,21 +339,3 @@ class Array
 	def to_stfl() map{ |i| i.to_stfl}.join end
 
 end
-
-				# A "variation" is the thing allowing searching for a specific
-				# widget name at the end, but then also searching for widget
-				# type and/or removing the last element if not found.
-				# (For example, if a final/leaf widget in the tree is called "x"
-				# and is of type "hbox", then the variation fill first search
-				# for "... x", and if not found, then for "... @hbox", and if
-				# still not found, it will then search for just "..." without
-				# the final element or type.)
-				# (Previously, this code was also searching for class name
-				# lowercased, but apart from being basically equivalent to
-				# searching for @widget, it was also working correctly in case
-				# of widgets like TASKMAN::Label, but not in case of elements
-				# such as Theme::Window::Main::Status (it was searching for
-				# @status). So, we've commented the 'cnd' part for now and
-				# rely on known-good @widget only.
-
-

@@ -25,7 +25,7 @@ module TASKMAN
 			'garbage-collector'  => true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector'   => false, # Stress Ruby garbage collector? (DEBUG OPTION)
 
-			'version'	           => '0.12(14)',
+			'version'	           => '0.12(15)',
 
 		#	'local'              => false,
 		#	'default-time'       => false,
@@ -53,25 +53,25 @@ end
 
 # For printing descriptions as part of --help
 $description= {
-  'garbage-collector'    => 'Run garbage collector?',
-  'stress-collector'     => 'Stress garbage collector?',
-  'help'                 => 'List program options',
-  'version'              => 'Display program version',
-  'window'               => 'Program window to open',
-  'theme'                => 'GUI layout scheme to use',
-  'style'                => 'GUI color scheme to use',
-  'colors'               => 'Nr. of colors (16, 256)',
-  'term'                 => 'Value for TERM= emulator',
-  'term-width'           => 'Term width to use',
-  'debug'                => 'Show general debug',
-  'debug-keys'           => 'Show keypresses',
-  'debug-opts'           => 'Show command line options',
-  'debug-style'          => 'Show application of style',
-  'debug-style-widget'   => 'Show style for named widget',
-  'debug-stfl'           => 'Show generated STFL',
-  'debug-stfl-widget'    => 'Show STFL for named widget',
-  'data-dir'             => 'Data directory',
-  'data-file'            => 'Tasklist file',
+  'garbage-collector'    => _('Run garbage collector?'),
+  'stress-collector'     => _('Stress garbage collector?'),
+  'help'                 => _('List program options'),
+  'version'              => _('Display program version'),
+  'window'               => _('Program window to open'),
+  'theme'                => _('GUI layout scheme to use'),
+  'style'                => _('GUI color scheme to use'),
+  'colors'               => _('Nr. of colors (16, 256)'),
+  'term'                 => _('Value for TERM= emulator'),
+  'term-width'           => _('Term width to use'),
+  'debug'                => _('Show general debug'),
+  'debug-keys'           => _('Show keypresses'),
+  'debug-opts'           => _('Show command line options'),
+  'debug-style'          => _('Show application of style'),
+  'debug-style-widget'   => _('Show style for named widget'),
+  'debug-stfl'           => _('Show generated STFL'),
+  'debug-stfl-widget'    => _('Show STFL for named widget'),
+  'data-dir'             => _('Data directory'),
+  'data-file'            => _('Tasklist file'),
 
 #  'default-time'         => 'Use 12:00 as default event time',
 }

@@ -61,7 +61,7 @@ end
 
 class Fixnum
 
-	def unit u= 'Task', p= 's'
+	def unit u= _('Task'), p= _('s')
 		if self and self.to_s=~ /[^1]1$/
 			return u
 		else
@@ -92,7 +92,7 @@ class Object
 		classlist.each do |c| 
 			return if obj.kind_of? c
 		end 
-		raise TypeError, "Argument #{c} not a kind of: #{classlist}"
+		raise TypeError, _("Argument %s not a kind of: %s")% [ c, classlist]
 	end 
 	
 	def force_array x 
@@ -107,15 +107,15 @@ class Object
 			self.join ', '
 		elsif Item=== self
 			ret= ''
-			ret+= 'Start'+       ': '+ @start.a_to_s+ "\n" if @start
-			ret+= 'Stop'+        ': '+ @stop.a_to_s+ "\n" if @stop
-			ret+= 'Due'+         ': '+ @due.a_to_s+ "\n" if @due.size> 0
-			ret+= 'Omit'+        ': '+ @omit.a_to_s+ "\n" if @omit.size> 0
-			ret+= 'Omit shift'+  ': '+ @omit_shift.a_to_s+ "\n" if @omit_shift
-			ret+= 'Time'+        ': '+ @time_ssm.a_to_s+ "\n" if @time_ssm
-			ret+= 'Remind'+      ': '+ @remind.a_to_s+ "\n" if @remind.size> 0
-			ret+= 'Omit remind'+ ': '+ @omit_remind.a_to_s+ "\n" if @omit_remind
-			ret+= 'Message'+     ': '+ @message.a_to_s+ "\n" if @message
+			ret+= _('Start')+       ': '+ @start.a_to_s+ "\n" if @start
+			ret+= _('Stop')+        ': '+ @stop.a_to_s+ "\n" if @stop
+			ret+= _('Due')+         ': '+ @due.a_to_s+ "\n" if @due.size> 0
+			ret+= _('Omit')+        ': '+ @omit.a_to_s+ "\n" if @omit.size> 0
+			ret+= _('Omit shift')+  ': '+ @omit_shift.a_to_s+ "\n" if @omit_shift
+			ret+= _('Time')+        ': '+ @time_ssm.a_to_s+ "\n" if @time_ssm
+			ret+= _('Remind')+      ': '+ @remind.a_to_s+ "\n" if @remind.size> 0
+			ret+= _('Omit remind')+ ': '+ @omit_remind.a_to_s+ "\n" if @omit_remind
+			ret+= _('Message')+     ': '+ @message.a_to_s+ "\n" if @message
 			ret
 		else
 			self.to_s

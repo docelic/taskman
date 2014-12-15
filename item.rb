@@ -121,7 +121,7 @@ module TASKMAN
 						d= Date.parse "#{o} #{f}"
 						t= d.to_time+ t
 					else 
-						raise ArgumentError, "Missing date specification"
+						raise ArgumentError, _('Missing date specification')
 					end 
 					@remind= add_to @remind, t					
 				when /^\d{4}\b/, /^\d{8}$/, /^[A-Za-z]{3}\b/
@@ -129,7 +129,7 @@ module TASKMAN
 					d= Date.parse x
 					@remind= add_to @remind, d
 				else 
-					raise ArgumentError, "Reminder parse error"
+					raise ArgumentError, _('Reminder parse error')
 				end 
 			end 
 		end
@@ -169,7 +169,7 @@ module TASKMAN
 			when 'H' then 3600
 			when 'D' then 3600*24
 			when 'W' then 3600*24*7
-			else raise ArgumentError, "Unknown time unit"
+			else raise ArgumentError, _('Unknown time unit')
 			end
 		end 
 
@@ -206,7 +206,7 @@ module TASKMAN
 					s= $1.split '..'
 					s.map! {|p| p.to_i}
 					if s[0]*s[1]<0 then 
-						raise ArgumentError, "Range with opposite enpoint signs"
+						raise ArgumentError, _('Range with opposite enpoint signs')
 					end
 					r= if $2
 						Range.new( *s).step( $2[1..-1].to_i)
@@ -227,7 +227,7 @@ module TASKMAN
 					s= $1.split '..'
 					s.map! {|p| p.to_i}
 					if s[0]*s[1]<0 then 
-						raise ArgumentError, "Range with opposite enpoint signs"
+						raise ArgumentError, _('Range with opposite enpoint signs')
 					end
 					r= if $2
 						Range.new( *s).step( $2[1..-1].to_i)
@@ -264,7 +264,7 @@ module TASKMAN
 				#~ when /^\!(\S+)$/ # method call
 				#when # = arbitrary expression evaluation 
 				else 
-					raise ArgumentError, "VirtualDate parse error"
+					raise ArgumentError, _('VirtualDate parse error')
 				end 
 			end 
 			vd

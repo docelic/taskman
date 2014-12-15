@@ -39,14 +39,14 @@ module TASKMAN
 						# sent our buddy Clifford a patch today.
 						w= widget.var_pos_name_now
 						unless wh[w]
-							pfl "Cannot find widget #{w} inside list widget #{widget.name}"
+							pfl _('Cannot find widget %s inside list widget %s')% [ w, widget.name]
 						else
 							widget= wh[w]
 						end
 					end
 
 					if debug?( :keys)
-						pfl "Window #{@name}, widget #{focus}/#{widget.name}, key #{event}"
+						pfl _('Window %s, widget %s/%s, key %s')% [ @name, focus, widget.name, event]
 					end
 
 					# Whatever the key press is, clear the window's status box,
@@ -56,16 +56,16 @@ module TASKMAN
 						# Now, if the widget focused has a tooltip assigned to it,
 						# show it in the status box.
 						if widget.tooltip
-							wh['status_label'].var_text= ( '['+ widget.tooltip+ ']').truncate
+							wh['status_label'].var_text= ( _('[')+ widget.tooltip+ _(']')).truncate
 						end
 					end
 
 				else # (If we don't have anything focused or focused widget not found)
 					if not focus
-						pfl 'No particular widget focused, skipping keypress'
+						pfl _('No particular widget focused, skipping keypress')
 					else
 						if widget
-							pfl "Widget #{focus} focused, but not found in widget list, skipping keypress"
+							pfl _('Widget %s focused, but not found in widget list, skipping keypress')% [ focus]
 						end
 					end
 				end
