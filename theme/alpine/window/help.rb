@@ -323,7 +323,7 @@ On actions-- how the idea is to have them in menuaction, and themes free of code
 
 			#########################################################
 			# In-place definition of body
-			t= Textview.new( :name=> 'body')
+			t= Textview.new( :name=> 'body', :focus=> 1)
 			t<< MenuAction.new( :name=> :top_help)
 			t<< MenuAction.new( :name=> :bottom_help)
 

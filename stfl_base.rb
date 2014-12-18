@@ -89,61 +89,57 @@ module TASKMAN
 			@variables['function']||= nil
 			@variables['focus']||= 0
 
-			# Now create accessor functions for all variables currently existing.
-			# Get function (var_X) simply reads variable value from object.
-			# Get now function (var_X_now) reads current value from STFL form.
-			# Set function (var_X=) sets the variable as well as applies it to STFL.
-			#
-			# An additional feature of the set function is that it can be aware of
-			# a different representation of an object in STFL. For example, in
-			# theme 'alpine' the MenuAction object 'x' renders as 3 labels in STFL,
-			# x_hotkey, x_hspace and x_shortname (see theme/alpine/menuaction.rb).
-			# Setting @stfl_names to those names allows the set function to know
-			# what STFL widget names need to be set.
-			#
-			# Also, another additional feature of both get and set functions is that,
-			# for textview/textedit in STFL >= 0.24 you access their text using
-			# Stfl.text( form, 'widget_name') instead of
-			# Stfl.get( form, 'widget_name_text').
-			# Based on the object class name, these functions make those differences
-			# transparent to the user.
-			@variables.each do |k, v|
-				fn= k.gsub /\W/, '_'
-
-				if not respond_to? "var_#{fn}"
-
-					# Reading from internal variable is straightforward
-					self.class.send( :define_method, "var_#{fn}".to_sym) {
-						@variables[k]
-					}
-
-					# Reading from STFL form needs .get/.text switch
-					if(( TASKMAN::Textedit=== self or TASKMAN::Textview=== self) and fn== 'text')
-
-						self.class.send( :define_method, "var_#{fn}_now".to_sym) {
-							@variables[k]= $app.ui.send fn, @name
-						}
-
-					else
-						self.class.send( :define_method, "var_#{fn}_now".to_sym) {
-							@variables[k]= $app.ui.get "#{@name}_#{fn}"
-						}
-					end
-
-					# And the same for writing to form
-					if(( TASKMAN::Textedit=== self or TASKMAN::Textview=== self) and fn== 'text')
-
-					 pfl "TODO Unimplemented"
-
-					else
-						self.class.send( :define_method, "var_#{fn}=".to_sym) { |arg|
-							@variables[k]= arg
-							$app.ui.set "#{name}_#{k}", arg.to_s
-						}
-					end
-				end
-			end
 		end
+
+		# Now create accessor functions for all above variables.
+		# Get function (var_X) simply reads variable value from object.
+		# Get now function (var_X_now) reads current value from STFL form.
+		# Set function (var_X=) sets the variable as well as applies it to STFL.
+
+		# For textview/textedit in STFL >= 0.24 you access their text using
+		# Stfl.text( form, 'widget_name') instead of
+		# Stfl.get( form, 'widget_name_text'). Such objects have their text()
+		# function overriden in their corresponding classes.
+		def var__display()       @variables['.display']       end
+		def var_style_normal()   @variables['style_normal']   end
+		def var_style_focus()    @variables['style_focus']    end
+		def var_style_selected() @variables['style_selected'] end
+		def var_autobind()       @variables['autobind']       end
+		def var_modal()          @variables['modal']          end
+		def var_pos_name()       @variables['pos_name']       end
+		def var_pos()            @variables['pos']            end
+		def var_offset()         @variables['offset']         end
+		def var_text()           @variables['text']           end
+		def var_function()       @variables['function']       end
+		def var_focus()          @variables['focus']          end
+
+		def var__display_now()       @variables['.display']=       ( $app.ui.get "#{@name}_.display"      ).to_i end
+		def var_style_normal_now()   @variables['style_normal']=   ( $app.ui.get "#{@name}_style_normal"  )      end
+		def var_style_focus_now()    @variables['style_focus']=    ( $app.ui.get "#{@name}_style_focus"   )      end
+		def var_style_selected_now() @variables['style_selected']= ( $app.ui.get "#{@name}_style_selected")      end
+		def var_autobind_now()       @variables['autobind']=       ( $app.ui.get "#{@name}_autobind"      ).to_i end
+		def var_modal_now()          @variables['modal']=          ( $app.ui.get "#{@name}_modal"         ).to_i end
+		def var_pos_name_now()       @variables['pos_name']=       ( $app.ui.get "#{@name}_pos_name"      )      end
+		def var_pos_now()            @variables['pos']=            ( $app.ui.get "#{@name}_pos"           ).to_i end
+		def var_offset_now()         @variables['offset']=         ( $app.ui.get "#{@name}_offset"        ).to_i end
+		def var_text_now()           @variables['text']=           ( $app.ui.get "#{@name}_text"          )      end
+		def var_function_now()       @variables['function']=       ( $app.ui.get "#{@name}_function"      )      end
+		def var_focus_now()          @variables['focus']=          ( $app.ui.get "#{@name}_focus"         ).to_i end
+
+		def var__display=( arg)        $app.ui.set "#{@name}_.display"      , ( @variables['.display']= arg       ).to_s end
+		def var_style_normal=( arg)    $app.ui.set "#{@name}_style_normal"  , ( @variables['style_normal']= arg   )      end
+		def var_style_focus=( arg)     $app.ui.set "#{@name}_style_focus"   , ( @variables['style_focus']= arg    )      end
+		def var_style_selected=( arg)  $app.ui.set "#{@name}_style_selected", ( @variables['style_selected']= arg )      end
+		def var_autobind=( arg)        $app.ui.set "#{@name}_autobind"      , ( @variables['autobind']= arg       ).to_s end
+		def var_modal=( arg)           $app.ui.set "#{@name}_modal"         , ( @variables['modal']= arg          ).to_s end
+		def var_pos_name=( arg)        $app.ui.set "#{@name}_pos_name"      , ( @variables['pos_name']= arg       )      end
+		def var_pos=( arg)             $app.ui.set "#{@name}_pos"           , ( @variables['pos']= arg            ).to_s end
+		def var_offset=( arg)          $app.ui.set "#{@name}_offset"        , ( @variables['offset']= arg         ).to_s end
+		def var_text=( arg)            $app.ui.set "#{@name}_text"          , ( @variables['text']= arg           )      end
+		def var_function=( arg)        $app.ui.set "#{@name}_function"      , ( @variables['function']= arg       )      end
+		def var_focus=( arg)           $app.ui.set "#{@name}_focus"         , ( @variables['focus']= arg          ).to_s end
+
+		# te/tv is in /tmp/TVIEW!!!
 
 		# Implement all pseudo-variables supported by STFL as read-only functions
 		def _x_now()    $app.ui.get( "#{@name}:x"   ).to_i end
@@ -177,7 +173,7 @@ module TASKMAN
 		# this if e.g. you want to run actions after the window is created.
 		# For now, this has to be manual, but I'm thinking of a way to
 		# support executing this automatically on X<< y
-		def init *arg
+		def init arg= {}
 		end
 
 		# Shorthand for adding and removing child widgets from an object.

@@ -46,7 +46,7 @@ module TASKMAN
 			# Misc
 			'toggle_timing_options'=> { :description=> 'Toggle Timing Options', :function=> :toggle_timing_options},
 			'toggle_reminding_options'=> { :description=> 'Toggle Remind Options', :function=> :toggle_reminding_options},
-			'redraw'=>      { :hotkey=> '^L',  :shortname=> 'Redraw',:menuname=> 'Redraw Screen', :description=> '', :function=> :redraw},
+			'redraw'=>      { :hotkey=> '^L',  :shortname=> 'RedrawScr',:menuname=> 'Redraw Screen', :description=> '', :function=> :redraw},
 
 			# Testing shortcuts
 			'inc_folder_count'  => { :hotkey=> 'SR',   :shortname=> 'Folder Cnt+1',     :description=> '', :function=> :inc_folder_count },
