@@ -8,7 +8,6 @@ module TASKMAN
 
 		def initialize arg= {}
 			super()
-			return if arg[:style]=~ /^none$/i
 			require File.join :style, arg[:style]
 		end
 
