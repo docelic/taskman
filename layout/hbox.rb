@@ -2,7 +2,7 @@ module TASKMAN
 
 	class Hbox < Layout
 
-		def initialize *arg
+		def initialize arg= {}
 			super
 
 			@widget= 'hbox'

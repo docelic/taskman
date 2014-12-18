@@ -120,8 +120,7 @@ module TASKMAN
 		def init arg= {}
 			if arg[:open_timing]== 1
 				w= self.parent
-				wh= w.all_widgets_hash
-				a= wh['timing'].action
+				a= w['timing'].action
 				if Symbol=== f= a.function
 					a.send( f, :window=> self.parent) #, :widget=> arg[:widget], :action=> a, :function=> f, :event=> 'ENTER')
 				elsif Proc=== f= a.function
@@ -130,8 +129,7 @@ module TASKMAN
 			end
 			if arg[:open_reminding]== 1
 				w= self.parent
-				wh= w.all_widgets_hash
-				a= wh['reminding'].action
+				a= w['reminding'].action
 				if Symbol=== f= a.function
 					a.send( f, :window=> self.parent) #, :widget=> arg[:widget], :action=> a, :function=> f, :event=> 'ENTER')
 				elsif Proc=== f= a.function

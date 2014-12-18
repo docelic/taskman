@@ -22,7 +22,7 @@ module TASKMAN
 				:prevcmd2,
 				:listfolders,
 				:index,
-				:'',
+				:redraw,
 				:tablebr,
 				:quit,
 				:hotkey_in,

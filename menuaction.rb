@@ -46,6 +46,7 @@ module TASKMAN
 			# Misc
 			'toggle_timing_options'=> { :description=> 'Toggle Timing Options', :function=> :toggle_timing_options},
 			'toggle_reminding_options'=> { :description=> 'Toggle Remind Options', :function=> :toggle_reminding_options},
+			'redraw'=>      { :hotkey=> '^L',  :shortname=> 'Redraw',:menuname=> 'Redraw Screen', :description=> '', :function=> :redraw},
 
 			# Testing shortcuts
 			'inc_folder_count'  => { :hotkey=> 'SR',   :shortname=> 'Folder Cnt+1',     :description=> '', :function=> :inc_folder_count },
@@ -98,56 +99,56 @@ module TASKMAN
 
 		def top_list arg= {}
 			w= arg[:window]
-			if wh= w.all_widgets_hash['status_label']
+			if wh= w['status_label']
 				wh.var_text= '[Already at top of list]'
 			end
 		end
 		def bottom_list arg= {}
 			w= arg[:window]
-			if wh= w.all_widgets_hash['status_label']
+			if wh= w['status_label']
 				wh.var_text= '[Already at bottom of list]'
 			end
 		end
 		def top_help arg= {}
 			w= arg[:window]
-			if wh= w.all_widgets_hash['status_label']
+			if wh= w['status_label']
 				wh.var_text= '[Already at start of help text]'
 			end
 		end
 		def bottom_help arg= {}
 			w= arg[:window]
-			if wh= w.all_widgets_hash['status_label']
+			if wh= w['status_label']
 				wh.var_text= '[Already at end of help text]'
 			end
 		end
 		def top_header arg= {}
 			w= arg[:window]
-			if wh= w.all_widgets_hash['status_label']
+			if wh= w['status_label']
 				wh.var_text= "[ Can't move beyond top of header ]"
 			end
 		end
 		def bottom_page arg= {}
 			w= arg[:window]
-			if wh= w.all_widgets_hash['status_label']
+			if wh= w['status_label']
 				wh.var_text= "[ Can't move beyond bottom of page ]"
 			end
 		end
 
 		def quit arg= {}
 			w= arg[:window]
-			wh= w.all_widgets_hash
-			p= wh['status']
+			p= w['status']
 			a= false
 			if p
 				p['status_display'].var__display= 0
 				p['status_prompt'].var__display= 1
-				p.all_widgets_hash['status_question'].var_text= 'Really quit Taskman?'
-				p.all_widgets_hash['status_answer'].var_text= ''
-				p.all_widgets_hash['status_answer'].focus
-				p.all_widgets_hash['status_answer'].action.function= Proc.new { |arg|
+				p['status_question'].var_text= 'Really quit Taskman?'
+				p['status_answer'].var_text= ''
+				p['status_answer'].focus
+				p['status_answer'].action.function= Proc.new { |arg|
 					# window, widget, action, function, event-- WWAFE
-					w= arg[:widget]
-					a= w.var_text_now.to_bool
+					w= arg[:window]
+					wi= arg[:widget]
+					a= wi.var_text_now.to_bool
 					if a
 						Stfl.reset
 						#puts "Taskman finished. (#{$cnt}, #{$ctm})"
@@ -156,6 +157,7 @@ module TASKMAN
 					end
 					p['status_display'].var__display= 1
 					p['status_prompt'].var__display= 0
+					w.focus_default
 				}
 			end
 		end
@@ -191,7 +193,7 @@ module TASKMAN
 
 		def read_self_text arg= {}
 			w= arg[:window]
-			wh= w.all_widgets_hash['input']
+			wh= w['input']
 			input= wh['input']
 			output= wh['output']
 			output.var_text= 'Value of input: '+ $app.ui.text( 'input') #input.var_text_now
@@ -200,13 +202,13 @@ module TASKMAN
 		############################### Testing Functions ################################
 
 #		def inc_folder_count arg= {}
-#			$app.screen.all_widgets_hash['folder_count'].var_text+= 1
-#			#pfl $app.screen.all_widgets_hash['folder_count'].parent_tree.map { |x| x.name }
+#			$app.screen['folder_count'].var_text+= 1
+#			#pfl $app.screen['folder_count'].parent_tree.map { |x| x.name }
 #		end
 #		# This cannot be named "all_widgets_hash" or endless loop will ensue :)
 #		# (Due to the widget above being called "all_widgets_hash" as well)
 #		def all_widgets arg= {}
-#			pfl $app.screen.all_widgets_hash.keys
+#			pfl $app.screenall_widgets_hash.keys
 #		end
 #
 #		def get_create_help arg= {}
@@ -297,17 +299,17 @@ module TASKMAN
 
 		def toggle_timing_options arg= {}
 			w= arg[:window]
-			wh= w.all_widgets_hash
-			wh['timing'].toggle
-			v= wh['timing'].var_value
+			wh= w['timing']
+			wh.toggle
+			v= wh.var_value
 			wh['timing_options'].var__display= v
 		end
 
 		def toggle_reminding_options arg= {}
 			w= arg[:window]
-			wh= w.all_widgets_hash
-			wh['reminding'].toggle
-			v= wh['reminding'].var_value
+			wh= w['reminding']
+			wh.toggle
+			v= wh.var_value
 			wh['reminding_options'].var__display= v
 		end
 
@@ -366,7 +368,11 @@ module TASKMAN
 #			pt= w.parent_tree
 #			pfl pt.map{ |x| x.name}
 #		end
-#
+
+		def redraw arg= {}
+			Stfl.redraw
+		end
+
 	end
 
 	def save_tasklist

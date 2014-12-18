@@ -18,8 +18,9 @@ module TASKMAN
 			h2= Hbox.new(   :name=> "#{@name}_prompt",                                '.display'=> 0)
 			h2<< Label.new( :name=> "#{@name}_question",'.expand'=> '0', :text=> '')
 			h2<< Label.new( :name=> "#{@name}_space4",  '.expand'=> '0', :text=> ' ')
-			pa= Theme::MenuAction.new( :name=> "#{@name}_handle_answer",                              :hotkey=> 'ENTER')
-			i= Input.new(   :name=> "#{@name}_answer",  '.expand'=> 'h', :text=> '')
+
+			pa= Theme::MenuAction.new( :name=> "#{@name}_handle_answer", :hotkey=> 'ENTER')
+			i= Input.new(   :name=> "#{@name}_answer",  '.expand'=> 'h', :text=> '', :can_focus=> 0, :modal=> 1)
 			i.add_action pa
 			h2<< i
 

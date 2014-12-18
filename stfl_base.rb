@@ -6,8 +6,13 @@ module TASKMAN
 
 	class StflBase < Object
 
-		# All widgets and attributes will have a name
-		# automatically assigned if unspecified
+		# All widgets and attributes will have a name automatically assigned if
+		# unspecified, in the pattern of W_0, W_1, etc. I am considering removing
+		# this and requiring all elements have a proper name. (This would be done
+		# to make themes (different GUI layouts) and styles (different color
+		# schemes) more convenient to write -- you would certainly not appreciate
+		# going to style an element and discovering that its path/selector is
+		# something like "main W_16 W_17 status status_label".
 		@@auto_widget_name= 'W'
 		@@auto_widget_id= 0
 
@@ -35,10 +40,10 @@ module TASKMAN
 			@widgets_hash= {}
 
 			# .all_widgets_hash() cache. This simple optimization in the function
-			# reduces in ~5 times less computations of the function and about ~10
+			# results in ~5 times less computations of the function and about ~10
 			# times performance increase on cumulative time spent in it.
 			# The cache is cleared when list of child widgets is manipulated
-			# in any way.
+			# through << and >>.
 			@avhc= nil
 
 			# For actions associated to widgets
@@ -82,6 +87,7 @@ module TASKMAN
 			@variables['offset']||= 0
 			@variables['text']||= ''
 			@variables['function']||= nil
+			@variables['focus']||= 0
 
 			# Now create accessor functions for all variables currently existing.
 			# Get function (var_X) simply reads variable value from object.
@@ -103,7 +109,8 @@ module TASKMAN
 			# transparent to the user.
 			@variables.each do |k, v|
 				fn= k.gsub /\W/, '_'
-				unless respond_to? k
+
+				if not respond_to? "var_#{fn}"
 
 					# Reading from internal variable is straightforward
 					self.class.send( :define_method, "var_#{fn}".to_sym) {
@@ -149,8 +156,20 @@ module TASKMAN
 		def [] arg
 			self.all_widgets_hash[arg]
 		end
+		# Focus widget itself
 		def focus
 			$app.ui.set_focus @name
+		end
+		# Focus child that was marked as to have default focus
+		def focus_default
+			@widgets.each do |w|
+				if w.var_focus== 1
+					$app.ui.set_focus w.name
+					return
+				else
+					w.focus_default
+				end
+			end
 		end
 
 		# Function to call after new(), to initialize anything that can't be

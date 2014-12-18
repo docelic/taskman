@@ -9,7 +9,7 @@ module TASKMAN
 			l1= Label.new(    :name=> "#{@name}_space1", '.expand' => 'vh')
 
 			# Main list ###########
-			list= List.new(   :name=> "#{@name}_list", '.tie'=> 'tb', :pos=> 4)
+			list= List.new(   :name=> "#{@name}_list", '.tie'=> 'tb', :pos=> 4, :focus=> 1)
 			menu= [
 				MenuAction.new( :name=> :help),
 				MenuAction.new( :name=> :create),
@@ -21,8 +21,7 @@ module TASKMAN
 			i= 1
 			menu.each do |a|
 				li= ListItem.new( :name=> "#{@name}_list_#{a.name}", :text => a.menu_text, :can_focus => 1)
-				# XXX re-enable
-				#li<< a
+				li<< a
 				list<< li
 				list<< ListItem.new( :name=> "#{@name}_listitem#{i}", :can_focus => 0) # Spacer
 				i+= 1
