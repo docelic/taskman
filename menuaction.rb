@@ -8,7 +8,7 @@ module TASKMAN
 		@@Menus= {
 			# To have multiple "same" menus, you must use different names
 			'help'      => { :hotkey=> '?',   :shortname=> 'Help',        :menuname=> 'Help',        :description=> 'Get help using Taskman', :function=> :help},
-			'help2'     => { :hotkey=> '?',   :shortname=> 'Help',        :menuname=> 'Help',        :description=> 'Get help using Taskman', :function=> :help},
+			'help2'     => { :hotkey=> nil, :hotkey_label=> '?',  :shortname=> 'Help',        :menuname=> 'Help',        :description=> 'Get help using Taskman', :function=> nil},
 			'get_help'  => { :hotkey=> '^G',  :shortname=> 'Get Help',    :menuname=> 'Get Help',    :description=> 'Get help',               :function=> :help},
 			'exit_help' => { :hotkey=> 'E',   :shortname=> 'Exit Help',   :menuname=> 'Exit Help',   :description=> 'Exit Help', :function=> :main },
 
@@ -26,6 +26,9 @@ module TASKMAN
 			'prevpage'  => { :hotkey=> '-',   :shortname=> 'PrevPage',    :menuname=> 'PrevPage',    :description=> '', :function=> :prevpage },
 
 			'main'      => { :hotkey=> '^M',  :shortname=> 'Main Menu',   :menuname=> 'Main Menu',   :description=> 'Main Menu', :function=> :main },
+			'main2'     => { :hotkey=> nil, :hotkey_label=> '^M', :shortname=> 'Main Menu',   :menuname=> 'Main Menu',   :description=> 'Main Menu', :function=> nil },
+			'mainc'     => { :hotkey=> 'M',   :shortname=> 'Main Menu',   :menuname=> 'Main Menu',   :description=> 'Main Menu', :function=> :main },
+
 			'create'    => { :hotkey=> 'C',   :shortname=> 'Create',      :menuname=> 'Create Task', :description=> 'Create a task', :function=> :create },
 			'index'     => { :hotkey=> 'I',   :shortname=> 'Index',       :menuname=> 'Task Index',  :description=> 'View tasks in current folder', :function=> :index },
 			'to_index'  => { :hotkey=> '^T',  :shortname=> 'Index',       :menuname=> 'To Index',    :description=> 'View tasks in current folder', :function=> :index },
@@ -58,7 +61,7 @@ module TASKMAN
 
 			# OLD / Unused / Unfinished / Untested
 			'other'     => { :hotkey=> 'O',   :shortname=> 'OTHER CMDS',  :menuname=> 'OTHER CMDS',  :description=> '', :function=> :menu_next_page },
-			'other2'    => { :hotkey=> 'O',   :shortname=> 'OTHER CMDS',  :menuname=> 'OTHER CMDS',  :description=> '', :function=> :menu_next_page },
+			'other2'    => { :hotkey=> nil, :hotkey_label=>'O',  :shortname=> 'OTHER CMDS',  :menuname=> 'OTHER CMDS',  :description=> '', :function=> nil },
 			'relnotes'  => { :hotkey=> 'R',   :shortname=> 'RelNotes',    :menuname=> 'RelNotes',    :description=> '', :function=> nil },
 			'hotkey_out'=> { :hotkey=> '<',   :shortname=> '',            :menuname=> '',            :description=> '', :function=> nil },
 			'kblock'    => { :hotkey=> 'K',   :shortname=> 'KBLock',      :menuname=> 'KBLock',      :description=> '', :function=> nil },
@@ -80,7 +83,7 @@ module TASKMAN
 				@name= name
 			end
 			@hotkey= arg.has_key?( :hotkey) ? arg.delete( :hotkey): @@Menus[name] ? @@Menus[name][:hotkey] : nil
-			@hotkey_label= arg.has_key?( :hotkey_label) ? arg.delete( :hotkey_label): @@Menus[name] ? ( @@Menus[name][:hotkey_label]|| @@Menus[name][:hotkey]|| @hotkey) : nil
+			@hotkey_label= arg.has_key?( :hotkey_label) ? arg.delete( :hotkey_label): @@Menus[name] ? ( @@Menus[name][:hotkey_label]|| @hotkey) : nil
 			@shortname= arg.has_key?( :shortname) ? arg.delete( :shortname): @@Menus[name] ? @@Menus[name][:shortname] : nil
 			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name] ? @@Menus[name][:menuname] : nil
 			@description= arg.has_key?( :description) ? arg.delete( :description).truncate: @@Menus[name] ? @@Menus[name][:description].truncate : nil

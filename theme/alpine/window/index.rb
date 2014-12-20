@@ -14,17 +14,16 @@ module TASKMAN
 			self<< Theme::Window::Index::Body.new(  arg.merge( :name=> :body))
 			self<< Theme::Window::Main::Status.new( arg.merge( :name=> :status))
 
-
 			m1= Theme::Window::Main::Menu.new(      arg.merge( :name=> :menu1))
 			m1.add_action(
 				:help,
-				:'', # Hotkey out that goes to fldr list window
+				:'',
 				:'', #prevmsg
 				:'', #prevpage
 				:'', #delete (mark as done?)
 				:'', #edit
 				:tablebr,
-				:'', #:other, # O boy, there are some!
+				:other, # O boy, there are some!
 				:select_task, #hotkey in that goes to task
 				:'', #nextmsg
 				:'', #nextpage
@@ -32,9 +31,25 @@ module TASKMAN
 				:'', #duplicate
 			)
 
+			m2= Theme::Window::Main::Menu.new(      arg.merge( :name=> :menu2, :'.display'=> 0))
+			m2.add_action(
+				:help2,
+				:mainc,
+				:create,
+				:'',
+				:'',
+				:'',
+				:tablebr,
+				:other2,
+				:quit,
+				:'', #nextmsg
+				:'', #nextpage
+				:'', #undelete (mark as not done?)
+				:'', #duplicate
+			)
+
 			self<< m1
+			self<< m2
 		end
-
 	end
-
 end

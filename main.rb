@@ -66,7 +66,7 @@ $getopts= [
 	[ '--debug-style-widget',  '--dsw',      GetoptLong::REQUIRED_ARGUMENT],
 	[ '--debug-stfl',          '--dstfl',    GetoptLong::NO_ARGUMENT],
 	[ '--debug-stfl-widget' ,  '--dstflw',   GetoptLong::REQUIRED_ARGUMENT],
-	[ '--exit-key',            '--ek',       GetoptLong::NO_ARGUMENT],
+	[ '--exit-key',            '--ek',       GetoptLong::REQUIRED_ARGUMENT],
 ]
 
 def usage
