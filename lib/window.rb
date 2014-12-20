@@ -76,10 +76,11 @@ module TASKMAN
 				else # (If we don't have anything focused or focused widget not found)
 					if not focus
 						pfl _('No particular widget focused, skipping keypress')
-					else
-						if widget
-							pfl _('Widget %s focused, but not found in widget list, skipping keypress')% [ focus]
-						end
+					elsif widget
+						pfl _('Widget %s focused, but not found in widget list, skipping keypress')% [ focus]
+					else # Nor focus nor widget
+						# This case happens e.g. on windows with not one focusable widget,
+						# such as colortest
 					end
 				end
 
@@ -95,7 +96,9 @@ module TASKMAN
 				# Next if the event has been handled by the widget and key is empty
 				if code!= 0
 					break
-				elsif event.length== 0 or not( focus and widget)
+				elsif event.length== 0 # or not( focus and widget)
+					# (We comment the above 'or not...' because we want to process
+					# keypresses even on windows with no focusable widgets.
 					next
 				end
 
@@ -104,7 +107,7 @@ module TASKMAN
 
 				# Unhandled ENTER on a widget will call its first action, if one is defined.
 				# Otherwise we go into our usual keypress resolution.
-				if event== 'ENTER'
+				if event== 'ENTER' and widget
 					if a= widget.action
 						if Symbol=== f= a.function
 							a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)
@@ -117,7 +120,14 @@ module TASKMAN
 				end
 
 				unless handled
-					[ widget, *menus(), *widget.parent_tree()].each do |w|
+					ary= []
+					if widget
+						ary.push widget, *menus(), *widget.parent_tree()
+					else
+						ary.push *menus()
+					end
+					ary.each do |w|
+						next if w.nil?
 						if a= w.hotkeys_hash[event]
 							if Symbol=== f= a.function
 								a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)

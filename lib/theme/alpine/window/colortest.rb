@@ -14,17 +14,21 @@ module TASKMAN
 			self<< Theme::Window::Colortest::Body.new( arg.merge( :name=> :body))
 			self<< Theme::Window::Main::Status.new(    arg.merge( :name=> :status))
 
-
 			m1= Theme::Window::Main::Menu.new(         arg.merge( :name=> :menu1))
 			m1.add_action(
 				:help,
-				:'',
-				#:back,
-				:'',
-				:'',
-				:'',
-				:'',
 				:quit,
+				:'',
+				:'',
+				:'',
+				:'',
+				:tablebr,
+				:'',
+				:'',
+				:'',
+				:'',
+				:'',
+				:'',
 			)
 
 			self<< m1
