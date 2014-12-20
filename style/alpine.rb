@@ -25,6 +25,10 @@ module TASKMAN
 				:focus => "fg=#{black},bg=#{white}",
 			},
 
+			'@button' => {
+				:focus => "fg=#{black},bg=#{white}",
+			},
+
 			'status_label' => {
 				:normal => "fg=#{black},bg=#{white}",
 			},

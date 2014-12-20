@@ -41,7 +41,7 @@ module TASKMAN
 			# TIMING
 			#
 			h2= Hbox.new(                     '.expand'=> '')
-			c= Checkbox.new( :name=> :timing,'.expand'=> '', :value=> 0, :pos=> 1, :text_0=> '> Timing Options ', :text_1=> '< Timing Options ', :bind_toggle=> '', :style_focus=> 'fg=black,bg=white')
+			c= Button.new( :name=> :timing,'.expand'=> '', :value=> 0, :pos=> 1, :text_0=> '> Timing Options ', :text_1=> '< Timing Options ', :bind_toggle=> '')
 			c<< MenuAction.new( :name=> :toggle_timing_options)
 			h2<< c
 			h2<< Label.new(                   '.expand'=> 'h')
@@ -86,7 +86,7 @@ module TASKMAN
 			#
 
 			h2= Hbox.new(                     '.expand'=> '')
-			c= Checkbox.new( :name=> :reminding,'.expand'=> '', :value=> 0, :pos=> 1, :text_0=> '> Remind Options ', :text_1=> '< Remind Options ', :bind_toggle=> '', :style_focus=> 'fg=black,bg=white')
+			c= Button.new( :name=> :reminding,'.expand'=> '', :value=> 0, :pos=> 1, :text_0=> '> Remind Options ', :text_1=> '< Remind Options ', :bind_toggle=> '')
 			c<< MenuAction.new( :name=> :toggle_reminding_options)
 			h2<< c
 			h2<< Label.new(                   '.expand'=> 'h')
@@ -108,7 +108,7 @@ module TASKMAN
 
 			v<< Label.new(                    '.expand'=> 'h', :text=> '----- Message Text -----')
 
-			t= Textedit.new( :name=> :message, :text=> i._message)
+			t= Textedit.new( :name=> :message, :text=> i._message, :focus=> 1)
 			v<< t
 
 			h<< v
