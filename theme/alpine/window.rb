@@ -10,6 +10,18 @@ module TASKMAN
 				w.var_text= ( '[ '+ arg+ ' ]').truncate
 			end
 		end
+
+		# Args: Question text, Proc
+		def ask q, p
+			if s= $app.screen['status']
+				s['status_display'].var__display= 0
+				s['status_prompt'].var__display= 1
+				s['status_question'].var_text= q
+				s['status_answer'].var_text= ''
+				s['status_answer'].focus
+				s['status_answer'].action.function= p
+			end
+		end
 		
 	end
 

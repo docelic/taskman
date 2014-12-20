@@ -136,31 +136,21 @@ module TASKMAN
 		end
 
 		def quit arg= {}
-			w= arg[:window]
-			p= w['status']
-			a= false
-			if p
-				p['status_display'].var__display= 0
-				p['status_prompt'].var__display= 1
-				p['status_question'].var_text= 'Really quit Taskman?'
-				p['status_answer'].var_text= ''
-				p['status_answer'].focus
-				p['status_answer'].action.function= Proc.new { |arg|
-					# window, widget, action, function, event-- WWAFE
-					w= arg[:window]
-					wi= arg[:widget]
-					a= wi.var_text_now.to_bool
-					if a
-						Stfl.reset
-						#puts "Taskman finished. (#{$cnt}, #{$ctm})"
-						puts 'Taskman finished.'
-						exit 0
-					end
-					p['status_display'].var__display= 1
-					p['status_prompt'].var__display= 0
-					w.focus_default
-				}
-			end
+			$app.screen.ask( _('Really quit Taskman?'), Proc.new { |arg|
+				# window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				wi= arg[:widget]
+				a= wi.var_text_now.to_bool
+				if a
+					Stfl.reset
+					#puts "Taskman finished. (#{$cnt}, #{$ctm})"
+					puts 'Taskman finished.'
+					exit 0
+				end
+				w['status_display'].var__display= 1
+				w['status_prompt'].var__display= 0
+				w.focus_default
+			})
 		end
 
 		# Hide the current menu and show the menu after it
