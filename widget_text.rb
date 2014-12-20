@@ -15,9 +15,7 @@ module TASKMAN
 					wname
 				end
 
-			if self.var_text.length> 0
-				self.var_text= var_text
-			end
+			self.var_text= var_text
 		end
 
 		def var_text_now
@@ -29,7 +27,7 @@ module TASKMAN
 
 			# Always add an empty line at the end for editing
 			# convenience.
-			arg+= "\n "
+			arg+= if arg.length> 0 then "\n " else ' ' end
 
 			arg.split( /\n/).each do |l|
 				l.gsub! /\t/, '  '

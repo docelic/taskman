@@ -135,6 +135,9 @@ module TASKMAN
 					f.yield( :window=> self.parent) #, :widget=> c, :action=> a, :function=> f, :event=> 'ENTER')
 				end
 			end
+			#if arg[:id]
+			#	$app.screen.focus_default
+			#end
 		end
 	end
 end
