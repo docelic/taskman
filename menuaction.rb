@@ -277,7 +277,12 @@ module TASKMAN
 				$tasklist.save
 
 			rescue Exception => e
-				pfl e
+				w= arg[:window]
+				if w.respond_to? :status_label_text=
+					w.status_label_text= e
+				else
+					pfl e
+				end
 			end
 		end
 
@@ -302,7 +307,7 @@ module TASKMAN
 			wh= w['timing']
 			wh.toggle
 			v= wh.var_value
-			wh['timing_options'].var__display= v
+			w['timing_options'].var__display= v
 		end
 
 		def toggle_reminding_options arg= {}
@@ -310,7 +315,7 @@ module TASKMAN
 			wh= w['reminding']
 			wh.toggle
 			v= wh.var_value
-			wh['reminding_options'].var__display= v
+			w['reminding_options'].var__display= v
 		end
 
 		def nextcmd2 arg= {}

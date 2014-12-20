@@ -112,6 +112,7 @@ module TASKMAN
 		def var_text()           @variables['text']           end
 		def var_function()       @variables['function']       end
 		def var_focus()          @variables['focus']          end
+		def var_value()          @variables['value']          end
 
 		def var__display_now()       @variables['.display']=       ( $app.ui.get "#{@name}_.display"      ).to_i end
 		def var_style_normal_now()   @variables['style_normal']=   ( $app.ui.get "#{@name}_style_normal"  )      end
@@ -125,19 +126,21 @@ module TASKMAN
 		def var_text_now()           @variables['text']=           ( $app.ui.get "#{@name}_text"          )      end
 		def var_function_now()       @variables['function']=       ( $app.ui.get "#{@name}_function"      )      end
 		def var_focus_now()          @variables['focus']=          ( $app.ui.get "#{@name}_focus"         ).to_i end
+		def var_value_now()          @variables['value']=          ( $app.ui.get "#{@name}_value"         ).to_i end
 
 		def var__display=( arg)        $app.ui.set "#{@name}_.display"      , ( @variables['.display']= arg       ).to_s end
-		def var_style_normal=( arg)    $app.ui.set "#{@name}_style_normal"  , ( @variables['style_normal']= arg   )      end
-		def var_style_focus=( arg)     $app.ui.set "#{@name}_style_focus"   , ( @variables['style_focus']= arg    )      end
-		def var_style_selected=( arg)  $app.ui.set "#{@name}_style_selected", ( @variables['style_selected']= arg )      end
+		def var_style_normal=( arg)    $app.ui.set "#{@name}_style_normal"  , ( @variables['style_normal']= arg   ).to_s end
+		def var_style_focus=( arg)     $app.ui.set "#{@name}_style_focus"   , ( @variables['style_focus']= arg    ).to_s end
+		def var_style_selected=( arg)  $app.ui.set "#{@name}_style_selected", ( @variables['style_selected']= arg ).to_s end
 		def var_autobind=( arg)        $app.ui.set "#{@name}_autobind"      , ( @variables['autobind']= arg       ).to_s end
 		def var_modal=( arg)           $app.ui.set "#{@name}_modal"         , ( @variables['modal']= arg          ).to_s end
-		def var_pos_name=( arg)        $app.ui.set "#{@name}_pos_name"      , ( @variables['pos_name']= arg       )      end
+		def var_pos_name=( arg)        $app.ui.set "#{@name}_pos_name"      , ( @variables['pos_name']= arg       ).to_s end
 		def var_pos=( arg)             $app.ui.set "#{@name}_pos"           , ( @variables['pos']= arg            ).to_s end
 		def var_offset=( arg)          $app.ui.set "#{@name}_offset"        , ( @variables['offset']= arg         ).to_s end
-		def var_text=( arg)            $app.ui.set "#{@name}_text"          , ( @variables['text']= arg           )      end
-		def var_function=( arg)        $app.ui.set "#{@name}_function"      , ( @variables['function']= arg       )      end
+		def var_text=( arg)            $app.ui.set "#{@name}_text"          , ( @variables['text']= arg           ).to_s end
+		def var_function=( arg)        $app.ui.set "#{@name}_function"      , ( @variables['function']= arg       ).to_s end
 		def var_focus=( arg)           $app.ui.set "#{@name}_focus"         , ( @variables['focus']= arg          ).to_s end
+		def var_value=( arg)           $app.ui.set "#{@name}_value"         , ( @variables['value']= arg          ).to_s end
 
 		# te/tv is in /tmp/TVIEW!!!
 

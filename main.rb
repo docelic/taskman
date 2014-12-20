@@ -32,32 +32,6 @@ $:.unshift File.dirname $0
 
 require 'extensions'
 require 'defaults'
-require 'item'
-
-require 'stfl_base'
-
-require 'window'
-
-require 'layout'
-require 'layout/vbox'
-require 'layout/hbox'
-require 'layout/table'
-
-require 'widget'
-require 'widget/label'
-require 'widget/input'
-require 'widget/list'
-require 'widget/textedit'
-require 'widget/checkbox'
-require 'widget/textview'
-require 'widget/hspace'
-require 'widget/vspace'
-
-require 'menu'
-require 'menuaction'
-
-require 'theme'
-require 'style'
 
 require 'json'
 
@@ -149,7 +123,7 @@ begin
 			when 'colors'
 				propagate= false
 				$opts[opt]= arg.to_i
-				$opts['color_set']= 1
+				$opts['colors_set']= 1
 
 			when 'help'
 				usage
@@ -168,7 +142,7 @@ end
 
 if $opts['term']
 	ENV['TERM']= $opts['term']
-	if not $opts['color_set']
+	if not $opts['colors_set']
 		if $opts['term'].match( /(\d+)/)
 			case $1
 				when 8, 16, 88, 256
@@ -186,9 +160,40 @@ if $opts['term']
 			$opts['colors']= c
 		end
 	end
-elsif $opts['colors']> 8
+elsif $opts['colors_set'] and $opts['colors']> 8
 	ENV['TERM']= "screen-#{$opts['colors']}color"
 end
+
+$:.unshift File.dirname $0
+# Prefer local overrides of any modules
+$:.unshift File.join $opts['lib-dir']
+
+require 'item'
+
+require 'stfl_base'
+
+require 'window'
+
+require 'layout'
+require 'layout/vbox'
+require 'layout/hbox'
+require 'layout/table'
+
+require 'widget'
+require 'widget/label'
+require 'widget/input'
+require 'widget/list'
+require 'widget/textedit'
+require 'widget/checkbox'
+require 'widget/textview'
+require 'widget/hspace'
+require 'widget/vspace'
+
+require 'menu'
+require 'menuaction'
+
+require 'theme'
+require 'style'
 
 #if $opts['data-dir'] and not File.directory? $opts['data-dir']
 #	Dir.mkdir $opts['data-dir'], 0700
