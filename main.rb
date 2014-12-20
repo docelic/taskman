@@ -169,7 +169,7 @@ $:.unshift File.dirname $0
 $:.unshift File.join $opts['lib-dir']
 
 require 'item'
-
+require 'help'
 require 'stfl_base'
 
 require 'window'

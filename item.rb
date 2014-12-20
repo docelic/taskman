@@ -25,7 +25,7 @@ module TASKMAN
 		
 		def initialize
 			# Automatically assign ID to every new task
-			@id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i
+			self.generate_id
 			@subject= ''
 			@start= nil # definitely not before this Date
 			@stop= nil # definitely not after this Date
@@ -37,6 +37,10 @@ module TASKMAN
 			@omit_remind= false # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
 			@message= '' # Body of the task
 		end 
+
+		def generate_id
+			@id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i
+		end
 
 		# Parser functions:
 		# Each variable (start, stop, due, omit...) can be set directly

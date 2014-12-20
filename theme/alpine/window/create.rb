@@ -25,7 +25,7 @@ module TASKMAN
 				:'',
 				:tablebr,
 				:cancel,
-				:'',
+				( arg[:id] ? :clone_task : :''),
 				:'',
 				:'',
 				:'',

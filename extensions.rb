@@ -40,6 +40,8 @@ class String
 	# of the end of the string. Done that way primarily to support
 	# descriptions in status line on Create window, where useful examples
 	# are found at the end of the line.
+	# Diff specifies how many columns should be left empty on the sides,
+	# specified as a negative number.
 	def truncate diff= -1
 		available= $opts['term-width']+ diff
 		needed= self.length

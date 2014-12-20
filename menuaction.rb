@@ -29,8 +29,9 @@ module TASKMAN
 			'create'    => { :hotkey=> 'C',   :shortname=> 'Create',      :menuname=> 'Create Task', :description=> 'Create a task', :function=> :create },
 			'index'     => { :hotkey=> 'I',   :shortname=> 'Index',       :menuname=> 'Task Index',  :description=> 'View tasks in current folder', :function=> :index },
 
-			'create_task'=> { :hotkey=> '^X',  :shortname=> 'Create',      :menuname=> 'Create a Task',:description=> '', :function=> :create_task},
-			'select_task'=> { :hotkey=> 'ENTER',:shortname=> 'Select',     :menuname=> 'Select Task', :description=> '', :function=> :select_task},
+			'create_task'=> { :hotkey=> '^X',  :shortname=> 'Create',     :menuname=> 'Create a Task',:description=> '', :function=> :create_task},
+			'clone_task' => { :hotkey=> '^D',  :shortname=> 'Clone',      :menuname=> 'Clone current Task',:description=> '', :function=> :clone_task},
+			'select_task'=> { :hotkey=> 'ENTER',:shortname=> 'Select',    :menuname=> 'Select Task', :description=> '', :function=> :select_task},
 			'save_task' => { :hotkey=> '^X',  :shortname=> 'Save',        :menuname=> 'Save Changes',:description=> '', :function=> :create_task},
 
 			'quit'      => { :hotkey=> 'Q',   :shortname=> 'Quit',        :menuname=> 'Quit',        :description=> 'Leave the Taskman program', :function=> :quit },
@@ -227,6 +228,18 @@ module TASKMAN
 			$app.exec( :window=> 'help')
 		end
 
+		def clone_task arg= {}
+			id= $app.screen['id'].var_text_now.to_i
+			return unless id
+
+			t= $tasklist[:tasks][id]
+			t2= t.clone
+			t2.generate_id
+			$tasklist[:tasks][t2.id]= t2
+			$app.screen.status_label_text= 'Task cloned'
+			$tasklist.save
+		end
+
 		def create_task arg= {}
 			w= arg[:window]
 			i= arg[:item]|| Item.new
@@ -271,10 +284,12 @@ module TASKMAN
 				$tasklist[:tasks][i.id]= i
 				$tasklist.save
 
+				$app.screen['id'].var_text= i.id
+
 			rescue Exception => e
 				w= arg[:window]
 				if w.respond_to? :status_label_text=
-					w.status_label_text= e
+					w.status_label_text= e.to_s
 				else
 					pfl e
 				end
