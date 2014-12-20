@@ -86,7 +86,7 @@ module TASKMAN
 				# If the currently focused widget has actions associated to it, and
 				# there is 'hotkey_in' action somewhere in the menu, modify it to
 				# represent the entry under cursor
-				if hk= wh['hotkey_in'] and widget.action
+				if hk= wh['hotkey_in'] and widget.action and widget.var_modal== 0
 					hk.widgets_hash['menu_hotkey_in_shortname'].var_text= widget.action.shortname
 					hk.function= widget.action.function
 				end

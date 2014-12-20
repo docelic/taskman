@@ -31,7 +31,7 @@ module TASKMAN
 
 			'create'    => { :hotkey=> 'C',   :shortname=> 'Create',      :menuname=> 'Create Task', :description=> 'Create a task', :function=> :create },
 			'index'     => { :hotkey=> 'I',   :shortname=> 'Index',       :menuname=> 'Task Index',  :description=> 'View tasks in current folder', :function=> :index },
-			'to_index'  => { :hotkey=> '^T',  :shortname=> 'Index',       :menuname=> 'To Index',    :description=> 'View tasks in current folder', :function=> :index },
+			'to_index'  => { :hotkey=> '^T',  :shortname=> 'To Index',    :menuname=> 'Task Index',    :description=> 'View tasks in current folder', :function=> :index },
 
 			'create_task'=> { :hotkey=> '^X',  :shortname=> 'Create',     :menuname=> 'Create a Task',:description=> '', :function=> :create_task},
 			'clone_task' => { :hotkey=> '^D',  :shortname=> 'Clone',      :menuname=> 'Clone current Task',:description=> '', :function=> :clone_task},
