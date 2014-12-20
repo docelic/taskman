@@ -1,6 +1,6 @@
 module TASKMAN
 
-	class Theme::Window::Main
+	class Theme::Window::Main < Theme::Window
 		class Header < Hbox
 
 			def initialize arg= {}
