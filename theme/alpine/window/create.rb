@@ -12,7 +12,7 @@ module TASKMAN
 
 			self<< Theme::Window::Main::Header.new(      arg.merge( :name=> :header, :title=> ( arg[:title]|| _('CREATE TASK'))))
 			self<< ( b= Theme::Window::Create::Body.new( arg.merge( :name=> :body)))
-			b.init arg
+			b.init arg # (Must call this way to happen after insertion of b into window)
 			self<< Theme::Window::Main::Status.new(      arg.merge( :name=> :status))
 
 			m1= Theme::Window::Main::Menu.new(           arg.merge( :name=> :menu1))

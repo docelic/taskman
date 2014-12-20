@@ -364,8 +364,9 @@ module TASKMAN
 			if @widget then variation.push "@#{@widget}" end
 			variation.push nil
 
+			first_pass= true
 			list= tree.dup # Start with a new tree
-			( list.count+ 1).times do
+			( list.count+ 2).times do
 				variation.each do |v|
 					keys= [ list, v].flatten
 					key= keys.join( ' ').strip
@@ -374,7 +375,7 @@ module TASKMAN
 					if s= $app.style[key]
 						if debug then pfl _('Found style key %s')% [ key] end
 						s.each do |k, v|
-							if debug then pfl _('Applying style to %s: %s%s')% [ @name, k, v] end
+							if debug then pfl _('Applying style to %s: %s %s')% [ @name, k, v] end
 							k= "var_style_#{k}=".to_sym
 							self.send k, v
 						end
@@ -382,6 +383,10 @@ module TASKMAN
 					end # if s (if style found)
 				end # variation.each
 				list.shift
+				if first_pass and list.count== 0
+					list.push tree[0]
+					first_pass= false
+				end
 			end # list.count.times
 		end # def apply_style
 	end # class
