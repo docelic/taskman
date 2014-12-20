@@ -193,15 +193,37 @@ module TASKMAN
 			@avhc= nil
 			arg
 		end
+		# Widgets can be removed by object ref, by name, or by
+		# class name in which case all widgets of that class will
+		# be removed.
+		# E.g.:
+		# widget>> 'W_1' - removes widget name "W_1" from children
+		# widget>> obj - removes obj from children
+		# widget>> ListItem - removes all child ListItems
 		def >> arg
-			@widgets>> arg
-			@widgets_hash.delete arg.name
-			arg.parent= nil
-			if MenuAction=== arg
-				@hotkeys_hash>> arg.name
+			to_remove= []
+			if String=== arg and self[arg]
+				to_remove.push self[arg]
+			elsif Class=== arg
+				@widgets.each do |w|
+					if arg=== w
+						to_remove.push w
+					end
+				end
+			else # It's an object
+				to_remove.push arg
+			end
+
+			to_remove.each do |r|
+				@widgets>> r
+				@widgets_hash.delete r.name
+				r.parent= nil
+				if MenuAction=== r
+					@hotkeys_hash>> r.name
+				end
 			end
 			@avhc= nil
-			arg
+			to_remove.count
 		end
 
 		def add_action *arg

@@ -323,29 +323,9 @@ On actions-- how the idea is to have them in menuaction, and themes free of code
 
 			#########################################################
 			# In-place definition of body
-			t= Textview.new( :name=> 'body', :focus=> 1)
+			t= Textview.new( :name=> 'body', :focus=> 1, :text=> @@help)
 			t<< MenuAction.new( :name=> :top_help)
 			t<< MenuAction.new( :name=> :bottom_help)
-
-			# TODO: extract this into a builtin function on textview/edit class
-			@@help.split( /\n/).each do |l|
-				l.gsub! /\t/, '  '
-				if l.length <= $COLUMNS
-					t<< ListItem.new( :text=> l)
-				else
-					words= l.split /\s+/
-					buf= ''
-					while words.count> 0
-						if(( buf.length+ words[0].length)< $COLUMNS)
-							buf+= ' '+ words.shift
-						else
-							t<< ListItem.new( :text=> buf.strip)
-							buf= ''
-						end
-					end
-					t<< ListItem.new( :text=> buf.strip)
-				end
-			end
 
 			self<< t
 			#########################################################

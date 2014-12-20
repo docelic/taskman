@@ -228,6 +228,7 @@ module TASKMAN
 		end
 
 		def create_task arg= {}
+			w= arg[:window]
 			i= arg[:item]|| Item.new
 			id= $app.screen['id'].var_text_now.to_i
 			if id> 0 then i.id= id end
@@ -241,18 +242,12 @@ module TASKMAN
 					:time_ssm,
 					:omit_shift,
 					:omit_remind,
+					:message,
 				].each do |f|
-					v= ( $app.ui.get "#{f.to_s}_text").strip
+					v= w[f.to_s].var_text_now.strip
 					next unless v.length> 0
 					# Save person's original input for eventual
 					# editing/modification later
-					i.send "_#{f}=", v
-					i.send "parse_#{f}", v
-				end
-
-				f= 'message'
-				v= ( $app.ui.text f).strip
-				if v.length> 0
 					i.send "_#{f}=", v
 					i.send "parse_#{f}", v
 				end
@@ -262,7 +257,7 @@ module TASKMAN
 					:omit,
 					:remind,
 				].each do |f|
-					list= ( $app.ui.get "#{f}_text").split /,/
+					list= w[f.to_s].var_text_now.split /,/
 					list.each do |v|
 						v.strip!
 						next unless v.length> 0
@@ -284,11 +279,6 @@ module TASKMAN
 					pfl e
 				end
 			end
-		end
-
-		def update_task
-			# TODO: read ID from form, retrieve it from $tasklist and
-			# just re-call create_task( item) and it'll do the job.
 		end
 
 		def select_task arg= {}

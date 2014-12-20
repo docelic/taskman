@@ -1,12 +1,6 @@
 module TASKMAN
 
-	class Textview < Widget
-
-		def initialize *arg
-			super
-			@widget= 'textview'
-		end
-
+	class Textview < WidgetText
 	end
 
 end

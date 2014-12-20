@@ -180,6 +180,7 @@ require 'layout/hbox'
 require 'layout/table'
 
 require 'widget'
+require 'widget_text'
 require 'widget/label'
 require 'widget/input'
 require 'widget/list'
