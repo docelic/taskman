@@ -59,6 +59,46 @@ class String
 		#raise ArgumentError.new "Invalid value for Boolean: '#{self}'"
 	end
 
+	def format_to_screen
+		# Always add an empty line at the end for editing
+		# convenience.
+		text= self+ if self.length> 0 then "\n " else ' ' end
+
+		outbuf= []
+		text.split( /\n/).each do |l|
+			l.gsub! /\t/, '  '
+			if l.length <= $COLUMNS
+				outbuf<< l
+			else
+				words= l.split /\s+/
+				buf= ''
+				while words.count> 0
+					if(( buf.length+ words[0].length)<= $COLUMNS)
+						buf+= ' '+ words.shift
+
+					else
+						# If here, the existing buf+ line would not fit on screen.
+						# However, we make a distinction between buf being empty and
+						# having something already. If it already has something, we
+						# send that out and start with a clean one.
+						# If the if() goes into else() again after that, it means the
+						# single line is too wide for the screen, so just forcibly
+						# trim it, no other solution. (Generally only the divider
+						# lines will suffer from this, which is completely fine.)
+						if buf.length> 0
+							outbuf<< buf.strip
+						else
+							words[0]= words[0][0..($COLUMNS- 1)]
+						end
+						buf= ''
+					end
+				end
+				outbuf<< buf.strip
+			end
+		end
+
+		outbuf
+	end
 end
 
 class Fixnum

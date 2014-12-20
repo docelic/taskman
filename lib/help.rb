@@ -1,5 +1,5 @@
 module TASKMAN
-  class Help < Object
+  class Help
 
 		def self.text() @@text end
 
@@ -16,6 +16,7 @@ Table of Contents:
 2. Task Creation & Features
 3. Scheduling / Reminder Syntax
 4. Developer Overview
+5. Command Line Options
 
 ^+ '-'* ( $COLUMNS- 1)+ %q^
 
@@ -311,7 +312,8 @@ One last note, please note that STFL uses the default terminal colors when no ba
 TODO:
 On themes
 On actions-- how the idea is to have them in menuaction, and themes free of code
-^
+^+ "\n\n"+
+'COMMAND LINE OPTIONS'.center + "\n"+ usage
 end
 end
 

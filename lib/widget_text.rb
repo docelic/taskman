@@ -23,29 +23,10 @@ module TASKMAN
 		end
 
 		def var_text= arg
+			formatted= arg.format_to_screen
 			removed= self>> ListItem
-
-			# Always add an empty line at the end for editing
-			# convenience.
-			arg+= if arg.length> 0 then "\n " else ' ' end
-
-			arg.split( /\n/).each do |l|
-				l.gsub! /\t/, '  '
-				if l.length <= $COLUMNS
-					self<< ListItem.new( :text=> l)
-				else
-					words= l.split /\s+/
-					buf= ''
-					while words.count> 0
-						if(( buf.length+ words[0].length)< $COLUMNS)
-							buf+= ' '+ words.shift
-						else
-							self<< ListItem.new( :text=> buf.strip)
-							buf= ''
-						end
-					end
-					self<< ListItem.new( :text=> buf.strip)
-				end
+			formatted.each do |l|
+				self<< ListItem.new( :text=> l)
 			end
 
 			# Is it enough if we wrap this in removed> 0,
