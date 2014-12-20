@@ -66,6 +66,7 @@ $getopts= [
 	[ '--debug-style-widget',  '--dsw',      GetoptLong::REQUIRED_ARGUMENT],
 	[ '--debug-stfl',          '--dstfl',    GetoptLong::NO_ARGUMENT],
 	[ '--debug-stfl-widget' ,  '--dstflw',   GetoptLong::REQUIRED_ARGUMENT],
+	[ '--exit-key',            '--ek',       GetoptLong::NO_ARGUMENT],
 ]
 
 def usage
@@ -268,6 +269,7 @@ end
 $app= TASKMAN::Application.new ARGV
 
 if __FILE__== $0
+	trap( 'SIGINT') {}
 	$app.start
 end
 

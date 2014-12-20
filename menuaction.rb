@@ -2,7 +2,7 @@ module TASKMAN
 
 	class MenuAction < Widget
 
-		attr_accessor :name, :hotkey, :shortname, :menuname, :description, :function
+		attr_accessor :name, :hotkey, :hotkey_label, :shortname, :menuname, :description, :function
 		
 		# TODO move this to outside file
 		@@Menus= {
@@ -22,16 +22,17 @@ module TASKMAN
 			'prevcmd2'  => { :hotkey=> 'P',   :shortname=> 'PrevCmd',     :menuname=> 'PrevCmd',     :description=> '', :function=> :prevcmd2 },
 			'firstpage' => { :hotkey=> 'HOME',:shortname=> 'FirstPage',   :menuname=> 'FirstPage',   :description=> '', :function=> :firstpage },
 			'lastpage'  => { :hotkey=> 'END', :shortname=> 'LastPage',    :menuname=> 'LastPage',    :description=> '', :function=> :lastpage },
-			'nextpage'  => { :hotkey=> 'SPACE',:shortname=> 'NextPage',   :menuname=> 'NextPage',    :description=> '', :function=> :nextpage },
+			'nextpage'  => { :hotkey=> 'SPACE', :hotkey_label=> 'SPC', :shortname=> 'NextPage',   :menuname=> 'NextPage',    :description=> '', :function=> :nextpage },
 			'prevpage'  => { :hotkey=> '-',   :shortname=> 'PrevPage',    :menuname=> 'PrevPage',    :description=> '', :function=> :prevpage },
 
 			'main'      => { :hotkey=> '^M',  :shortname=> 'Main Menu',   :menuname=> 'Main Menu',   :description=> 'Main Menu', :function=> :main },
 			'create'    => { :hotkey=> 'C',   :shortname=> 'Create',      :menuname=> 'Create Task', :description=> 'Create a task', :function=> :create },
 			'index'     => { :hotkey=> 'I',   :shortname=> 'Index',       :menuname=> 'Task Index',  :description=> 'View tasks in current folder', :function=> :index },
+			'to_index'  => { :hotkey=> '^T',  :shortname=> 'Index',       :menuname=> 'To Index',    :description=> 'View tasks in current folder', :function=> :index },
 
 			'create_task'=> { :hotkey=> '^X',  :shortname=> 'Create',     :menuname=> 'Create a Task',:description=> '', :function=> :create_task},
 			'clone_task' => { :hotkey=> '^D',  :shortname=> 'Clone',      :menuname=> 'Clone current Task',:description=> '', :function=> :clone_task},
-			'select_task'=> { :hotkey=> 'ENTER',:shortname=> 'Select',    :menuname=> 'Select Task', :description=> '', :function=> :select_task},
+			'select_task'=> { :hotkey=> 'ENTER', :hotkey_label=> 'RET', :shortname=> 'Select',    :menuname=> 'Select Task', :description=> '', :function=> :select_task},
 			'save_task' => { :hotkey=> '^X',  :shortname=> 'Save',        :menuname=> 'Save Changes',:description=> '', :function=> :create_task},
 
 			'quit'      => { :hotkey=> 'Q',   :shortname=> 'Quit',        :menuname=> 'Quit',        :description=> 'Leave the Taskman program', :function=> :quit },
@@ -67,9 +68,9 @@ module TASKMAN
 			'journal'   => { :hotkey=> 'J',   :shortname=> 'Journal',     :menuname=> 'Journal',     :description=> '', :function=> nil },
 			'addrbook'  => { :hotkey=> 'A',   :shortname=> 'AddrBook',    :menuname=> 'AddrBook',    :description=> '', :function=> nil },
 			'whereis'   => { :hotkey=> 'W',   :shortname=> 'WhereIs',     :menuname=> 'Find String', :description=> 'Find a string', :function=> nil },
-			'cut_line'          => { :hotkey=> '^K',   :shortname=> 'Cut Line',         :description=> 'Cut line', :function=> nil},
-			'postpone'          => { :hotkey=> '^O',   :shortname=> 'Postpone',         :description=> '', :function=> :postpone},
-			'cancel'            => { :hotkey=> '^C',   :shortname=> 'Cancel',           :description=> '', :function=> :main},
+			'cut_line'  => { :hotkey=> '^K',   :shortname=> 'Cut Line',         :description=> 'Cut line', :function=> nil},
+			'postpone'  => { :hotkey=> '^O',   :shortname=> 'Postpone',         :description=> '', :function=> :postpone},
+			'cancel'    => { :hotkey=> 'TIMEOUT', :hotkey_label=> '^C',  :shortname=> 'Cancel',           :description=> '', :function=> :cancel},
 			'listfolders'=> { :hotkey=> 'L',   :shortname=> 'ListFldrs',   :menuname=> 'FOLDER LIST', :description=> 'Select a folder to view', :function=> nil },
 		}
 
@@ -79,6 +80,7 @@ module TASKMAN
 				@name= name
 			end
 			@hotkey= arg.has_key?( :hotkey) ? arg.delete( :hotkey): @@Menus[name] ? @@Menus[name][:hotkey] : nil
+			@hotkey_label= arg.has_key?( :hotkey_label) ? arg.delete( :hotkey_label): @@Menus[name] ? ( @@Menus[name][:hotkey_label]|| @@Menus[name][:hotkey]|| @hotkey) : nil
 			@shortname= arg.has_key?( :shortname) ? arg.delete( :shortname): @@Menus[name] ? @@Menus[name][:shortname] : nil
 			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name] ? @@Menus[name][:menuname] : nil
 			@description= arg.has_key?( :description) ? arg.delete( :description).truncate: @@Menus[name] ? @@Menus[name][:description].truncate : nil
@@ -135,6 +137,8 @@ module TASKMAN
 			end
 		end
 
+		# XXX See how this pre/post actions can be done automatically
+		# somehow
 		def quit arg= {}
 			$app.screen.ask( _('Really quit Taskman?'), Proc.new { |arg|
 				# window, widget, action, function, event-- WWAFE
@@ -146,6 +150,20 @@ module TASKMAN
 					#puts "Taskman finished. (#{$cnt}, #{$ctm})"
 					puts 'Taskman finished.'
 					exit 0
+				end
+				w['status_display'].var__display= 1
+				w['status_prompt'].var__display= 0
+				w.focus_default
+			})
+		end
+		def cancel arg= {}
+			$app.screen.ask( _('Cancel task?'), Proc.new { |arg|
+				# window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				wi= arg[:widget]
+				a= wi.var_text_now.to_bool
+				if a
+					main arg
 				end
 				w['status_display'].var__display= 1
 				w['status_prompt'].var__display= 0
@@ -276,6 +294,14 @@ module TASKMAN
 
 				$app.screen['id'].var_text= i.id
 
+				if w.respond_to? :status_label_text=
+					w.status_label_text= _('Task created')
+				else
+					pfl e
+				end
+
+				index arg
+
 			rescue Exception => e
 				w= arg[:window]
 				if w.respond_to? :status_label_text=
@@ -360,8 +386,6 @@ module TASKMAN
 #		def postpone arg= {}
 #		end
 #
-#		def cancel arg= {}
-#		end
 #
 #		def parent_names arg= {}
 #			w= arg[:widget]

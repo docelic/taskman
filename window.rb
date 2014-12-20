@@ -16,6 +16,12 @@ module TASKMAN
 				event= $app.ui.run code
 				focus= $app.ui.get_focus
 
+				if event.length> 0 and event== $opts['exit-key']
+					Stfl.reset
+					puts 'Taskman finished.'
+					exit 0
+				end
+
 				# Handling the keypress goes by checking the hotkeys associated
 				# with the widget itself, then with the window menus, and then
 				# with the parent widgets of the one receiving the keypress.

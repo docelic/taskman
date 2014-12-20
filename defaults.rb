@@ -37,6 +37,8 @@ module TASKMAN
 			'term-width'         => ( $COLUMNS|| 80),
 			'colors'             => 8,
 			'term'               => nil,
+
+			'exit-key'           => 'F10',
 		}
 
 		def initialize *arg
@@ -72,6 +74,7 @@ $description= {
   'debug-stfl-widget'    => _('Show STFL for named widget'),
   'data-dir'             => _('Data directory'),
   'data-file'            => _('Tasklist file'),
+  'exit-key'             => _('One-key exit from program'),
 
 #  'default-time'         => 'Use 12:00 as default event time',
 }
