@@ -203,15 +203,6 @@ class Array
 
 end
 
-class Hash
-	def save
-		self[:VERSION]= $opts['version']
-		tf= File.join $opts['data-dir'], $opts['data-file']
-		content= self.to_yaml
-		File.write tf, content
-	end
-end
-
 class Symbol
 	def to_str() to_s end
 end

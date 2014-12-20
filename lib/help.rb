@@ -135,14 +135,14 @@ The following global variables are available at all times:
 3. $getopts (array) - getopt definition (probably not relevant if not doing something specifically related to parsing command line options)
 4. usage() - function that displays help
 5. $app (object) - instance of TASKMAN::Application. Most useful methods are $app.ui (STFL object) and $app.screen (Ruby objects of toplevel element visible on screen)
-6. $tasklist (hash) - tasklist, with tasks in $tasklist[:tasks] hash. This is basically what gets saved to and loaded from ~/.tasklist/tasks.yaml.
+6. $tasklist (object) - tasklist, with tasks in $tasklist.tasks hash. $tasklist.data is what gets saved to and loaded from ~/.tasklist/tasks.yaml.
 
 Main loop:
 ----------
 
 Once main.rb sets things up, it initializes $app and calls $app.start().
 
-$app.start() in current version just calls $app.exec() which gets the wheels spinning. $app.exec() loads tasklist, initializes the window that it has to display, and runs its main loop.
+$app.start() in current version just loads tasklist and calls $app.exec() which gets the wheels spinning. $app.exec() initializes the window that it has to display, and runs its main loop.
 
 Note that this same function ($app.exec()) is used when switching from one window to another, and that the main loop is based around STFL's main loop implementation + a couple conveniences which you don't need to be implementing yourself:
 

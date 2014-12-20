@@ -243,10 +243,10 @@ module TASKMAN
 			id= $app.screen['id'].var_text_now.to_i
 			return unless id
 
-			t= $tasklist[:tasks][id]
+			t= $tasklist.tasks[id]
 			t2= t.clone
 			t2.generate_id
-			$tasklist[:tasks][t2.id]= t2
+			$tasklist.tasks[t2.id]= t2
 			$app.screen.status_label_text= 'Task cloned'
 			$tasklist.save
 		end
@@ -292,7 +292,7 @@ module TASKMAN
 					end
 				end
 
-				$tasklist[:tasks][i.id]= i
+				$tasklist.tasks[i.id]= i
 				$tasklist.save
 
 				$app.screen['id'].var_text= i.id
