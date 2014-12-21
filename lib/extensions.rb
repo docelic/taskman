@@ -42,7 +42,7 @@ class String
 	# are found at the end of the line.
 	# Diff specifies how many columns should be left empty on the sides,
 	# specified as a negative number.
-	def truncate diff= -1
+	def truncate2 diff= -1
 		available= $opts['term-width']+ diff
 		needed= self.length
 		offset= needed- available

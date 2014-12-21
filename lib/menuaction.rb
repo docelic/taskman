@@ -87,7 +87,7 @@ module TASKMAN
 			@hotkey_label= arg.has_key?( :hotkey_label) ? arg.delete( :hotkey_label): @@Menus[name] ? ( @@Menus[name][:hotkey_label]|| @hotkey) : nil
 			@shortname= arg.has_key?( :shortname) ? arg.delete( :shortname): @@Menus[name] ? @@Menus[name][:shortname] : nil
 			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name] ? @@Menus[name][:menuname] : nil
-			@description= arg.has_key?( :description) ? arg.delete( :description).truncate: @@Menus[name] ? @@Menus[name][:description].truncate : nil
+			@description= arg.has_key?( :description) ? arg.delete( :description).truncate2: @@Menus[name] ? @@Menus[name][:description].truncate2 : nil
 
 			# Function to execute can be specified in a parameter or come from a default.
 			# If none of that is specified, it defaults to a function named the same as

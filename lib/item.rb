@@ -6,8 +6,10 @@ module TASKMAN
 
 	require 'date'
 	require 'time'
+	require 'active_record'
 
-	class Item
+	class Item < ActiveRecord::Base
+
 		@@weekdays= Date::ABBR_DAYNAMES.map {|p| p.upcase}
 		@@months= Date::ABBR_MONTHNAMES.dup
 		@@months[0]= ''
@@ -17,15 +19,14 @@ module TASKMAN
 		@@default_time= 43200
 
 		# These will contain person's original input
-		attr_accessor :_start, :_stop, :_due, :_omit, :_omit_shift, :_time_ssm, :_remind, :_omit_remind, :_subject, :_message
-
 		# These will contain value after parsing person's input
-		attr_accessor :id, :start, :stop, :due, :omit, :omit_shift, :remind, :omit_remind, :time_ssm
-		attr_accessor :subject, :message
+		#attr_accessor :_start, :_stop, :_due, :_omit, :_omit_shift, :_time_ssm, :_remind, :_omit_remind, :_subject, :_message
+		#attr_accessor :id, :start, :stop, :due, :omit, :omit_shift, :remind, :omit_remind, :time_ssm
+		#attr_accessor :subject, :message
 		
 		def initialize
-			# Automatically assign ID to every new task
 			self.generate_id
+
 			@subject= ''
 			@start= nil # definitely not before this Date
 			@stop= nil # definitely not after this Date
@@ -36,6 +37,8 @@ module TASKMAN
 			@remind= [] # list of Dates or Times to activate the reminder on, or seconds relative to the the due date/time
 			@omit_remind= false # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
 			@message= '' # Body of the task
+
+			super
 		end 
 
 		def generate_id
