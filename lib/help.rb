@@ -22,11 +22,13 @@ Table of Contents:
 
 1. BASIC INFORMATION
 
-Taskman allows creation of task/TODO/event lists and offers extensive scheduling and reminding features.
+Taskman allows creation of task/TODO/event lists and offers extensive tracking, scheduling and reminding features.
 
-Scheduling features have been inspired by a program called Remind, although Taskman is more powerful and elaborate.
+At the moment, Taskman is primarily a personal scheduler program. However, shared calendars and shared event lists are planned, as well as plugins for other calendar and task tracking apps. Please report your wishes in that regard to help prioritize work.
 
-Default user interface has been inspired by the venerable mailer program Pine (Alpine), although Taskman supports completely customizable layouts ("themes") and color schemes ("styles").
+Taskman's scheduling features have been inspired by a program called Remind, although Taskman is more powerful and elaborate.
+
+Taskman's default user interface has been inspired by the venerable mailer program Pine (and Alpine), although Taskman supports customizable layouts ("themes") and color schemes ("styles").
 
 ^+ '-'* ( $COLUMNS- 1)+ %q^
 

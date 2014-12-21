@@ -21,7 +21,7 @@ module TASKMAN
 		def main_loop code= 0
 
 			# Quick detector for cases where main_loop gets called recursively.
-			if $main_loop #and code== 0
+			if $main_loop and code== 0
 				pfl _('Already in main loop. Recursive call detected; exiting.')
 				exit 1
 			end

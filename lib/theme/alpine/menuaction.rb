@@ -2,7 +2,7 @@ module TASKMAN
 
 	class Theme::MenuAction < MenuAction
 
-		def initialize *arg
+		def initialize arg= {}
 			super
 			name= [ :menu, @name].join '_'
 			@hotkey_name= [ name, 'hotkey'].join '_'

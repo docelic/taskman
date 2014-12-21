@@ -39,6 +39,7 @@ module TASKMAN
 			'save_task' => { :hotkey=> '^X',  :shortname=> 'Save',        :menuname=> 'Save Changes',:description=> '', :function=> :create_task},
 
 			'quit'      => { :hotkey=> 'Q',   :shortname=> 'Quit',        :menuname=> 'Quit',        :description=> 'Leave the Taskman program', :function=> :quit },
+			'quit_now'  => { :hotkey=> $opts['exit-key'], :shortname=> 'QuitNow',        :menuname=> 'Quit Now',        :description=> 'Quit Taskman now', :function=> :quit_now },
 
 			# Actions related to status messages when a person tries to move beyond widget/page/window limits
 			'top_list'=>   { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_list},
@@ -68,7 +69,7 @@ module TASKMAN
 			'cut_line'  => { :hotkey=> '^K',   :shortname=> 'Cut Line',         :description=> 'Cut line', :function=> nil},
 			'postpone'  => { :hotkey=> '^O',   :shortname=> 'Postpone',         :description=> '', :function=> :postpone},
 			'cancel'    => { :hotkey=> 'TIMEOUT', :hotkey_label=> '^C',  :shortname=> 'Cancel',           :description=> '', :function=> :cancel},
-			'listfolders'=>{ :hotkey=> 'L',   :shortname=> 'ListFldrs',   :menuname=> 'FOLDER LIST', :description=> 'Select a folder to view', :function=> nil },
+			'listfolders'=>{ :hotkey=> 'L',   :shortname=> 'ListFldrs',   :menuname=> 'FOLDER LIST', :description=> 'Select a folder to view', :function=> :list },
 
 			# Testing shortcuts
 			#'inc_folder_count'=> { :hotkey=> 'SR',   :shortname=> 'Folder Cnt+1',     :description=> '', :function=> :inc_folder_count },
@@ -140,21 +141,32 @@ module TASKMAN
 
 		# XXX See how these pre/post actions can be done automatically
 		# somehow
+		def quit_now arg= {}
+			quit( arg.merge( :quick=> true))
+		end
 		def quit arg= {}
-			$app.screen.ask( _('Really quit Taskman?'), Proc.new { |arg|
-				# window, widget, action, function, event-- WWAFE
-				w= arg[:window]
-				wi= arg[:widget]
-				a= wi.var_text_now.to_bool
-				if a
-					Stfl.reset
-					puts 'Taskman finished.'
-					exit 0
-				end
-				w['status_display'].var__display= 1
-				w['status_prompt'].var__display= 0
-				w.focus_default
-			})
+			unless arg[:quick]
+				$app.screen.ask( _('Really quit Taskman?'), Proc.new { |arg|
+					# window, widget, action, function, event-- WWAFE
+					w= arg[:window]
+					wi= arg[:widget]
+					a= wi.var_text_now.to_bool
+					if a
+						Stfl.reset
+						puts _('Taskman finished.')
+						exit 0
+					end
+					w['status_display'].var__display= 1
+					w['status_prompt'].var__display= 0
+					w.focus_default
+				})
+
+			# Immediate exit requested
+			else
+				Stfl.reset
+				puts _('Taskman finished.')
+				exit 0
+			end
 		end
 		def cancel arg= {}
 			$app.screen.ask( _('Cancel task?'), Proc.new { |arg|
@@ -223,6 +235,9 @@ module TASKMAN
 		end
 		def index arg= {}
 			$app.exec( arg.merge( :window=> 'index'))
+		end
+		def list arg= {}
+			$app.exec( arg.merge( :window=> 'list'))
 		end
 		def help arg= {}
 			$app.exec( arg.merge( :window=> 'help'))
@@ -337,14 +352,22 @@ module TASKMAN
 		def nextcmd2 arg= {}
 			w= arg[:widget]
 			wp= w.parent
-			wp.var_pos+= 2 if wp.var_pos<= 7
-			$app.screen.main_loop -1
+			if wp.var_pos<= 7
+				wp.var_pos+= 2
+				$app.screen.main_loop -1
+			else
+				$app.screen.status_label_text= _('Already at bottom of list')
+			end
 		end
 		def prevcmd2 arg= {}
 			w= arg[:widget]
 			wp= w.parent
-			wp.var_pos-= 2 if wp.var_pos>= 2
-			$app.screen.main_loop -1
+			if wp.var_pos>= 2
+				wp.var_pos-= 2
+				$app.screen.main_loop -1
+			else
+				$app.screen.status_label_text= _('Already at top of list')
+			end
 		end
 
 		# These two need no implementation because they are currently used in

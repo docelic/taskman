@@ -28,6 +28,8 @@ module TASKMAN
 				:hotkey_in,
 				:nextcmd2,
 				:gotofolder,
+				#:'',
+				#:quit_now,
 			)
 
 #			m2= Theme::Window::Main::Menu.new( :name=> :menu2, :'.display'=> 0)
