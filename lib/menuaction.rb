@@ -39,7 +39,8 @@ module TASKMAN
 			'save_task' => { :hotkey=> '^X',  :shortname=> 'Save',        :menuname=> 'Save Changes',:description=> '', :function=> :create_task},
 
 			'quit'      => { :hotkey=> 'Q',   :shortname=> 'Quit',        :menuname=> 'Quit',        :description=> 'Leave the Taskman program', :function=> :quit },
-			'quit_now'  => { :hotkey=> $opts['exit-key'], :shortname=> 'QuitNow',        :menuname=> 'Quit Now',        :description=> 'Quit Taskman now', :function=> :quit_now },
+			# Handler for Quit Now can be nil because this is checked for and executed directly in the main loop. This entry exists only for showing in menu when you want.
+			'quit_now'  => { :hotkey=> $opts['exit-key'], :shortname=> 'QuitNow',        :menuname=> 'Quit Now',        :description=> 'Quit Taskman now', :function=> :nil },
 
 			# Actions related to status messages when a person tries to move beyond widget/page/window limits
 			'top_list'=>   { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_list},
@@ -141,32 +142,21 @@ module TASKMAN
 
 		# XXX See how these pre/post actions can be done automatically
 		# somehow
-		def quit_now arg= {}
-			quit( arg.merge( :quick=> true))
-		end
 		def quit arg= {}
-			unless arg[:quick]
-				$app.screen.ask( _('Really quit Taskman?'), Proc.new { |arg|
-					# window, widget, action, function, event-- WWAFE
-					w= arg[:window]
-					wi= arg[:widget]
-					a= wi.var_text_now.to_bool
-					if a
-						Stfl.reset
-						puts _('Taskman finished.')
-						exit 0
-					end
-					w['status_display'].var__display= 1
-					w['status_prompt'].var__display= 0
-					w.focus_default
-				})
-
-			# Immediate exit requested
-			else
-				Stfl.reset
-				puts _('Taskman finished.')
-				exit 0
-			end
+			$app.screen.ask( _('Really quit Taskman?'), Proc.new { |arg|
+				# window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				wi= arg[:widget]
+				a= wi.var_text_now.to_bool
+				if a
+					Stfl.reset
+					puts _('Taskman finished.')
+					exit 0
+				end
+				w['status_display'].var__display= 1
+				w['status_prompt'].var__display= 0
+				w.focus_default
+			})
 		end
 		def cancel arg= {}
 			$app.screen.ask( _('Cancel task?'), Proc.new { |arg|
