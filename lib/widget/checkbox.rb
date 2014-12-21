@@ -14,7 +14,5 @@ module TASKMAN
 				self.var_value= 0
 			end
 		end
-
 	end
-
 end

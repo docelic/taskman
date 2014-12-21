@@ -7,7 +7,11 @@ module TASKMAN
 		def status_label_text= arg
 			w= self['status_label']
 			if w
-				w.var_text= ( '[ '+ arg+ ' ]').truncate
+				if arg
+					w.var_text= ( '[ '+ arg+ ' ]').truncate
+				else
+					w.var_text= ''
+				end
 			end
 		end
 

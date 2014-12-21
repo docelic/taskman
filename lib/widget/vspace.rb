@@ -6,7 +6,5 @@ module TASKMAN
 			arg[:'.expand']||= 'v'
 			super
 		end
-
 	end
-
 end

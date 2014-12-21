@@ -1,8 +1,8 @@
 # File implementing generic window functions.
 # ('Window' in our terminology being what STFL calls 'form')
-# Or another way of thinking about it is a portion of the
-# screen. (For example, the alpine theme consists of a 'screen'
-# with header, body, status and menu windows)
+# ($app.screen points to toplevel Ruby object (something that
+# inherits from Window), and $app.ui is the corresponding
+# STFL form object.)
 #
 # The main difference between Window and just using StflBase
 # is that window implements main loop.
@@ -19,6 +19,14 @@ module TASKMAN
 		end
 
 		def main_loop code= 0
+
+			# Quick detector for cases where main_loop gets called recursively.
+			if $main_loop #and code== 0
+				pfl _('Already in main loop. Recursive call detected; exiting.')
+				exit 1
+			end
+			$main_loop= true
+
 			loop do
 				event= $app.ui.run code
 				focus= $app.ui.get_focus
@@ -64,14 +72,12 @@ module TASKMAN
 
 					# Whatever the key press is, clear the window's status box,
 					# if one exists. (Or set it to the current item's tooltip, if any).
-					if wh['status_label']
-						wh['status_label'].var_text= ''
-						# Now, if the widget focused has a tooltip assigned to it,
-						# show it in the status box.
-						if widget.tooltip
-							wh['status_label'].var_text= ( _('[')+ widget.tooltip+ _(']')).truncate
+					$app.screen.status_label_text=
+						if widget.tooltip then
+							widget.tooltip
+						else
+							nil
 						end
-					end
 
 				else # (If we don't have anything focused or focused widget not found)
 					if not focus
@@ -109,13 +115,8 @@ module TASKMAN
 				# Otherwise we go into our usual keypress resolution.
 				if event== 'ENTER' and widget
 					if a= widget.action
-						if Symbol=== f= a.function
-							a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)
-							handled= true
-						elsif Proc=== f= a.function
-							f.yield( :window => self, :widget => widget, :action => a, :function => f, :event => event)
-							handled= true
-						end
+						a.run( :window => self, :widget => widget, :event => event)
+						handled= true
 					end
 				end
 
@@ -129,19 +130,17 @@ module TASKMAN
 					ary.each do |w|
 						next if w.nil?
 						if a= w.hotkeys_hash[event]
-							if Symbol=== f= a.function
-								a.send( f, :window => self, :widget => widget, :action => a, :function => f, :event => event)
-								handled= true
-							elsif Proc=== f= a.function
-								f.yield( :window => self, :widget => widget, :action => a, :function => f, :event => event)
-								handled= true
-							end
+							a.run( :window => self, :widget => widget, :event => event)
 						end
 					end
 				end
 
-				# NOTE: be aware that the code from IFs above will continue here.
-				# Guard appropriately if you do not want that.
+				# Now, when everything was said and done, exit from this
+				# loop if that was requested.
+				if $stop_loop #and code== 0
+					$stop_loop= false
+					break
+				end
 
 				## Handle specific events in a generic way
 				#if event== 'SLEFT'
@@ -150,17 +149,13 @@ module TASKMAN
 				#	pfl focus, event
 				#	@show_next_key= false
 				#end
-
-				# Events reaching here are unhandled/default. For example,
-				# pressing RIGHT when already at the end of the input box
-				# text etc.
 			end
+
+			$main_loop= false
 		end
 
 		def menus
 			@widgets.select{ |w| w.name=~ /^menu/}
 		end
-
 	end
-
 end

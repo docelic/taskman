@@ -5,6 +5,5 @@ module TASKMAN
 			super
 			@widget= 'label'
 		end
-
 	end
 end

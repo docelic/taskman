@@ -6,7 +6,5 @@ module TASKMAN
 			super
 			@widget= 'input'
 		end
-
 	end
-
 end

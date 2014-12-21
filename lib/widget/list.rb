@@ -6,8 +6,8 @@ module TASKMAN
 			super
 			@widget= 'list'
 
-			self<< MenuAction.new( :name => :top_list)
-			self<< MenuAction.new( :name => :bottom_list)
+			self<< MenuAction.new( :name=> :top_list)
+			self<< MenuAction.new( :name=> :bottom_list)
 		end
 
 	end
@@ -18,7 +18,5 @@ module TASKMAN
 			super
 			@widget= 'listitem'
 		end
-
 	end
-
 end

@@ -33,31 +33,25 @@ module TASKMAN
 			'index'     => { :hotkey=> 'I',   :shortname=> 'Index',       :menuname=> 'Task Index',  :description=> 'View tasks in current folder', :function=> :index },
 			'to_index'  => { :hotkey=> '^T',  :shortname=> 'To Index',    :menuname=> 'Task Index',    :description=> 'View tasks in current folder', :function=> :index },
 
-			'create_task'=> { :hotkey=> '^X',  :shortname=> 'Create',     :menuname=> 'Create a Task',:description=> '', :function=> :create_task},
-			'clone_task' => { :hotkey=> '^D',  :shortname=> 'Clone',      :menuname=> 'Clone current Task',:description=> '', :function=> :clone_task},
-			'select_task'=> { :hotkey=> 'ENTER', :hotkey_label=> 'RET', :shortname=> 'Select',    :menuname=> 'Select Task', :description=> '', :function=> :select_task},
+			'create_task'=>{ :hotkey=> '^X',  :shortname=> 'Create',     :menuname=> 'Create a Task',:description=> '', :function=> :create_task},
+			'clone_task' =>{ :hotkey=> '^D',  :shortname=> 'Clone',      :menuname=> 'Clone current Task',:description=> '', :function=> :clone_task},
+			'select_task'=>{ :hotkey=> 'ENTER', :hotkey_label=> 'RET', :shortname=> 'Select',    :menuname=> 'Select Task', :description=> '', :function=> :select_task},
 			'save_task' => { :hotkey=> '^X',  :shortname=> 'Save',        :menuname=> 'Save Changes',:description=> '', :function=> :create_task},
 
 			'quit'      => { :hotkey=> 'Q',   :shortname=> 'Quit',        :menuname=> 'Quit',        :description=> 'Leave the Taskman program', :function=> :quit },
 
 			# Actions related to status messages when a person tries to move beyond widget/page/window limits
-			'top_list'=>    { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_list},
-			'bottom_list'=> { :hotkey=> 'DOWN',:shortname=> '',    :menuname=> '', :description=> '', :function=> :bottom_list},
-			'top_header'=>  { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_header},
-			#'bottom_page'=> { :hotkey=> 'DOWN',:shortname=> '',    :menuname=> '', :description=> ''},
-			'top_help'=>    { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_help},
-			'bottom_help'=> { :hotkey=> 'DOWN',:shortname=> '',    :menuname=> '', :description=> '', :function=> :bottom_help},
+			'top_list'=>   { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_list},
+			'bottom_list'=>{ :hotkey=> 'DOWN',:shortname=> '',    :menuname=> '', :description=> '', :function=> :bottom_list},
+			'top_header'=> { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_header},
+			#'bottom_page'=>{ :hotkey=> 'DOWN',:shortname=> '',    :menuname=> '', :description=> ''},
+			'top_help'=>   { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_help},
+			'bottom_help'=>{ :hotkey=> 'DOWN',:shortname=> '',    :menuname=> '', :description=> '', :function=> :bottom_help},
 
 			# Misc
 			'toggle_timing_options'=> { :description=> 'Toggle Timing Options', :function=> :toggle_timing_options},
 			'toggle_reminding_options'=> { :description=> 'Toggle Remind Options', :function=> :toggle_reminding_options},
-			'redraw'=>      { :hotkey=> '^L',  :shortname=> 'RedrawScr',:menuname=> 'Redraw Screen', :description=> '', :function=> :redraw},
-
-			# Testing shortcuts
-			'inc_folder_count'  => { :hotkey=> 'SR',   :shortname=> 'Folder Cnt+1',     :description=> '', :function=> :inc_folder_count },
-			'all_widgets_hash'  => { :hotkey=> 'SF',   :shortname=> 'All Children',     :description=> '', :function=> :all_widgets},
-			'parent_names'      => { :hotkey=> '^P',   :shortname=> 'Parent Tree',      :description=> '', :function=> :parent_names},
-			'read_self_text'    => { :hotkey=> '^P',:shortname=> 'Read self text',   :description=> '', :function=> :read_self_text},
+			'redraw'=>     { :hotkey=> '^L',  :shortname=> 'RedrawScr',:menuname=> 'Redraw Screen', :description=> '', :function=> :redraw},
 
 			# OLD / Unused / Unfinished / Untested
 			'other'     => { :hotkey=> 'O',   :shortname=> 'OTHER CMDS',  :menuname=> 'OTHER CMDS',  :description=> '', :function=> :menu_next_page },
@@ -74,7 +68,12 @@ module TASKMAN
 			'cut_line'  => { :hotkey=> '^K',   :shortname=> 'Cut Line',         :description=> 'Cut line', :function=> nil},
 			'postpone'  => { :hotkey=> '^O',   :shortname=> 'Postpone',         :description=> '', :function=> :postpone},
 			'cancel'    => { :hotkey=> 'TIMEOUT', :hotkey_label=> '^C',  :shortname=> 'Cancel',           :description=> '', :function=> :cancel},
-			'listfolders'=> { :hotkey=> 'L',   :shortname=> 'ListFldrs',   :menuname=> 'FOLDER LIST', :description=> 'Select a folder to view', :function=> nil },
+			'listfolders'=>{ :hotkey=> 'L',   :shortname=> 'ListFldrs',   :menuname=> 'FOLDER LIST', :description=> 'Select a folder to view', :function=> nil },
+
+			# Testing shortcuts
+			#'inc_folder_count'=> { :hotkey=> 'SR',   :shortname=> 'Folder Cnt+1',     :description=> '', :function=> :inc_folder_count },
+			#'all_widgets_hash'=> { :hotkey=> 'SF',   :shortname=> 'All Children',     :description=> '', :function=> :all_widgets},
+			#'parent_names'    => { :hotkey=> '^P',   :shortname=> 'Parent Tree',      :description=> '', :function=> :parent_names},
 		}
 
 		def initialize arg= {}
@@ -96,6 +95,17 @@ module TASKMAN
 			super
 		end
 
+		# XXX Maybe do this the other way around with .merge, so that all
+		# the values are filled in here, but if a person sends in any
+		# arguments in arg, they override the ones here.
+		def run arg= {}
+			if Symbol=== f= @function
+				self.send( f, arg.merge( :action=> self, :function=> f))
+			elsif Proc=== f= @function
+				f.yield( arg.merge( :action=> self, :function=> f))
+			end
+		end
+
 		def menu_text
 			# 2 - 5 - 15 - 4" - "2 - 33
 			"%2s     %-15s    -  %-33s" % [ @hotkey.upcase, ( @menuname|| @shortname).upcase, @description]
@@ -105,39 +115,27 @@ module TASKMAN
 
 		def top_list arg= {}
 			w= arg[:window]
-			if wh= w['status_label']
-				wh.var_text= '[Already at top of list]'
-			end
+			w.status_label_text= _('Already at top of list')
 		end
 		def bottom_list arg= {}
 			w= arg[:window]
-			if wh= w['status_label']
-				wh.var_text= '[Already at bottom of list]'
-			end
+			w.status_label_text= _('Already at bottom of list')
 		end
 		def top_help arg= {}
 			w= arg[:window]
-			if wh= w['status_label']
-				wh.var_text= '[Already at start of help text]'
-			end
+			w.status_label_text= _('Already at start of help text')
 		end
 		def bottom_help arg= {}
 			w= arg[:window]
-			if wh= w['status_label']
-				wh.var_text= '[Already at end of help text]'
-			end
+			w.status_label_text= _('Already at end of help text')
 		end
 		def top_header arg= {}
 			w= arg[:window]
-			if wh= w['status_label']
-				wh.var_text= "[ Can't move beyond top of header ]"
-			end
+			w.status_label_text= _(%q^Can't move beyond top of header^)
 		end
 		def bottom_page arg= {}
 			w= arg[:window]
-			if wh= w['status_label']
-				wh.var_text= "[ Can't move beyond bottom of page ]"
-			end
+			w.status_label_text= _(%q^Can't move beyond bottom of page^)
 		end
 
 		# XXX See how this pre/post actions can be done automatically
@@ -150,7 +148,6 @@ module TASKMAN
 				a= wi.var_text_now.to_bool
 				if a
 					Stfl.reset
-					#puts "Taskman finished. (#{$cnt}, #{$ctm})"
 					puts 'Taskman finished.'
 					exit 0
 				end
@@ -201,14 +198,6 @@ module TASKMAN
 			# (e.g. menu2 was shown, we hid it, and now we need to show menu1),
 			# So we unconditionally shown the first menu in the array.
 			menus[0].var__display= 1
-		end
-
-		def read_self_text arg= {}
-			w= arg[:window]
-			wh= w['input']
-			input= wh['input']
-			output= wh['output']
-			output.var_text= 'Value of input: '+ $app.ui.text( 'input') #input.var_text_now
 		end
 
 		############################### Testing Functions ################################
@@ -299,12 +288,15 @@ module TASKMAN
 
 				if w.respond_to? :status_label_text=
 					w.status_label_text= _('Task created')
+					$app.ui.run -1
+					sleep 1
 				else
 					pfl e
 				end
 
 				index arg
 
+			# XXX We replace/complement this with StandardError?
 			rescue Exception => e
 				w= arg[:window]
 				if w.respond_to? :status_label_text=
@@ -360,12 +352,13 @@ module TASKMAN
 		# page on their own.
 		# But, if the implementation will be needed (for e.g. use in some other
 		# widgets, or for textviews with auto key bindings disabled), then
-		# implement similar to nextpage/prevpage below.
+		# implement here something similar to nextpage/prevpage below.
 		def firstpage arg= {}
 		end
 		def lastpage arg= {}
 		end
 
+		# XXX move those into separate functions
 		def nextpage arg= {}
 			w= arg[:widget]
 			c= w.var_text_now.lines.count # Lines count
@@ -385,16 +378,6 @@ module TASKMAN
 			no2= if no< mo then mo else no end # Valid new offset
 			w.var_offset= no2
 		end
-
-#		def postpone arg= {}
-#		end
-#
-#
-#		def parent_names arg= {}
-#			w= arg[:widget]
-#			pt= w.parent_tree
-#			pfl pt.map{ |x| x.name}
-#		end
 
 		def redraw arg= {}
 			Stfl.redraw
