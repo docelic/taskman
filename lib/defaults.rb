@@ -40,7 +40,7 @@ module TASKMAN
 			'theme'              => 'alpine',
 			'style'              => 'alpine',
 
-			'term-width'         => 80, #( $COLUMNS|| 80),
+			'term-width'         => ( $COLUMNS|| 80),
 			'colors'             => 8,
 			'term'               => nil,
 
