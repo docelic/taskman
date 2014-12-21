@@ -1,10 +1,10 @@
 
-               GENERAL INFORMATION ON THE TASKMAN TASK SCHEDULER
+              GENERAL INFORMATION ON THE TASKMAN TASK SCHEDULER
 
-                                Version 0.12(15)
+                               Version 0.12(21)
 
-                       Copyright 2014 Spinlock Solutions
-                 http://techpubs.spinlocksolutions.com/taskman/
+                      Copyright 2014 Spinlock Solutions
+                http://techpubs.spinlocksolutions.com/taskman/
 
 
 
@@ -16,7 +16,7 @@ Table of Contents:
 4. Developer Overview
 5. Command Line Options
 
-------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 
 1. BASIC INFORMATION
 
@@ -30,7 +30,7 @@ Default user interface has been inspired by the venerable mailer program Pine
 (Alpine), although Taskman supports completely customizable layouts ("themes")
 and color schemes ("styles").
 
-------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 
 2. TASK CREATION & FEATURES
 
@@ -80,7 +80,7 @@ the event and remind a total of 3 times with 10 minutes in between.
 9. Omit remind: behavior in case that a reminder is due on an omitted day.
 Reminder can be ignored (not triggered), or Taskman can remind anyway.
 
-------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 
 3. SCHEDULING / REMINDER SYNTAX
 
@@ -147,7 +147,7 @@ Syntax: 0 | 1
 Example: 0 (remind regardless of being an omitted day)
 Example: 1 (ignore the reminder, do not trigger it)
 
-------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 
 4. DEVELOPER OVERVIEW
 
@@ -524,16 +524,16 @@ On actions-- how the idea is to have them in menuaction, and themes free of
 code
 
 
-                              COMMAND LINE OPTIONS
+                             COMMAND LINE OPTIONS
 
-                                    Taskman
-                                 Ver. 0.12(15)
+                                   Taskman
+                                Ver. 0.12(21)
 
 OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 ------------------------------------------------------------------------------
 --help                -h           N             List program options
 --help-all            -H           N             Display full help text
---version             -v           N    0.12(15) Display program version
+--version             -v           N    0.12(21) Display program version
 --garbage-collector   --gc         N    true     Run garbage collector?
 --stress-collector    --stress     N    false    Stress garbage collector?
 --window              -w           Y    main     Program window to open
@@ -545,7 +545,9 @@ OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 --term-width          --tw         Y    80       Term width to use
 --colors              --co         Y    8        Nr. of colors (8, 16, 256)
 --debug               -d           N    false    Show general debug
+--debug-widget        --dw         Y             Show all for named widget
 --debug-keys          --dk         N    false    Show keypresses
+--debug-keys-widget   --dkw        Y             Show keys on named widget
 --debug-opts          --do         N    false    Show command line options
 --debug-style         --ds         N    false    Show application of style
 --debug-style-widget  --dsw        Y             Show style for named widget
@@ -557,13 +559,13 @@ OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
  
 
                                    Taskman
-                                Ver. 0.12(15)
+                                Ver. 0.12(21)
 
 OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 --------------------------------------------------------------------------------
 --help                -h           N             List program options
 --help-all            -H           N             Display full help text
---version             -v           N    0.12(15) Display program version
+--version             -v           N    0.12(21) Display program version
 --garbage-collector   --gc         N    true     Run garbage collector?
 --stress-collector    --stress     N    false    Stress garbage collector?
 --window              -w           Y    main     Program window to open
@@ -575,7 +577,9 @@ OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 --term-width          --tw         Y    80       Term width to use
 --colors              --co         Y    8        Nr. of colors (8, 16, 256)
 --debug               -d           N    false    Show general debug
+--debug-widget        --dw         Y             Show all for named widget
 --debug-keys          --dk         N    false    Show keypresses
+--debug-keys-widget   --dkw        Y             Show keys on named widget
 --debug-opts          --do         N    false    Show command line options
 --debug-style         --ds         N    false    Show application of style
 --debug-style-widget  --dsw        Y             Show style for named widget

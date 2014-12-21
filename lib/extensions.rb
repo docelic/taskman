@@ -186,15 +186,18 @@ class Object
 	# the command line, or they requested --debug-stfl-widget NAME, where
 	# your object has @name and @name== NAME
 	def debug? type= nil
-		opt= 'debug'+ ( type ? "-#{type}" : '')
-		opt_widget= opt+ '-widget'
-		if $opts[opt] or ( $opts[opt_widget] and @name and @name.match( $opts[opt_widget]))
+		opt_type= 'debug'+ ( type ? "-#{type}" : '')
+		opt_widget= 'debug-widget'
+		opt_type_widget= opt_type+ '-widget'
+
+		if $opts[opt_type] or
+		 ( $opts[opt_widget] and @name and @name.match( $opts[opt_widget])) or
+		 ( $opts[opt_type_widget] and @name and @name.match( $opts[opt_type_widget]))
 			true
 		else
 			false
 		end
 	end
-
 end
 
 class Array

@@ -14,8 +14,10 @@ module TASKMAN
 
 			'folder'             => true, # Default folder, true == all
 
-			'debug'              => false,
+			'debug'              => false, # General debug
+			'debug-widget'       => nil,   # Debug all for particular widget
 			'debug-keys'         => false, # Debug key presses
+			'debug-keys-widget'  => nil, # Particular widget to debug key presses on
 			'debug-opts'         => false, # Debug options
 			'debug-stfl'         => false, # Debug STFL text
 			'debug-stfl-widget'  => nil, # Particular widget to debug STFL on
@@ -25,7 +27,11 @@ module TASKMAN
 			'garbage-collector'  => true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector'   => false, # Stress Ruby garbage collector? (DEBUG OPTION)
 
-			'version'	           => '0.12(15)',
+			# The version corresponds to date on which the changes/release
+			# has been made, like this:
+			# E.g. 0.12(21) === 2014/12/21
+			# E.g. 1.10(14) === 2015/10/14
+			'version'	           => '0.12(21)',
 
 		#	'local'              => false,
 		#	'default-time'       => false,
@@ -34,7 +40,7 @@ module TASKMAN
 			'theme'              => 'alpine',
 			'style'              => 'alpine',
 
-			'term-width'         => ( $COLUMNS|| 80),
+			'term-width'         => 80, #( $COLUMNS|| 80),
 			'colors'             => 8,
 			'term'               => nil,
 
@@ -67,12 +73,14 @@ $description= {
   'term'                   => _('Value for TERM= emulator'),
   'term-width'             => _('Term width to use'),
   'debug'                  => _('Show general debug'),
-  'debug-keys'             => _('Show keypresses'),
-  'debug-opts'             => _('Show command line options'),
+  'debug-widget'           => _('Show all for named widget'),
   'debug-style'            => _('Show application of style'),
   'debug-style-widget'     => _('Show style for named widget'),
   'debug-stfl'             => _('Show generated STFL'),
   'debug-stfl-widget'      => _('Show STFL for named widget'),
+  'debug-keys'             => _('Show keypresses'),
+  'debug-keys-widget'      => _('Show keys on named widget'),
+  'debug-opts'             => _('Show command line options'),
   'data-dir'               => _('Data directory'),
   'data-file'              => _('Tasklist file'),
   'exit-key'               => _('One-key exit from program'),
