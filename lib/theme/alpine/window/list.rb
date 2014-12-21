@@ -24,7 +24,7 @@ module TASKMAN
 				:'', #edit
 				:tablebr,
 				:'', #other
-				:'', # Select/goto folder
+				:quit, # Select/goto folder
 				:'', #nextmsg
 				:'', #nextpage
 				:'', #undelete (mark as not done?)
