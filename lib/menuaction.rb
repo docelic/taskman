@@ -138,7 +138,7 @@ module TASKMAN
 			w.status_label_text= _(%q^Can't move beyond bottom of page^)
 		end
 
-		# XXX See how this pre/post actions can be done automatically
+		# XXX See how these pre/post actions can be done automatically
 		# somehow
 		def quit arg= {}
 			$app.screen.ask( _('Really quit Taskman?'), Proc.new { |arg|
@@ -216,16 +216,16 @@ module TASKMAN
 #		end
 #
 		def main arg= {}
-			$app.exec( :window=> 'main')
+			$app.exec( arg.merge( :window=> 'main'))
 		end
 		def create arg= {}
-			$app.exec( :window=> 'create')
+			$app.exec( arg.merge( :window=> 'create'))
 		end
 		def index arg= {}
-			$app.exec( :window=> 'index')
+			$app.exec( arg.merge( :window=> 'index'))
 		end
 		def help arg= {}
-			$app.exec( :window=> 'help')
+			$app.exec( arg.merge( :window=> 'help'))
 		end
 
 		def clone_task arg= {}
@@ -315,7 +315,7 @@ module TASKMAN
 				:open_reminding=> 1,
 				:id=> $app.ui.get( 'list_pos_name').to_i
 			}
-			$app.exec arg2
+			create arg2
 		end
 
 		def toggle_timing_options arg= {}
