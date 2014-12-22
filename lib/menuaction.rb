@@ -248,8 +248,8 @@ module TASKMAN
 		def create_task arg= {}
 			w= arg[:window]
 
-			id= $app.screen['id'].var_text_now.to_i
-			db= $app.screen['db'].var_text_now
+			id= w['id'].var_text_now.to_i
+			db= w['db'].var_text_now
 
 			i= begin
 				arg[:item]|| "TASKMAN::Item::#{db.ucfirst}".to_class.find( id)
@@ -301,7 +301,7 @@ module TASKMAN
 				if w.respond_to? :status_label_text=
 					w.status_label_text= _('Task created')
 					$app.ui.run -1
-					sleep 1
+					sleep $opts['echo-time']
 				else
 					pfl e
 				end

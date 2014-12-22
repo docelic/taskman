@@ -83,7 +83,7 @@ module TASKMAN
 			@variables['autobind']||= 1
 			@variables['modal']||= 0
 			@variables['pos_name']||= ''
-			@variables['pos']||= 0
+			@variables['pos']||= ''
 			@variables['offset']||= 0
 			@variables['text']||= ''
 			@variables['function']||= nil

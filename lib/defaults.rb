@@ -45,6 +45,8 @@ module TASKMAN
 			'term'               => nil,
 
 			'exit-key'           => 'F10',
+			'main-db'            => 'main',
+			'echo-time'          => 1,
 		}
 
 		def initialize *arg
@@ -84,6 +86,8 @@ $description= {
   'data-dir'               => _('Data directory'),
   'data-file'              => _('Tasklist file'),
   'exit-key'               => _('One-key exit from program'),
+  'main-db'                => _('Name of main/own database'),
+  'echo-time'              => _('Duration of msg visibility'),
 
 #  'default-time'         => 'Use 12:00 as default event time',
 }

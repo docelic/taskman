@@ -15,8 +15,9 @@ Table of Contents:
 1. Basic Information
 2. Task Creation & Features
 3. Scheduling / Reminder Syntax
-4. Developer Overview
-5. Command Line Options
+4. Database Sources
+5. Developer Overview
+6. Command Line Options
 
 ^+ '-'* ( $COLUMNS- 1)+ %q^
 
@@ -24,11 +25,13 @@ Table of Contents:
 
 Taskman allows creation of task/TODO/event lists and offers extensive tracking, scheduling and reminding features.
 
-At the moment, Taskman is primarily a personal scheduler program. However, shared calendars and shared event lists are planned, as well as plugins for other calendar and task tracking apps. Please report your wishes in that regard to help prioritize work.
+Taskman is primarily a personal scheduler program, but shared calendars and event lists from multiple databases are supported. Plugins for other calendar and task tracking apps are planned. Please report your wishes in that regard to help prioritize work.
 
 Taskman's scheduling features have been inspired by a program called Remind, although Taskman is more powerful and elaborate.
 
 Taskman's default user interface has been inspired by the venerable mailer program Pine (and Alpine), although Taskman supports customizable layouts ("themes") and color schemes ("styles").
+
+Taskman's data store is powered by ActiveRecord and additionally taskman can connect to multiple databases and display their tasks transparently. New tasks are created in the main/primary database.
 
 ^+ '-'* ( $COLUMNS- 1)+ %q^
 
@@ -127,7 +130,15 @@ Example: 1 (ignore the reminder, do not trigger it)
 
 ^+ '-'* ( $COLUMNS- 1)+ %q^
 
-4. DEVELOPER OVERVIEW
+4. DATABASE SOURCES
+
+Taskman supports connecting to multiple databases simultaneously, and all functions work transparently. The idea behind this feature is that users would have their own, primary database tables, which only they can access. However, they would like to connect to other users' databases to see the tasks other users have shared with them.
+
+Editing shared tasks works as well, as long as the user has sufficient privileges to update the record in the corresponding database. Tasks that a person clones can be cloned in either the original database, or into the local/primary one.
+
+^+ '-'* ( $COLUMNS- 1)+ %q^
+
+5. DEVELOPER OVERVIEW
 
 Taskman execution starts in main.rb. It loads all Ruby and local modules, defines and parses command line options, prints --help if it was requested, and defines the TASKMAN::Application class which represents the application (similar to how Qt would do it).
 
@@ -315,7 +326,7 @@ TODO:
 On themes
 On actions-- how the idea is to have them in menuaction, and themes free of code
 ^+ "\n\n"+
-'COMMAND LINE OPTIONS'.center + "\n"+ usage
+'6. COMMAND LINE OPTIONS'.center + "\n"+ usage
 end
 end
 
