@@ -15,6 +15,13 @@ class String
 		Date.parse( self).to_date
 	end
 
+	def to_id
+		id= self.split '/'
+		id[0]= id[0].to_sym
+		id[1]= id[1].to_i
+		id
+	end
+
   def unindent
 		#require "active_support/core_ext/string"
     #indent = scan(/^[ \t]*(?=\S)/).min.try(:size) || 0
@@ -211,6 +218,10 @@ class Array
 	def flatten1
 		self.flatten 1
 	end 
+
+	def to_id_s
+		self.join '/'
+	end
 
 	def colfmt
 		sizes= []

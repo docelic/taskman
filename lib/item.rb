@@ -23,27 +23,32 @@ module TASKMAN
 		#attr_accessor :_start, :_stop, :_due, :_omit, :_omit_shift, :_time_ssm, :_remind, :_omit_remind, :_subject, :_message
 		#attr_accessor :id, :start, :stop, :due, :omit, :omit_shift, :remind, :omit_remind, :time_ssm
 		#attr_accessor :subject, :message
+
+		serialize :due, Array
+		serialize :omit, Array
+		serialize :remind, Array
 		
 		def initialize
-			self.generate_id
-
-			@subject= ''
-			@start= nil # definitely not before this Date
-			@stop= nil # definitely not after this Date
-			@due= [] # list of VirtualDate this entry is due
-			@omit= [true] # list of VirtualDates to omit, 'true' for default list
-			@omit_shift= 0 # 0=> no shift, just drop, +X=> move X days after, -X=> move X days before
-			@time_ssm= nil # activation time, in seconds since midnight 
-			@remind= [] # list of Dates or Times to activate the reminder on, or seconds relative to the the due date/time
-			@omit_remind= false # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
-			@message= '' # Body of the task
-
 			super
+
+			self.subject||= ''
+			#self.start= nil # definitely not before this Date
+			#self.stop= nil # definitely not after this Date
+			self.due||= [] # list of VirtualDate this entry is due
+			self.omit||= [true] # list of VirtualDates to omit, 'true' for default list
+			self._omit||= '1'
+			self.omit_shift||= 0 # 0=> no shift, just drop, +X=> move X days after, -X=> move X days before
+			self._omit_shift||= '0'
+			#self.time_ssm||= nil # activation time, in seconds since midnight 
+			self.remind||= [] # list of Dates or Times to activate the reminder on, or seconds relative to the the due date/time
+			self.omit_remind||= false # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
+			self._omit_remind||= '0' # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
+			self.message||= '' # Body of the task
 		end 
 
-		def generate_id
-			@id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i
-		end
+		#def generate_id
+		#	@id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i
+		#end
 
 		# Parser functions:
 		# Each variable (start, stop, due, omit...) can be set directly
@@ -65,14 +70,14 @@ module TASKMAN
 		def parse_stop=( l) self.parse_stop l end
 		# Supported syntax:
 		# Anything accepted by parse_virtualdate() -- see below
-		def parse_due( l) d= parse_virtualdate l; @due<< d end
-		def parse_due=( l) d= parse_virtualdate l; @due= [ d] end
+		def parse_due( l) d= parse_virtualdate l; self.due<< d end
+		def parse_due=( l) d= parse_virtualdate l; self.due= [ d] end
 		# Supported syntax:
 		# Anything accepted by parse_virtualdate() -- see below
-		def parse_omit( l) d= parse_virtualdate l; @omit<< d end
-		def parse_omit=( l) d= parse_virtualdate l; @omit= [ d] end
+		def parse_omit( l) d= parse_virtualdate l; self.omit<< d end
+		def parse_omit=( l) d= parse_virtualdate l; self.omit= [ d] end
 		# XXX
-		def parse_omit_shift( l) @parse_omit= l end
+		def parse_omit_shift( l) self.parse_omit= l end
 		def parse_omit_shift=( l) self.parse_omit_shift l end
 		# Supported syntax:
 		# HH[:MM[:SS]]
@@ -107,13 +112,13 @@ module TASKMAN
 				when /^([+-]?\d+(\.\d+)?)(\w)(\*([+-]?\d+(\.\d+)?)(\w)(x\d+))?$/ # Relative time, Amount+Unit
 					f= parse_timeunit $3.upcase
 					start= $1.to_f*f
-					@remind= add_to @remind, start
+					self.remind= add_to self.remind, start
 					if $4 # repetition
 						f= parse_timeunit $7.upcase
 						n= $8[1..-1].to_i
 						interval= $5.to_f* f
 						(1..n).each do |i| 
-							@remind= add_to @remind, start+ i*interval
+							self.remind= add_to self.remind, start+ i*interval
 						end 
 					end 
 					#pfl "REMIND IS #{@remind.join ', '}"
@@ -130,24 +135,24 @@ module TASKMAN
 					else 
 						raise ArgumentError, _('Missing date specification')
 					end 
-					@remind= add_to @remind, t					
+					self.remind= add_to self.remind, t
 				when /^\d{4}\b/, /^\d{8}$/, /^[A-Za-z]{3}\b/
 					#d= Date.parse( ([$&]+a.shift( 2)).join ' ')
 					d= Date.parse x
-					@remind= add_to @remind, d
+					self.remind= add_to self.remind, d
 				else 
 					raise ArgumentError, _('Reminder parse error')
 				end 
 			end 
 		end
 		def parse_remind= ( l) self.parse_remind l end
-		def parse_omit_remind( l) @omit_remind= l end
+		def parse_omit_remind( l) self.omit_remind= l end
 		def parse_omit_remind=( l) self.parse_omit_remind l end
 
-		def parse_subject( l) @subject<< l end
-		def parse_subject=( l) @subject= [ l] end
-		def parse_message( l) @message<< l end
-		def parse_message=( l) @message= [ l] end
+		def parse_subject( l) self.subject= l end
+		def parse_subject=( l) self.parse_subject=  l end
+		def parse_message( l) self.message= l end
+		def parse_message=( l) self.parse_message=  l end
 
 		# Limited 'remind' compatibility
 
@@ -277,7 +282,7 @@ module TASKMAN
 			vd
 		end
 		
-		def ssm() @time_ssm || @@default_time end 
+		def ssm() self.time_ssm || @@default_time end
 		
 		def add_to list, item
 			# if list is nothing yet, add just this item:
@@ -293,7 +298,7 @@ module TASKMAN
 			date.to_date.to_time+ ssm
 		end 
 		def time= time 
-			@time_ssm= case time
+			self.time_ssm= case time
 			when Array
 				time[0]* 3600+ time[1]* 60+ time[2]
 			when Time  
@@ -307,10 +312,10 @@ module TASKMAN
 		def sec() ssm% 60 end
 		
 		def start= date
-			@start= date.to_date
+			self.start= date.to_date
 		end 
 		def stop= date
-			@stop= date.to_date
+			self.stop= date.to_date
 		end 
 
 
@@ -329,14 +334,14 @@ module TASKMAN
 			elsif no
 				nil
 			else # check for shifting due to @omit:
-				if @omit_shift== 0
+				if self.omit_shift== 0
 					nil
 				else 
 					# -1=>search into the future, +1=>search into the past
-					od= d- @omit_shift
+					od= d- self.omit_shift
 					while omit_on? od
 						break (od-d).to_i if due_on? od
-						od-= @omit_shift
+						od-= self.omit_shift
 					end
 				end
 			end 
@@ -345,11 +350,11 @@ module TASKMAN
 		def due_on? date
 			return false if start and start> date
 			return false if stop and stop< date
-			check @due, date
+			check self.due, date
 		end
 		
 		def omit_on? date
-			check @omit, date, @@default_omit
+			check self.omit, date, @@default_omit
 		end
 		
 		def check list, target, default_list=[]
@@ -391,8 +396,8 @@ module TASKMAN
 		def remind_on? date= Date.today
 			d= date.to_date
 			# spearate reminders in absolute and relative
-			abs= @remind.select{ |x| Time===x || Date===x} 
-			rel= @remind-abs
+			abs= self.remind.select{ |x| Time===x || Date===x}
+			rel= self.remind-abs
 			# see if there is an absolute match
 			abs.select!{ |x| d== x.to_date }
 			abs.map!{ |x| x.respond_to? :hour ? x : x.to_time+ssm }

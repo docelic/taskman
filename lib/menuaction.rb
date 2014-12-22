@@ -247,8 +247,16 @@ module TASKMAN
 
 		def create_task arg= {}
 			w= arg[:window]
-			i= arg[:item]|| Item.new
+
 			id= $app.screen['id'].var_text_now.to_i
+			db= $app.screen['db'].var_text_now
+
+			i= begin
+				arg[:item]|| "TASKMAN::Item::#{db.ucfirst}".to_class.find( id)
+			rescue
+				i= "TASKMAN::Item::#{db.ucfirst}".to_class.new
+			end
+
 			if id> 0 then i.id= id end
 
 			begin
@@ -286,8 +294,7 @@ module TASKMAN
 					end
 				end
 
-				$tasklist.tasks[i.id]= i
-				$tasklist.save
+				i.save
 
 				$app.screen['id'].var_text= i.id
 
@@ -299,7 +306,7 @@ module TASKMAN
 					pfl e
 				end
 
-				index arg
+				index arg.merge( :id=> [ db.to_sym, i.id])
 
 			# XXX We replace/complement this with StandardError?
 			rescue Exception => e
@@ -313,12 +320,13 @@ module TASKMAN
 		end
 
 		def select_task arg= {}
+			id= $app.ui.get( 'list_pos_name').to_id
 			arg2= {
 				:window=> 'create',
 				:title=> 'VIEW / EDIT TASK',
 				:open_timing=> 1,
 				:open_reminding=> 1,
-				:id=> $app.ui.get( 'list_pos_name').to_i
+				:id=> id
 			}
 			create arg2
 		end

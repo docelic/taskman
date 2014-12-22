@@ -6,7 +6,8 @@ module TASKMAN
 			super
 
 			@widget= nil
-			i= arg[:id] ? $tasklist.tasks[arg[:id].to_i] : Item.new
+			i= arg[:id] ? $tasklist.tasks[arg[:id]] : Item::Main.new
+			db= if arg[:id] then arg[:id][0].to_s else 'main' end
 
 			self<< MenuAction.new( :name=> :top_header)
 
@@ -28,6 +29,10 @@ module TASKMAN
 			h2= Hbox.new(                     '.expand'=> 'h', '.display'=> 0)
 			h2<< Label.new(                   '.expand'=> '',  :text=> 'Task ID     : ')
 			h2<< Input.new( :name=> :id,      '.expand'=> 'h', :text=> i.id, :tooltip=> nil)
+			v<< h2
+			h2= Hbox.new(                     '.expand'=> 'h', '.display'=> 0)
+			h2<< Label.new(                   '.expand'=> '',  :text=> 'Task DB     : ')
+			h2<< Input.new( :name=> :db,      '.expand'=> 'h', :text=> db, :tooltip=> nil)
 			v<< h2
 
 			h2= Hbox.new(                     '.expand'=> 'h')
