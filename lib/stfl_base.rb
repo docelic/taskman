@@ -273,11 +273,10 @@ module TASKMAN
 			Stfl.create stfl_text
 		end
 
-		# Not a real redraw
-		#def redraw
-		#	stfl_text= self.to_stfl
-		#	$app.ui.modify @name.to_s, 'replace', stfl_text
-		#end
+		def replace
+			stfl_text= self.to_stfl
+			$app.ui.modify @name.to_s, 'replace', stfl_text
+		end
 
 		#$cnt= 0
 		#$ctm= 0
