@@ -90,6 +90,7 @@ module TASKMAN
 			@variables['text']||= ''
 			@variables['function']||= nil
 			@variables['focus']||= 0
+			@variables['can_focus']||= 1
 
 		end
 
@@ -114,6 +115,7 @@ module TASKMAN
 		def var_text()           @variables['text']           end
 		def var_function()       @variables['function']       end
 		def var_focus()          @variables['focus']          end
+		def var_can_focus()      @variables['can_focus']      end
 		def var_value()          @variables['value']          end
 
 		def var__display_now()       @variables['.display']=       ( $app.ui.get "#{@name}_.display"      ).to_i end
@@ -128,6 +130,7 @@ module TASKMAN
 		def var_text_now()           @variables['text']=           ( $app.ui.get "#{@name}_text"          )      end
 		def var_function_now()       @variables['function']=       ( $app.ui.get "#{@name}_function"      )      end
 		def var_focus_now()          @variables['focus']=          ( $app.ui.get "#{@name}_focus"         ).to_i end
+		def var_can_focus_now()      @variables['can_focus']=      ( $app.ui.get "#{@name}_can_focus"     ).to_i end
 		def var_value_now()          @variables['value']=          ( $app.ui.get "#{@name}_value"         ).to_i end
 
 		def var__display=( arg)        $app.ui.set "#{@name}_.display"      , ( @variables['.display']= arg       ).to_s end
@@ -142,6 +145,7 @@ module TASKMAN
 		def var_text=( arg)            $app.ui.set "#{@name}_text"          , ( @variables['text']= arg           ).to_s end
 		def var_function=( arg)        $app.ui.set "#{@name}_function"      , ( @variables['function']= arg       ).to_s end
 		def var_focus=( arg)           $app.ui.set "#{@name}_focus"         , ( @variables['focus']= arg          ).to_s end
+		def var_can_focus=( arg)       $app.ui.set "#{@name}_can_focus"     , ( @variables['can_focus']= arg      ).to_s end
 		def var_value=( arg)           $app.ui.set "#{@name}_value"         , ( @variables['value']= arg          ).to_s end
 
 		# te/tv is in /tmp/TVIEW!!!

@@ -212,17 +212,31 @@ module TASKMAN
 
 		def pos_up arg= {}
 			w= arg[:widget].parent
-			p= w.var_pos_now
-			if p> 0
-				w.var_pos= p- 1
+			p= w.var_pos_now- 1
+			while p>= 0
+				wi= w.widgets[p]
+				# We assume there is no need to test for var__display because
+				# if the widget was hidden, it wouldn't receive an event. Also,
+				# if we were to honor that correctly, we would have to look up
+				# visibility of all widgets up to the top of the tree.
+				if wi.var_can_focus> 0 #and wi.var__display> 0
+					w.var_pos= p
+					return
+				end
+				p-= 1
 			end
 		end
 		def pos_down arg= {}
 			w= arg[:widget].parent
-			p= w.var_pos_now
-			max= ( w.widgets.select{ |i| ListItem=== i}).count- 1
-			if p< max
-				w.var_pos= w.var_pos+ 1
+			p= w.var_pos_now+ 1
+			max= w.widgets.count- 1
+			while p<= max
+				wi= w.widgets[p]
+				if wi.var_can_focus> 0 #and wi.var__display> 0
+					w.var_pos= p
+					return
+				end
+				p+= 1
 			end
 		end
 

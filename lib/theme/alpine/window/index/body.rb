@@ -11,7 +11,7 @@ module TASKMAN
 			h= @fmt % [ 'ID', ' DB ', 'SUBJECT']
 			self<< Label.new( name: 'TH', text: h, :'.expand'=> 'h')
 
-			@l= List.new( name: 'list', autobind: 0)
+			@l= MVCList.new( name: 'list', autobind: 0)
 			l<< MenuAction.new( name: 'pos_up')
 			l<< MenuAction.new( name: 'pos_down')
 
