@@ -12,6 +12,10 @@ module TASKMAN
 			@prev_offset= nil
 		end
 
+	end
+
+	class MVCList < List
+
 		def mvc
 			o= self.var_offset_now
 			h= self._h_now
@@ -55,7 +59,6 @@ module TASKMAN
 			end
 			@prev_offset= o
 		end
-
 	end
 
 	class ListItem < Widget

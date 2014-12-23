@@ -100,7 +100,7 @@ module TASKMAN
 				end
 
 				# Now, handle the MVC part
-				if List=== base_widget
+				if MVCList=== base_widget
 					base_widget.mvc
 				end
 

@@ -20,7 +20,7 @@ module TASKMAN
 
 		attr_reader :name, :ui
 		attr_accessor :variables, :widgets, :widgets_hash, :hotkeys_hash, :widget
-		attr_accessor :parent, :tooltip
+		attr_accessor :actions, :parent, :tooltip
 
 		# The variables are STFL-valid hash consisting of :var_name => value.
 		# If :name is specified, it is deleted from variables and treated
@@ -38,6 +38,8 @@ module TASKMAN
 			# Child widgets container, array and by-name
 			@widgets= []
 			@widgets_hash= {}
+
+			@actions= []
 
 			# .all_widgets_hash() cache. This simple optimization in the function
 			# results in ~5 times less computations of the function and about ~10
@@ -192,13 +194,17 @@ module TASKMAN
 		# Obj.widgets.push() or Obj.widgets.delete() anywhere as these
 		# functions do more than that.
 		def << arg
-			@widgets<< arg
-			@widgets_hash[arg.name]= arg
 			arg.parent= self
+			if MenuAction== arg.class
+				@actions<< arg
+			else
+				@widgets<< arg
+				@avhc= nil
+			end
 			if MenuAction=== arg
 				@hotkeys_hash[arg.hotkey]= arg
 			end
-			@avhc= nil
+			@widgets_hash[arg.name]= arg
 			arg
 		end
 		# Widgets can be removed by object ref, by name, or by
@@ -223,12 +229,16 @@ module TASKMAN
 			end
 
 			to_remove.each do |r|
-				@widgets>> r
-				@widgets_hash.delete r.name
 				r.parent= nil
-				if MenuAction=== r
-					@hotkeys_hash>> r.name
+				if MenuAction== r.class
+					@actions>> r
+				else
+					@widgets>> r
 				end
+				if MenuAction=== r
+					@hotkeys_hash.delete r.name
+				end
+				@widgets_hash.delete r.name
 			end
 			@avhc= nil
 			to_remove.count
@@ -328,12 +338,13 @@ module TASKMAN
 			end
 		end
 
-		def actions
-			self.widgets.select{ |w| TASKMAN::MenuAction=== w}
-		end
+		# Already has accessor
+		#def actions
+		#	self.actions
+		#end
 		# Return actions associated to a widget
 		def action
-			actions.first
+			self.actions.first
 		end
 
 		# This function applies style to a widget by using a couple fallbacks.
