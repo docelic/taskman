@@ -188,6 +188,7 @@ module TASKMAN
 		# Clear all_widgets_hash() cache so that it is rebuilt on next access
 		def clear_caches
 			@avhc= nil
+			@tsc= nil
 			if p= self.parent
 				p.clear_caches
 			end
@@ -266,25 +267,26 @@ module TASKMAN
 		# If the object has @widget == nil, only the child elements are dumped,
 		# with no toplevel container.
 		def to_stfl
-			widgets= @widgets.to_stfl
+			if @tsc then return @tsc end
+			ret= @widgets.to_stfl
 
 			# If this container widget should be transparent (if it's
 			# not to be rendered as any visible widget), simply return
 			# its children stfl-ed.
-			return widgets unless @widget
+			if @widget
+				# Otherwise stfl itself, and return that + children
+				variables= @variables.map{ |k, v|
+					variable_name= "#{@name}_#{k}"
+					k.to_s+ "[#{Stfl.quote( variable_name)}]:"+ Stfl.quote( v.to_s)
+				}.join ' '
+				variables+= ' ' if variables.length> 0
 
-			# Otherwise stfl itself, and return that + children
-			variables= @variables.map{ |k, v|
-				variable_name= "#{@name}_#{k}"
-				k.to_s+ "[#{Stfl.quote( variable_name)}]:"+ Stfl.quote( v.to_s)
-			}.join ' '
-			variables+= ' ' if variables.length> 0
-
-			ret= "{#{@widget}[#{@name}] #{variables}#{widgets}}"
+				ret= "{#{@widget}[#{@name}] #{variables}#{ret}}"
+			end
 			if debug?( :stfl)
 				pfl _("Widget %s STFL: %s")% [ @name, ret]
 			end
-			ret
+			@tsc= ret
 		end
 
 		def create
