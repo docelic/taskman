@@ -6,8 +6,8 @@ module TASKMAN
 			super
 			@widget= 'list'
 
-			self<< MenuAction.new( :name=> :top_list)
-			self<< MenuAction.new( :name=> :bottom_list)
+			self<< MenuAction.new( name: :top_list)
+			self<< MenuAction.new( name: :bottom_list)
 
 			@prev_offset= nil
 		end
@@ -46,7 +46,7 @@ module TASKMAN
 				tasks.each do |s, t|
 					nid= [ s, t].to_id_s # nid== "name/id" string
 					s= self.parent.fmt % [ t.id, s, t.subject]
-					self<< ListItem.new( :name=> nid, :text=> s, :can_focus=> 1)
+					self<< ListItem.new( name: nid, text: s, can_focus: 1)
 				end
 				self.clear_caches
 				self.var_offset= o

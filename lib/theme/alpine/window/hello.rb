@@ -8,9 +8,9 @@ module TASKMAN
 			super
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Header.new(   arg.merge( :name=> :header, :title=> ( arg[:title]|| _('HELLO, WORLD!'))))
+			self<< Theme::Window::Main::Header.new(   arg.merge( name: :header, title: ( arg[:title]|| _('HELLO, WORLD!'))))
 
-			self<< Label.new( :name=> 'lbl1', :text=> 'Hello, World!')
+			self<< Label.new( name: 'lbl1', text: 'Hello, World!')
 
 		end
 	end

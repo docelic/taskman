@@ -10,11 +10,11 @@ module TASKMAN
 			super
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Header.new( arg.merge( :name=> :header, :title => _('TASK INDEX')))
-			self<< @b= Theme::Window::Index::Body.new(  arg.merge( :name=> :body))
-			self<< Theme::Window::Main::Status.new( arg.merge( :name=> :status))
+			self<< Theme::Window::Main::Header.new( arg.merge( name: :header, :title => _('TASK INDEX')))
+			self<< @b= Theme::Window::Index::Body.new(  arg.merge( name: :body))
+			self<< Theme::Window::Main::Status.new( arg.merge( name: :status))
 
-			m1= Theme::Window::Main::Menu.new(      arg.merge( :name=> :menu1))
+			m1= Theme::Window::Main::Menu.new(      arg.merge( name: :menu1))
 			m1.add_action(
 				:help,
 				:'',
@@ -31,7 +31,7 @@ module TASKMAN
 				:'', #duplicate
 			)
 
-			m2= Theme::Window::Main::Menu.new(      arg.merge( :name=> :menu2, :'.display'=> 0))
+			m2= Theme::Window::Main::Menu.new(      arg.merge( name: :menu2, :'.display'=> 0))
 			m2.add_action(
 				:help2,
 				:mainc,

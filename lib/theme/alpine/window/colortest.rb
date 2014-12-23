@@ -10,11 +10,11 @@ module TASKMAN
 			super
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Header.new(    arg.merge( :name=> :header, :title=> _('COLOR TEST')))
-			self<< Theme::Window::Colortest::Body.new( arg.merge( :name=> :body))
-			self<< Theme::Window::Main::Status.new(    arg.merge( :name=> :status))
+			self<< Theme::Window::Main::Header.new(    arg.merge( name: :header, title: _('COLOR TEST')))
+			self<< Theme::Window::Colortest::Body.new( arg.merge( name: :body))
+			self<< Theme::Window::Main::Status.new(    arg.merge( name: :status))
 
-			m1= Theme::Window::Main::Menu.new(         arg.merge( :name=> :menu1))
+			m1= Theme::Window::Main::Menu.new(         arg.merge( name: :menu1))
 			m1.add_action(
 				:help,
 				:quit,

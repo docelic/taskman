@@ -9,7 +9,7 @@ module TASKMAN
 
 			@fmt= " %-4s %-6s %s"
 			h= @fmt % [ 'ID', ' DB ', 'SUBJECT']
-			self<< Label.new( :name=> 'TH', :text=> h, :'.expand'=> 'h')
+			self<< Label.new( name: 'TH', text: h, :'.expand'=> 'h')
 
 			@l= List.new( name: 'list', autobind: 0)
 			l<< MenuAction.new( name: 'pos_up')

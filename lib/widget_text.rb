@@ -26,7 +26,7 @@ module TASKMAN
 			formatted= arg.format_to_screen
 			removed= self>> ListItem
 			formatted.each do |l|
-				self<< ListItem.new( :text=> l)
+				self<< ListItem.new( text: l)
 			end
 
 			# Is it enough if we wrap this in removed> 0,

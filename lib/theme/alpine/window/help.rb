@@ -9,26 +9,26 @@ module TASKMAN
 			super
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Header.new(   arg.merge( :name=> :header, :title=> ( arg[:title]|| _('HELP'))))
+			self<< Theme::Window::Main::Header.new(   arg.merge( name: :header, title: ( arg[:title]|| _('HELP'))))
 
 			#########################################################
 			# In-place definition of body
-			t= Textview.new( :name=> 'body', :focus=> 1, :text=> Help.text)
-			t<< MenuAction.new( :name=> :top_help)
-			t<< MenuAction.new( :name=> :bottom_help)
+			t= Textview.new( name: 'body', focus: 1, text: Help.text)
+			t<< MenuAction.new( name: :top_help)
+			t<< MenuAction.new( name: :bottom_help)
 
 			self<< t
 			#########################################################
 
-			self<< Theme::Window::Main::Status.new( :name=> :status)
+			self<< Theme::Window::Main::Status.new( name: :status)
 
 			# Window menu:
 
 			# Prepare these in advance. We can't just pass them as symbols
 			# to m1.add_action() below as we need custom options here.
-			m= Theme::MenuAction.new( :name=> 'main', :hotkey=> 'M')
+			m= Theme::MenuAction.new( name: 'main', hotkey: 'M')
 
-			m1= Theme::Window::Main::Menu.new( :name=> :menu1, :'.display'=> 1)
+			m1= Theme::Window::Main::Menu.new( name: :menu1, :'.display'=> 1)
 			m1.add_action(
 				m,
 				:exit_help,

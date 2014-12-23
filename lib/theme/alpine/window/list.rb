@@ -10,11 +10,11 @@ module TASKMAN
 			super
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Header.new( arg.merge( :name=> :header, :title => _('FOLDER LIST')))
-			self<< Theme::Window::List::Body.new(  arg.merge( :name=> :body))
-			self<< Theme::Window::Main::Status.new( arg.merge( :name=> :status))
+			self<< Theme::Window::Main::Header.new( arg.merge( name: :header, :title => _('FOLDER LIST')))
+			self<< Theme::Window::List::Body.new(  arg.merge( name: :body))
+			self<< Theme::Window::Main::Status.new( arg.merge( name: :status))
 
-			m1= Theme::Window::Main::Menu.new(      arg.merge( :name=> :menu1))
+			m1= Theme::Window::Main::Menu.new(      arg.merge( name: :menu1))
 			m1.add_action(
 				:help,
 				:mainc, # But on <
@@ -31,7 +31,7 @@ module TASKMAN
 				:'', #duplicate
 			)
 
-			#m2= Theme::Window::Main::Menu.new(      arg.merge( :name=> :menu2, :'.display'=> 0))
+			#m2= Theme::Window::Main::Menu.new(      arg.merge( name: :menu2, :'.display'=> 0))
 			#m2.add_action(
 			#	:help2,
 			#	:quit,
