@@ -23,6 +23,8 @@ module TASKMAN
 			'debug-stfl-widget'  => nil, # Particular widget to debug STFL on
 			'debug-style'        => false, # Debug STFL text
 			'debug-style-widget' => nil, # Particular widget to debug style on
+			'debug-mvc'          => false, # Debug MVC accesses
+			'debug-mvc-widget'   => nil, # Particular widget to debug MVC on
 
 			'garbage-collector'  => true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector'   => false, # Stress Ruby garbage collector? (DEBUG OPTION)
@@ -80,6 +82,8 @@ $description= {
   'debug-style-widget'     => _('Show style for named widget'),
   'debug-stfl'             => _('Show generated STFL'),
   'debug-stfl-widget'      => _('Show STFL for named widget'),
+  'debug-mvc'              => _('Show MVC logic'),
+  'debug-mvc-widget'       => _('Show MVC on named widget'),
   'debug-keys'             => _('Show keypresses'),
   'debug-keys-widget'      => _('Show keys on named widget'),
   'debug-opts'             => _('Show command line options'),

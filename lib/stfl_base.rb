@@ -179,6 +179,14 @@ module TASKMAN
 		def init arg= {}
 		end
 
+		# Clear all_widgets_hash() cache so that it is rebuilt on next access
+		def clear_caches
+			@avhc= nil
+			if p= self.parent
+				p.clear_caches
+			end
+		end
+
 		# Shorthand for adding and removing child widgets from an object.
 		# This is the preferred method; we generally do not use an explicit
 		# Obj.widgets.push() or Obj.widgets.delete() anywhere as these

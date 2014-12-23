@@ -50,6 +50,14 @@ module TASKMAN
 			'top_help'=>   { :hotkey=> 'UP',  :shortname=> '',    :menuname=> '', :description=> '', :function=> :top_help},
 			'bottom_help'=>{ :hotkey=> 'DOWN',:shortname=> '',    :menuname=> '', :description=> '', :function=> :bottom_help},
 
+			# Actions for manual, MVC-based handling of lists
+			'pos_up'=>     { :hotkey=> 'UP',  :shortname=> '',  :menuname=> '', :description=> '', :function=> :pos_up},
+			'pos_down'=>   { :hotkey=> 'DOWN',:shortname=> '',  :menuname=> '', :description=> '', :function=> :pos_down},
+			'pos_pgup'=>   { :hotkey=> 'PPAGE',:shortname=> '', :menuname=> '', :description=> '', :function=> :pos_pgup},
+			'pos_pgdown'=> { :hotkey=> 'NPAGE',:shortname=> '', :menuname=> '', :description=> '', :function=> :pos_pgdown},
+			'pos_home'=>   { :hotkey=> 'HOME',:shortname=> '',  :menuname=> '', :description=> '', :function=> :pos_home},
+			'pos_end'=>    { :hotkey=> 'END', :shortname=> '',  :menuname=> '', :description=> '', :function=> :pos_end},
+
 			# Misc
 			'toggle_timing_options'=> { :description=> 'Toggle Timing Options', :function=> :toggle_timing_options},
 			'toggle_reminding_options'=> { :description=> 'Toggle Remind Options', :function=> :toggle_reminding_options},
@@ -200,6 +208,22 @@ module TASKMAN
 			# (e.g. menu2 was shown, we hid it, and now we need to show menu1),
 			# So we unconditionally shown the first menu in the array.
 			menus[0].var__display= 1
+		end
+
+		def pos_up arg= {}
+			w= arg[:widget].parent
+			p= w.var_pos_now
+			if p> 0
+				w.var_pos= p- 1
+			end
+		end
+		def pos_down arg= {}
+			w= arg[:widget].parent
+			p= w.var_pos_now
+			max= ( w.widgets.select{ |i| ListItem=== i}).count- 1
+			if p< max
+				w.var_pos= w.var_pos+ 1
+			end
 		end
 
 		############################### Testing Functions ################################

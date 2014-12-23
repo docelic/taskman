@@ -43,6 +43,7 @@ module TASKMAN
 				# First match is executed.
 				wh= all_widgets_hash()
 				widget= wh[focus]
+				base_widget= widget
 
 				# Searching for actions to execute (and doing other work)
 				# only makes sense if some widget was focused
@@ -53,7 +54,7 @@ module TASKMAN
 					# If a widget is list, set 'widget' to element in the list to be
 					# more specific, don't just leave it at 'list'. (Or if finding a
 					# listitem fails, then we remain at 'list')
-					if widget.widget== 'list'
+					if List=== widget
 
 						# There was a bug in STFL up to 2014-12-14 (STFL <= 0.23) which
 						# was causing pos_name to not work correctly. Discovered it and
@@ -96,6 +97,11 @@ module TASKMAN
 				if hk= wh['hotkey_in'] and widget.action and widget.var_modal== 0
 					hk.widgets_hash['menu_hotkey_in_shortname'].var_text= widget.action.shortname
 					hk.function= widget.action.function
+				end
+
+				# Now, handle the MVC part
+				if List=== base_widget
+					base_widget.mvc
 				end
 
 				# Break if a single-loop was requested (code!= 0)
