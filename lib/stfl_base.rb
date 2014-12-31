@@ -297,10 +297,18 @@ module TASKMAN
 			Stfl.create stfl_text
 		end
 
-		def replace
-			stfl_text= self.to_stfl
-			$app.ui.modify @name.to_s, 'replace', stfl_text
-		end
+		# STFL text manipulation functions
+		def delete() $app.ui.modify @name.to_s, 'delete', '' end
+		def replace() $app.ui.modify @name.to_s, 'replace', self.to_stfl end
+		def replace_inner() $app.ui.modify @name.to_s, 'replace_inner', self.to_stfl end
+		def insert() $app.ui.modify @name.to_s, 'insert', self.to_stfl end
+		def insert_inner() $app.ui.modify @name.to_s, 'insert_inner', self.to_stfl end
+		def append() $app.ui.modify @name.to_s, 'replace', self.to_stfl end
+		def append_inner() $app.ui.modify @name.to_s, 'replace_inner', self.to_stfl end
+		def before() $app.ui.modify @name.to_s, 'replace', self.to_stfl end
+		def before_inner() $app.ui.modify @name.to_s, 'replace_inner', self.to_stfl end
+		def after() $app.ui.modify @name.to_s, 'replace', self.to_stfl end
+		def after_inner() $app.ui.modify @name.to_s, 'replace_inner', self.to_stfl end
 
 		#$cnt= 0
 		#$ctm= 0
