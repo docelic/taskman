@@ -326,7 +326,7 @@ TODO:
 On themes
 On actions-- how the idea is to have them in menuaction, and themes free of code
 ^+ "\n\n"+
-'6. COMMAND LINE OPTIONS'.center + "\n"+ usage
+'6. COMMAND LINE OPTIONS'.center + "\n"+ $app.usage
 end
 end
 
