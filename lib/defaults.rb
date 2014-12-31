@@ -46,6 +46,9 @@ module TASKMAN
 			'colors'             => 8,
 			'term'               => nil,
 
+			'cache-stfl'         => true,
+			'cache-avh'          => true,
+
 			'exit-key'           => 'F10',
 			'main-db'            => 'main',
 			'echo-time'          => 1,
@@ -92,6 +95,8 @@ $description= {
   'exit-key'               => _('One-key exit from program'),
   'main-db'                => _('Name of main/own database'),
   'echo-time'              => _('Duration of msg visibility'),
+  'cache-stfl'             => _('Enable/disable STFL cache'),
+  'cache-avh'              => _('- internal hierarchy cache'),
 
 #  'default-time'         => 'Use 12:00 as default event time',
 }
