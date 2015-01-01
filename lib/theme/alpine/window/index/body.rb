@@ -14,6 +14,8 @@ module TASKMAN
 			@l= MVCList.new( name: 'list', autobind: 0)
 			l<< MenuAction.new( name: 'pos_up')
 			l<< MenuAction.new( name: 'pos_down')
+			l<< MenuAction.new( name: 'pos_pgup')
+			l<< MenuAction.new( name: 'pos_pgdown')
 
 			@l<< ListItem.new
 			self<< @l

@@ -10,12 +10,11 @@ module TASKMAN
 			super
 			@widget= 'vbox'
 
-			self<< Theme::Window::Main::Header.new(      arg.merge( name: :header, title: ( arg[:title]|| _('CREATE TASK'))))
-			self<< ( b= Theme::Window::Create::Body.new( arg.merge( name: :body)))
-			#b.init arg # (Must call this way to happen after insertion of b into window)
-			self<< Theme::Window::Main::Status.new(      arg.merge( name: :status))
+			self<< Theme::Window::Main::Header.new(       arg.merge( name: :header, title: ( arg[:title]|| _('CREATE TASK'))))
+			self<< ( @b= Theme::Window::Create::Body.new( arg.merge( name: :body)))
+			self<< Theme::Window::Main::Status.new(       arg.merge( name: :status))
 
-			m1= Theme::Window::Main::Menu.new(           arg.merge( name: :menu1))
+			m1= Theme::Window::Main::Menu.new(            arg.merge( name: :menu1))
 			m1.add_action(
 				:get_help,
 				( arg[:id] ? :save_task : :create_task),
@@ -36,12 +35,7 @@ module TASKMAN
 		end
 
 		def init arg= {}
-			# On new tasks, we focus the first field (Subject)
-			# On editing existing tasks, we focus the message field
-			id= self['id'].var_text_now.to_i
-			if id> 0
-				self['message'].focus
-			end
+			@b.init arg
 		end
 	end
 end

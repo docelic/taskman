@@ -122,7 +122,7 @@ module TASKMAN
 				# Otherwise we go into our usual keypress resolution.
 				if event== 'ENTER' and widget
 					if a= widget.action
-						a.run( :window => self, :widget => widget, :event => event)
+						a.run( window: self, widget: widget, base_widget: base_widget, event: event)
 						handled= true
 					end
 				end
@@ -137,7 +137,7 @@ module TASKMAN
 					ary.each do |w|
 						next if w.nil?
 						if a= w.hotkeys_hash[event]
-							a.run( :window => self, :widget => widget, :event => event)
+							a.run( window: self, widget: widget, base_widget: base_widget, event: event)
 						end
 					end
 				end

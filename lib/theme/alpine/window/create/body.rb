@@ -113,7 +113,7 @@ module TASKMAN
 
 			v<< Label.new(                    '.expand'=> 'h', text: '----- Message Text -----')
 
-			t= Textedit.new( name: :message, text: i._message, focus: 1)
+			t= Textedit.new( name: :message, text: i._message)
 			v<< t
 
 			h<< v
@@ -140,9 +140,11 @@ module TASKMAN
 					f.yield( window: self.parent, widget: c, action: a, function: f, event: 'ENTER')
 				end
 			end
-			#if arg[:id]
-			#	$app.screen.focus_default
-			#end
+			# On new tasks, we focus the first field (Subject)
+			# On editing existing tasks, we focus the message field
+			id= self['id'].var_text_now.to_i
+			fw= $opts[ id> 0 ? 'focus-on-edit' : 'focus-on-create']
+			fw2= self[fw] and fw2.focus
 		end
 	end
 end

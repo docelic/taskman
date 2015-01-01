@@ -51,6 +51,9 @@ module TASKMAN
 			'exit-key'           => 'F10',
 			'main-db'            => 'main',
 			'echo-time'          => 1,
+
+			'focus-on-edit'      => 'message',
+			'focus-on-create'    => 'subject',
 		}
 
 		def initialize *arg
@@ -96,6 +99,8 @@ $description= {
   'echo-time'              => _('Duration of msg visibility'),
   'cache-stfl'             => _('Enable/disable STFL cache'),
   'cache-avh'              => _('- internal hierarchy cache'),
+  'focus-on-edit'          => _('Field to focus on Edit Task'),
+  'focus-on-create'        => _('Field to focus on Create -'),
 
 #  'default-time'         => 'Use 12:00 as default event time',
 }

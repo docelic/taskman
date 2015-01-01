@@ -212,32 +212,78 @@ module TASKMAN
 
 		def pos_up arg= {}
 			w= arg[:widget].parent
-			p= w.var_pos_now- 1
-			while p>= 0
+
+			# This is normal behavior, such as on key UP or on Page UP
+			# when we're not near zero.
+			step= arg[:step]|| 1
+			step1= -1
+
+			# See what our new pos would be
+			p= w.var_pos_now- step
+
+			# If new pos would be below position 0, then invert the logic
+			# a bit-- instead of searching backwards, set position to 0
+			# and focus on the first widget forward that is focusable.
+			# Worst case, this will be the exact one on which the person
+			# is currently located; effectively being a no-op.
+			if p<= 0
+				p= 0
+				step1= 1
+			end
+
+			while p>= 0 and p< w.widgets.size
 				wi= w.widgets[p]
 				# We assume there is no need to test for var__display because
 				# if the widget was hidden, it wouldn't receive an event. Also,
 				# if we were to honor that correctly, we would have to look up
 				# visibility of all widgets up to the top of the tree.
+				# Not checking for this does allow for setting pos on a hidden
+				# ListItem in a List though, user beware.
 				if wi.var_can_focus> 0 #and wi.var__display> 0
 					w.var_pos= p
 					return
 				end
-				p-= 1
+				p+= step1
 			end
 		end
+		def pos_pgup arg= {}
+			w= arg[:base_widget]
+			h= w._h_now # Height of widget
+			a= arg.merge( step: h)
+			pos_up a
+		end
+
 		def pos_down arg= {}
 			w= arg[:widget].parent
-			p= w.var_pos_now+ 1
+
+			# This is normal behavior, such as on key UP or on Page UP
+			# when we're not near zero.
+			step= arg[:step]|| 1
+			step1= -1
+
+			p= w.var_pos_now+ step
+
+			# Same logic as above in pos_up; just in the other direction
 			max= w.widgets.count- 1
+			if p> max
+				p= max
+				step1= -1
+			end
+
 			while p<= max
 				wi= w.widgets[p]
 				if wi.var_can_focus> 0 #and wi.var__display> 0
 					w.var_pos= p
 					return
 				end
-				p+= 1
+				p+= step1
 			end
+		end
+		def pos_pgdown arg= {}
+			w= arg[:base_widget]
+			h= w._h_now # Height of widget
+			a= arg.merge( step: h)
+			pos_down a
 		end
 
 		############################### Testing Functions ################################
