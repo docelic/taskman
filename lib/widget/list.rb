@@ -62,6 +62,9 @@ module TASKMAN
 				#   ...
 				# ]
 				# but ruby automatically maps s/t below to array, very wonderful!
+				#
+				# We produce 'set' first to see if there are any new tasks to add,
+				# as we're not doing anything if there aren't.
 				set= $tasklist.tasks[@widgets.count..-1]
 				set.each do |s, t|
 					nid= [ s, t.id].to_id_s # nid== "name/id" string

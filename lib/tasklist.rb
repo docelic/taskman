@@ -50,7 +50,6 @@ module TASKMAN
 		def by_aid aid
 			@tasks.each do |tb|
 					if [tb[0], tb[1].id]== aid
-						pfl :CK_WINNNNN
 						return tb[1]
 					end
 			end

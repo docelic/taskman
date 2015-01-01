@@ -272,15 +272,24 @@ module TASKMAN
 		end
 
 		def clone_task arg= {}
-			id= $app.screen['id'].var_text_now.to_i
-			return unless id
+			w= arg[:window]
+			id= w['id'].var_text_now.to_i
+			db= w['db'].var_text_now.to_sym
+			return unless id and db
 
-			t= $tasklist.tasks[id]
-			t2= t.clone
-			t2.generate_id
-			$tasklist.tasks[t2.id]= t2
-			$app.screen.status_label_text= 'Task cloned'
-			$tasklist.save
+			t= $tasklist.by_aid [db, id]
+			t2= t.dup
+			t2.save
+
+			if w.respond_to? :status_label_text=
+				w.status_label_text= _('Task cloned')
+				$app.ui.run -1
+				sleep $opts['echo-time']
+			else
+				pfl e
+			end
+
+			index arg.merge( nid: [ db, t2.id])
 		end
 
 		def create_task arg= {}
@@ -344,7 +353,7 @@ module TASKMAN
 					pfl e
 				end
 
-				index arg.merge( id: [ db.to_sym, i.id])
+				index arg.merge( nid: [ db.to_sym, i.id])
 
 			# XXX We replace/complement this with StandardError?
 			rescue Exception => e
