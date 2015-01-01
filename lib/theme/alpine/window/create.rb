@@ -34,5 +34,14 @@ module TASKMAN
 
 			self<< m1
 		end
+
+		def init arg= {}
+			# On new tasks, we focus the first field (Subject)
+			# On editing existing tasks, we focus the message field
+			id= self['id'].var_text_now.to_i
+			if id> 0
+				self['message'].focus
+			end
+		end
 	end
 end
