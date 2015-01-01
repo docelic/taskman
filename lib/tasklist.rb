@@ -2,6 +2,8 @@ module TASKMAN
 
 	class Tasklist
 
+		attr_accessor :tasks
+
 		def initialize
 			super
 
@@ -23,7 +25,7 @@ module TASKMAN
 			end
 
 			# Portion of data loaded from DBs and kept in memory
-			@@data= nil
+			@tasks= []
 		end
 
 		def count
@@ -43,6 +45,16 @@ module TASKMAN
 				pfl _('Loaded total: %d records') % ret.count
 			end
 			ret
+		end
+
+		def by_aid aid
+			@tasks.each do |tb|
+					if [tb[0], tb[1].id]== aid
+						pfl :CK_WINNNNN
+						return tb[1]
+					end
+			end
+			nil
 		end
 
 		## This is a much better function than the above. The only small
@@ -65,55 +77,11 @@ module TASKMAN
 		#end
 
 		# The third iteration of the MVC development
-		def get from= 0, to= -1
-			@@data||= self.load_all
-			ret= @@data[from..to]
-			ret||= []
+		def ensure from= 0, to= -1
 			if debug? :mvc
-				pfl _('Providing widget with: %d..%d (%d total) records') % [ from, to, ret.count]
+				pfl _('Ensuring tasks are in memory: %d..%d') % [ from, to]
 			end
-			ret
-			#pfl :THEY_WANT_FROM_TO, offset, limit
-			#data= {}
-			#@@classes.each{ |k, c|
-			#	tasks= c.limit( limit).offset( offset)
-			#	if tasks.count> 0
-			#		tasks.each{ |t| data[[k, t.id]]= t}
-			#	end
-			#	if data.count>= limit
-			#		break
-			#	end
-			#}
+			@tasks= self.load_all
 		end
-
-		#def save
-		#	self.save_to_yaml
-		#end
-		#def load
-		#	self.load_from_yaml
-		#end
-
-		#def save_to_yaml
-		#	@data[:VERSION]= $opts['version']
-		#	tf= File.join $opts['data-dir'], $opts['data-file']
-		#	content= @data.to_yaml
-		#	File.write tf, content
-		#end
-		#def load_from_yaml
-		#	tf= File.join $opts['data-dir'], $opts['data-file']
-		#	@data= if File.exists? tf
-		#		YAML.load_file tf
-		#	else
-		#		{ :tasks => { }}
-		#	end
-		#end
-
-		#def tasks
-		#	@data[:tasks]
-		#end
-
-		#def version
-		#	@data[:VERSION]
-		#end
 	end
 end

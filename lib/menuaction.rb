@@ -292,7 +292,7 @@ module TASKMAN
 			i= begin
 				arg[:item]|| "TASKMAN::Item::#{db.ucfirst}".to_class.find( id)
 			rescue
-				i= "TASKMAN::Item::#{db.ucfirst}".to_class.new
+				"TASKMAN::Item::#{db.ucfirst}".to_class.new
 			end
 
 			if id> 0 then i.id= id end

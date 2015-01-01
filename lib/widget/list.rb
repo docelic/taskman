@@ -64,7 +64,7 @@ module TASKMAN
 				# but ruby automatically maps s/t below to array, very wonderful!
 				set= $tasklist.tasks[@widgets.count..-1]
 				set.each do |s, t|
-					nid= [ s, t].to_id_s # nid== "name/id" string
+					nid= [ s, t.id].to_id_s # nid== "name/id" string
 					s= self.parent.fmt% [ t.id, s, t.subject]
 					self<< ListItem.new( name: nid, text: s, can_focus: 1)
 				end
