@@ -210,8 +210,17 @@ module TASKMAN
 			menus[0].var__display= 1
 		end
 
+		def pos_home arg= {}
+			w= arg[:base_widget]
+			w.var_pos= 0
+		end
+		def pos_end arg= {}
+			w= arg[:base_widget]
+			w.var_pos= w.widgets.size- 1
+		end
+
 		def pos_up arg= {}
-			w= arg[:widget].parent
+			w= arg[:base_widget]
 
 			# This is normal behavior, such as on key UP or on Page UP
 			# when we're not near zero.
@@ -254,7 +263,7 @@ module TASKMAN
 		end
 
 		def pos_down arg= {}
-			w= arg[:widget].parent
+			w= arg[:base_widget]
 
 			# This is normal behavior, such as on key UP or on Page UP
 			# when we're not near zero.

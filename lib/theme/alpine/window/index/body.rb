@@ -16,6 +16,8 @@ module TASKMAN
 			l<< MenuAction.new( name: 'pos_down')
 			l<< MenuAction.new( name: 'pos_pgup')
 			l<< MenuAction.new( name: 'pos_pgdown')
+			l<< MenuAction.new( name: 'pos_home')
+			l<< MenuAction.new( name: 'pos_end')
 
 			@l<< ListItem.new
 			self<< @l
