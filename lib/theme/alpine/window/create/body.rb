@@ -126,18 +126,18 @@ module TASKMAN
 				w= self.parent
 				a= w['timing'].action
 				if Symbol=== f= a.function
-					a.send( f, window: self.parent) #, widget: arg[:widget], action: a, function: f, event: 'ENTER')
+					a.send( f, window: self.parent, widget: arg[:widget], action: a, function: f, event: 'ENTER')
 				elsif Proc=== f= a.function
-					f.yield( window: self.parent) #, widget: c, action: a, function: f, event: 'ENTER')
+					f.yield( window: self.parent, widget: c, action: a, function: f, event: 'ENTER')
 				end
 			end
 			if arg[:open_reminding]== 1
 				w= self.parent
 				a= w['reminding'].action
 				if Symbol=== f= a.function
-					a.send( f, window: self.parent) #, widget: arg[:widget], action: a, function: f, event: 'ENTER')
+					a.send( f, window: self.parent, widget: arg[:widget], action: a, function: f, event: 'ENTER')
 				elsif Proc=== f= a.function
-					f.yield( window: self.parent) #, widget: c, action: a, function: f, event: 'ENTER')
+					f.yield( window: self.parent, widget: c, action: a, function: f, event: 'ENTER')
 				end
 			end
 			#if arg[:id]
