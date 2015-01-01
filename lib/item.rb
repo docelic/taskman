@@ -283,9 +283,9 @@ module TASKMAN
 			end 
 			vd
 		end
-		
+
 		def ssm() self.time_ssm || @@default_time end
-		
+
 		def add_to list, item
 			# if list is nothing yet, add just this item:
 			if list.nil? then return item end
@@ -295,7 +295,7 @@ module TASKMAN
 			list= Enumerable===list ? list.to_a : [list]
 			list+item
 		end  
-		
+
 		def time date= Date.today
 			date.to_date.to_time+ ssm
 		end 
@@ -348,17 +348,17 @@ module TASKMAN
 				end
 			end 
 		end 
-		
+
 		def due_on? date
 			return false if start and start> date
 			return false if stop and stop< date
 			check self.due, date
 		end
-		
+
 		def omit_on? date
 			check self.omit, date, @@default_omit
 		end
-		
+
 		def check list, target, default_list=[]
 			list= force_array list
 			di= list.index true
