@@ -3,9 +3,11 @@ module TASKMAN
 
 		def self.text() @@text end
 
+		opts= TASKMAN::Defaults.new
+
 		@@text= "\n"+
 'GENERAL INFORMATION ON THE TASKMAN TASK SCHEDULER'.center + "\n\n"+
-"Version #{$opts['version']}".center+ "\n\n"+
+"Version #{opts['version']}".center+ "\n\n"+
 "Copyright 2014 Spinlock Solutions".center+ "\n"+
 "http://techpubs.spinlocksolutions.com/taskman/".center+ "\n\n"+
 %q^
@@ -23,15 +25,15 @@ Table of Contents:
 
 1. BASIC INFORMATION
 
-Taskman allows creation of task/TODO/event lists and offers extensive tracking, scheduling and reminding features.
+Taskman allows creation of task/TODO/event lists and offers extensive tracking, scheduling and reminding features. (At the moment, no particularly useful way for accessing the scheduling/reminding parts exists, however.)
 
 Taskman is primarily a personal scheduler program, but shared calendars and event lists from multiple databases are supported. Plugins for other calendar and task tracking apps are planned. Please report your wishes in that regard to help prioritize work.
 
 Taskman's scheduling features have been inspired by a program called Remind, although Taskman is more powerful and elaborate.
 
-Taskman's default user interface has been inspired by the venerable mailer program Pine (and Alpine), although Taskman supports customizable layouts ("themes") and color schemes ("styles").
+Taskman's default user interface has been inspired by the venerable mailer program Pine (or free Alpine), although Taskman supports completely different/customizable layouts ("themes") and color schemes ("styles").
 
-Taskman's data store is powered by ActiveRecord and additionally taskman can connect to multiple databases and display their tasks transparently. New tasks are created in the main/primary database.
+Taskman's data store is powered by ActiveRecord and additionally taskman can connect to multiple databases and display their tasks transparently. New tasks are created in a database that you mark as primary; tasks from other databases can be viewed and/or edited depending on your privileges there.
 
 ^+ '-'* ( $COLUMNS- 1)+ %q^
 
@@ -39,23 +41,23 @@ Taskman's data store is powered by ActiveRecord and additionally taskman can con
 
 Taskman's functionality revolves around creating tasks and defining their scheduling (recurrence) and reminding options.
 
-Tasks can be created by starting Taskman and navigating to "CREATE TASK" in the main menu, or pressing "C" (case insensitive). From the command line, task creation window can be opened directly by passing option "-w create" to the program.
+Tasks can be created by starting Taskman and navigating to "CREATE TASK" in the main menu, or pressing "C" (case insensitive). From the command line, task creation can be opened directly by passing option "-w create" to the program (and the same for all other windows; --window main|create|index|list|help|colortest).
 
-In the CREATE TASK window, the following (all optional) task attributes can be defined:
+The most important window is the Create/Edit window, and creating or editing a task supports defining the following options/attributes:
 
 1. Subject: task title / summary
 
-2. Start: absolute start date for the task. Before the start date, task will be considered inactive and Taskman will never show it as due or remind you about it. By default, there is no start date (the task is always considered active).
+2. Start: absolute start date for the task. Before the start date, task will be considered inactive and Taskman will never show it as due or remind you about it. By default, there is no start date (the task is always considered active if it matches other criteria).
 
-3. End: absolute end date for the task. After the end date, task will be considered inactive and Taskman will never show it as due or remind you about it. By default, there is no end date (the task is always considered active).
+3. End: absolute end date for the task. After the end date, task will be considered inactive and Taskman will never show it as due or remind you about it. By default, there is no end date (the task is always considered active if it matches other criteria).
 
 4. Time: time of day when the task is due. By default, it is set to 12:00:00.
 
-5. Due dates: days on which the task is due. A task can be due on multiple days, defined as specific dates (e.g. Jan 1, 2015) as well as various repetition rules (e.g. every Monday, every two days between 12th and 22th of a month, etc.).
+5. Due dates: days on which the task is due. A task can be due on multiple days, defined as specific dates (e.g. Jan 1, 2015) as well as various repetition rules (e.g. every Monday, every two days between 12th and 22th of a month, last working day of a week, etc.).
 
 6. Omit dates: days on which the task should not be due, even if it would otherwise be due on those days. This field accounts for days being holidays, non-working days (weekends) or any other exceptions to the rule. It supports the same syntax as Due dates.
 
-7. Omit shift: behavior in case that a task is due on an omitted day. Task can either be ignored (not triggered) or Taskman can reschedule it, either to the first earlier or first later non-omitted day.
+7. Omit shift: behavior in case a task would be due on an omitted day. Task can either be ignored (not triggered) or Taskman can reschedule it, either to the first earlier or first later non-omitted day.
 
 8. Remind: days and times when Taskman should remind you about the upcoming task or event. It can remind on a specific day or relative to the due date. For example, you might desire Taskman to start reminding you 90 minutes before the event and remind a total of 3 times with 10 minutes in between.
 
@@ -132,7 +134,7 @@ Example: 1 (ignore the reminder, do not trigger it)
 
 4. DATABASE SOURCES
 
-Taskman supports connecting to multiple databases simultaneously, and all functions work transparently. The idea behind this feature is that users would have their own, primary database tables, which only they can access. However, they would like to connect to other users' databases to see the tasks other users have shared with them.
+Taskman supports connecting to multiple databases simultaneously, and all functions work transparently. The idea behind this feature is that users would have their own, primary database table. However, they would like to connect to other users' databases to see the tasks other users have shared with them.
 
 Editing shared tasks works as well, as long as the user has sufficient privileges to update the record in the corresponding database. Tasks that a person clones can be cloned in either the original database, or into the local/primary one.
 
@@ -140,29 +142,27 @@ Editing shared tasks works as well, as long as the user has sufficient privilege
 
 5. DEVELOPER OVERVIEW
 
-Taskman execution starts in main.rb. It loads all Ruby and local modules, defines and parses command line options, prints --help if it was requested, and defines the TASKMAN::Application class which represents the application (similar to how Qt would do it).
+Taskman execution starts in main.rb. It instantiates the TASKMAN::Application class in global variable $app to represent the application (similar to how Qt would do it), defines and parses command line options, loads Ruby and local modules, prints --help if it was requested, initializes the console, and starts the main loop.
 
 The following global variables are available at all times:
 
 1. $LINES (int), $COLUMNS (int) - terminal height and width
 2. $opts (hash) - current program options (defaults modified by command line)
 3. $getopts (array) - getopt definition (probably not relevant if not doing something specifically related to parsing command line options)
-4. usage() - function that displays help
-5. $app (object) - instance of TASKMAN::Application. Most useful methods are $app.ui (STFL object) and $app.screen (Ruby objects of toplevel element visible on screen)
-6. $tasklist (object) - tasklist, with tasks in $tasklist.tasks hash. $tasklist.data is what gets saved to and loaded from ~/.tasklist/tasks.yaml.
+4. $app.usage() - function that returns a formatted string of command line options (output of taskman -h)
+5. $app (object) - instance of TASKMAN::Application. Most useful accessors are $app.ui (STFL object) and $app.screen (Ruby object of toplevel element visible on screen, and from there you can access all children regardless of position in hierarchy via $app.screen[WIDGET_NAME])
+6. $tasklist (object) - tasklist class inheriting from ActiveRecord and implementing functions that transparently combine input from multiple databases in usual AR calls.
 
 Main loop:
 ----------
 
-Once main.rb sets things up, it initializes $app and calls $app.start().
+Once main.rb sets everything up, it calls  $app.start() which creates the requested window and runs the main loop. Window is created by invoking $app.exec(), the same function that is used to switch from one window to another.
 
-$app.start() in current version just loads tasklist and calls $app.exec() which gets the wheels spinning. $app.exec() initializes the window that it has to display, and runs its main loop.
+The main loop that start() runs is based around STFL's main loop implementation + a couple conveniences that you therefore don't need to be implementing yourself:
 
-Note that this same function ($app.exec()) is used when switching from one window to another, and that the main loop is based around STFL's main loop implementation + a couple conveniences which you don't need to be implementing yourself:
+1) Our main_loop runs in the context of a window, instead of globally, so the current window object is always readily available as 'self'. Similarly, all your functions that Taskman core will call will be called with a rich set of arguments, allowing for easy and comfortable implementation of various handlers, menu actions, etc (all defined in TASKMAN::MenuAction (menuaction.rb)).
 
-1) Our main_loop runs in the context of a window, instead of globally, so the current window object is always readily available as 'self'. Similarly, all functions that Taskman's core calls are called with a rich set of arguments, allowing for easy/comfortable implementation of various handlers, menu actions, etc.
-
-2) The main loop automatically sets current widget object (instead of you having to look for it manually), and it automatically displays the focused widget's tooltip in the "status" line, if the focused widget has one and the status widget exists on the current form.  An example of this is e.g. seeing syntax help in the status line while you are pressing Up/Down over various options when creating a new task.
+2) The main loop automatically creates pointer to the current/focused widget object (instead of you having to look for it manually), and it automatically displays the focused widget's tooltip in the "status" line, if the focused widget has one and the status widget exists on the current form.  An example of this is e.g. seeing syntax help in the status line while you are pressing Up/Down over various options when creating a new task.
 
 3) If the widget currently under focus has an action associated with it, the main loop automatically adjusts the "hotkey" entry in the window menu, if "hotkey_in" action exists on the current form.  (If there are multiple actions associated, it takes the first one.) An example of this is e.g. when you are in program's main window and are pressing Up/Down to move between the options (create task, task index, etc.). The Hotkey field in the menu at the bottom changes automatically.
 
@@ -170,8 +170,8 @@ Note that this same function ($app.exec()) is used when switching from one windo
 
 5) Keypresses other than ENTER which are not handled by the widget go through a search list: we check whether the key pressed matches any of the hotkeys associated with the widget itself, then the window's menus, then all the widget's parents up to the top of the tree.  An example of this is e.g. when you are in the CREATE TASK window, and press Ctrl+X to create the task. The Ctrl+X is a hotkey matching one of the entries in the window's menu, and it gets executed.
 
-Now, on STFL:
--------------
+Now, a chapter on STFL:
+-----------------------
 
 In its essence, STFL is a textual GUI definition language and it is not object-oriented. In Taskman, a complete wrapper has been written so that you would only manipulate Ruby objects, and the STFL part would automagically take care of itself.
 
@@ -183,7 +183,7 @@ module TASKMAN
 		def initialize *arg
 			super
 			@widget= 'vbox'
-			self<< Label.new( :name => 'lbl1', :text => 'Hello, World!')
+			self<< Label.new( name: 'lbl1', text: 'Hello, World!')
 		end
 
 	end
@@ -195,25 +195,25 @@ Insights to pick up from that example:
 
 1) Every class wishing to use STFL needs to inherit from one of STFL-derived classes (in this case Theme::Window), which ultimately all inherit from another class named StflBase, which in turn uses Stfl.rb that comes from the STFL distribution.
 
-2) When a window (or any StflBase-derived object) needs to be converted to STFL text, it happens via calling .to_stfl() on it. That function is defined in stfl_base.rb and it outputs a desired element in STFL with the corresponding name and options, and it also STFL-izes all its children elements and returns the complete STFL.  If the object has no name (because it is e.g. just a supporting element that you will never want to access or be interested in, such as a supporting HBox or VBox) then its name will be autogenerated, in the pattern of W_0, W_1, W_2, etc.
+2) When a window (or any StflBase-derived object) needs to be converted to STFL text, it happens via calling .to_stfl() on it. That function is defined in our stfl_base.rb and it outputs a desired element in STFL with the corresponding name and options, and it also STFL-izes all its children elements and returns the complete STFL. If the object has no name (because it is e.g. just a supporting element that you will never want to access or be interested in, such as a supporting HBox or VBox) then its name will be autogenerated, in the pattern of W_0, W_1, W_2, etc. (To be technically correct, auto-assigning a name happens during calling .new() on a StflBase-derived class if the name parameter is not provided among the options, and not during a later call to .to_stfl()).
 
-3) The toplevel STFL element seen after .to_stfl() is coming from instance variable @widget, and all typical widget types (such as label, checkbox etc., found in the widget/ subdirectory) have their values for @widget appropriately set.  But you could use an arbitrary name (for no obvious benefit though), or also @widget = nil to just STFL-ize the children without creating a STFL representation of the current object.
+3) The toplevel STFL element seen in the text generated by .to_stfl() is coming from instance variable @widget, and all typical widget types (such as label, checkbox etc., found in the widget/ subdirectory) have their values for @widget appropriately set.  But you could use an arbitrary name (for no obvious benefit though), or also @widget = nil to just STFL-ize the children without creating a STFL representation of the current object. (To cause the parent widget to not exist in STFL (i.e. only have its children show up), set its @widget= nil.)
 
-4) In the example, we can also see the syntax "self<< Label.new( ...)".  The "<<" is an operator defined also in stfl_base.rb, and it is used to add a widget (Label in our case) as a child of parent ('self' in our case).  It does this by adding a widget to parent's variables @widgets and @widgets_hash, and also handles hotkeys if the child being added is a MenuAction instead of a simple widget. In any case, please always use 'parent<< child' instead of manually manipulating the described variables.
+4) In the example, we can also see the syntax "self<< Label.new( ...)".  The "<<" is an operator defined in stfl_base.rb, and it is used to add a widget (Label in our case) as a child of parent ('self' in our case).  It does this by adding a widget to parent's variables @widgets and @widgets_hash, and also handles hotkeys if the child being added is a MenuAction instead of a simple widget. In any case, please always use 'parent<< child' instead of manually manipulating the described variables.
 
-5) Final thing to know is that STFL language is flat, there is no hierarchy and all elements can be accessed by their name directly from toplevel.
+5) Final thing to know re. the basic STFL is that it is flat, there is no hierarchy and all elements can be accessed by their name directly from toplevel API.
 
-$app.ui always points to the current STFL form, and it allows one to e.g.  read form value of e.g. an input field by simply calling $app.ui.get 'OBJ_NAME_text'. This is basic, standard STFL usage as one would learn from reading STFL docs.
+In Taskman, $app.ui always points to this basic STFL form currently shown, and it allows one to e.g.  read form value of e.g. an input field by simply calling $app.ui.get 'OBJ_NAME_text'. This is basic, standard STFL usage as one would learn from reading STFL docs.
 
-On the other side, our Ruby wrapper is much more elaborate. First of all, it is aware of the hierarchy. Each widget has a .parent() pointing to its parent, and @widgets/@widgets_hash pointing to its children. When << is used, it forcibly sets child widget's parent to the widget it was added to. (Similar to how Qt does it.) It is also what allows one to call widget.to_stfl() and get the complete structure of Ruby objects (the parent and all children) converted to STFL text ready for displaying on the screen.
+However, our Ruby wrapper is much more elaborate. First of all, it is aware of the hierarchy. Each widget has a .parent() pointing to its parent, and @widgets/@widgets_hash accessors pointing to its children. When << is used, it forcibly sets child widget's parent to the widget it was added to. (Similar to how Qt does it.) It is also what allows one to call widget.to_stfl() and get the complete structure of Ruby objects (the parent and all children) converted to STFL text ready for displaying on the screen. If you will be doing any trickery besides plain using << and >> to add and remove children on StflBase-derived objects, consider calling OBJ.clear_caches() once you are done. It will rebuild the cached output of .all_widgets_hash() and .to_stfl() on your next access.
 
-$app.screen always points to the toplevel widget that was used in generating the STFL. (This is typically an object inheriting from Theme::Window, which inherits from Window, which inherits from StflBase, which uses Stfl. However, any StflBase-based object could be used.)
+Furthermore, as part of our Ruby wrapper, $app.screen always points to the toplevel widget object that was used in generating the STFL. (This is typically an object inheriting from Theme::Window, which inherits from Window, which inherits from StflBase, which uses Stfl. However, any StflBase-based object could be used, since STFL itself places on restrictions on the toplevel element that can be used to initialize/draw a window.)
 
-Since $app.screen is a widget, it allows the usual access to @widgets and @widgets_hash to access all of the children (which means all of the widgets on the screen). Most of the time, however, the widget you want to access is not directly under the parent but under some intermediate element(s), such as VBoxes, HBoxes, menus, etc. and it means you would have to search through a chain of children trees for it. To alleviate that, there is a function $app.screen.all_widgets_hash() which returns all of the widget's children and sub-children in a flat structure, so you can simply call $app.screen.all_widgets_hash['YOUR_WIDGET'] to obtain a reference to your object.
+Since $app.screen is a widget, it allows the usual access to @widgets and @widgets_hash to access all of the children (which means all of the widgets on the screen). Most of the time, however, the widget you want to access is not directly under the parent but under some intermediate element(s), such as VBoxes, HBoxes, menus, etc. and it means you would have to search through a chain of children trees for it. To alleviate that, there is a function $app.screen.all_widgets_hash() which returns all of the widget's children and sub-children in a flat structure, so you can simply call $app.screen.all_widgets_hash['YOUR_WIDGET'] to obtain a reference to your object. Since this is a so commonly used function, even more convenient shorthand exists -- simply $app.screen[CHILD_NAME].
 
-In fact, since accessing a child widget is so common task, calling widget['NAME'] has been enabled and it is an alias for widget.all_widgets_hash['NAME']. Furthermore, since the Ruby wrapper calls all action handlers with a rich standard set of parameters (window, widget, action, function and event), all the child widgets in the form are generally always available to you by simply calling arg[:window]['NAME'] in your handler code. Or if arg[:window] is not there, you can access the intended child widget via $app.screen['NAME'].
+Also, since the Ruby wrapper calls all action handlers with a rich standard set of parameters (window, widget, action, function and event), all the child widgets in the form are generally always available to you by simply calling arg[:window][NAME] in your handler code. Or if arg[:window] is not there, you can access the intended child widget via $app.screen[NAME].
 
-Once you have the object, you can call arbitrary functions on it that affect the variables and display in real-time. For example, to read or set the text of a label you would call lbl.var_text and lbl.var_text= "New text!" respectively.  Note that the setter function (.var_text=) operates in real-time-- it will set both the internal variable and the value in STFL, and the change will appear on the screen immediately. The getter function (.var_text) will only return the value of the widget's variable 'text', which does not necessarily match its current value on the form. To read the actual value from the form, as well as update the internal variable, call .var_NAME_now(), such as .var_text_now().
+Once you have the object, you can call arbitrary functions on it that affect both internal variables and visual representation in real-time. For example, to read or set the text of a label you would call lbl.var_text and lbl.var_text= "New text!" respectively.  Note that the setter function (.var_text=) operates in real-time-- it will set both the internal variable and the value in STFL, and the change will appear on the screen immediately. However, the getter function (.var_text) will only return the value of the widget's variable 'text', which does not necessarily match its current value on the form. To read the actual value from the form, as well as update the internal variable, call .var_VARNAME_now(), such as .var_text_now().
 
 This way, STFL has been completely abstracted and there are even advantages to not using it directly, but reading STFL documentation will certainly help you better understand how it all works. You'll be able to recognize which parts of Taskman are application-level design and which are simple necessities of STFL.
 
@@ -224,26 +224,32 @@ On actions:
 
 In addition to adding children widgets to parents (via parent<< child), one can also add "actions" in the same way. 
 
-Actions are basically functions to execute on events, usually keypresses. For example, pressing an ENTER in a field could serve as form's OK function that triggers further processing, or pressing Ctrl+X in create window would create a new task.
+Actions are basically functions to execute on events, usually keypresses. For example, pressing ENTER in a field could serve as form's OK function that triggers further processing, or pressing Ctrl+X in create window would create a new task.
 
 Actions can be invisible (be added to widgets and work, but not be visible anywhere), or they can have a visual representation to be more convenient or indicate their availability. When they are visible, they are usually found in the window's menu bar. An example of it are all the menu options visible the bottom of the main window as soon as you start the program.
 
-On themes and styles:
----------------------
+Invisible actions are created by either using obj<< MenuAction.new( name: NAME), which instantiates a stock action, or by creating an action manually and overriding/defining its functionality in more detail (a= MenuAction.new( ...)) and then usinb obj<< a.
+
+Actions that have a visible representation are created using Theme::MenuAction( name: NAME), and the rest of the notes apply as for MenuAction above. Examples of these are most commonly found in menus displayed within windows, with their exact look/layout implemented in theme/NAME/MenuAction.rb.
+
+Generally, all your theme-agnostic actions should be implemented in menuaction.rb, and all your theme-specific and/or visible actions should be implemented in theme/NAME/MenuAction.rb. A function in a theme that is generally useful should be added to base menuaction.rb.
+
+A chapter on themes and styles:
+-------------------------------
 
 Taskman supports both themes (different GUI layouts) and styles (different color schemes).
 
-There is no direct relation between a theme and style. The more general a style is (that is, the more it targets broad widget names and classes rather than specifics), the more likely it is to work with another theme. 
+There is no direct relation between a theme and style. The more general a style is (that is, the more it targets broad widget names and classes rather than specifics), the more likely it is to apply correctly with another theme. (No harm in trying; worst case would be that no selector applies to a particular widget, leaving it unstyled, or that multiple selectors match, of which the most specific one would win.)
 
-There is currently only one theme available -- Alpine, mimicking the layout of the infamous mail program Pine. At least one more theme needs to be written to actually test the supposedly theme-agnostic code in practice and to make sure different themes are realistically possible. For example, one could make a theme resembling the mail program 'mutt'.
+There is currently only one theme available -- Alpine, mimicking the layout of the infamous mail program Pine. At least one more theme needs to be written to actually test the supposedly theme-agnostic code in practice and to make sure different themes are realistically possible. For example, one could make a theme resembling the mail program 'mutt', or something different altogether. If you embark on that journey, get in touch to ensure prompt support from our side.
 
-There is currently only one style available, matching the default theme. Style files are very, very simple and it is expected that they will be tuned or that new ones will be created much more often than themes.
+There is currently only one style available, matching the default theme. Style files are very simple and it is expected that they will be tuned - or that new ones will be created - much more often than complete themes.
 
-Locally, you can place your themes in ~/.taskman/lib/theme/THEME_NAME/ and design them by using the default Alpine theme as a reference. To use your theme, simply invoke Taskman with -t THEME_NAME.
+Locally, you can place your themes in ~/.taskman/lib/theme/THEME_NAME/ and design/structure them by using the default Alpine theme as a reference. To use your theme, simply invoke Taskman with -t THEME_NAME.
 
 You can place your styles in ~/.taskman/lib/style/. To use your style, simply invoke Taskman with -s STYLE_NAME.
 
-The most important thing in writing a style is knowing what the element you want to style is called, so that you can write a selector for it. The names will inevitably vary from theme to theme, but it is advised that theme authors follow the names used in the Alpine theme where ever applicable.
+The most important thing in writing a style is knowing how the element you want to style is called, so that you can write a selector for it. The names will inevitably vary from theme to theme, but it is advised that theme authors follow the names used in the Alpine theme where ever applicable.
 
 Another thing to understand is how styles are applied. For each widget, Taskman determines its hierarchical position in the form and then tries finding a matching style definition with less and less specificity.
 
@@ -257,6 +263,9 @@ Taskman is dynamically aware that this widget is a child of 'header', which in t
 "header header_program_name_version"
 "header @label"
 "header"
+"main header_program_name_version"
+"main @label"
+"main"
 "header_program_name_version"
 "@label"
 
@@ -270,28 +279,32 @@ Similarly, here's a lookup that takes place when one part (the hotkey label) of 
 "menu @hotkey"
 "menu @label"
 "menu"
+"main menu_create_hotkey"
+"main @hotkey"
+"main @label"
+"main"
 "menu_create_hotkey"
 "@hotkey"
 "@label"
 
-Here, we notice that Taskman searched not only for widget name and its type (@label), but also for its class name (@hotkey). When the widget's class name does not match its STFL element, we also search for the class name, allowing for very convenient styling that would otherwise be hard to apply to multiple widgets in a single rule.
+Here, we notice that Taskman searched not only for widget name and its type (@label), but also for its class name (@hotkey). When the widget's class name does not match its STFL element, Taskman also searches for the class name, allowing for very convenient styling that would otherwise be hard to apply to multiple widgets (of otherwise the same type) in a single rule.
 
-The first selector that is found "wins" and no further lookups are made for that widget.
+The first selector that is found "wins".
 
-It is also useful to know that style is not applied to widgets that are not to be rendered in STFL (those with @widget= nil). Also, if you change the STFL widget type of an object (for example, if you create a Label but set its @widget to be e.g. 'input'), then after all the "@label" lookups above Taskman would also search for "@input" before shifting the leftmost element from the path and trying another round.
+It is also useful to know that style is not applied to widgets that are not to be rendered in STFL (those with @widget= nil). Also, if you change the STFL widget type of an object (for example, if you create a Label but set its @widget to be e.g. 'input'), then after all the "@label" lookups as shown above, Taskman would also search for "@input" before shifting the leftmost element from the path and trying another round.
 
-Also in searching for styles, Taskman automatically removes the numbers that immediately follow letters in the widget names. Specifically, if your widget is named "menu2" and is found under "main", Taskman will search for "main menu", not "main menu2".
+Also in searching for styles, Taskman automatically removes the numbers that immediately follow letters in the widget names. Specifically, if your widget is named "menu2" and is found under "main", Taskman will search for "main menu", not "main menu2". (It would be even better to look for "main menu2" first, then "main menu", but it doesn't work that way right now.)
 
 Discovering widget names and hierarchy:
 ---------------------------------------
 
-There are multiple ways in which you can discover the names or hierarchy of the widgets you want to style:
+When writing your style, or modifying existing, There are multiple ways in which you can discover the names or hierarchy of the widgets you want to style:
 
-1. Look up existing definitions in style/alpine.rb. It is possible the selectors are already there and you simply need to change their definitions.
+1. Look up existing definitions in style/alpine.rb. It is possible the selectors are already there and you simply need to change their definitions in your own style file.
 
-2. Look up the program source of the window you are styling, and locate the name of the widget you are interested in. (Taskman is open source Ruby code after all.)
+2. Look up the program source of the window you are styling, and locate the name of the widget you are interested in.
 
-3. Run the program with option --debug-stfl and redirect STDERR output to a temporary file, such as:  taskman --debug-stfl 2> /tmp/debug.log. In the debug file, you will see the complete STFL text that was used to produce the current form, and you will be able to find your widget by searching for chunks of text visible in or around it. Alternatively, if you know the name of the widget or one of its parents, you can narrow the log by dumping their STFL only; you can do this with --debug-stfl-widget WIDGET_NAME.
+3. Run the program with option --debug-stfl and redirect STDERR output to a temporary file, such as:  taskman --debug-stfl 2> /tmp/debug.log. In the debug file, you will see the complete STFL text that was used to produce the current form, and you will be able to find your widget by searching for chunks of text visible in or around it. Alternatively, if you know the name of the toplevel widget or one of its parents, you can narrow the log by dumping only their STFL; you can do this with --debug-stfl-widget WIDGET_NAME.
 
 4. You could also run the program with option --debug-style and redirect STDERR output to a temporary file. The log would show you all style lookups the program has performed, and you could recognize the name of your widget in the list.
 
@@ -301,7 +314,7 @@ Finally, it needs to be said that Taskman directly inherits STFL's styling capab
 
 Style 'normal' is the default representation. Style 'focus' is the representation when the widget is focused. Style 'selected' applies to lists and defines the representation of the selected item in the list when the list itself is not focused.
 
-Taskman also uses style syntax that is used by STFL; it is a comma separated list of key=value pairs, where the key can be 'bg' for background, 'fg' for foreground and 'attr' for text attributes.
+Taskman also uses direct style syntax that is used by STFL; it is a comma separated list of key=value pairs, where the key can be 'bg' for background, 'fg' for foreground and 'attr' for text attributes.
 
 To define a blue background with white, bold and blinking text on it, you would use:
 
@@ -315,16 +328,13 @@ The following text attributes are supported:
 
 	standout underline reverse blink dim bold protect invis
 
-On terminals that support 256 colors it is also possible to use extended colors, by using "color<number>" as color name, where "<number>" is a number between 0 and 255. For a complete chart of numbers and their corresponding colors, please see http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html.
+On terminals that support 256 colors it is also possible to use extended colors, by using "color<number>" as color name, where "<number>" is a number between 0 and 255. For a complete chart of numbers and their corresponding colors, you could run "taskman --co 256 -w colortest", or see http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html.
 
-Taskman also contains a built-in color test program. Simply invoke taskman -w colortest to see the colors and color codes available in your terminal.
+(The built-in color test program is invoked with taskman -w colortest, and will display all colors currently supported by your terminal. Adding --colors <NUM> to that would force a specific number of colors and then display the colortest.)
 
-One last note, please note that STFL uses the default terminal colors when no background or foreground are specified. Generally, you should avoid specifying only fg= or bg=, as the particular combination of one setting and the terminal's default style might be unreadable.
+Colors (--co) can set the number of colors to something other than the default 8. The most common color settings are --co 16 and --co 256. (And these depend on available terminal types in terminfo, can't be arbitrary.)
 
-
-TODO:
-On themes
-On actions-- how the idea is to have them in menuaction, and themes free of code
+And one last note, please note that STFL uses the default terminal colors when no background or foreground are specified. Generally, you should avoid specifying only fg= or bg=, as the particular combination of one setting and the terminal's default style might be unreadable.
 ^+ "\n\n"+
 '6. COMMAND LINE OPTIONS'.center + "\n"+ $app.usage
 end

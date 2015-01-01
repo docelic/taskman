@@ -33,7 +33,7 @@ module TASKMAN
 			# has been made, like this:
 			# E.g. 0.12(21) === 2014/12/21
 			# E.g. 1.10(14) === 2015/10/14
-			'version'	           => '0.12(22)',
+			'version'	           => '1.01(01)',
 
 		#	'local'              => false,
 		#	'default-time'       => false,
