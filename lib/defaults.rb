@@ -10,9 +10,8 @@ module TASKMAN
 		@@opts= {
 			'data-dir'           => File.join( ENV['HOME'], '.taskman'),
 			'lib-dir'            => File.join( ENV['HOME'], '.taskman', 'lib'),
-			'data-file'          => 'tasks.yaml',
 
-			'folder'             => true, # Default folder, true == all
+			'folder'             => true, # Default tasks folder, true == ALL
 
 			'debug'              => false, # General debug
 			'debug-widget'       => nil,   # Debug all for particular widget
@@ -100,4 +99,3 @@ $description= {
 
 #  'default-time'         => 'Use 12:00 as default event time',
 }
-

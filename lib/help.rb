@@ -336,7 +336,7 @@ Colors (--co) can set the number of colors to something other than the default 8
 
 And one last note, please note that STFL uses the default terminal colors when no background or foreground are specified. Generally, you should avoid specifying only fg= or bg=, as the particular combination of one setting and the terminal's default style might be unreadable.
 ^+ "\n\n"+
-'6. COMMAND LINE OPTIONS'.center + "\n"+ $app.usage
+'6. COMMAND LINE OPTIONS'+ "\n"+ $app.usage
 end
 end
 

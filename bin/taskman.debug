@@ -1,0 +1,5 @@
+#!/bin/sh
+
+main=$PWD/taskman.rb
+
+ruby -I../stfl/ruby $main $* 2>>/tmp/debug.log

@@ -4,8 +4,9 @@
 # inherits from Window), and $app.ui is the corresponding
 # STFL form object.)
 #
-# The main difference between Window and just using StflBase
-# is that window implements main loop.
+# The main difference between this Window and just using
+# StflBase in classes is that Window contains implementation
+# of main loop.
 
 module TASKMAN
 

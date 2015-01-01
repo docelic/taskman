@@ -3,7 +3,7 @@ require 'theme/alpine/menuaction'
 
 module TASKMAN
 
-	class Theme::Init < Object
+	class Theme::Init
 
 		def initialize *arg
 			super()

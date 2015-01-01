@@ -27,12 +27,12 @@ module TASKMAN
 		end
 
 		def count
-			@@classes.values.inject( 0){ |c, s| c+= s.count}
+			@@classes.values.inject( 0){ |c, s| c+ s.count}
 		end
 
-		## This function exists for compatibility with old task access
-		## model, but is not intended to be called in real, production
-		## setups (i.e. retrieving all tasks at once may not be ideal)
+		# This function exists for compatibility with old task access
+		# model, but is not intended to be called in real, production
+		# setups (i.e. retrieving all tasks at once may not be ideal)
 		def load_all
 			ret= []
 			@@classes.each{ |k, c|
@@ -45,7 +45,7 @@ module TASKMAN
 			ret
 		end
 
-		## This is a much better function than the above. The only
+		## This is a much better function than the above. The only small
 		## drawback of this one is that when a person specifies limit/
 		## offset, it invokes each DB with those params instead of
 		## decreasing those values as previous databases return records.

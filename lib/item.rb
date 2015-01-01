@@ -156,21 +156,23 @@ module TASKMAN
 
 		# Limited 'remind' compatibility
 
-		def parse_remind_task str
-			e= Event.new
-			str.each_line do |l|
-				l= l.strip
-				case l
-				when /^DUE /i then parse_due e, l[4..-1].strip
-				when /^AT /i then parse_at e, l[3..-1].strip
-				when /^OMIT /i then parse_omit e, l[5..-1].strip
-				when /^REM /i then parse_remind e, l[4..-1].strip
-				#when /^ATT /i then parse_attachment e, l[4..-1].strip
-				else e.message<< l << "\n"
-				end 
-			end
-			e
-		end 
+		# Remind compatibility. Probably reactivate once we get full
+		# support that can directly read remind files.
+		#def parse_remind_task str
+		#	e= Event.new
+		#	str.each_line do |l|
+		#		l= l.strip
+		#		case l
+		#		when /^DUE /i then parse_due e, l[4..-1].strip
+		#		when /^AT /i then parse_at e, l[3..-1].strip
+		#		when /^OMIT /i then parse_omit e, l[5..-1].strip
+		#		when /^REM /i then parse_remind e, l[4..-1].strip
+		#		#when /^ATT /i then parse_attachment e, l[4..-1].strip
+		#		else e.message<< l << "\n"
+		#		end 
+		#	end
+		#	e
+		#end 
 
 		# Helper functions below
 
