@@ -1,6 +1,5 @@
 module TASKMAN
 	class Style
-		@@Def= {
-		}
+		@@Def= []
 	end
 end

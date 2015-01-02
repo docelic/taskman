@@ -401,18 +401,30 @@ module TASKMAN
 			( list.count+ 2).times do
 				variation.each do |v|
 					keys= [ list, v].flatten
-					key= keys.join( ' ').strip
+					key= keys.join( ' ').strip.to_sym
 					break if key.length== 0
 					if debug?( :style) then pfl _('Searching for style key %s')% [ key] end
-					if s= $app.style[key]
-						if debug then pfl _('Found style key %s')% [ key] end
-						s.each do |k, v|
-							if debug then pfl _('Applying style to %s: %s %s')% [ @name, k, v] end
-							k= "var_style_#{k}=".to_sym
-							self.send k, v
-						end
-						return
-					end # if s (if style found)
+
+					$app.style.specs.each{ |selector, spec|
+						if(
+							( selector.class== Symbol and selector== key) or
+							( selector.class== Regexp and key.match selector) or
+							( selector.class== Proc and selector.yield( key))
+					  )
+							if debug?( :style) then pfl _('Found style key %s')% [ key] end
+
+							# Allow for spec to be proc too!
+							if spec.class== Proc then spec= spec.yield( key) end
+
+							spec.each do |k, v|
+								if debug?( :style) then pfl _('Applying style to %s: %s %s')% [ @name, k, v] end
+								k= "var_style_#{k.to_s}=".to_sym
+								self.send k, v
+							end
+							return
+						end # if style matches
+          }
+
 				end # variation.each
 				list.shift
 				if first_pass and list.count== 0

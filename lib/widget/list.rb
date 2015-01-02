@@ -76,6 +76,7 @@ module TASKMAN
 					self.var_offset= o
 					self.var_pos= p
 					self.replace
+					self.widgets.each do |w| w.apply_style end
 				end
 			end
 			@prev_offset= o
@@ -88,5 +89,6 @@ module TASKMAN
 			super
 			@widget= 'listitem'
 		end
+
 	end
 end

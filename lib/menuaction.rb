@@ -215,6 +215,7 @@ module TASKMAN
 			w.var_pos= 0
 		end
 		def pos_end arg= {}
+			# TODO Ensure we retrieve the last records, and then move to end
 			w= arg[:base_widget]
 			w.var_pos= w.widgets.size- 1
 		end
