@@ -259,14 +259,19 @@ end
 
 class Symbol
 	def to_str() to_s end
+
+	# Used to convert database name (like :main) into database class
+	def to_item_class
+		"TASKMAN::Item::#{self.to_s.ucfirst}".to_class
+	end
 end
 
 module Enumerable 
 	def outer( other, op= :pass)
-		r= self.map{ |x| other.map{ |y| z=[x,y].send op }}
+		r= self.map{ |x| other.map{ |y| z=[x,y].send op}}
 		r.flatten1
-	end 
-end 
+	end
+end
 
 class Numeric
 	def period? period, from, to= nil
