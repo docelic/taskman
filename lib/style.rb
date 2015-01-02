@@ -11,7 +11,7 @@ module TASKMAN
 			super()
 			require File.join :style, arg[:style]
 
-			# Accessing styles via specific name (through a hash) is 
+			# Accessing styles via specific name (through a hash) is
 			# here mainly for compatibility with old access method.
 			# The new method iterates over styles being an array, and
 			# handles symbols, regexes and procs in order as specified,

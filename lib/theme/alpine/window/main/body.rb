@@ -18,12 +18,16 @@ module TASKMAN
 				MenuAction.new( name: :quit),
 			]
 			# Show items in the list
-			i= 1
-			menu.each do |a|
+			i= 0
+			#list<< ListItem.new( name: "#{@name}_listitem#{i}", :can_focus => 0) # Spacer
+			i+= 1
+			menu.each_with_index do |a, i|
 				li= ListItem.new( name: "#{@name}_list_#{a.name}", :text => a.menu_text, :can_focus => 1)
 				li<< a
 				list<< li
-				list<< ListItem.new( name: "#{@name}_listitem#{i}", :can_focus => 0) # Spacer
+				if i< menu.size- 1
+					list<< ListItem.new( name: "#{@name}_listitem#{i}", :can_focus => 0) # Spacer
+				end
 				i+= 1
 			end
 
