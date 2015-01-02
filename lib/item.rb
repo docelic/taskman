@@ -27,23 +27,24 @@ module TASKMAN
 		serialize :due, Array
 		serialize :omit, Array
 		serialize :remind, Array
-		
-		def initialize
-			super
 
-			self.subject||= ''
-			#self.start= nil # definitely not before this Date
-			#self.stop= nil # definitely not after this Date
-			self.due||= [] # list of VirtualDate this entry is due
-			self.omit||= [true] # list of VirtualDates to omit, 'true' for default list
-			self._omit||= '1'
-			self.omit_shift||= 0 # 0=> no shift, just drop, +X=> move X days after, -X=> move X days before
-			self._omit_shift||= '0'
-			#self.time_ssm||= nil # activation time, in seconds since midnight 
-			self.remind||= [] # list of Dates or Times to activate the reminder on, or seconds relative to the the due date/time
-			self.omit_remind||= false # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
-			self._omit_remind||= '0' # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
-			self.message||= '' # Body of the task
+		attr_accessor :flags
+
+		after_initialize do
+			@flags= {}
+			#self.subject||= ''
+			##self.start= nil # definitely not before this Date
+			##self.stop= nil # definitely not after this Date
+			#self.due||= [] # list of VirtualDate this entry is due
+			#self.omit||= [true] # list of VirtualDates to omit, 'true' for default list
+			#self._omit||= '1'
+			#self.omit_shift||= 0 # 0=> no shift, just drop, +X=> move X days after, -X=> move X days before
+			#self._omit_shift||= '0'
+			##self.time_ssm||= nil # activation time, in seconds since midnight 
+			#self.remind||= [] # list of Dates or Times to activate the reminder on, or seconds relative to the the due date/time
+			#self.omit_remind||= false # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
+			#self._omit_remind||= '0' # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
+			#self.message||= '' # Body of the task
 		end 
 
 		#def generate_id
