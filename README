@@ -1,7 +1,7 @@
 
               GENERAL INFORMATION ON THE TASKMAN TASK SCHEDULER
 
-                               Version 1.01(01)
+                               Version 1.01(03)
 
                       Copyright 2014 Spinlock Solutions
                 http://techpubs.spinlocksolutions.com/taskman/
@@ -425,24 +425,29 @@ than specifics), the more likely it is to apply correctly with another theme.
 particular widget, leaving it unstyled, or that multiple selectors match, of
 which the most specific one would win.)
 
-There is currently only one theme available -- Alpine, mimicking the layout of
-the infamous mail program Pine. At least one more theme needs to be written to
-actually test the supposedly theme-agnostic code in practice and to make sure
-different themes are realistically possible. For example, one could make a
-theme resembling the mail program 'mutt', or something different altogether.
-If you embark on that journey, get in touch to ensure prompt support from our
-side.
+There is currently only one theme (GUI layout) available -- Alpine, mimicking
+the layout of the infamous mail program Pine. At least one more theme needs to
+be written to actually test the supposedly theme-agnostic code in practice and
+to make sure different themes are realistically possible. For example, one
+could make a theme resembling the mail program 'mutt', or something different
+altogether. If you embark on that journey, get in touch to ensure prompt
+support from our side.
 
-There is currently only one style available, matching the default theme. Style
-files are very simple and it is expected that they will be tuned - or that new
-ones will be created - much more often than complete themes.
+There are currently a couple styles (color schemes) available. The default one
+is called 'alpine', matching the default theme. Others available are 'none'
+for no any special styling and 'random' for a completely random color scheme
+on each display of a window (and best results are had with --style random
+--colors 256, if your terminal supports 256 colors - which most Linux
+terminals do). Style files are very simple and it is expected that they will
+be customized - or that new ones will be created - much more often than
+complete themes.
 
 Locally, you can place your themes in ~/.taskman/lib/theme/THEME_NAME/ and
 design/structure them by using the default Alpine theme as a reference. To use
 your theme, simply invoke Taskman with -t THEME_NAME.
 
-You can place your styles in ~/.taskman/lib/style/. To use your style, simply
-invoke Taskman with -s STYLE_NAME.
+You can place your styles in ~/.taskman/lib/style/, using existing styles for
+reference. To use your style, simply invoke Taskman with -s STYLE_NAME.
 
 The most important thing in writing a style is knowing how the element you
 want to style is called, so that you can write a selector for it. The names
@@ -456,7 +461,7 @@ finding a matching style definition with less and less specificity.
 For example: when you start Taskman using the default Alpine theme, you will
 notice the program name and version displayed in the top-left of the window.
 This widget is called "header_program_name_version", it is of type 'label',
-and it serves an obvious purpose.
+and it displays the program name and version.
 
 Taskman is dynamically aware that this widget is a child of 'header', which in
 turn is a child of 'main' (the main program window), and it tries to apply
@@ -499,7 +504,20 @@ does not match its STFL element, Taskman also searches for the class name,
 allowing for very convenient styling that would otherwise be hard to apply to
 multiple widgets (of otherwise the same type) in a single rule.
 
-The first selector that is found "wins".
+The search for each style key is done in such a way that Taskman iterates over
+all defined style keys in your style file, testing them sequentially in the
+order as they were specified. The first selector that matches "wins".
+
+It is important to know that the selectors in your style definitions can be
+literal strings, regexes or code blocks. A selector will win (be chosen) if
+the literal string is equal, the regex matches, or the code block returns
+true.
+Similarly, the actual style definitions for the key can be hashes (specifying
+values for "normal", "focus" and/or "selected" styles - more on that is found
+in the next chapter just below) or they can be code blocks which are ran and
+expected to return such hashes. An example of using code blocks can be seen in
+the style "random", where it is used to randomly color each widget on the
+spot.
 
 It is also useful to know that style is not applied to widgets that are not to
 be rendered in STFL (those with @widget= nil). Also, if you change the STFL
@@ -591,29 +609,31 @@ on available terminal types in terminfo, can't be arbitrary.)
 And one last note, please note that STFL uses the default terminal colors when
 no background or foreground are specified. Generally, you should avoid
 specifying only fg= or bg=, as the particular combination of one setting and
-the terminal's default style might be unreadable.
+the terminal's default style for the other might be unreadable.
 
 
-                           6. COMMAND LINE OPTIONS
+6. COMMAND LINE OPTIONS
 
                                    Taskman
-                                Ver. 1.01(01)
+                                Ver. 1.01(03)
 
 OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 ------------------------------------------------------------------------------
 --help                -h           N             List program options
 --help-all            -H           N             Display full help text
---version             -v           N    1.01(01) Display program version
+--version             -v           N    1.01(03) Display program version
 --garbage-collector   --gc         N    true     Run garbage collector?
 --stress-collector    --stress     N    false    Stress garbage collector?
 --window              -w           Y    main     Program window to open
 --theme               -t           Y    alpine   GUI layout scheme to use
 --style               -s           Y    alpine   GUI color scheme to use
 --data-dir            --dd         Y    /home/docelic/.taskmanData directory
---data-file           --df         Y    tasks.yamlTasklist file
+--data-file           --df         Y             Tasklist file
 --exit-key            --ek         Y    F10      One-key exit from program
 --main-db             --db         Y    main     Name of main/own database
 --echo-time           --ec         Y    1        Duration of msg visibility
+--focus-on-edit       --foe        Y    message  Field to focus on Edit Task
+--focus-on-create     --foc        Y    subject  Field to focus on Create -
 --term                --te         Y             Value for TERM= emulator
 --term-width          --tw         Y             Term width to use
 --colors              --co         Y    8        Nr. of colors (8, 16, 256)
