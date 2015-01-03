@@ -241,19 +241,19 @@ Taskman supports both themes (different GUI layouts) and styles (different color
 
 There is no direct relation between a theme and style. The more general a style is (that is, the more it targets broad widget names and classes rather than specifics), the more likely it is to apply correctly with another theme. (No harm in trying; worst case would be that no selector applies to a particular widget, leaving it unstyled, or that multiple selectors match, of which the most specific one would win.)
 
-There is currently only one theme available -- Alpine, mimicking the layout of the infamous mail program Pine. At least one more theme needs to be written to actually test the supposedly theme-agnostic code in practice and to make sure different themes are realistically possible. For example, one could make a theme resembling the mail program 'mutt', or something different altogether. If you embark on that journey, get in touch to ensure prompt support from our side.
+There is currently only one theme (GUI layout) available -- Alpine, mimicking the layout of the infamous mail program Pine. At least one more theme needs to be written to actually test the supposedly theme-agnostic code in practice and to make sure different themes are realistically possible. For example, one could make a theme resembling the mail program 'mutt', or something different altogether. If you embark on that journey, get in touch to ensure prompt support from our side.
 
-There is currently only one style available, matching the default theme. Style files are very simple and it is expected that they will be tuned - or that new ones will be created - much more often than complete themes.
+There are currently a couple styles (color schemes) available. The default one is called 'alpine', matching the default theme. Others available are 'none' for no any special styling and 'random' for a completely random color scheme on each display of a window (and best results are had with --style random --colors 256, if your terminal supports 256 colors - which most Linux terminals do). Style files are very simple and it is expected that they will be customized - or that new ones will be created - much more often than complete themes.
 
 Locally, you can place your themes in ~/.taskman/lib/theme/THEME_NAME/ and design/structure them by using the default Alpine theme as a reference. To use your theme, simply invoke Taskman with -t THEME_NAME.
 
-You can place your styles in ~/.taskman/lib/style/. To use your style, simply invoke Taskman with -s STYLE_NAME.
+You can place your styles in ~/.taskman/lib/style/, using existing styles for reference. To use your style, simply invoke Taskman with -s STYLE_NAME.
 
 The most important thing in writing a style is knowing how the element you want to style is called, so that you can write a selector for it. The names will inevitably vary from theme to theme, but it is advised that theme authors follow the names used in the Alpine theme where ever applicable.
 
 Another thing to understand is how styles are applied. For each widget, Taskman determines its hierarchical position in the form and then tries finding a matching style definition with less and less specificity.
 
-For example: when you start Taskman using the default Alpine theme, you will notice the program name and version displayed in the top-left of the window. This widget is called "header_program_name_version", it is of type 'label', and it serves an obvious purpose.
+For example: when you start Taskman using the default Alpine theme, you will notice the program name and version displayed in the top-left of the window. This widget is called "header_program_name_version", it is of type 'label', and it displays the program name and version.
 
 Taskman is dynamically aware that this widget is a child of 'header', which in turn is a child of 'main' (the main program window), and it tries to apply style to it by searching for the following style keys:
 
@@ -289,7 +289,10 @@ Similarly, here's a lookup that takes place when one part (the hotkey label) of 
 
 Here, we notice that Taskman searched not only for widget name and its type (@label), but also for its class name (@hotkey). When the widget's class name does not match its STFL element, Taskman also searches for the class name, allowing for very convenient styling that would otherwise be hard to apply to multiple widgets (of otherwise the same type) in a single rule.
 
-The first selector that is found "wins".
+The search for each style key is done in such a way that Taskman iterates over all defined style keys in your style file, testing them sequentially in the order as they were specified. The first selector that matches "wins".
+
+It is important to know that the selectors in your style definitions can be literal strings, regexes or code blocks. A selector will win (be chosen) if the literal string is equal, the regex matches, or the code block returns true.
+Similarly, the actual style definitions for the key can be hashes (specifying values for "normal", "focus" and/or "selected" styles - more on that is found in the next chapter just below) or they can be code blocks which are ran and expected to return such hashes. An example of using code blocks can be seen in the style "random", where it is used to randomly color each widget on the spot.
 
 It is also useful to know that style is not applied to widgets that are not to be rendered in STFL (those with @widget= nil). Also, if you change the STFL widget type of an object (for example, if you create a Label but set its @widget to be e.g. 'input'), then after all the "@label" lookups as shown above, Taskman would also search for "@input" before shifting the leftmost element from the path and trying another round.
 
@@ -334,7 +337,7 @@ On terminals that support 256 colors it is also possible to use extended colors,
 
 Colors (--co) can set the number of colors to something other than the default 8. The most common color settings are --co 16 and --co 256. (And these depend on available terminal types in terminfo, can't be arbitrary.)
 
-And one last note, please note that STFL uses the default terminal colors when no background or foreground are specified. Generally, you should avoid specifying only fg= or bg=, as the particular combination of one setting and the terminal's default style might be unreadable.
+And one last note, please note that STFL uses the default terminal colors when no background or foreground are specified. Generally, you should avoid specifying only fg= or bg=, as the particular combination of one setting and the terminal's default style for the other might be unreadable.
 ^+ "\n\n"+
 '6. COMMAND LINE OPTIONS'+ "\n"+ $app.usage
 end

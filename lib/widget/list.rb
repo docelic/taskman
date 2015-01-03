@@ -23,11 +23,11 @@ module TASKMAN
 
 	class MVCList < List
 
-		def mvc
+		def mvc arg= {}
 			o= self.var_offset_now
 			h= self._h_now
 
-			if @prev_offset!= o # @prev_offset== -1
+			if @prev_offset!= o or arg[:force]# @prev_offset== -1
 				p= self.var_pos_now
 
 				# Let's do the logic this way -- we want 5 screens of data available:

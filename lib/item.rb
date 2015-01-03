@@ -28,10 +28,7 @@ module TASKMAN
 		serialize :omit, Array
 		serialize :remind, Array
 
-		attr_accessor :flags
-
 		after_initialize do
-			@flags= {}
 			#self.subject||= ''
 			##self.start= nil # definitely not before this Date
 			##self.stop= nil # definitely not after this Date

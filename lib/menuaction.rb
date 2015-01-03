@@ -36,6 +36,7 @@ module TASKMAN
 			'create_task'=>{ hotkey: '^X',  shortname: 'Create',     menuname: 'Create a Task',description: '', function: :create_task},
 			'clone_task' =>{ hotkey: '^D',  shortname: 'Clone',      menuname: 'Clone current Task',description: '', function: :clone_task},
 			'select_task'=>{ hotkey: 'ENTER', hotkey_label: 'RET', shortname: 'Select',    menuname: 'Select Task', description: '', function: :select_task},
+			'delete_task'=>{ hotkey: 'D',   shortname: 'Delete',    menuname: 'Delete Task', description: '', function: :delete_task},
 			'save_task' => { hotkey: '^X',  shortname: 'Save',        menuname: 'Save Changes',description: '', function: :create_task},
 
 			'quit'      => { hotkey: 'Q',   shortname: 'Quit',        menuname: 'Quit',        description: 'Leave the Taskman program', function: :quit },
@@ -352,12 +353,12 @@ module TASKMAN
 			w= arg[:window]
 
 			id= w['id'].var_text_now.to_i
-			db= w['db'].var_text_now
+			db= w['db'].var_text_now.to_sym
 
 			i= begin
-				arg[:item]|| "TASKMAN::Item::#{db.ucfirst}".to_class.find( id)
+				arg[:item]|| db.to_item_class.find( id)
 			rescue
-				"TASKMAN::Item::#{db.ucfirst}".to_class.new
+				db.to_item_class.new
 			end
 
 			if id> 0 then i.id= id end
@@ -409,7 +410,7 @@ module TASKMAN
 					pfl e
 				end
 
-				index arg.merge( nid: [ db.to_sym, i.id])
+				index arg.merge( nid: [ db, i.id])
 
 			# XXX We replace/complement this with StandardError?
 			rescue Exception => e
@@ -432,6 +433,26 @@ module TASKMAN
 				id: id
 			}
 			create arg2
+		end
+		def delete_task arg= {}
+			w= arg[:widget]
+			nid= w.name.to_id
+			db= nid[0].to_item_class
+			id= nid[1]
+			t= db.find( id)
+			$app.screen.ask( _('Really delete task %s/%s?')% [ nid[0], id], Proc.new { |parg|
+				# window, widget, action, function, event-- WWAFE
+				w= parg[:window]
+				wi= parg[:widget]
+				a= wi.var_text_now.to_bool
+				if a
+					t.destroy
+				end
+				#w['status_display'].var__display= 1
+				#w['status_prompt'].var__display= 0
+				#w.focus_default
+				index
+			})
 		end
 
 		def toggle_timing_options arg= {}

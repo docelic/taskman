@@ -20,7 +20,7 @@ module TASKMAN
 				:'',
 				:'', #prevmsg
 				:'', #prevpage
-				:'', #delete (mark as done?)
+				:delete_task,
 				:'', #edit
 				:tablebr,
 				:other, # O boy, there are some!
