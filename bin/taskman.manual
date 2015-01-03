@@ -1,5 +1,5 @@
 #!/bin/sh
 
-main=$PWD/taskman.rb
+main=$PWD/bin/taskman
 
 ruby -I../stfl/ruby $main $*

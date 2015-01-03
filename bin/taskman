@@ -246,6 +246,14 @@ module TASKMAN
 		end
 
 		def start
+			ActiveRecord::Base.establish_connection(
+				adapter:  'mysql2',
+				host:     'localhost',
+				username: 'taskman',
+				password: 'taskman',
+				database: 'taskman'
+			)
+
 			$tasklist= Tasklist.new
 
 			# Two quick variables for controlling main loop. $main_loop
