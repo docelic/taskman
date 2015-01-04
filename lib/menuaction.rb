@@ -162,11 +162,17 @@ module TASKMAN
 				args.push nr
 			end
 			fmt+= '?'
-			$app.screen.ask( ( _( fmt)% args).truncate2, Proc.new { |arg|
+			$app.screen.ask( ( _( fmt)% args).truncate2, {
+				instant: true,
+				# No need to specify ENTER among hotkeys because ENTER always
+				# runs first action associated with widget.
+				hotkey: [ _('Y'), _('N')],
+	      function: Proc.new { |arg|
 				# window, widget, action, function, event-- WWAFE
 				w= arg[:window]
 				wi= arg[:widget]
-				a= wi.var_text_now.to_bool
+	      e= arg[:event]
+				a= wi.var_text_now.to_bool|| e.to_bool
 				if a
 					$state.each{ |k, v|
 					  if v[:flag]== 'D'
@@ -181,21 +187,25 @@ module TASKMAN
 				w['status_display'].var__display= 1
 				w['status_prompt'].var__display= 0
 				w.focus_default
-			})
+			}})
 		end
 		def cancel arg= {}
-			$app.screen.ask( _('Cancel task?'), Proc.new { |arg|
+			$app.screen.ask( _('Cancel task?'), {
+				instant: true,
+				hotkey: [ _('y'), _('n')],
+	      function: Proc.new { |arg|
 				# window, widget, action, function, event-- WWAFE
 				w= arg[:window]
 				wi= arg[:widget]
-				a= wi.var_text_now.to_bool
+	      e= arg[:event]
+				a= wi.var_text_now.to_bool|| e.to_bool
 				if a
 					main arg
 				end
 				w['status_display'].var__display= 1
 				w['status_prompt'].var__display= 0
 				w.focus_default
-			})
+			}})
 		end
 		def cancel_question arg= {}
 			w= arg[:window]

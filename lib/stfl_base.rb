@@ -91,6 +91,7 @@ module TASKMAN
 			@variables['function']||= nil
 			@variables['focus']||= 0
 			@variables['can_focus']||= 1
+			@variables['process']||= 1
 
 		end
 
@@ -117,6 +118,7 @@ module TASKMAN
 		def var_focus()          @variables['focus']          end
 		def var_can_focus()      @variables['can_focus']      end
 		def var_value()          @variables['value']          end
+		def var_process()        @variables['process']        end
 
 		def var__display_now()       @variables['.display']=       ( $app.ui.get "#{@name}_.display"      ).to_i end
 		def var_style_normal_now()   @variables['style_normal']=   ( $app.ui.get "#{@name}_style_normal"  )      end
@@ -132,6 +134,7 @@ module TASKMAN
 		def var_focus_now()          @variables['focus']=          ( $app.ui.get "#{@name}_focus"         ).to_i end
 		def var_can_focus_now()      @variables['can_focus']=      ( $app.ui.get "#{@name}_can_focus"     ).to_i end
 		def var_value_now()          @variables['value']=          ( $app.ui.get "#{@name}_value"         ).to_i end
+		def var_process_now()        @variables['process']=        ( $app.ui.get "#{@name}_process"       ).to_i end
 
 		def var__display=( arg)        $app.ui.set "#{@name}_.display"      , ( @variables['.display']= arg       ).to_s end
 		def var_style_normal=( arg)    $app.ui.set "#{@name}_style_normal"  , ( @variables['style_normal']= arg   ).to_s end
@@ -147,6 +150,7 @@ module TASKMAN
 		def var_focus=( arg)           $app.ui.set "#{@name}_focus"         , ( @variables['focus']= arg          ).to_s end
 		def var_can_focus=( arg)       $app.ui.set "#{@name}_can_focus"     , ( @variables['can_focus']= arg      ).to_s end
 		def var_value=( arg)           $app.ui.set "#{@name}_value"         , ( @variables['value']= arg          ).to_s end
+		def var_process=( arg)         $app.ui.set "#{@name}_process"       , ( @variables['process']= arg        ).to_s end
 
 		# te/tv is in /tmp/TVIEW!!!
 
@@ -207,7 +211,9 @@ module TASKMAN
 				@avhc= nil
 			end
 			if MenuAction=== arg
-				@hotkeys_hash[arg.hotkey]= arg
+				arg.hotkey.force_array.each do |h|
+					@hotkeys_hash[h]= arg
+				end
 			end
 			@widgets_hash[arg.name]= arg
 			arg
@@ -241,7 +247,9 @@ module TASKMAN
 					@widgets>> r
 				end
 				if MenuAction=== r
-					@hotkeys_hash.delete r.name
+					r.hotkey.force_array.each do |h|
+						@hotkeys_hash.delete h
+					end
 				end
 				@widgets_hash.delete r.name
 			end

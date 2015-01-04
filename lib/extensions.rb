@@ -144,8 +144,8 @@ class Object
 		raise TypeError, _("Argument %s not a kind of: %s")% [ c, classlist]
 	end 
 	
-	def force_array x 
-		x.kind_of?( Array) ? x : [x]
+	def force_array
+		self.kind_of?( Array) ? self : [self]
 	end 
 	
 	def pass() self end 

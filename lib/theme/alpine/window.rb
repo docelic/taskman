@@ -21,12 +21,22 @@ module TASKMAN
 				s['status_display'].var__display= 0
 				s['status_prompt'].var__display= 1
 				s['status_question'].var_text= q
-				s['status_answer'].var_text= ''
-				s['status_answer'].focus
-				s['status_answer'].action.function= p
+
+				sa= s['status_answer']
+				sa.var_text= ''
+				sa.focus
+				#sa.action.function= p
+
+				# Remove all actions (if any) and set up for new prompt
+				sa>> MenuAction
+				sa<< MenuAction.new( p.merge( name: "#{@name}_handle_answer"))
+				sa<< MenuAction.new( name: 'cancel_question')
+
+				# If instant action requested, remove autobind
+				sa.var_process= if p[:instant] then 0 else 1 end
 			end
 		end
-		
+
 	end
 
 end
