@@ -158,8 +158,8 @@ module TASKMAN
 			fmt= 'Really quit Taskman'
 			args= []
 			if nr> 0
-				fmt+= ' and delete %d tasks'
-				args.push nr
+				fmt+= ' and delete %d %s'
+				args.push nr, nr.unit( _('task'))
 			end
 			fmt+= '?'
 			$app.screen.ask( ( _( fmt)% args).truncate2, {
@@ -487,7 +487,7 @@ module TASKMAN
 			t.flag= nil
 			index( {
 				pos: arg[:base_widget].var_pos_now,
-				status_label_text: _(%q^Deletion mark removed, message won't be deleted^)
+				status_label_text: _(%q^Deletion mark removed, task won't be deleted^)
 			})
 		end
 

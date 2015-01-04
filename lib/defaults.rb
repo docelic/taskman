@@ -50,7 +50,7 @@ module TASKMAN
 
 			'exit-key'           => 'F10',
 			'main-db'            => 'main',
-			'echo-time'          => 1,
+			'echo-time'          => 0.5,
 
 			'focus-on-edit'      => 'message',
 			'focus-on-create'    => 'subject',

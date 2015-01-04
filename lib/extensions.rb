@@ -111,7 +111,7 @@ end
 class Fixnum
 
 	def unit u= _('Task'), p= _('s')
-		if self and self.to_s=~ /[^1]1$/
+		if self and self.to_s=~ /(^|[^1])1$/
 			return u
 		else
 			return u+ p
