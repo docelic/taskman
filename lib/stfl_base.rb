@@ -430,7 +430,7 @@ module TASKMAN
 						if(
 							( (selector.class== Symbol) and selector== key) or
 							( selector.class== Regexp and key.match selector) or
-							( selector.class== Proc and selector.yield( key))
+							( selector.class== Proc and selector.yield( selector: key, widget: self))
 							# or ( (selector.class== String) and selector.to_sym== key)
 					  )
 							if debug?( :style) then pfl _('Found style key %s')% [ selector] end

@@ -24,6 +24,12 @@ module TASKMAN
 	# a table. It allows us to insert different widgets into a row, which
 	# is not possible with List's fixed ListItems.
 	class TableList < Table
+		attr_accessor :prev_row
+
+		def initialize arg= {}
+			super
+			@prev_row= nil
+		end
 	end
 
 	class RowSelect < Input

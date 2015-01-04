@@ -123,12 +123,12 @@ module TASKMAN
 
 				event.upcase!
 
-				# Unhandled ENTER on a widget will call its first action, if one is defined.
-				# Otherwise we go into our usual keypress resolution.
-				if widget and ( event== 'ENTER' or widget.instant)
-					if a= widget.action
-						event= a.run( window: self, widget: widget, base_widget: base_widget, event: event)
-					end
+				# This if works at follows:
+				# It evaluates to true if widget is known, and thw widget's action is
+				# of instant type (triggers as soon as its widget is focused), or it
+				# is not of 'instant' type but the user pressed ENTER on it.
+				if widget and a= widget.action and( event== 'ENTER' or a.instant)
+					event= a.run( window: self, widget: widget, base_widget: base_widget, event: event)
 				end
 
 				# Note that this if() will be true even if the STFL widget handles the

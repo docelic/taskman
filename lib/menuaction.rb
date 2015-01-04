@@ -619,11 +619,17 @@ module TASKMAN
 			e= arg[:event]
 
 			# Mark this row as selected
+			row= bw.prev_row
+			if row
+				row.widgets.each do |rw|
+					rw.apply_style # Will apply normal style
+				end
+			end
 			row= w.parent
 			row.widgets.each do |rw|
 				rw.apply_style( normal: :focus)
 			end
-			$app.screen.main_loop -1
+			bw.prev_row= row
 
 			nil
 		end
