@@ -123,11 +123,11 @@ module TASKMAN
 
 				event.upcase!
 
-				# This if works at follows:
-				# It evaluates to true if widget is known, and thw widget's action is
+				# This if() works as follows:
+				# It evaluates to true if widget is known, and the widget's action is
 				# of instant type (triggers as soon as its widget is focused), or it
 				# is not of 'instant' type but the user pressed ENTER on it.
-				if widget and a= widget.action and( event== 'ENTER' or a.instant)
+				if widget and a= widget.action and( a.instant or event== 'ENTER')
 					event= a.run( window: self, widget: widget, base_widget: base_widget, event: event)
 				end
 
