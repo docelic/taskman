@@ -4,5 +4,5 @@ README_B:
 	make -B README
 
 README:
-	./bin/taskman --tw 78 -H  > README
+	./bin/taskman.manual --tw 78 -H  > README
 
