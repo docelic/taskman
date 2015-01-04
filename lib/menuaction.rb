@@ -129,26 +129,32 @@ module TASKMAN
 		def top_list arg= {}
 			w= arg[:window]
 			w.status_label_text= _('Already at top of list')
+			nil
 		end
 		def bottom_list arg= {}
 			w= arg[:window]
 			w.status_label_text= _('Already at bottom of list')
+			nil
 		end
 		def top_help arg= {}
 			w= arg[:window]
 			w.status_label_text= _('Already at start of help text')
+			nil
 		end
 		def bottom_help arg= {}
 			w= arg[:window]
 			w.status_label_text= _('Already at end of help text')
+			nil
 		end
 		def top_header arg= {}
 			w= arg[:window]
 			w.status_label_text= _(%q^Can't move beyond top of header^)
+			nil
 		end
 		def bottom_page arg= {}
 			w= arg[:window]
 			w.status_label_text= _(%q^Can't move beyond bottom of page^)
+			nil
 		end
 
 		# XXX See how these pre/post actions can be done automatically
@@ -188,6 +194,7 @@ module TASKMAN
 				w['status_prompt'].var__display= 0
 				w.focus_default
 			}})
+			nil
 		end
 		def cancel arg= {}
 			$app.screen.ask( _('Cancel task?'), {
@@ -206,12 +213,14 @@ module TASKMAN
 				w['status_prompt'].var__display= 0
 				w.focus_default
 			}})
+			nil
 		end
 		def cancel_question arg= {}
 			w= arg[:window]
 			w['status_display'].var__display= 1
 			w['status_prompt'].var__display= 0
 			w.focus_default
+			nil
 		end
 
 		# Hide the current menu and show the menu after it
@@ -241,16 +250,19 @@ module TASKMAN
 			# (e.g. menu2 was shown, we hid it, and now we need to show menu1),
 			# So we unconditionally shown the first menu in the array.
 			menus[0].var__display= 1
+			nil
 		end
 
 		def pos_home arg= {}
 			w= arg[:base_widget]
 			w.var_pos= 0
+			nil
 		end
 		def pos_end arg= {}
 			# TODO Ensure we retrieve the last records, and then move to end
 			w= arg[:base_widget]
 			w.var_pos= w.widgets.size- 1
+			nil
 		end
 
 		def pos_up arg= {}
@@ -288,12 +300,14 @@ module TASKMAN
 				end
 				p+= step1
 			end
+			nil
 		end
 		def pos_pgup arg= {}
 			w= arg[:base_widget]
 			h= w._h_now # Height of widget
 			a= arg.merge( step: h)
 			pos_up a
+			nil
 		end
 
 		def pos_down arg= {}
@@ -321,12 +335,14 @@ module TASKMAN
 				end
 				p+= step1
 			end
+			nil
 		end
 		def pos_pgdown arg= {}
 			w= arg[:base_widget]
 			h= w._h_now # Height of widget
 			a= arg.merge( step: h)
 			pos_down a
+			nil
 		end
 
 		############################### Testing Functions ################################
@@ -346,18 +362,23 @@ module TASKMAN
 #
 		def main arg= {}
 			$app.exec( arg.merge( window: 'main'))
+			nil
 		end
 		def create arg= {}
 			$app.exec( arg.merge( window: 'create'))
+			nil
 		end
 		def index arg= {}
 			$app.exec( arg.merge( window: 'index'))
+			nil
 		end
 		def list arg= {}
 			$app.exec( arg.merge( window: 'list'))
+			nil
 		end
 		def help arg= {}
 			$app.exec( arg.merge( window: 'help'))
+			nil
 		end
 
 		def clone_task arg= {}
@@ -379,6 +400,7 @@ module TASKMAN
 			end
 
 			index arg.merge( nid: [ db, t2.id])
+			nil
 		end
 
 		def create_task arg= {}
@@ -387,10 +409,18 @@ module TASKMAN
 			id= w['id'].var_text_now.to_i
 			db= w['db'].var_text_now.to_sym
 
-			i= begin
-				arg[:item]|| db.to_item_class.find( id)
-			rescue
-				db.to_item_class.new
+			created= false
+
+			#i= begin
+			#	arg[:item]|| db.to_item_class.find( id)
+			#rescue
+			#	db.to_item_class.new
+			#	created= true
+			#end
+			i= arg[:item]|| $tasklist.by_aid( [ db, id])
+			unless i
+				i= db.to_item_class.new
+				created= true
 			end
 
 			if id> 0 then i.id= id end
@@ -435,7 +465,7 @@ module TASKMAN
 				$app.screen['id'].var_text= i.id
 
 				if w.respond_to? :status_label_text=
-					w.status_label_text= _('Task created')
+					w.status_label_text= if created then _('Task created') else _('Task saved') end
 					$app.ui.run -1
 					sleep $opts['echo-time']
 				else
@@ -453,6 +483,7 @@ module TASKMAN
 					pfl e
 				end
 			end
+			nil
 		end
 
 		def select_task arg= {}
@@ -465,6 +496,7 @@ module TASKMAN
 				id: id
 			}
 			create arg2
+			nil
 		end
 		def delete_task arg= {}
 			w= arg[:widget]
@@ -477,6 +509,7 @@ module TASKMAN
 				pos: arg[:base_widget].var_pos_now+ 1,
 				status_label_text: _("Task %s marked for deletion")% w.name
 			})
+			nil
 		end
 		def undelete_task arg= {}
 			w= arg[:widget]
@@ -489,6 +522,7 @@ module TASKMAN
 				pos: arg[:base_widget].var_pos_now,
 				status_label_text: _(%q^Deletion mark removed, task won't be deleted^)
 			})
+			nil
 		end
 
 		def toggle_timing_options arg= {}
@@ -497,6 +531,7 @@ module TASKMAN
 			wh.toggle
 			v= wh.var_value
 			w['timing_options'].var__display= v
+			nil
 		end
 
 		def toggle_reminding_options arg= {}
@@ -505,6 +540,7 @@ module TASKMAN
 			wh.toggle
 			v= wh.var_value
 			w['reminding_options'].var__display= v
+			nil
 		end
 
 		def nextcmd2 arg= {}
@@ -516,6 +552,7 @@ module TASKMAN
 			else
 				$app.screen.status_label_text= _('Already at bottom of list')
 			end
+			nil
 		end
 		def prevcmd2 arg= {}
 			w= arg[:widget]
@@ -526,6 +563,7 @@ module TASKMAN
 			else
 				$app.screen.status_label_text= _('Already at top of list')
 			end
+			nil
 		end
 
 		# These two need no implementation because they are currently used in
@@ -535,8 +573,10 @@ module TASKMAN
 		# widgets, or for textviews with auto key bindings disabled), then
 		# implement here something similar to nextpage/prevpage below.
 		def firstpage arg= {}
+			nil
 		end
 		def lastpage arg= {}
+			nil
 		end
 
 		# XXX move those into separate functions
@@ -549,6 +589,7 @@ module TASKMAN
 			no= o+ h # Would-be new offset
 			no2= if no> mo then mo else no end # Valid new offset
 			w.var_offset= no2
+			nil
 		end
 		def prevpage arg= {}
 			w= arg[:widget]
@@ -558,16 +599,13 @@ module TASKMAN
 			no= o- h # Would-be new offset
 			no2= if no< mo then mo else no end # Valid new offset
 			w.var_offset= no2
+			nil
 		end
 
 		def redraw arg= {}
 			Stfl.redraw
+			nil
 		end
 
 	end
-
-	def save_tasklist
-		$tasklist.save
-	end
-
 end

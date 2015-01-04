@@ -137,8 +137,18 @@ module TASKMAN
 					ary.each do |w|
 						next if w.nil?
 						if a= w.hotkeys_hash[event]
-							a.run( window: self, widget: widget, base_widget: base_widget, event: event)
-							break
+
+							# Here we allow multiple actions to execute. Action which believes it has serviced
+							# the event adequately should return "" to clear the event but allow other actions
+							# to be tested, or nil to stop keypress handling.
+							# Using this mechanism, since actions are tested in order of definition, it is
+							# possible for one action to replace "event", thus triggering another action
+							# after it. (E.g. a handler for "DOWN" could return "UP" to trigger some other
+							# action (defined after it) that was bound to UP)
+							event= a.run( window: self, widget: widget, base_widget: base_widget, event: event)
+							if event== nil
+								break
+							end
 						end
 					end
 				end
