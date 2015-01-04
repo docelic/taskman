@@ -82,6 +82,13 @@ module TASKMAN
 			end
 			@prev_offset= o
 		end
+
+		def init arg= {}
+			if arg[:pos]
+				self.mvc
+				self.var_pos= arg[:pos]
+			end
+		end
 	end
 
 	class ListItem < Widget

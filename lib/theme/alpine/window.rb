@@ -4,6 +4,12 @@ module TASKMAN
 
 	class Theme::Window < Window
 
+		def initialize arg= {}
+			super
+
+			@slt= arg.delete :status_label_text
+		end
+
 		def status_label_text= arg
 			w= self['status_label']
 			if w
@@ -34,6 +40,12 @@ module TASKMAN
 
 				# If instant action requested, remove autobind
 				sa.var_process= if p[:instant] then 0 else 1 end
+			end
+		end
+
+		def init arg= {}
+			if @slt
+				self.status_label_text= @slt
 			end
 		end
 

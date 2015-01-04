@@ -143,7 +143,12 @@ module TASKMAN
 		def var_autobind=( arg)        $app.ui.set "#{@name}_autobind"      , ( @variables['autobind']= arg       ).to_s end
 		def var_modal=( arg)           $app.ui.set "#{@name}_modal"         , ( @variables['modal']= arg          ).to_s end
 		def var_pos_name=( arg)        $app.ui.set "#{@name}_pos_name"      , ( @variables['pos_name']= arg       ).to_s end
-		def var_pos=( arg)             $app.ui.set "#{@name}_pos"           , ( @variables['pos']= arg            ).to_s end
+		def var_pos=( arg)
+			if arg< 0 then arg= 0 end
+			max= @widgets.size- 1
+			p= [ arg, max].min
+			$app.ui.set "#{@name}_pos", ( @variables['pos']= p).to_s
+		end
 		def var_offset=( arg)          $app.ui.set "#{@name}_offset"        , ( @variables['offset']= arg         ).to_s end
 		def var_text=( arg)            $app.ui.set "#{@name}_text"          , ( @variables['text']= arg           ).to_s end
 		def var_function=( arg)        $app.ui.set "#{@name}_function"      , ( @variables['function']= arg       ).to_s end

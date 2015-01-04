@@ -473,7 +473,10 @@ module TASKMAN
 			id= nid[1]
 			t= db.find( id)
 			t.flag= 'D'
-			index
+			index( {
+				pos: arg[:base_widget].var_pos_now+ 1,
+				status_label_text: _("Task %s marked for deletion")% w.name
+			})
 		end
 		def undelete_task arg= {}
 			w= arg[:widget]
@@ -482,7 +485,10 @@ module TASKMAN
 			id= nid[1]
 			t= db.find( id)
 			t.flag= nil
-			index
+			index( {
+				pos: arg[:base_widget].var_pos_now,
+				status_label_text: _(%q^Deletion mark removed, message won't be deleted^)
+			})
 		end
 
 		def toggle_timing_options arg= {}

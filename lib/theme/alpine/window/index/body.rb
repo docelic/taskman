@@ -21,6 +21,15 @@ module TASKMAN
 
 			@l<< ListItem.new
 			self<< @l
+
+			# If focusing list to specific position was requested,
+			# save that so we can set this position during init()
+			# later.
+			if arg[:pos] then @pos= arg[:pos] end
+		end
+
+		def init arg= {}
+			@l.init arg.merge( pos: @pos)
 		end
 	end
 end

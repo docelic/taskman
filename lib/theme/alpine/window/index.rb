@@ -51,5 +51,10 @@ module TASKMAN
 			self<< m1
 			self<< m2
 		end
+
+		def init arg= {}
+			super
+			@b.init arg
+		end
 	end
 end
