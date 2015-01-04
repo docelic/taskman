@@ -28,7 +28,11 @@ module TASKMAN
 		serialize :omit, Array
 		serialize :remind, Array
 
+		attr_accessor :flag
+
 		after_initialize do
+			@flag= if s= $state[self.nid] then s[:flag] else nil end
+
 			#self.subject||= ''
 			##self.start= nil # definitely not before this Date
 			##self.stop= nil # definitely not after this Date
@@ -43,6 +47,23 @@ module TASKMAN
 			#self._omit_remind||= '0' # true=> also skip reminders on omitted days, false=> do not honor omits for reminders
 			#self.message||= '' # Body of the task
 		end 
+
+		def nid
+			# If e.g. we have TASKMAN::Item::Main with ID 4, this
+			# function will return [ :main, 4]
+			[ self.class.to_s.split( '::')[-1].downcase.to_sym, self.id]
+		end
+
+		def flag
+			if s= $state[self.nid]
+				s[:flag]
+			end
+			@flag
+		end
+		def flag= fl
+			$state[self.nid]||= {}
+			$state[self.nid][:flag]= @flag= fl
+		end
 
 		#def generate_id
 		#	@id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i

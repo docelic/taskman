@@ -7,8 +7,8 @@ module TASKMAN
 		def initialize arg= {}
 			super
 
-			@fmt= " %-4s %-6s %s"
-			h= @fmt % [ 'ID', ' DB ', 'SUBJECT']
+			@fmt= " %1s %-4s %-6s %s"
+			h= @fmt % [ ' ', 'ID', ' DB ', 'SUBJECT']
 			self<< Label.new( name: 'TH', text: h, :'.expand'=> 'h')
 
 			@l= MVCList.new( name: 'list', autobind: 0, focus: 1)

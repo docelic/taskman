@@ -37,6 +37,7 @@ module TASKMAN
 			'clone_task' =>{ hotkey: '^D',  shortname: 'Clone',      menuname: 'Clone current Task',description: '', function: :clone_task},
 			'select_task'=>{ hotkey: 'ENTER', hotkey_label: 'RET', shortname: 'Select',    menuname: 'Select Task', description: '', function: :select_task},
 			'delete_task'=>{ hotkey: 'D',   shortname: 'Delete',    menuname: 'Delete Task', description: '', function: :delete_task},
+			'undelete_task'=>{ hotkey: 'U',   shortname: 'Undelete',  menuname: 'Undelete Task', description: '', function: :undelete_task},
 			'save_task' => { hotkey: '^X',  shortname: 'Save',        menuname: 'Save Changes',description: '', function: :create_task},
 
 			'quit'      => { hotkey: 'Q',   shortname: 'Quit',        menuname: 'Quit',        description: 'Leave the Taskman program', function: :quit },
@@ -152,12 +153,26 @@ module TASKMAN
 		# XXX See how these pre/post actions can be done automatically
 		# somehow
 		def quit arg= {}
-			$app.screen.ask( _('Really quit Taskman?'), Proc.new { |arg|
+			nr= $state.values.select{ |v| v[:flag]== 'D'}.count
+			fmt= 'Really quit Taskman'
+			args= []
+			if nr> 0
+				fmt+= ' and delete %d tasks'
+				args.push nr
+			end
+			fmt+= '?'
+			$app.screen.ask( ( _( fmt)% args).truncate2, Proc.new { |arg|
 				# window, widget, action, function, event-- WWAFE
 				w= arg[:window]
 				wi= arg[:widget]
 				a= wi.var_text_now.to_bool
 				if a
+					$state.each{ |k, v|
+					  if v[:flag]== 'D'
+					    $tasklist.by_aid( k).destroy
+					  end
+					}
+
 					Stfl.reset
 					puts _('Taskman finished.')
 					exit 0
@@ -440,19 +455,17 @@ module TASKMAN
 			db= nid[0].to_item_class
 			id= nid[1]
 			t= db.find( id)
-			$app.screen.ask( _('Really delete task %s/%s?')% [ nid[0], id], Proc.new { |parg|
-				# window, widget, action, function, event-- WWAFE
-				w= parg[:window]
-				wi= parg[:widget]
-				a= wi.var_text_now.to_bool
-				if a
-					t.destroy
-				end
-				#w['status_display'].var__display= 1
-				#w['status_prompt'].var__display= 0
-				#w.focus_default
-				index
-			})
+			t.flag= 'D'
+			index
+		end
+		def undelete_task arg= {}
+			w= arg[:widget]
+			nid= w.name.to_id
+			db= nid[0].to_item_class
+			id= nid[1]
+			t= db.find( id)
+			t.flag= nil
+			index
 		end
 
 		def toggle_timing_options arg= {}

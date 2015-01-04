@@ -20,14 +20,14 @@ module TASKMAN
 				:'',
 				:'', #prevmsg
 				:'', #prevpage
-				:delete_task,
+				:delete_task, # Where to put mark as done
 				:'', #edit
 				:tablebr,
 				:other, # O boy, there are some!
 				:select_task, #hotkey in that goes to task
 				:'', #nextmsg
 				:'', #nextpage
-				:'', #undelete (mark as not done?)
+				:undelete_task, # Where to put mark as not done
 				:'', #duplicate
 			)
 
