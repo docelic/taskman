@@ -256,11 +256,6 @@ module TASKMAN
 
 			$tasklist= Tasklist.new
 
-			# Will hold local program state, like tasks assigned for
-			# deletion etc. Format is:
-			# $state{nid}= Item.new (used as a placeholder so that any overrides can be done)
-			$state= {}
-
 			# Two quick variables for controlling main loop. $main_loop
 			# tells whether we already are in main loop (recursion
 			# detector). $stop_loop instructs the main loop to exit.

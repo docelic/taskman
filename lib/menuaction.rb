@@ -154,7 +154,7 @@ module TASKMAN
 		# XXX See how these pre/post actions can be done automatically
 		# somehow
 		def quit arg= {}
-			nr= $state.values.select{ |v| v[:flag]== 'D'}.count
+			nr= $tasklist.tasks.select{ |v| v[1].flag== 'D'}.count
 			fmt= 'Really quit Taskman'
 			args= []
 			if nr> 0
@@ -174,9 +174,9 @@ module TASKMAN
 	      e= arg[:event]
 				a= wi.var_text_now.to_bool|| e.to_bool
 				if a
-					$state.each{ |k, v|
-					  if v[:flag]== 'D'
-					    $tasklist.by_aid( k).destroy
+					$tasklist.tasks.each{ |k, v|
+					  if v.flag== 'D'
+					    v.destroy
 					  end
 					}
 
@@ -469,9 +469,9 @@ module TASKMAN
 		def delete_task arg= {}
 			w= arg[:widget]
 			nid= w.name.to_id
-			db= nid[0].to_item_class
-			id= nid[1]
-			t= db.find( id)
+			#db= nid[0].to_item_class
+			#id= nid[1]
+			t= $tasklist.by_aid( nid) #db.find( id)
 			t.flag= 'D'
 			index( {
 				pos: arg[:base_widget].var_pos_now+ 1,
@@ -481,9 +481,9 @@ module TASKMAN
 		def undelete_task arg= {}
 			w= arg[:widget]
 			nid= w.name.to_id
-			db= nid[0].to_item_class
-			id= nid[1]
-			t= db.find( id)
+			#db= nid[0].to_item_class
+			#id= nid[1]
+			t= $tasklist.by_aid( nid) #db.find( id)
 			t.flag= nil
 			index( {
 				pos: arg[:base_widget].var_pos_now,

@@ -67,7 +67,6 @@ module TASKMAN
 				# as we're not doing anything if there aren't.
 				set= $tasklist.tasks[@widgets.count..-1]
 				set.each do |s, t|
-					pfl t.flag
 					nid= [ s, t.id].to_id_s # nid== "name/id" string
 					s= self.parent.fmt% [ t.flag, t.id, s, t.subject]
 					self<< ListItem.new( name: nid, text: s, can_focus: 1)

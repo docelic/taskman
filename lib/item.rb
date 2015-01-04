@@ -31,7 +31,7 @@ module TASKMAN
 		attr_accessor :flag
 
 		after_initialize do
-			@flag= if s= $state[self.nid] then s[:flag] else nil end
+			@flag= nil
 
 			#self.subject||= ''
 			##self.start= nil # definitely not before this Date
@@ -52,17 +52,6 @@ module TASKMAN
 			# If e.g. we have TASKMAN::Item::Main with ID 4, this
 			# function will return [ :main, 4]
 			[ self.class.to_s.split( '::')[-1].downcase.to_sym, self.id]
-		end
-
-		def flag
-			if s= $state[self.nid]
-				s[:flag]
-			end
-			@flag
-		end
-		def flag= fl
-			$state[self.nid]||= {}
-			$state[self.nid][:flag]= @flag= fl
 		end
 
 		#def generate_id

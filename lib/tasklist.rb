@@ -80,7 +80,17 @@ module TASKMAN
 			if debug? :mvc
 				pfl _('Ensuring tasks are in memory: %d..%d') % [ from, to]
 			end
+
+			# This will make sure that we always have fresh data in memory,
+			# but we also need to make sure that locally set flags remain
+			# as they were.
+			prev= @tasks
 			@tasks= self.load_all
+			prev.each do |db, t1|
+				if t2= self.by_aid( [db,t1.id])
+					t2.flag= t1.flag
+				end
+			end
 		end
 	end
 end
