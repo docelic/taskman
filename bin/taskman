@@ -22,7 +22,7 @@ module TASKMAN
 			require 'getoptlong'
 			require 'shellwords'
 
-			$:.unshift File.join File.dirname( $0), 'lib'
+			$:.unshift File.join File.dirname( $0), '../lib'
 
 			require 'extensions'
 			require 'defaults'
