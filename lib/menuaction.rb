@@ -192,7 +192,7 @@ module TASKMAN
 		def cancel arg= {}
 			$app.screen.ask( _('Cancel task?'), {
 				instant: true,
-				hotkey: [ _('y'), _('n')],
+				hotkey: [ _('Y'), _('N')],
 	      function: Proc.new { |arg|
 				# window, widget, action, function, event-- WWAFE
 				w= arg[:window]

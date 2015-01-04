@@ -6,7 +6,7 @@ module TASKMAN
 			super
 
 			# Spacer 1
-			l1= Label.new(    name: "#{@name}_space1", '.expand' => 'vh')
+			l1= Vspace.new(    name: "#{@name}_space1", '.expand' => 'vh')
 
 			# Main list ###########
 			list= List.new(   name: "#{@name}_list", '.tie'=> 'tb', pos: 4, focus: 1)
@@ -32,7 +32,7 @@ module TASKMAN
 			end
 
 			# Spacer 2
-			l2= Label.new(   name: "#{@name}_space2", '.expand' => 'vh')
+			l2= Vspace.new(   name: "#{@name}_space2", '.expand' => 'vh')
 
 			self<< l1
 			self<< list

@@ -138,6 +138,7 @@ module TASKMAN
 						next if w.nil?
 						if a= w.hotkeys_hash[event]
 							a.run( window: self, widget: widget, base_widget: base_widget, event: event)
+							break
 						end
 					end
 				end

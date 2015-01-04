@@ -3,8 +3,7 @@ module TASKMAN
 	class Hspace < Label
 
 		def initialize arg= {}
-			arg[:'.expand']||= 'h'
-			super
+			super( { :'.expand'=> 'h'}.merge arg)
 		end
 	end
 end

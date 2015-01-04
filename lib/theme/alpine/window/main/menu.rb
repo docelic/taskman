@@ -3,7 +3,7 @@ module TASKMAN
 	class Theme::Window::Main::Menu < Menu
 
 		def initialize arg= {}
-			super arg.merge( :'.expand'=> 'h', :'.height'=> 1)
+			super( { :'.expand'=> 'h', :'.height'=> 1}.merge arg)
 			@widget= :table
 		end
 	end

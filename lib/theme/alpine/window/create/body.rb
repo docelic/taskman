@@ -113,7 +113,7 @@ module TASKMAN
 
 			v<< Label.new(                    '.expand'=> 'h', text: '----- Message Text -----')
 
-			t= Textedit.new( name: :message, text: i._message)
+			t= Textedit.new( name: :message, text: i._message, focus: 1)
 			v<< t
 
 			h<< v

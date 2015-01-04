@@ -83,9 +83,17 @@ module TASKMAN
 		end
 
 		def init arg= {}
+			self.mvc
 			if arg[:pos]
-				self.mvc
 				self.var_pos= arg[:pos]
+			elsif arg[:nid]
+				i= 0
+				$tasklist.tasks.each do |db, t|
+					if arg[:nid]== [ db, t.id]
+						self.var_pos= i
+					end
+					i+= 1
+				end
 			end
 		end
 	end

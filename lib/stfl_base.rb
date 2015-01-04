@@ -82,6 +82,7 @@ module TASKMAN
 			@variables['style_normal']||= ''
 			@variables['style_focus']||= ''
 			@variables['style_selected']||= ''
+			@variables['style_end']||= ''
 			@variables['autobind']||= 1
 			@variables['modal']||= 0
 			@variables['pos_name']||= ''
@@ -108,6 +109,7 @@ module TASKMAN
 		def var_style_normal()   @variables['style_normal']   end
 		def var_style_focus()    @variables['style_focus']    end
 		def var_style_selected() @variables['style_selected'] end
+		def var_style_end()      @variables['style_end']      end
 		def var_autobind()       @variables['autobind']       end
 		def var_modal()          @variables['modal']          end
 		def var_pos_name()       @variables['pos_name']       end
@@ -124,6 +126,7 @@ module TASKMAN
 		def var_style_normal_now()   @variables['style_normal']=   ( $app.ui.get "#{@name}_style_normal"  )      end
 		def var_style_focus_now()    @variables['style_focus']=    ( $app.ui.get "#{@name}_style_focus"   )      end
 		def var_style_selected_now() @variables['style_selected']= ( $app.ui.get "#{@name}_style_selected")      end
+		def var_style_end_now()      @variables['style_end']=      ( $app.ui.get "#{@name}_style_end")           end
 		def var_autobind_now()       @variables['autobind']=       ( $app.ui.get "#{@name}_autobind"      ).to_i end
 		def var_modal_now()          @variables['modal']=          ( $app.ui.get "#{@name}_modal"         ).to_i end
 		def var_pos_name_now()       @variables['pos_name']=       ( $app.ui.get "#{@name}_pos_name"      )      end
@@ -140,6 +143,7 @@ module TASKMAN
 		def var_style_normal=( arg)    $app.ui.set "#{@name}_style_normal"  , ( @variables['style_normal']= arg   ).to_s end
 		def var_style_focus=( arg)     $app.ui.set "#{@name}_style_focus"   , ( @variables['style_focus']= arg    ).to_s end
 		def var_style_selected=( arg)  $app.ui.set "#{@name}_style_selected", ( @variables['style_selected']= arg ).to_s end
+		def var_style_end=( arg)       $app.ui.set "#{@name}_style_end",      ( @variables['style_end']= arg ).to_s      end
 		def var_autobind=( arg)        $app.ui.set "#{@name}_autobind"      , ( @variables['autobind']= arg       ).to_s end
 		def var_modal=( arg)           $app.ui.set "#{@name}_modal"         , ( @variables['modal']= arg          ).to_s end
 		def var_pos_name=( arg)        $app.ui.set "#{@name}_pos_name"      , ( @variables['pos_name']= arg       ).to_s end
@@ -420,11 +424,12 @@ module TASKMAN
 
 					$app.style.specs.each{ |selector, spec|
 						if(
-							( selector.class== Symbol and selector== key) or
+							( (selector.class== Symbol) and selector== key) or
 							( selector.class== Regexp and key.match selector) or
 							( selector.class== Proc and selector.yield( key))
+							# or ( (selector.class== String) and selector.to_sym== key)
 					  )
-							if debug?( :style) then pfl _('Found style key %s')% [ key] end
+							if debug?( :style) then pfl _('Found style key %s')% [ selector] end
 
 							# Allow for spec to be proc too!
 							if spec.class== Proc then spec= spec.yield( key) end

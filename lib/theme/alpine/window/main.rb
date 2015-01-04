@@ -14,7 +14,6 @@ module TASKMAN
 			self<< Theme::Window::Main::Body.new(   arg.merge( name: :body))
 			self<< Theme::Window::Main::Status.new( arg.merge( name: :status))
 
-
 			m1= Theme::Window::Main::Menu.new(      arg.merge( name: :menu1))
 			m1.add_action(
 				:help,
@@ -28,8 +27,8 @@ module TASKMAN
 				:hotkey_in,
 				:nextcmd2,
 				:gotofolder,
-				#:'',
-				#:quit_now,
+				:'',
+				:'', #:quit_now,
 			)
 
 #			m2= Theme::Window::Main::Menu.new( name: :menu2, :'.display'=> 0)

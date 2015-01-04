@@ -26,10 +26,14 @@ module TASKMAN
 			# save that so we can set this position during init()
 			# later.
 			if arg[:pos] then @pos= arg[:pos] end
+			if arg[:nid] then @nid= arg[:nid] end
+
+			# XXX Is it alright that we do this manually variable by
+			# variable like above? Doesn't seem really good.
 		end
 
 		def init arg= {}
-			@l.init arg.merge( pos: @pos)
+			@l.init arg.merge( pos: @pos, nid: @nid)
 		end
 	end
 end
