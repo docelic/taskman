@@ -42,7 +42,8 @@ module TASKMAN
 
 			'quit'      => { hotkey: 'Q',   shortname: 'Quit',        menuname: 'Quit',        description: 'Leave the Taskman program', function: :quit },
 			# Handler for Quit Now can be nil because this is checked for and executed directly in the main loop. This entry exists only for showing in menu when you want.
-			'quit_now'  => { hotkey: $opts['exit-key'], shortname: 'QuitNow',        menuname: 'Quit Now',        description: 'Quit Taskman now', function: :nil },
+			'quit_now'  => { hotkey: $opts['exit-key'], shortname: 'QuitNow',        menuname: 'Quit Now',        description: 'Quit Taskman now', function: nil },
+			'cancel_question'=> { hotkey: 'ESC', shortname: 'Cancel',        menuname: 'Cancel Question',        description: 'Cancel question', function: :cancel_question },
 
 			# Actions related to status messages when a person tries to move beyond widget/page/window limits
 			'top_list'=>   { hotkey: 'UP',  shortname: '',    menuname: '', description: '', function: :top_list},
@@ -195,6 +196,12 @@ module TASKMAN
 				w['status_prompt'].var__display= 0
 				w.focus_default
 			})
+		end
+		def cancel_question arg= {}
+			w= arg[:window]
+			w['status_display'].var__display= 1
+			w['status_prompt'].var__display= 0
+			w.focus_default
 		end
 
 		# Hide the current menu and show the menu after it

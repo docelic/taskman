@@ -22,6 +22,7 @@ module TASKMAN
 			i= Input.new(   name: "#{@name}_answer",  '.expand'=> 'h', text: '', can_focus: 0, modal: 1)
 			pa= MenuAction.new( name: "#{@name}_handle_answer", hotkey: 'ENTER', hotkey_label: 'RET')
 			i<< pa
+			i<< MenuAction.new( name: 'cancel_question')
 			h2<< i
 
 			self<< h1
