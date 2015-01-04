@@ -2,7 +2,7 @@
 
 module TASKMAN
 
-	class Theme < Object
+	class Theme
 
 		attr_reader :init
 
