@@ -66,6 +66,9 @@ module TASKMAN
 			'toggle_reminding_options'=> { description: 'Toggle Remind Options', function: :toggle_reminding_options},
 			'redraw'=>     { hotkey: '^L',  shortname: 'RedrawScr',menuname: 'Redraw Screen', description: '', function: :redraw},
 
+			# For custom implementation of TableList
+			'select_row'=>{ hotkey: '', hotkey_label: '', shortname: 'Select',    menuname: 'Select Row', description: '', function: :select_row},
+
 			# OLD / Unused / Unfinished / Untested
 			'other'     => { hotkey: 'O',   shortname: 'OTHER CMDS',  menuname: 'OTHER CMDS',  description: '', function: :menu_next_page },
 			'other2'    => { hotkey: nil, hotkey_label:'O',  shortname: 'OTHER CMDS',  menuname: 'OTHER CMDS',  description: '', function: nil },
@@ -604,6 +607,24 @@ module TASKMAN
 
 		def redraw arg= {}
 			Stfl.redraw
+			nil
+		end
+
+		def select_row arg= {}
+			w= arg[:widget]
+			wi= arg[:window]
+			bw= arg[:base_widget]
+			#a= arg[:action]
+			#f= arg[:function]
+			e= arg[:event]
+
+			# Mark this row as selected
+			row= w.parent
+			row.widgets.each do |rw|
+				rw.apply_style( normal: :focus)
+			end
+			$app.screen.main_loop -1
+
 			nil
 		end
 

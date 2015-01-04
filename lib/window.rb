@@ -44,7 +44,17 @@ module TASKMAN
 				# First match is executed.
 				wh= all_widgets_hash()
 				widget= wh[focus]
-				base_widget= widget
+
+				# Here, we store in base_widget the original 'widget' we got from STFL
+				# However, we also make a provision for our own custom implementation
+				# of table to work in the same way, in which case base_widget is
+				# derived a little differently. (We assume that RowSelector is
+				# located within Row, which is located in a Table)
+				if RowSelect=== widget
+					base_widget= widget.parent ? widget.parent.parent : widget
+				else
+					base_widget= widget
+				end
 
 				# Searching for actions to execute (and doing other work)
 				# only makes sense if some widget was focused
@@ -109,25 +119,23 @@ module TASKMAN
 				# Next if the event has been handled by the widget and key is empty
 				if code!= 0
 					break
-				elsif event.length== 0 # or not( focus and widget)
-					# (We comment the above 'or not...' because we want to process
-					# keypresses even on windows with no focusable widgets.
-					next
 				end
 
 				event.upcase!
-				handled= false
 
 				# Unhandled ENTER on a widget will call its first action, if one is defined.
 				# Otherwise we go into our usual keypress resolution.
-				if event== 'ENTER' and widget
+				if widget and ( event== 'ENTER' or widget.instant)
 					if a= widget.action
-						a.run( window: self, widget: widget, base_widget: base_widget, event: event)
-						handled= true
+						event= a.run( window: self, widget: widget, base_widget: base_widget, event: event)
 					end
 				end
 
-				unless handled
+				# Note that this if() will be true even if the STFL widget handles the
+				# action and sets event to ''. It will be false only if we processed
+				# the action and returned 'nil' to indicate that processing should
+				# stop.
+				if event
 					ary= []
 					if widget
 						ary.push widget, *menus(), *widget.parent_tree()
@@ -159,14 +167,6 @@ module TASKMAN
 					$stop_loop= false
 					break
 				end
-
-				## Handle specific events in a generic way
-				#if event== 'SLEFT'
-				#	@show_next_key= true
-				#elsif @show_next_key
-				#	pfl focus, event
-				#	@show_next_key= false
-				#end
 			end
 
 			$main_loop= false

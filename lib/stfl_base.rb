@@ -379,8 +379,12 @@ module TASKMAN
 		end
 
 		# This function applies style to a widget by using a couple fallbacks.
-		# Style is attempted to be applied for all three STFL style types.
-		def apply_style
+		# When it finds a selector that matches a widgets, it applies to it
+		# all style definitions specified for that selector.
+		# However, if you want to apply widget's "focus" style as "normal"
+		# style, pass parameters ( normal: :focus) (or in more intuitive
+		# syntax: ( :normal => :focus))
+		def apply_style remap= {}
 
 			# No action if this object won't ever be rendering / be visible.
 			# (If you will want to show it conditionally, then don't set
@@ -404,7 +408,7 @@ module TASKMAN
 			# Variations-- this is the final element in the search tree where
 			# we search first for "...tree... <my name>", then for
 			# "...tree... <my classname>", then "...tree... <my STFL type>"
-			# and then just for "....tree...".
+			# and then just for "...tree...".
 			# So variation for e.g. a label of class Label_space
 			# would be [ label_name, "@label_space", "@label", nil]
 			variation= [ tree.pop]
@@ -434,6 +438,13 @@ module TASKMAN
 							# Allow for spec to be proc too!
 							if spec.class== Proc then spec= spec.yield( key) end
 
+							if !remap.empty?
+								spec= spec.clone
+								remap.each do |rk, rv|
+									if debug?( :style) then pfl _('Remapping %s to %s')% [ rk, rv] end
+									spec[rk]= spec[rv]
+								end
+							end
 							spec.each do |k, v|
 								if debug?( :style) then pfl _('Applying style to %s: %s %s')% [ @name, k, v] end
 								k= "var_style_#{k.to_s}=".to_sym

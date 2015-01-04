@@ -149,11 +149,6 @@ module TASKMAN
 
 			require 'window'
 
-			require 'layout'
-			require 'layout/vbox'
-			require 'layout/hbox'
-			require 'layout/table'
-
 			require 'widget'
 			require 'widget_text'
 			require 'widget/label'
@@ -165,6 +160,11 @@ module TASKMAN
 			require 'widget/textview'
 			require 'widget/hspace'
 			require 'widget/vspace'
+
+			require 'layout'
+			require 'layout/vbox'
+			require 'layout/hbox'
+			require 'layout/table'
 
 			require 'menu'
 			require 'menuaction'
