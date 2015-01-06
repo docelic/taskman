@@ -12,6 +12,9 @@ module TASKMAN
 
 			self<< Label.new( name: 'lbl1', text: 'Hello, World!')
 
+			vbox= Vbox.new( name: 'menu', :'.expand' => 'h')
+
+			self<< vbox
 		end
 	end
 end

@@ -22,6 +22,8 @@ module TASKMAN
 
 			self<< Theme::Window::Main::Status.new( name: :status)
 
+			vbox= Vbox.new( name: 'menu', :'.expand' => 'h')
+
 			# Window menu:
 
 			# Prepare these in advance. We can't just pass them as symbols
@@ -49,7 +51,9 @@ module TASKMAN
 				:lastpage,
 			)
 
-			self<< m1
+			vbox<< m1
+
+			self<< vbox
 		end
 	end
 end

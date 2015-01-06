@@ -14,6 +14,8 @@ module TASKMAN
 			self<< Theme::Window::Colortest::Body.new( arg.merge( name: :body))
 			self<< Theme::Window::Main::Status.new(    arg.merge( name: :status))
 
+			vbox= Vbox.new( name: 'menu', :'.expand' => 'h')
+
 			m1= Theme::Window::Main::Menu.new(         arg.merge( name: :menu1))
 			m1.add_action(
 				:help,
@@ -31,7 +33,9 @@ module TASKMAN
 				:'',
 			)
 
-			self<< m1
+			vbox<< m1
+
+			self<< vbox
 		end
 	end
 end
