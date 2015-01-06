@@ -24,7 +24,7 @@ module TASKMAN
 				@l<< ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
 			end
 			if $session.sth.size== 0
-				@l<< ListItem.new
+				@l<< ListItem.new( name: 'empty')
 			end
 
 			self<< @l

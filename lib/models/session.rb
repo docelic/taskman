@@ -6,6 +6,7 @@ module TASKMAN
 		attr_accessor :folder, :folder_name
 		attr_accessor :dbh, :dbn, :sth #, :item
 		attr_accessor :format
+		attr_accessor :flags
 
 		def initialize arg= {}
 			super()
@@ -16,6 +17,9 @@ module TASKMAN
 
 			@folder= arg[:folder]|| nil
 			@folder_name= if @folder then @folder.name else '' end
+
+			# For attaching in-session flags/mark to items
+			@flags= {}
 
 			# XXX WIP-- this needs to be per-window, and basically be an array
 			# that is joined, so that we know how many args to give in

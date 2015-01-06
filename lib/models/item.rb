@@ -34,11 +34,7 @@ module TASKMAN
 		serialize :omit, Array
 		serialize :remind, Array
 
-		attr_accessor :flag
-
 		after_initialize do
-			@flag= nil
-
 			#self.subject||= ''
 			##self.start= nil # definitely not before this Date
 			##self.stop= nil # definitely not after this Date
@@ -480,6 +476,13 @@ module TASKMAN
 		end
 		def parse_folder_names arg
 			@folder_names= arg
+		end
+
+		def flag
+			$session.flags[self.id]
+		end
+		def flag= arg
+			$session.flags[self.id]= arg
 		end
 
 		private

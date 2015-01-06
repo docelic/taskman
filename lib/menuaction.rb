@@ -167,7 +167,7 @@ module TASKMAN
 		# XXX See how these pre/post actions can be done automatically
 		# somehow
 		def quit arg= {}
-			nr= $tasklist.tasks.select{ |v| v[1].flag== 'D'}.count
+			nr= $session.flags.select{ |k, v| v== 'D'}.count
 			fmt= 'Really quit Taskman'
 			args= []
 			if nr> 0
@@ -190,9 +190,11 @@ module TASKMAN
 
 				if a!= nil
 					if a
-						$tasklist.tasks.each{ |k, v|
-							if v.flag== 'D'
-								v.destroy
+						$session.flags.select{ |k, v|
+							if v== 'D'
+								if i= begin $session.sth.find( k) end
+									i.destroy
+								end
 							end
 						}
 
