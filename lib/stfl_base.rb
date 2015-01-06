@@ -174,7 +174,7 @@ module TASKMAN
 			self.all_widgets_hash[arg]
 		end
 		# Focus widget itself
-		def focus
+		def set_focus
 			$app.ui.set_focus @name
 		end
 		# Focus child that was marked as to have default focus

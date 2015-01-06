@@ -144,7 +144,7 @@ module TASKMAN
 			# On editing existing tasks, we focus the message field
 			id= self['id'].var_text_now.to_i
 			fw= $opts[ id> 0 ? 'focus-on-edit' : 'focus-on-create']
-			fw2= self[fw] and fw2.focus
+			fw2= self[fw] and fw2.set_focus
 		end
 	end
 end

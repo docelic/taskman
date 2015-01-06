@@ -30,7 +30,7 @@ module TASKMAN
 
 				sa= s['status_answer']
 				sa.var_text= ''
-				sa.focus
+				sa.set_focus
 				#sa.action.function= p
 
 				# Remove all actions (if any) and set up for new prompt
