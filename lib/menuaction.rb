@@ -186,7 +186,6 @@ module TASKMAN
 	      e= arg[:event]
 
 				a= e.to_bool #wi.var_text_now.to_bool|| e.to_bool
-				pfl a
 
 				if a!= nil
 					if a
@@ -224,7 +223,7 @@ module TASKMAN
 				# STFL workings) and .to_bool returns true, canceling
 				# immediately.
 				a= e.char_to_bool #wi.var_text_now.to_bool|| e.to_bool
-				pfl a, e
+
 				if a!= nil
 					if a
 						main arg
