@@ -23,6 +23,7 @@ module TASKMAN
 		end
 
 		def var_text= arg
+			arg||= ''
 			formatted= arg.format_to_screen
 			removed= self>> ListItem
 			formatted.each do |l|
