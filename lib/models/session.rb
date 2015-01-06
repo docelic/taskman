@@ -4,16 +4,27 @@ module TASKMAN
 		@@sessions= []
 
 		attr_accessor :category, :category_name
-		attr_accessor :db
+		attr_accessor :db #, :item
+		attr_accessor :format
 
 		def initialize arg= {}
 			super()
+
+			@@sessions<< self
+
 			@name= arg[:name]|| 'default'
+
 			@category= arg[:category]|| nil
 			@category_name= if @category then @category.name else '' end
 
+			# XXX WIP-- this needs to be per-window, and basically be an array
+			# that is joined, so that we know how many args to give in
+			#  %..., and it should also be named if possible.
+			@format= ' %1s %-4s %-6s %s'
+
+			#@item= nil
+
 			self.update
-			@@sessions<< self
 		end
 
 		def self.all

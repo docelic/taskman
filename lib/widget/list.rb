@@ -15,8 +15,6 @@ module TASKMAN
 			@wanted_to= 0
 			@visible_from= 0
 			@visible_to= 0
-			
-			@tasks= []
 		end
 
 	end
@@ -26,12 +24,6 @@ module TASKMAN
 		def mvc arg= {}
 			o= self.var_offset_now
 			h= self._h_now
-
-			tasks= if c= $app.screen.category
-				c.items
-			else
-				Item.all
-			end
 
 #			if @prev_offset!= o or arg[:force]# @prev_offset== -1
 				p= self.var_pos_now
@@ -57,34 +49,25 @@ module TASKMAN
 				# A one-off to handle situation where the initial list is pre-populated
 				# with one empty entry. (Just for the focus to work and STFL to not
 				# segfault.)
-				if @widgets.size== 1
-					self>> ListItem
-				end
-
-				# here the result in tasks is like:
-				# [
-				#   [ dbname, task_obj],
-				#   [ dbname, task_obj],
-				#   ...
-				# ]
-				# but ruby automatically maps s/t below to array, very wonderful!
-				#
-				# We produce 'set' first to see if there are any new tasks to add,
-				# as we're not doing anything if there aren't.
-				#set= $tasklist.tasks[@widgets.count..-1]
-				s= :main
-				tasks.each do |t|
-					nid= [ s, t.id].to_id_s # nid== "name/id" string
-					s= self.parent.fmt% [ t.flag, t.id, s, t.subject]
-					self<< ListItem.new( name: nid, text: s, can_focus: 1)
-				end
-				if tasks.size> 0
-					self.clear_caches
-					self.var_offset= o
-					self.var_pos= p
-					self.replace
-					self.widgets.each do |w| w.apply_style end
-				end
+				#if @widgets.size== 1
+#				pfl self.class, self.name
+#					self>> ListItem
+#				#end
+#
+#				#set= $tasklist.tasks[@widgets.count..-1]
+##				s= :main
+#				$session.db.each do |t|
+##					nid= [ s, t.id].to_id_s # nid== "name/id" string
+#					#s= self.parent.fmt% [ t.flag, t.id, s, t.subject]
+#					self<< ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
+#				end
+#				#if $session.db.size> 0
+#					self.clear_caches
+#					#self.var_offset= o
+#					#self.var_pos= p
+#					self.replace_outer
+#					#self.widgets.each do |w| w.apply_style end
+#				#end
 			#end
 #			@prev_offset= o
 		end

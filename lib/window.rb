@@ -139,7 +139,10 @@ module TASKMAN
 				if event
 					ary= []
 					if widget
-						ary.push widget, *menus(), *widget.parent_tree()
+						ary.push widget
+						if widget.var_modal== 0
+							ary.push *menus(), *widget.parent_tree()
+						end
 					else
 						ary.push *menus()
 					end

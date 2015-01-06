@@ -62,7 +62,16 @@ class String
 
 	def to_bool
 		return true if self== true or self=~ /t|y|1/i
-		return false #if self== false or self=~ /f|n|0/i or self== ''
+		return false if self== false or self=~ /f|n|0/i #or self== ''
+		nil
+		#raise ArgumentError.new "Invalid value for Boolean: '#{self}'"
+	end
+
+	def char_to_bool
+		return nil if self.length> 1
+		return true if self== true or self=~ /t|y|1/i
+		return false if self== false or self=~ /f|n|0/i #or self== ''
+		nil
 		#raise ArgumentError.new "Invalid value for Boolean: '#{self}'"
 	end
 

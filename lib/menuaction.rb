@@ -184,21 +184,28 @@ module TASKMAN
 				w= arg[:window]
 				wi= arg[:widget]
 	      e= arg[:event]
-				a= wi.var_text_now.to_bool|| e.to_bool
-				if a
-					$tasklist.tasks.each{ |k, v|
-					  if v.flag== 'D'
-					    v.destroy
-					  end
-					}
 
-					Stfl.reset
-					puts _('Taskman finished.')
-					exit 0
+				a= e.to_bool #wi.var_text_now.to_bool|| e.to_bool
+				pfl a
+
+				if a!= nil
+					if a
+						$tasklist.tasks.each{ |k, v|
+							if v.flag== 'D'
+								v.destroy
+							end
+						}
+
+						Stfl.reset
+						puts _('Taskman finished.')
+						exit 0
+					else
+						w['status_display'].var__display= 1
+						w['status_prompt'].var__display= 0
+						w.focus_default
+					end
 				end
-				w['status_display'].var__display= 1
-				w['status_prompt'].var__display= 0
-				w.focus_default
+				nil
 			}})
 			nil
 		end
@@ -211,13 +218,23 @@ module TASKMAN
 				w= arg[:window]
 				wi= arg[:widget]
 	      e= arg[:event]
-				a= wi.var_text_now.to_bool|| e.to_bool
-				if a
-					main arg
+				# We're using char_to_bool here as an ugly fix to require
+				# that keypress be a single char. Otherwise, when a person
+				# presses Ctrl+C to cancel, the event is "TIMEOUT" (due to
+				# STFL workings) and .to_bool returns true, canceling
+				# immediately.
+				a= e.char_to_bool #wi.var_text_now.to_bool|| e.to_bool
+				pfl a, e
+				if a!= nil
+					if a
+						main arg
+					else
+						w['status_display'].var__display= 1
+						w['status_prompt'].var__display= 0
+						w.focus_default
+					end
 				end
-				w['status_display'].var__display= 1
-				w['status_prompt'].var__display= 0
-				w.focus_default
+				nil
 			}})
 			nil
 		end
@@ -493,7 +510,7 @@ module TASKMAN
 		end
 
 		def select_task arg= {}
-			id= $app.ui.get( 'list_pos_name').to_id
+			id= $app.ui.get( 'list_pos_name').to_i
 			arg2= {
 				window: 'create',
 				title: 'VIEW / EDIT TASK',

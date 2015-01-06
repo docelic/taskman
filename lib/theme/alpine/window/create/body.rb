@@ -6,8 +6,8 @@ module TASKMAN
 			super
 
 			@widget= nil
-			i= arg[:id] ? $tasklist.by_aid( arg[:id]) : Item::Main.new
-			db= if arg[:id] then arg[:id][0].to_s else $opts['main-db'].to_s end
+			i= arg[:id] ? Item.find( arg[:id]) : Item::Main.new
+			db= $opts['main-db'].to_s
 
 			self<< MenuAction.new( name: :top_header)
 
