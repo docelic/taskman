@@ -430,7 +430,7 @@ module TASKMAN
 			w= arg[:window]
 
 			id= w['id'].var_text_now.to_i
-			db= w['db'].var_text_now.to_sym
+			db= :main #w['db'].var_text_now.to_sym
 
 			created= false
 
@@ -440,9 +440,9 @@ module TASKMAN
 			#	db.to_item_class.new
 			#	created= true
 			#end
-			i= arg[:item]|| $tasklist.by_aid( [ db, id])
+			i= arg[:item]|| Item.find( id)
 			unless i
-				i= db.to_item_class.new
+				i= Item.new #db.to_item_class.new
 				created= true
 			end
 

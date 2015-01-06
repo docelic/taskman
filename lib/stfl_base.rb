@@ -93,7 +93,6 @@ module TASKMAN
 			@variables['focus']||= 0
 			@variables['can_focus']||= 1
 			@variables['process']||= 1
-
 		end
 
 		# Now create accessor functions for all above variables.
