@@ -1,5 +1,5 @@
 #!/bin/sh
 
-main=$PWD/bin/taskman
+main=$PWD/lib/taskman.rb
 
-ruby -I../stfl/ruby $main $* 2>>/tmp/debug.log
+ruby -I../stfl/ruby -Ilib $main $* 2>>/tmp/debug.log

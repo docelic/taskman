@@ -69,30 +69,35 @@ module TASKMAN
 			@parent= variables.delete( :parent)
 			@tooltip= variables.delete( :tooltip)
 
-			# STFl variables. May be empty
-			@variables= {}
-			variables.each do |k, v|
-				@variables[k.to_s]= v
-			end
-
 			# STFL defaults. For variables listed here, the convenience accessors
 			# named var_X/var_X_now/var_X= will be created automatically. E.g.
 			# 'text' becomes var_text, .display becomes var__display.
-			@variables['.display']||= 1
-			@variables['style_normal']||= ''
-			@variables['style_focus']||= ''
-			@variables['style_selected']||= ''
-			@variables['style_end']||= ''
-			@variables['autobind']||= 1
-			@variables['modal']||= 0
-			@variables['pos_name']||= ''
-			@variables['pos']||= ''
-			@variables['offset']||= 0
-			@variables['text']||= ''
-			@variables['function']||= nil
-			@variables['focus']||= 0
-			@variables['can_focus']||= 1
-			@variables['process']||= 1
+			@variables= {
+				'.display'       => 1,
+				'style_normal'   => '',
+				'style_focus'    => '',
+				'style_selected' => '',
+				'style_end'      => '',
+				'autobind'       => 1,
+				'modal'          => 0,
+				'pos_name'       => '',
+				'pos'            => '',
+				'offset'         => 0,
+				'text'           => '',
+				'function'       => nil,
+				'focus'          => 0,
+				'can_focus'      => 1,
+				'process'        => 1,
+			}
+
+			# # XXX when vars are replaced with symbols, then
+			# do simply .merge( variables) here. Also, do it
+			# so that only recognized STFL vars are put in,
+			# not all kinds of other vars.
+			# STFl variables. May be empty
+			variables.each do |k, v|
+				@variables[k.to_s]= v
+			end
 		end
 
 		# Now create accessor functions for all above variables.
@@ -160,8 +165,6 @@ module TASKMAN
 		def var_value=( arg)           $app.ui.set "#{@name}_value"         , ( @variables['value']= arg          ).to_s end
 		def var_process=( arg)         $app.ui.set "#{@name}_process"       , ( @variables['process']= arg        ).to_s end
 
-		# te/tv is in /tmp/TVIEW!!!
-
 		# Implement all pseudo-variables supported by STFL as read-only functions
 		def _x_now()    $app.ui.get( "#{@name}:x"   ).to_i end
 		def _y_now()    $app.ui.get( "#{@name}:y"   ).to_i end
@@ -178,13 +181,13 @@ module TASKMAN
 			$app.ui.set_focus @name
 		end
 		# Focus child that was marked as to have default focus
-		def focus_default
+		def set_focus_default
 			@widgets.each do |w|
 				if w.var_focus== 1
 					$app.ui.set_focus w.name
 					return
 				else
-					w.focus_default
+					w.set_focus_default
 				end
 			end
 		end
@@ -275,7 +278,9 @@ module TASKMAN
 				elsif ma= Theme::MenuAction.new( :name => a.to_s)
 					self<< ma
 				else
-					$stderr.puts _('Menu action "%s" does not exist; skipping.')% [ a.to_s]
+					#$stderr.puts _('Menu action "%s" does not exist; skipping.')% [ a.to_s]
+					pfl :Unreachable
+					exit 1
 				end
 			end
 		end

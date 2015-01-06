@@ -641,6 +641,7 @@ OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 --main-db             --db         Y    main     Name of main/own database
 --echo-time           --ec         Y    0.5      Duration of msg visibility
 --timeout             --loop       Y    0        Force main loop every X ms
+--tooltips            --tips       N    true     Show automatic tooltips
 --focus-on-edit       --foe        Y    message  Field to focus on Edit Task
 --focus-on-create     --foc        Y    subject  Field to focus on Create -
 --term                --te         Y             Value for TERM= emulator

@@ -204,7 +204,7 @@ module TASKMAN
 					else
 						w['status_display'].var__display= 1
 						w['status_prompt'].var__display= 0
-						w.focus_default
+						w.set_focus_default
 					end
 				end
 				nil
@@ -233,7 +233,7 @@ module TASKMAN
 					else
 						w['status_display'].var__display= 1
 						w['status_prompt'].var__display= 0
-						w.focus_default
+						w.set_focus_default
 					end
 				end
 				nil
@@ -244,7 +244,7 @@ module TASKMAN
 			w= arg[:window]
 			w['status_display'].var__display= 1
 			w['status_prompt'].var__display= 0
-			w.focus_default
+			w.set_focus_default
 			nil
 		end
 
