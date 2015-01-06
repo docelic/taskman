@@ -276,19 +276,30 @@ module TASKMAN
 		end
 
 		def pos_home arg= {}
-			w= arg[:base_widget]
-			w.var_pos= 0
+			w= arg[:window]
+			wi= arg[:base_widget]
+			if wi.var_pos_now== 0
+				w.status_label_text= _('First Page')
+				return nil
+			end
+			wi.var_pos= 0
 			nil
 		end
 		def pos_end arg= {}
-			# TODO Ensure we retrieve the last records, and then move to end
-			w= arg[:base_widget]
-			w.var_pos= w.widgets.size- 1
+			w= arg[:window]
+			wi= arg[:base_widget]
+			epos= wi.widgets.size- 1
+			if wi.var_pos_now== epos
+				w.status_label_text= _('Last Page')
+				return nil
+			end
+			wi.var_pos= epos
 			nil
 		end
 
 		def pos_up arg= {}
 			w= arg[:base_widget]
+			wnd= arg[:window]
 
 			# This is normal behavior, such as on key UP or on Page UP
 			# when we're not near zero.
@@ -316,12 +327,17 @@ module TASKMAN
 				# visibility of all widgets up to the top of the tree.
 				# Not checking for this does allow for setting pos on a hidden
 				# ListItem in a List though, user beware.
+				if w.var_pos_now== p
+					break
+				end
 				if wi.var_can_focus> 0 #and wi.var__display> 0
 					w.var_pos= p
-					return
+					return nil
 				end
 				p+= step1
 			end
+
+			wnd.status_label_text= _('Already at start')
 			nil
 		end
 		def pos_pgup arg= {}
@@ -334,6 +350,7 @@ module TASKMAN
 
 		def pos_down arg= {}
 			w= arg[:base_widget]
+			wnd= arg[:window]
 
 			# This is normal behavior, such as on key UP or on Page UP
 			# when we're not near zero.
@@ -351,12 +368,17 @@ module TASKMAN
 
 			while p<= max
 				wi= w.widgets[p]
+				if w.var_pos_now== p
+					break
+				end
 				if wi.var_can_focus> 0 #and wi.var__display> 0
 					w.var_pos= p
 					return
 				end
 				p+= step1
 			end
+
+			wnd.status_label_text= _('Already at end')
 			nil
 		end
 		def pos_pgdown arg= {}
