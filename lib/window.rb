@@ -115,9 +115,9 @@ module TASKMAN
 #					base_widget.mvc
 #				end
 
-				# Break if a single-loop was requested (code!= 0)
+				# Break if a single-loop was requested (code< 0)
 				# Next if the event has been handled by the widget and key is empty
-				if code!= 0
+				if code< 0
 					break
 				end
 

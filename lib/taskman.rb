@@ -113,6 +113,10 @@ module TASKMAN
 							$opts[opt]= arg.to_i
 							$opts['colors_set']= true
 
+						when 'timeout'
+							propagate= false
+							$opts[opt]= arg.to_i
+
 						when 'main-db'
 							propagate= false
 							$opts[opt]= arg.to_sym
