@@ -19,39 +19,42 @@ module TASKMAN
 			m1= Theme::Window::Main::Menu.new(      arg.merge( name: :menu1))
 			m1.add_action(
 				:help,
-				:mainc, # But on <
+				:mainlt,
 				:'', #prev fldr
 				:'', #prev page
 				:'', #delete (mark as done?)
 				:'', #edit
 				:tablebr,
-				:'', #other
-				:quit, # Select/goto folder
+				:other,
+				:'', #:quit, # Select/goto folder
 				:'', #nextmsg
 				:'', #nextpage
 				:'', #undelete (mark as not done?)
 				:'', #duplicate
 			)
 
-			#m2= Theme::Window::Main::Menu.new(      arg.merge( name: :menu2, :'.display'=> 0))
-			#m2.add_action(
-			#	:help2,
-			#	:quit,
-			#	:'',
-			#	:'',
-			#	:'',
-			#	:'',
-			#	:tablebr,
-			#	:other2,
-			#	:mainc,
-			#	:'', #nextmsg
-			#	:'', #nextpage
-			#	:'', #undelete (mark as not done?)
-			#	:'', #duplicate
-			#)
+			m2= Theme::Window::Main::Menu.new(      arg.merge( name: :menu2, :'.display'=> 0))
+			# Prepare some custom-named/shortnamed actions
+			indx= Theme::MenuAction.new( name: 'index', shortname: 'CurIndex')
+
+			m2.add_action(
+				:help2,
+				:quit,
+				:'',
+				indx,
+				:'',
+				:'',
+				:tablebr,
+				:other2,
+				:mainm,
+				:'', #nextmsg
+				:'', #nextpage
+				:'', #undelete (mark as not done?)
+				:'', #duplicate
+			)
 
 			vbox<< m1
-			#vbox<< m2
+			vbox<< m2
 
 			self<< vbox
 		end

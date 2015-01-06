@@ -25,7 +25,8 @@ module TASKMAN
 
 			'main'      => { hotkey: '^M',  shortname: 'Main Menu',   menuname: 'Main Menu',   description: 'Main Menu', function: :main },
 			'main2'     => { hotkey: nil, hotkey_label: '^M', shortname: 'Main Menu',   menuname: 'Main Menu',   description: 'Main Menu', function: nil },
-			'mainc'     => { hotkey: 'M',   shortname: 'Main Menu',   menuname: 'Main Menu',   description: 'Main Menu', function: :main },
+			'mainlt'     => { hotkey: '<',   shortname: 'Main Menu',   menuname: 'Main Menu',   description: 'Main Menu', function: :main },
+			'mainm'     => { hotkey: 'M',   shortname: 'Main Menu',   menuname: 'Main Menu',   description: 'Main Menu', function: :main },
 
 			'create'    => { hotkey: 'C',   shortname: 'Create',      menuname: 'Create Task', description: 'Create a task', function: :create },
 			'index'     => { hotkey: 'I',   shortname: 'Index',       menuname: 'Task Index',  description: 'View tasks in current folder', function: :index },

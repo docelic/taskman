@@ -5,7 +5,7 @@ module TASKMAN
 		def initialize arg= {}
 			super
 
-			l= List.new( name: "#{@name}_list")
+			l= List.new( name: "#{@name}_list", focus: 1)
 
 			li= ListItem.new( name: '', text: '  ALL')
 			a= MenuAction.new( name: 'index', hotkey: 'ENTER')

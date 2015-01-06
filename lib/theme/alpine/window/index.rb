@@ -38,7 +38,7 @@ module TASKMAN
 			m2= Theme::Window::Main::Menu.new(      arg.merge( name: :menu2, :'.display'=> 0))
 			m2.add_action(
 				:help2,
-				:mainc,
+				:mainm,
 				:create,
 				:'',
 				:'',
