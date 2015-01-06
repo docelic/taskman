@@ -14,7 +14,7 @@ module TASKMAN
 
 		def initialize arg= {}
 			super
-			@instant= false
+			@instant||= false
 		end
 
 	end

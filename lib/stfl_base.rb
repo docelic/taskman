@@ -4,7 +4,7 @@ require 'stfl'
 
 module TASKMAN
 
-	class StflBase < Object
+	class StflBase
 
 		# All widgets and attributes will have a name automatically assigned if
 		# unspecified, in the pattern of W_0, W_1, etc. I am considering removing

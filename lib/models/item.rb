@@ -10,6 +10,12 @@ module TASKMAN
 
 	class Item < ActiveRecord::Base
 
+		has_many :item_categories, dependent: :destroy
+		has_many :categories, through: :item_categories
+
+		attr_writer :category_names
+		after_save :assign_categories
+
 		@@weekdays= Date::ABBR_DAYNAMES.map {|p| p.upcase}
 		@@months= Date::ABBR_MONTHNAMES.dup
 		@@months[0]= ''
@@ -466,6 +472,20 @@ module TASKMAN
 		def from_json! string
 			JSON.load(string).each do |var, val|
 				self.instance_variable_set var, val
+			end
+		end
+
+		def category_names
+			@category_names|| categories.map(&:name).join( ' ')
+		end
+
+		private
+
+		def assign_categories
+			if @category_names
+				self.categories= @category_names.split( /\s+/).map do |n|
+					Category.find_or_create_by_name n
+				end
 			end
 		end
 

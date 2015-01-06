@@ -35,11 +35,11 @@ module TASKMAN
 
 				# Remove all actions (if any) and set up for new prompt
 				sa>> MenuAction
-				sa<< MenuAction.new( p.merge( name: "#{@name}_handle_answer"))
-				sa<< MenuAction.new( name: 'cancel_question')
+				sa<< MenuAction.new( p.merge( name: "#{@name}_handle_answer", instant: true))
+				sa<< MenuAction.new( name: 'cancel_question') # Cancels on ESC
 
-				# If instant action requested, remove autobind
-				sa.var_process= if p[:instant] then 0 else 1 end
+				# If instant action requested, disable in-widget keypress processing
+				sa.var_process= if sa.instant then 0 else 1 end
 			end
 		end
 

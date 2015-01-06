@@ -1,8 +1,6 @@
 module TASKMAN
 
 	class MenuAction < Widget
-
-		attr_accessor :name, :hotkey, :hotkey_label, :shortname, :menuname, :description, :function
 		
 		# TODO move this to outside file
 		@@Menus= {
@@ -92,6 +90,8 @@ module TASKMAN
 			#'parent_names'    => { hotkey: '^P',   shortname: 'Parent Tree',      description: '', function: :parent_names},
 		}
 
+		attr_accessor :name, :hotkey, :hotkey_label, :shortname, :menuname, :description, :function, :instant
+
 		def initialize arg= {}
 			name= arg[:name]= arg[:name].to_s
 			if name.length> 0
@@ -102,6 +102,9 @@ module TASKMAN
 			@shortname= arg.has_key?( :shortname) ? arg.delete( :shortname): @@Menus[name] ? @@Menus[name][:shortname] : nil
 			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name] ? @@Menus[name][:menuname] : nil
 			@description= arg.has_key?( :description) ? arg.delete( :description).truncate2: @@Menus[name] ? @@Menus[name][:description].truncate2 : nil
+
+
+			@instant= arg.has_key?( :instant) ? arg.delete( :instant): @@Menus[name] ? @@Menus[name][:instant] : nil
 
 			# Function to execute can be specified in a parameter or come from a default.
 			# If none of that is specified, it defaults to a function named the same as

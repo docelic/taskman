@@ -6,9 +6,16 @@ module TASKMAN
 		require 'theme/alpine/window/main/status'
 		require 'theme/alpine/window/main/menu'
 
+		attr_accessor :category
+
 		def initialize arg= {}
 			super
 			@widget= 'vbox'
+
+			@category= nil
+			if cid= arg[:categoryid]
+				@category= Category.find( cid)
+			end
 
 			self<< Theme::Window::Main::Header.new( arg.merge( name: :header, :title => _('TASK INDEX')))
 			self<< @b= Theme::Window::Index::Body.new( arg.merge( name: :body))
@@ -17,7 +24,7 @@ module TASKMAN
 			m1= Theme::Window::Main::Menu.new(      arg.merge( name: :menu1))
 			m1.add_action(
 				:help,
-				:'',
+				:listfolders,
 				:'', #prevmsg
 				:'', #prevpage
 				:delete_task, # Where to put mark as done

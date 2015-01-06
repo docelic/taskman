@@ -110,10 +110,10 @@ module TASKMAN
 					hk.function= widget.action.function
 				end
 
-				# Now, handle the MVC part
-				if MVCList=== base_widget
-					base_widget.mvc
-				end
+#				# Now, handle the MVC part
+#				if MVCList=== base_widget
+#					base_widget.mvc
+#				end
 
 				# Break if a single-loop was requested (code!= 0)
 				# Next if the event has been handled by the widget and key is empty
@@ -127,8 +127,9 @@ module TASKMAN
 				# It evaluates to true if widget is known, and the widget's action is
 				# of instant type (triggers as soon as its widget is focused), or it
 				# is not of 'instant' type but the user pressed ENTER on it.
-				if widget and a= widget.action and( a.instant or event== 'ENTER')
-					event= a.run( window: self, widget: widget, base_widget: base_widget, event: event)
+				if widget and a= widget.action and( event== 'ENTER' ? !a.instant : a.instant)
+					#event= a.run( window: self, widget: widget, base_widget: base_widget, event: event)
+					event= a.run( window: self, widget: widget, base_widget: base_widget, action: a, function: a.function, event: event)
 				end
 
 				# Note that this if() will be true even if the STFL widget handles the
@@ -153,7 +154,7 @@ module TASKMAN
 							# possible for one action to replace "event", thus triggering another action
 							# after it. (E.g. a handler for "DOWN" could return "UP" to trigger some other
 							# action (defined after it) that was bound to UP)
-							event= a.run( window: self, widget: widget, base_widget: base_widget, event: event)
+							event= a.run( window: self, widget: widget, base_widget: base_widget, action: a, function: a.function, event: event)
 							if event== nil
 								break
 							end

@@ -5,18 +5,18 @@ module TASKMAN
 		def initialize arg= {}
 			super
 
-			l= List.new( name: 'list2x')
-			l<< ListItem.new( name: 'ALL', text: '  ALL')
+			l= List.new( name: "#{@name}_list")
+			l<< ListItem.new( name: '', text: '  ALL')
 
-			## So, we got $tasklist hash and just need to populate elements
-			#$tasklist.tasks.each do |id, i|
-			#	n= id.to_s[0..10]
-			#	s= "%s  %s" % [ n, i.subject]
-			#	l<< ListItem.new( name: id.to_s, text: s)
-			#end
+			Category.all.each do |c|
+				li= ListItem.new( name: c.id.to_s, text: '  '+ c.name)
 
-			a= MenuAction.new( name: 'index', hotkey: 'ENTER')
-			l<< a
+				a= MenuAction.new( name: 'index', hotkey: 'ENTER')
+				a.function= proc{ |arg| $session.category= c; a.index }
+				li<< a
+
+				l<< li
+			end
 
 			self<< l
 		end
