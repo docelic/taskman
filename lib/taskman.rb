@@ -55,6 +55,7 @@ module TASKMAN
 				[ '--exit-key',            '--ek',       GetoptLong::REQUIRED_ARGUMENT],
 				[ '--main-db',             '--db',       GetoptLong::REQUIRED_ARGUMENT],
 				[ '--echo-time',           '--ec',       GetoptLong::REQUIRED_ARGUMENT],
+				[ '--timeout',             '--loop',     GetoptLong::REQUIRED_ARGUMENT],
 
 				[ '--focus-on-edit',       '--foe',      GetoptLong::REQUIRED_ARGUMENT],
 				[ '--focus-on-create',     '--foc',      GetoptLong::REQUIRED_ARGUMENT],
@@ -337,6 +338,10 @@ module TASKMAN
 			out<< '-'* $opts['term-width']
 
 			$getopts.each{ |o|
+				# Assume that --no- options are handled through
+				# their variants without --no-
+				next if o[0][0..4]== '--no-'
+
 				config_key= o[0][2..-1]
 				default= opts[config_key]
 				#default= :nil if default== nil
@@ -353,7 +358,7 @@ module TASKMAN
 end
 
 if __FILE__== $0
-	trap( 'SIGINT') {}
+	trap( 'SIGINT'){}
 	$app= TASKMAN::Application.new ARGV
 	$app.start_console
 	$app.start

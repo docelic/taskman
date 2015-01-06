@@ -19,10 +19,10 @@ module TASKMAN
 			@title= arg.delete( :title)
 		end
 
-		def main_loop code= 0
+		def main_loop code= $opts['timeout']
 
 			# Quick detector for cases where main_loop gets called recursively.
-			if $main_loop and code== 0
+			if $main_loop and code>= 0
 				pfl _('Already in main loop. Recursive call detected; exiting.')
 				exit 1
 			end
@@ -167,7 +167,7 @@ module TASKMAN
 
 				# Now, when everything was said and done, exit from this
 				# loop if that was requested.
-				if $stop_loop #and code== 0
+				if $stop_loop #and code>= 0
 					$stop_loop= false
 					break
 				end

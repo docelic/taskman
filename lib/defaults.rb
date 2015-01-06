@@ -50,7 +50,9 @@ module TASKMAN
 
 			'exit-key'           => 'F10',
 			'main-db'            => 'main',
+
 			'echo-time'          => 0.5,
+			'timeout'            => 0,
 
 			'focus-on-edit'      => 'message',
 			'focus-on-create'    => 'subject',
@@ -97,6 +99,7 @@ $description= {
   'exit-key'               => _('One-key exit from program'),
   'main-db'                => _('Name of main/own database'),
   'echo-time'              => _('Duration of msg visibility'),
+  'timeout'                => _('Force main loop every X ms'),
   'cache-stfl'             => _('Enable/disable STFL cache'),
   'cache-avh'              => _('- internal hierarchy cache'),
   'focus-on-edit'          => _('Field to focus on Edit Task'),
