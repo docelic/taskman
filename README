@@ -1,7 +1,7 @@
 
               GENERAL INFORMATION ON THE TASKMAN TASK SCHEDULER
 
-                               Version 1.01(04)
+                               Version 1.01(06)
 
                       Copyright 2014 Spinlock Solutions
                 http://techpubs.spinlocksolutions.com/taskman/
@@ -22,13 +22,14 @@ Table of Contents:
 1. BASIC INFORMATION
 
 Taskman allows creation of task/TODO/event lists and offers extensive
-tracking, scheduling and reminding features. (At the moment, no particularly
-useful way for accessing the scheduling/reminding parts exists, however.)
+tracking, scheduling and reminding features. (At the moment, the timing and
+reminding options can be defined, but no particularly useful way for
+triggering them is provided yet.)
 
 Taskman is primarily a personal scheduler program, but shared calendars and
-event lists from multiple databases are supported. Plugins for other calendar
-and task tracking apps are planned. Please report your wishes in that regard
-to help prioritize work.
+event lists are planned, as well as plugins for other calendar and task
+tracking apps. Please report your wishes in that regard to help prioritize
+work.
 
 Taskman's scheduling features have been inspired by a program called Remind,
 although Taskman is more powerful and elaborate.
@@ -37,10 +38,8 @@ Taskman's default user interface has been inspired by the venerable mailer
 program Pine (or free Alpine), although Taskman supports completely
 different/customizable layouts ("themes") and color schemes ("styles").
 
-Taskman's data store is powered by ActiveRecord and additionally taskman can
-connect to multiple databases and display their tasks transparently. New tasks
-are created in a database that you mark as primary; tasks from other databases
-can be viewed and/or edited depending on your privileges there.
+Taskman's data store is powered by ActiveRecord. Tasks can be viewed and/or
+edited depending on your privileges in the corresponding databases.
 
 -----------------------------------------------------------------------------
 
@@ -167,13 +166,18 @@ Example: 1 (ignore the reminder, do not trigger it)
 
 Taskman supports connecting to multiple databases simultaneously, and all
 functions work transparently. The idea behind this feature is that users would
-have their own, primary database table. However, they would like to connect to
-other users' databases to see the tasks other users have shared with them.
+have their own, primary database. However, they would like to connect to other
+users' databases to see the tasks other users have shared with them.
 
-Editing shared tasks works as well, as long as the user has sufficient
-privileges to update the record in the corresponding database. Tasks that a
-person clones can be cloned in either the original database, or into the
-local/primary one.
+If multiple databases are configured, the tasks do not show all at once.
+Instead, the view shows tasks from the database currently selected as primary.
+To see tasks from another database, you need to switch to it in the "Folder
+List" window.
+
+Creating new or editing existing tasks in other databases works as well, as
+long as the user has sufficient privileges in the corresponding databases.
+Tasks that a person clones can be cloned in either the original database, or
+into the user's primary one.
 
 -----------------------------------------------------------------------------
 
@@ -188,18 +192,19 @@ starts the main loop.
 The following global variables are available at all times:
 
 1. $LINES (int), $COLUMNS (int) - terminal height and width
-2. $opts (hash) - current program options (defaults modified by command line)
-3. $getopts (array) - getopt definition (probably not relevant if not doing
+2. $opts (hash) - current program options (program defaults modified by config
+file and/or the command line)
+3. $getopts (array) - getopt definitions (probably not relevant if not doing
 something specifically related to parsing command line options)
-4. $app.usage() - function that returns a formatted string of command line
-options (output of taskman -h)
-5. $app (object) - instance of TASKMAN::Application. Most useful accessors are
+4. $app (object) - instance of TASKMAN::Application. Most useful accessors are
 $app.ui (STFL object) and $app.screen (Ruby object of toplevel element visible
 on screen, and from there you can access all children regardless of position
 in hierarchy via $app.screen[WIDGET_NAME])
-6. $tasklist (object) - tasklist class inheriting from ActiveRecord and
-implementing functions that transparently combine input from multiple
-databases in usual AR calls.
+5. $app.usage() - function that returns a formatted string of command line
+options (output of taskman -h)
+6. $session - store for current/running parameters, e.g. the current folder a
+person wants to be in. This may in some later stage be merged into/with $opts
+for extremely great flexibility and control from command line.
 
 Main loop:
 ----------
@@ -533,8 +538,7 @@ element from the path and trying another round.
 Also in searching for styles, Taskman automatically removes the numbers that
 immediately follow letters in the widget names. Specifically, if your widget
 is named "menu2" and is found under "main", Taskman will search for "main
-menu", not "main menu2". (It would be even better to look for "main menu2"
-first, then "main menu", but it doesn't work that way right now.)
+menu", not "main menu2".
 
 Discovering widget names and hierarchy:
 ---------------------------------------
@@ -619,13 +623,13 @@ the terminal's default style for the other might be unreadable.
 6. COMMAND LINE OPTIONS
 
                                    Taskman
-                                Ver. 1.01(04)
+                                Ver. 1.01(06)
 
 OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 ------------------------------------------------------------------------------
 --help                -h           N             List program options
 --help-all            -H           N             Display full help text
---version             -v           N    1.01(04) Display program version
+--version             -v           N    1.01(06) Display program version
 --garbage-collector   --gc         N    true     Run garbage collector?
 --stress-collector    --stress     N    false    Stress garbage collector?
 --window              -w           Y    main     Program window to open
@@ -636,6 +640,7 @@ OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 --exit-key            --ek         Y    F10      One-key exit from program
 --main-db             --db         Y    main     Name of main/own database
 --echo-time           --ec         Y    0.5      Duration of msg visibility
+--timeout             --loop       Y    0        Force main loop every X ms
 --focus-on-edit       --foe        Y    message  Field to focus on Edit Task
 --focus-on-create     --foc        Y    subject  Field to focus on Create -
 --term                --te         Y             Value for TERM= emulator
@@ -643,8 +648,6 @@ OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 --colors              --co         Y    8        Nr. of colors (8, 16, 256)
 --cache-stfl          --tsc        N    true     Enable/disable STFL cache
 --cache-avh           --avhc       N    true     - internal hierarchy cache
---no-cache-stfl       --no-tsc     N             
---no-cache-avh        --no-avhc    N             
 --debug               -d           N    false    Show general debug
 --debug-widget        --dw         Y             Show all for named widget
 --debug-keys          --dk         N    false    Show keypresses
