@@ -178,7 +178,7 @@ module TASKMAN
 
 		def menus
 			#@widgets.select{ |w| w.name=~ /^menu/}
-			self.all_widgets_hash.values.select{ |w| w.name=~ /^menu\d/}
+			self.all_widgets_hash.values.select{ |w| w.name=~ /^menu/}
 		end
 	end
 end
