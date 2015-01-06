@@ -56,12 +56,12 @@ module TASKMAN
 #
 #				#set= $tasklist.tasks[@widgets.count..-1]
 ##				s= :main
-#				$session.db.each do |t|
-##					nid= [ s, t.id].to_id_s # nid== "name/id" string
+#				$session.sth.each do |t|
+##					id= [ s, t.id].to_id_s # id== "name/id" string
 #					#s= self.parent.fmt% [ t.flag, t.id, s, t.subject]
 #					self<< ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
 #				end
-#				#if $session.db.size> 0
+#				#if $session.sth.size> 0
 #					self.clear_caches
 #					#self.var_offset= o
 #					#self.var_pos= p
@@ -76,10 +76,10 @@ module TASKMAN
 			self.mvc
 			if arg[:pos]
 				self.var_pos= arg[:pos]
-			elsif arg[:nid]
+			elsif arg[:id]
 				i= 0
 				$tasklist.tasks.each do |db, t|
-					if arg[:nid]== [ db, t.id]
+					if arg[:id]== [ db, t.id]
 						self.var_pos= i
 					end
 					i+= 1

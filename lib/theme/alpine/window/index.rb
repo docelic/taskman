@@ -6,7 +6,7 @@ module TASKMAN
 		require 'theme/alpine/window/main/status'
 		require 'theme/alpine/window/main/menu'
 
-		attr_accessor :category
+		attr_accessor :folder
 
 		def initialize arg= {}
 			super

@@ -3,33 +3,25 @@
 # Default: alpine style (style/alpine.rb)
 
 module TASKMAN
-	class Style < Object
+	class Style
 		@@Def= []
-		@@Def_hash= {}
 
 		def initialize arg= {}
 			super()
 			require File.join :style, arg[:style]
-
-			## Accessing styles via specific name (through a hash) is
-			## here mainly for compatibility with old access method.
-			## The new method iterates over styles being an array, and
-			## handles symbols, regexes and procs in order as specified,
-			## first match winning.
-			#@@Def.each{ |selector, spec|
-			#	@@Def_hash[selector]= spec
-      #}
 		end
-
-		## As mentioned, obsolete approach
-		#def [] arg
-		#	@@Def_hash[arg]
-		#end
 
 		# Current approach where all style specs are iterated over,
 		# in the order of definition.
 		def specs
 			@@Def
+		end
+
+		# Delete/clear all current styles. Useful in the colortest
+		# window where we need to have no default style, or it
+		# overwrites our colors.
+		def clear
+			@@Def= []
 		end
 	end
 end

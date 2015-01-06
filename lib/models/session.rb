@@ -3,8 +3,8 @@ module TASKMAN
 		# List of active/existing sessions
 		@@sessions= []
 
-		attr_accessor :category, :category_name
-		attr_accessor :db #, :item
+		attr_accessor :folder, :folder_name
+		attr_accessor :dbh, :dbn, :sth #, :item
 		attr_accessor :format
 
 		def initialize arg= {}
@@ -14,8 +14,8 @@ module TASKMAN
 
 			@name= arg[:name]|| 'default'
 
-			@category= arg[:category]|| nil
-			@category_name= if @category then @category.name else '' end
+			@folder= arg[:folder]|| nil
+			@folder_name= if @folder then @folder.name else '' end
 
 			# XXX WIP-- this needs to be per-window, and basically be an array
 			# that is joined, so that we know how many args to give in
@@ -41,12 +41,16 @@ module TASKMAN
 
 		# Sync different variables within session
 		def update
-			if @category
-				@category_name= @category.name
-				@db= @category.items
+			@dbh= Item::Main
+			@dbn= $opts['main-db']
+			# Is assignation of @sth here overriding any
+			# composed pieces, like .limit(), .where() etc.
+			if @folder
+				@folder_name= @folder.name
+				@sth= @folder.items
 			else
-				@category_name= _('ALL')
-				@db= Item.all
+				@folder_name= _('ALL')
+				@sth= Item.all
 			end
 		end
 	end

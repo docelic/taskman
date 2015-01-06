@@ -3,7 +3,7 @@
 
 module TASKMAN
 
-	class Defaults < Object
+	class Defaults
 
 		attr_reader :opts
 

@@ -265,12 +265,14 @@ module TASKMAN
 			super
 			@widget= :vbox
 
+			$app.style.clear
+
 			wpc= ( $COLUMNS/ 15).floor # cell width per color
 			c= 0
 			20.times do |i|
 				row= Hbox.new( :'.expand'=> 'h')
 				15.times do |j|
-					l= Label.new( text: c.to_s, '.width'=> wpc, :'.expand'=> 'h', style_normal: "bg=color#{c},fg=black")
+					l= Label.new( name: "color#{c.to_s}", text: c.to_s, '.width'=> wpc, :'.expand'=> 'h', style_normal: "bg=color#{c},fg=black")
 					# Not sure why we can't literally use c< 256 here, when the
 					# ncurses limit is 256. So, we use c< 252. Or rather I know,
 					# this window itself uses a couple pairs. If you change the
@@ -281,6 +283,10 @@ module TASKMAN
 				end
 				self<<row
 			end
+
+			# As the last item in the last row, use a text input box. Serves no
+			# purpose but to give STFL some widget to focus.
+			@widgets[-1].widgets[-1]= Input.new( name: 'focus', process: 0, text: '', focus: 1)
 		end
 	end
 end

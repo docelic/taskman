@@ -138,7 +138,12 @@ module TASKMAN
 		def var_value_now()          @variables['value']=          ( $app.ui.get "#{@name}_value"         ).to_i end
 		def var_process_now()        @variables['process']=        ( $app.ui.get "#{@name}_process"       ).to_i end
 
-		def var__display=( arg)        $app.ui.set "#{@name}_.display"      , ( @variables['.display']= arg       ).to_s end
+		def var__display=( arg)
+			if $app.ui
+				$app.ui.set "#{@name}_.display", ( @variables['.display']= arg).to_s # self
+			end
+			@widgets.each do |w| w.var__display= arg end # and all children
+		end
 		def var_style_normal=( arg)    $app.ui.set "#{@name}_style_normal"  , ( @variables['style_normal']= arg   ).to_s end
 		def var_style_focus=( arg)     $app.ui.set "#{@name}_style_focus"   , ( @variables['style_focus']= arg    ).to_s end
 		def var_style_selected=( arg)  $app.ui.set "#{@name}_style_selected", ( @variables['style_selected']= arg ).to_s end
@@ -212,6 +217,12 @@ module TASKMAN
 		# functions do more than that.
 		def << arg
 			arg.parent= self
+
+			# Child inherits parent's focus and display settings
+			# Hm, seems not a good idea, doesn't work well.
+			#arg.variables['.display']= @variables['.display']
+			#arg.variables['can_focus']= @variables['can_focus']
+
 			if MenuAction== arg.class
 				@actions<< arg
 			else

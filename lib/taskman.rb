@@ -143,8 +143,8 @@ module TASKMAN
 			$:.unshift $opts['lib-dir']
 
 			require 'models/item'
-			require 'models/category'
-			require 'models/item_category'
+			require 'models/folder'
+			require 'models/categorization'
 			require 'models/session'
 
 			require 'tasklist'
@@ -290,15 +290,14 @@ module TASKMAN
 		def exec arg= {}
 			$session.update
 
+			# GUI color scheme
+			@style= Style.new( style: $opts['style'])
+
 			# GUI layout
 			wname= arg[:window]
 			arg[:window]= wname
 			arg[:theme]= $opts['theme']
 			@theme= Theme.new arg
-
-			# GUI color scheme
-			arg= { style: $opts['style']}
-			@style= Style.new arg
 
 			# @ui: lowlevel STFL object (e.g. Stfl.get() in the manual
 			# is $app.ui.get() in Taskman).

@@ -6,8 +6,8 @@ module TASKMAN
 			super
 
 			@widget= nil
-			i= arg[:id] ? Item.find( arg[:id]) : Item::Main.new
-			db= $opts['main-db'].to_s
+			i= arg[:id] ? $session.dbh.find( arg[:id]) : $session.dbh.new
+			db= $session.dbn.to_s
 
 			self<< MenuAction.new( name: :top_header)
 
@@ -122,22 +122,22 @@ module TASKMAN
 		end
 
 		def init arg= {}
-			if arg[:open_timing]== 1
+			if arg[:open_timing]
 				w= self.parent
 				a= w['timing'].action
 				if Symbol=== f= a.function
-					a.send( f, window: self.parent, widget: arg[:widget], action: a, function: f, event: 'ENTER')
+					a.send( f, window: self.parent, widget: arg[:widget], base_widget: arg[:base_widget], action: a, function: f, event: 'ENTER')
 				elsif Proc=== f= a.function
-					f.yield( window: self.parent, widget: c, action: a, function: f, event: 'ENTER')
+					f.yield( window: self.parent, widget: c, base_widget: arg[:base_widget], action: a, function: f, event: 'ENTER')
 				end
 			end
-			if arg[:open_reminding]== 1
+			if arg[:open_reminding]
 				w= self.parent
 				a= w['reminding'].action
 				if Symbol=== f= a.function
-					a.send( f, window: self.parent, widget: arg[:widget], action: a, function: f, event: 'ENTER')
+					a.send( f, window: self.parent, widget: arg[:widget], base_widget: arg[:base_widget], action: a, function: f, event: 'ENTER')
 				elsif Proc=== f= a.function
-					f.yield( window: self.parent, widget: c, action: a, function: f, event: 'ENTER')
+					f.yield( window: self.parent, widget: c, base_widget: arg[:base_widget], action: a, function: f, event: 'ENTER')
 				end
 			end
 			# On new tasks, we focus the first field (Subject)

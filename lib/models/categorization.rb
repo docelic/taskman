@@ -2,9 +2,9 @@
 
 module TASKMAN
 
-	class ItemCategory < ActiveRecord::Base
+	class Categorization < ActiveRecord::Base
 		belongs_to :item
-		belongs_to :category
+		belongs_to :folder
 	end 
 
 end

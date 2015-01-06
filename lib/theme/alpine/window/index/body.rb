@@ -19,11 +19,11 @@ module TASKMAN
 			l<< MenuAction.new( name: 'pos_home')
 			l<< MenuAction.new( name: 'pos_end')
 
-			$session.db.each do |t|
+			$session.sth.each do |t|
 				s= $session.format% [ t.flag, t.id, s, t.subject]
 				@l<< ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
 			end
-			if $session.db.size== 0
+			if $session.sth.size== 0
 				@l<< ListItem.new
 			end
 
@@ -33,14 +33,14 @@ module TASKMAN
 			# save that so we can set this position during init()
 			# later.
 			if arg[:pos] then @pos= arg[:pos] end
-			if arg[:nid] then @nid= arg[:nid] end
+			if arg[:id] then @id= arg[:id] end
 
 			# XXX Is it alright that we do this manually variable by
 			# variable like above? Doesn't seem really good.
 		end
 
 		def init arg= {}
-			@l.init arg.merge( pos: @pos, nid: @nid)
+			@l.init arg.merge( pos: @pos, id: @id)
 		end
 	end
 end

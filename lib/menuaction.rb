@@ -377,7 +377,7 @@ module TASKMAN
 #		# This cannot be named "all_widgets_hash" or endless loop will ensue :)
 #		# (Due to the widget above being called "all_widgets_hash" as well)
 #		def all_widgets arg= {}
-#			pfl $app.screenall_widgets_hash.keys
+#			pfl $app.screen.all_widgets_hash.keys
 #		end
 #
 #		def get_create_help arg= {}
@@ -422,7 +422,7 @@ module TASKMAN
 				pfl e
 			end
 
-			index arg.merge( nid: [ db, t2.id])
+			index arg.merge( id: t2.id)
 			nil
 		end
 
@@ -495,7 +495,7 @@ module TASKMAN
 					pfl e
 				end
 
-				index arg.merge( nid: [ db, i.id])
+				index arg.merge( id: i.id)
 
 			# XXX We replace/complement this with StandardError?
 			rescue Exception => e
@@ -514,8 +514,8 @@ module TASKMAN
 			arg2= {
 				window: 'create',
 				title: 'VIEW / EDIT TASK',
-				open_timing: 1,
-				open_reminding: 1,
+				open_timing: true,
+				open_reminding: true,
 				id: id
 			}
 			create arg2
@@ -523,10 +523,10 @@ module TASKMAN
 		end
 		def delete_task arg= {}
 			w= arg[:widget]
-			nid= w.name.to_id
-			#db= nid[0].to_item_class
-			#id= nid[1]
-			t= $tasklist.by_aid( nid) #db.find( id)
+			id= w.name.to_i
+			#db= id[0].to_item_class
+			#id= id[1]
+			t= $session.dbh.find( id) #db.find( id)
 			t.flag= 'D'
 			index( {
 				pos: arg[:base_widget].var_pos_now+ 1,
@@ -536,10 +536,10 @@ module TASKMAN
 		end
 		def undelete_task arg= {}
 			w= arg[:widget]
-			nid= w.name.to_id
-			#db= nid[0].to_item_class
-			#id= nid[1]
-			t= $tasklist.by_aid( nid) #db.find( id)
+			id= w.name.to_i
+			#db= id[0].to_item_class
+			#id= id[1]
+			t= $session.dbh.find( id) #db.find( id)
 			t.flag= nil
 			index( {
 				pos: arg[:base_widget].var_pos_now,

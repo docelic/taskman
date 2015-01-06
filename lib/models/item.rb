@@ -10,11 +10,11 @@ module TASKMAN
 
 	class Item < ActiveRecord::Base
 
-		has_many :item_categories, dependent: :destroy
-		has_many :categories, through: :item_categories
+		has_many :categorizations, dependent: :destroy
+		has_many :folders, through: :categorizations
 
-		attr_writer :category_names
-		after_save :assign_categories
+		attr_writer :folder_names
+		after_save :assign_folders
 
 		@@weekdays= Date::ABBR_DAYNAMES.map {|p| p.upcase}
 		@@months= Date::ABBR_MONTHNAMES.dup
@@ -54,11 +54,11 @@ module TASKMAN
 			#self.message||= '' # Body of the task
 		end 
 
-		def nid
-			# If e.g. we have TASKMAN::Item::Main with ID 4, this
-			# function will return [ :main, 4]
-			[ self.class.to_s.split( '::')[-1].downcase.to_sym, self.id]
-		end
+#		def nid
+#			# If e.g. we have TASKMAN::Item::Main with ID 4, this
+#			# function will return [ :main, 4]
+#			[ self.class.to_s.split( '::')[-1].downcase.to_sym, self.id]
+#		end
 
 		#def generate_id
 		#	@id= ( Time.now.to_i.to_s+ Time.now.usec.to_s).to_i
@@ -475,16 +475,16 @@ module TASKMAN
 			end
 		end
 
-		def category_names
-			@category_names|| categories.map(&:name).join( ' ')
+		def folder_names
+			@folder_names|| folders.map(&:name).join( ' ')
 		end
 
 		private
 
-		def assign_categories
-			if @category_names
-				self.categories= @category_names.split( /\s+/).map do |n|
-					Category.find_or_create_by_name n
+		def assign_folders
+			if @folder_names
+				self.folders= @folder_names.split( /\s+/).map do |n|
+					Folder.find_or_create_by_name n
 				end
 			end
 		end
