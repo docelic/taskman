@@ -28,7 +28,7 @@ module TASKMAN
 				:quit,
 				:hotkey_in,
 				:nextcmd2,
-				:gotofolder,
+				:'', #gotofolder,
 				:'',
 				:'', #:quit_now,
 			)

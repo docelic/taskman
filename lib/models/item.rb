@@ -478,13 +478,16 @@ module TASKMAN
 		def folder_names
 			@folder_names|| folders.map(&:name).join( ' ')
 		end
+		def parse_folder_names arg
+			@folder_names= arg
+		end
 
 		private
 
 		def assign_folders
 			if @folder_names
 				self.folders= @folder_names.split( /\s+/).map do |n|
-					Folder.find_or_create_by_name n
+					Folder.find_or_create_by( name: n)
 				end
 			end
 		end

@@ -40,6 +40,11 @@ module TASKMAN
 			h2<< Input.new( name: :subject, '.expand'=> 'h', text: i._subject, tooltip: nil)
 			v<< h2
 
+			h2= Hbox.new(                     '.expand'=> 'h')
+			h2<< Label.new(                   '.expand'=> '',  text: 'Category    : ')
+			h2<< Input.new( name: :folder_names,   '.expand'=> 'h', text: i._folder_names, tooltip: nil)
+			v<< h2
+
 			# "Options" toggles
 
 			#

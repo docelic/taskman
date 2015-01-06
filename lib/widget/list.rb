@@ -78,8 +78,8 @@ module TASKMAN
 				self.var_pos= arg[:pos]
 			elsif arg[:id]
 				i= 0
-				$tasklist.tasks.each do |db, t|
-					if arg[:id]== [ db, t.id]
+				$session.sth.each do |t|
+					if arg[:id]== t.id
 						self.var_pos= i
 					end
 					i+= 1

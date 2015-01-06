@@ -428,10 +428,10 @@ module TASKMAN
 		def clone_task arg= {}
 			w= arg[:window]
 			id= w['id'].var_text_now.to_i
-			db= w['db'].var_text_now.to_sym
-			return unless id and db
+			#db= w['db'].var_text_now.to_sym
+			return unless id #and db
 
-			t= $tasklist.by_aid [db, id]
+			t= $session.dbh.find id #$tasklist.by_aid [db, id]
 			t2= t.dup
 			t2.save
 
@@ -461,10 +461,11 @@ module TASKMAN
 			#	db.to_item_class.new
 			#	created= true
 			#end
-			i= arg[:item]|| Item.find( id)
-			unless i
-				i= Item.new #db.to_item_class.new
+			i= arg[:item]|| begin
+				Item.find( id)
+			rescue
 				created= true
+				Item.new # $session.dbn.to_item_class.new
 			end
 
 			if id> 0 then i.id= id end
@@ -473,6 +474,7 @@ module TASKMAN
 
 				[
 					:subject,
+					:folder_names,
 					:start,
 					:stop,
 					:time_ssm,
