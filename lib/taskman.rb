@@ -288,6 +288,8 @@ module TASKMAN
 		end
 
 		def exec arg= {}
+			$session.update
+
 			# GUI layout
 			wname= arg[:window]
 			arg[:window]= wname

@@ -62,10 +62,10 @@ module TASKMAN
 			                      selected:"fg=#{green},bg=#{gray}",
 			],
 
-			[ :status_label,      normal: "fg=#{red},bg=#{darkgray}", ],
-			[ :status_space,      normal: "fg=#{blue},bg=#{darkgray}", ],
-			[ :status_question,   normal: "fg=#{blue},bg=#{darkgray}", ],
-			[ :status_answer,     normal: "fg=#{blue},bg=#{darkgray}", ],
+			[ :status_label,      normal: "fg=#{blue},bg=#{darkgray}", ],
+			[ :status_space,      normal: "fg=#{red},bg=#{darkgray}", ],
+			[ :status_question,   normal: "fg=#{red},bg=#{darkgray}", ],
+			[ :status_answer,     normal: "fg=#{red},bg=#{darkgray}", ],
 
 			[ :menu,              normal: "fg=#{white},bg=#{darkgray}", ],
 			[ :'menu @hspace',    normal: "fg=#{white},bg=#{darkgray}", ],
