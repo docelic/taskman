@@ -56,6 +56,7 @@ module TASKMAN
 				[ '--main-db',             '--db',       GetoptLong::REQUIRED_ARGUMENT],
 				[ '--echo-time',           '--ec',       GetoptLong::REQUIRED_ARGUMENT],
 				[ '--timeout',             '--loop',     GetoptLong::REQUIRED_ARGUMENT],
+				[ '--tooltips',            '--tips',     GetoptLong::NO_ARGUMENT],
 
 				[ '--focus-on-edit',       '--foe',      GetoptLong::REQUIRED_ARGUMENT],
 				[ '--focus-on-create',     '--foc',      GetoptLong::REQUIRED_ARGUMENT],
@@ -69,6 +70,7 @@ module TASKMAN
 				# The --no versions just for getopt to not complain:
 				[ '--no-cache-stfl',       '--no-tsc',   GetoptLong::NO_ARGUMENT],
 				[ '--no-cache-avh',        '--no-avhc',  GetoptLong::NO_ARGUMENT],
+				[ '--no-tooltips',         '--no-tips',  GetoptLong::NO_ARGUMENT],
 
 				[ '--debug',               '-d',         GetoptLong::NO_ARGUMENT],
 				[ '--debug-widget',        '--dw',       GetoptLong::REQUIRED_ARGUMENT],

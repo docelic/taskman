@@ -53,6 +53,7 @@ module TASKMAN
 
 			'echo-time'          => 0.5,
 			'timeout'            => 0,
+			'tooltips'           => true,
 
 			'focus-on-edit'      => 'message',
 			'focus-on-create'    => 'subject',
@@ -99,6 +100,7 @@ $description= {
   'exit-key'               => _('One-key exit from program'),
   'main-db'                => _('Name of main/own database'),
   'echo-time'              => _('Duration of msg visibility'),
+  'tooltips'               => _('Show automatic tooltips'),
   'timeout'                => _('Force main loop every X ms'),
   'cache-stfl'             => _('Enable/disable STFL cache'),
   'cache-avh'              => _('- internal hierarchy cache'),

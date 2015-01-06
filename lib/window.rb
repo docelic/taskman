@@ -85,13 +85,12 @@ module TASKMAN
 					# Whatever the key press is, clear the window's status box,
 					# if one exists. (Or set it to the current item's tooltip, if any).
 					#if event!= 'TIMEOUT'
-						$app.screen.status_label_text=
-							if widget.tooltip then
-								widget.tooltip
-							else
-								nil
-							end
-					#end
+					$app.screen.status_label_text=
+						if $opts['tooltips'] and widget.tooltip then
+							widget.tooltip
+						else
+							nil
+						end
 
 				else # (If we don't have anything focused or focused widget not found)
 					if not focus

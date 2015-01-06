@@ -489,7 +489,7 @@ module TASKMAN
 
 		def assign_folders
 			if @folder_names
-				self.folders= @folder_names.split( /\s+/).map do |n|
+				self.folders= @folder_names.split( /[\s,]+/).map do |n|
 					Folder.find_or_create_by( name: n)
 				end
 			end
