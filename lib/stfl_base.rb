@@ -197,8 +197,8 @@ module TASKMAN
 		# this if e.g. you want to run actions after the window is created.
 		# For now, this has to be manual, but I'm thinking of a way to
 		# support executing this automatically on X<< y
-		def init arg= {}
-		end
+		#def init arg= {}
+		#end
 
 		# Clear all_widgets_hash() cache so that it is rebuilt on next access
 		def clear_caches

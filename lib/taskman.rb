@@ -283,9 +283,6 @@ module TASKMAN
 				end
 
 				@screen.main_loop -1
-				if @screen.respond_to? :init
-					@screen.init arg
-				end
 				@screen.main_loop
 
 				if debug?
@@ -322,7 +319,10 @@ module TASKMAN
 			# After the window's been set up, inform the current main
 			# loop that it should exit, and that the new window's
 			# one needs to be started.
-			$stop_loop= true
+			# Instead of just stop= true, pass args with which the
+			# window was created, so that init() called later can
+			# operate using the same arguments.
+			$stop_loop= arg
 
 			arg
 		end

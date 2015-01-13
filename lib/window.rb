@@ -28,6 +28,25 @@ module TASKMAN
 			end
 			$main_loop= true
 
+			# If we are here (in main_loop() but not within 'loop do' below)
+			# it means we're either running for the first time (app startup)
+			# or the user switched to a new window or similar, the previous
+			# loop has exited, and we're running a new loop in the context
+			# of the new window.
+			# As such, run window's init(), if one exists.
+			# Also, to clarify: the reason why we're checking for stop_loop
+			# here is so that we could read its value and call init() with
+			# it before re-setting it to false.
+			#@screen.main_loop -1
+			if $stop_loop and code>= 0
+				if $app.screen.respond_to? :init
+					# (As said, $stop_loop is reused to contain args with which
+					# the window itself was created)
+					$app.screen.init $stop_loop
+				end
+				$stop_loop= false
+			end
+
 			loop do
 				event= $app.ui.run code
 				focus= $app.ui.get_focus
@@ -169,7 +188,9 @@ module TASKMAN
 				# Now, when everything was said and done, exit from this
 				# loop if that was requested.
 				if $stop_loop #and code>= 0
-					$stop_loop= false
+					# We don't set to false here but at the beginning of
+					# main_loop() -- check there.
+					#$stop_loop= false
 					break
 				end
 			end
