@@ -239,10 +239,16 @@ module TASKMAN
 		# widget>> ListItem - removes all child ListItems
 		def >> arg
 			to_remove= []
+			pfl arg.class
 			if String=== arg and self[arg]
 				to_remove.push self[arg]
 			elsif Class=== arg
 				@widgets.each do |w|
+					if arg=== w
+						to_remove.push w
+					end
+				end
+				@actions.each do |w|
 					if arg=== w
 						to_remove.push w
 					end

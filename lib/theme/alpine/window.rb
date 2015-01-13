@@ -35,6 +35,7 @@ module TASKMAN
 
 				# Remove all actions (if any) and set up for new prompt
 				sa>> MenuAction
+				pfl sa.widgets.size, sa.actions.size
 				sa<< a= MenuAction.new( p.merge( name: "#{@name}_handle_answer"))
 				sa<< MenuAction.new( name: 'cancel_question') # Cancels on ESC
 

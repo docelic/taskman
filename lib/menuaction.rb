@@ -86,7 +86,9 @@ module TASKMAN
 			'cut_line'  => { hotkey: '^K',   shortname: 'Cut Line',         description: 'Cut line', function: nil},
 			'postpone'  => { hotkey: '^O',   shortname: 'Postpone',         description: '', function: :postpone},
 			'cancel'    => { hotkey: 'TIMEOUT', hotkey_label: '^C',  shortname: 'Cancel',           description: '', function: :cancel},
-			'listfolders'=>{ hotkey: 'L',   shortname: 'ListFldrs',   menuname: 'FOLDER LIST', description: 'Select a folder to view', function: :list },
+			'listfolders'=>{ hotkey: 'L',   shortname: 'FldrList',   menuname: 'FOLDER LIST', description: 'Select a folder to view', function: :list },
+
+			'goto_line'=> { hotkey: ':',   shortname: 'Goto Line',    menuname: 'Goto Line',    description: '', function: :goto_line },
 
 			# Testing shortcuts
 			#'inc_folder_count'=> { hotkey: 'SR',   shortname: 'Folder Cnt+1',     description: '', function: :inc_folder_count },
@@ -326,10 +328,11 @@ module TASKMAN
 				end
 
 				if t.length> 0
-					$session.whereis= [ t]
+					$session.whereis.push t
 					r= Regexp.new t, Regexp::IGNORECASE
 					pos= bw.var_pos_now
 					posids= [ *( ( pos+1)..( bw.widgets.size- 1)), *( 0..pos)]
+					pfl :WHEREIS
 					posids.each do |i|
 						if bw.widgets[i].var_text_now=~ r
 							bw.var_pos= i
@@ -337,6 +340,33 @@ module TASKMAN
 						end
 						i+= 1
 					end
+				end
+
+				w['status_display'].var__display= 1
+				w['status_prompt'].var__display= 0
+				w.set_focus_default
+				nil
+			}})
+			nil
+		end
+
+		def goto_line arg= {}
+			fmt= ':'
+			args= []
+			bw= arg[:base_widget]
+			$app.screen.ask( ( _( fmt)% args).truncate2, {
+				instant: false,
+				function: Proc.new { |arg|
+				## window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				wi= arg[:widget]
+				#e= arg[:event]
+
+				t= wi.var_text_now.to_i- 1 #.strip
+				t= 0 if t< 0
+				if t.to_s.length>= 0 and t>= 0 and t.to_s=~ /^\d+$/
+					pfl :SETTING_POS_TO, t
+					bw.var_pos= t
 				end
 
 				w['status_display'].var__display= 1

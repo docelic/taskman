@@ -8,6 +8,7 @@ module TASKMAN
 
 			self<< MenuAction.new( name: :top_list)
 			self<< MenuAction.new( name: :bottom_list)
+			self<< MenuAction.new( name: :whereis, hotkey: '/')
 
 			@prev_offset= nil
 

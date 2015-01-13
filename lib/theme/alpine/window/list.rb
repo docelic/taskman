@@ -40,7 +40,7 @@ module TASKMAN
 			m2.add_action(
 				:help2,
 				:quit,
-				:'',
+				:goto_line,
 				indx,
 				:'',
 				:'',

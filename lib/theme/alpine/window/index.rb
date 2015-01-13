@@ -40,14 +40,14 @@ module TASKMAN
 				:help2,
 				:mainm,
 				:create,
-				:'',
+				:goto_line,
 				:'',
 				:'',
 				:tablebr,
 				:other2,
 				:quit,
-				:'', #nextmsg
 				:whereis,
+				:'', #nextmsg
 				:'', #undelete (mark as not done?)
 				:'', #duplicate
 			)
