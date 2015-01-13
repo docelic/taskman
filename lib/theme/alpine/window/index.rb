@@ -47,7 +47,7 @@ module TASKMAN
 				:other2,
 				:quit,
 				:'', #nextmsg
-				:'', #nextpage
+				:whereis,
 				:'', #undelete (mark as not done?)
 				:'', #duplicate
 			)

@@ -7,6 +7,7 @@ module TASKMAN
 		attr_accessor :dbh, :dbn, :sth #, :item
 		attr_accessor :format
 		attr_accessor :flags
+		attr_accessor :whereis
 
 		def initialize arg= {}
 			super()
@@ -27,6 +28,8 @@ module TASKMAN
 			@format= ' %1s %-4s %-6s %s'
 
 			#@item= nil
+
+			@whereis= []
 
 			self.update
 		end

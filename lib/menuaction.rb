@@ -82,7 +82,7 @@ module TASKMAN
 			'gotofolder'=> { hotkey: 'G',   shortname: 'GotoFldr',    menuname: 'GotoFldr',    description: '', function: nil },
 			'journal'   => { hotkey: 'J',   shortname: 'Journal',     menuname: 'Journal',     description: '', function: nil },
 			'addrbook'  => { hotkey: 'A',   shortname: 'AddrBook',    menuname: 'AddrBook',    description: '', function: nil },
-			'whereis'   => { hotkey: 'W',   shortname: 'WhereIs',     menuname: 'Find String', description: 'Find a string', function: nil },
+			'whereis'   => { hotkey: 'W',   shortname: 'WhereIs',     menuname: 'Find String', description: 'Find a string', function: :whereis },
 			'cut_line'  => { hotkey: '^K',   shortname: 'Cut Line',         description: 'Cut line', function: nil},
 			'postpone'  => { hotkey: '^O',   shortname: 'Postpone',         description: '', function: :postpone},
 			'cancel'    => { hotkey: 'TIMEOUT', hotkey_label: '^C',  shortname: 'Cancel',           description: '', function: :cancel},
@@ -301,6 +301,47 @@ module TASKMAN
 						w.set_focus_default
 					end
 				end
+				nil
+			}})
+			nil
+		end
+
+		def whereis arg= {}
+			fmt= 'Word to search for [%s]:'
+			swl1= $session.whereis.last
+			args= [ swl1]
+			bw= arg[:base_widget]
+			$app.screen.ask( ( _( fmt)% args).truncate2, {
+				instant: false,
+				function: Proc.new { |arg|
+				## window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				wi= arg[:widget]
+				#e= arg[:event]
+
+				t= wi.var_text_now #.strip
+				swl2= $session.whereis.last
+				if t.length== 0 and swl2
+					t= swl2
+				end
+
+				if t.length> 0
+					$session.whereis= [ t]
+					r= Regexp.new t, Regexp::IGNORECASE
+					pos= bw.var_pos_now
+					posids= [ *( ( pos+1)..( bw.widgets.size- 1)), *( 0..pos)]
+					posids.each do |i|
+						if bw.widgets[i].var_text_now=~ r
+							bw.var_pos= i
+							break
+						end
+						i+= 1
+					end
+				end
+
+				w['status_display'].var__display= 1
+				w['status_prompt'].var__display= 0
+				w.set_focus_default
 				nil
 			}})
 			nil

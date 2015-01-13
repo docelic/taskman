@@ -30,7 +30,7 @@ module TASKMAN
 				:'', #nextmsg
 				:'', #nextpage
 				:delete_folder,
-				:'', #duplicate
+				:whereis, #duplicate
 			)
 
 			m2= Theme::Window::Main::Menu.new(      arg.merge( name: :menu2, :'.display'=> 0))
