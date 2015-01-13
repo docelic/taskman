@@ -17,6 +17,20 @@ module TASKMAN
 			@visible_to= 0
 		end
 
+		def init arg= {}
+			if arg[:pos]
+				self.var_pos= arg[:pos]
+			elsif arg[:pos_name]
+				n= arg[:pos_name].to_s
+				i= 0
+				@widgets.each do |t|
+					if n== t.name
+						self.var_pos= i
+					end
+					i+= 1
+				end
+			end
+		end
 	end
 
 	class MVCList < List
@@ -70,21 +84,6 @@ module TASKMAN
 #				#end
 			#end
 #			@prev_offset= o
-		end
-
-		def init arg= {}
-			self.mvc
-			if arg[:pos]
-				self.var_pos= arg[:pos]
-			elsif arg[:id]
-				i= 0
-				$session.sth.each do |t|
-					if arg[:id]== t.id
-						self.var_pos= i
-					end
-					i+= 1
-				end
-			end
 		end
 	end
 

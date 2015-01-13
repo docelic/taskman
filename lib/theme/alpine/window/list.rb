@@ -11,7 +11,7 @@ module TASKMAN
 			@widget= 'vbox'
 
 			self<< Theme::Window::Main::Header.new( arg.merge( name: :header, :title => _('FOLDER LIST')))
-			self<< Theme::Window::List::Body.new(  arg.merge( name: :body))
+			self<< @b= Theme::Window::List::Body.new(  arg.merge( name: :body))
 			self<< Theme::Window::Main::Status.new( arg.merge( name: :status))
 
 			vbox= Vbox.new( name: 'menu', :'.expand' => 'h')
@@ -22,14 +22,14 @@ module TASKMAN
 				:mainlt,
 				:'', #prev fldr
 				:'', #prev page
-				:'', #delete (mark as done?)
+				:add_folder,
 				:'', #edit
 				:tablebr,
 				:other,
 				:'', #:quit, # Select/goto folder
 				:'', #nextmsg
 				:'', #nextpage
-				:'', #undelete (mark as not done?)
+				:delete_folder,
 				:'', #duplicate
 			)
 
@@ -57,6 +57,11 @@ module TASKMAN
 			vbox<< m2
 
 			self<< vbox
+		end
+
+		def init arg= {}
+			super
+			@b.init arg
 		end
 	end
 end

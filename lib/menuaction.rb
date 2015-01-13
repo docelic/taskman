@@ -32,12 +32,15 @@ module TASKMAN
 			'index'     => { hotkey: 'I',   shortname: 'Index',       menuname: 'Task Index',  description: 'View tasks in current folder', function: :index },
 			'to_index'  => { hotkey: '^T',  shortname: 'To Index',    menuname: 'Task Index',    description: 'View tasks in current folder', function: :index },
 
-			'create_task'=>{ hotkey: '^X',  shortname: 'Create',     menuname: 'Create a Task',description: '', function: :create_task},
+			'create_task'=>{ hotkey: '^X',  shortname: 'Create',     menuname: 'Create Task',description: '', function: :create_task},
 			'clone_task' =>{ hotkey: '^D',  shortname: 'Clone',      menuname: 'Clone current Task',description: '', function: :clone_task},
 			'select_task'=>{ hotkey: 'ENTER', hotkey_label: 'RET', shortname: 'Select',    menuname: 'Select Task', description: '', function: :select_task},
 			'delete_task'=>{ hotkey: 'D',   shortname: 'Delete',    menuname: 'Delete Task', description: '', function: :delete_task},
 			'undelete_task'=>{ hotkey: 'U',   shortname: 'Undelete',  menuname: 'Undelete Task', description: '', function: :undelete_task},
 			'save_task' => { hotkey: '^X',  shortname: 'Save',        menuname: 'Save Changes',description: '', function: :create_task},
+
+			'add_folder'=>{ hotkey: 'A',  shortname: 'Add',     menuname: 'Add Folder',description: '', function: :add_folder},
+			'delete_folder'=>{ hotkey: 'D',  shortname: 'Delete',     menuname: 'Delete Folder',description: '', function: :delete_folder},
 
 			'quit'      => { hotkey: 'Q',   shortname: 'Quit',        menuname: 'Quit',        description: 'Leave the Taskman program', function: :quit },
 			# Handler for Quit Now can be nil because this is checked for and executed directly in the main loop. This entry exists only for showing in menu when you want.
@@ -108,8 +111,6 @@ module TASKMAN
 			@instant= arg.has_key?( :instant) ? arg.delete( :instant): @@Menus[name] ? @@Menus[name][:instant] : nil
 
 			# Function to execute can be specified in a parameter or come from a default.
-			# If none of that is specified, it defaults to a function named the same as
-			# the menuaction itself.
 			@function= arg.has_key?( :function) ? arg.delete( :function) : @@Menus[name] ? @@Menus[name][:function] : nil
 
 			super
@@ -180,11 +181,11 @@ module TASKMAN
 				# No need to specify ENTER among hotkeys because ENTER always
 				# runs first action associated with widget.
 				hotkey: [ _('Y'), _('N')],
-	      function: Proc.new { |arg|
+				function: Proc.new { |arg|
 				# window, widget, action, function, event-- WWAFE
 				w= arg[:window]
 				wi= arg[:widget]
-	      e= arg[:event]
+				e= arg[:event]
 
 				a= e.to_bool #wi.var_text_now.to_bool|| e.to_bool
 
@@ -215,11 +216,11 @@ module TASKMAN
 			$app.screen.ask( _('Cancel task?'), {
 				instant: true,
 				hotkey: [ _('Y'), _('N')],
-	      function: Proc.new { |arg|
+				function: Proc.new { |arg|
 				# window, widget, action, function, event-- WWAFE
 				w= arg[:window]
 				wi= arg[:widget]
-	      e= arg[:event]
+				e= arg[:event]
 				# We're using char_to_bool here as an ugly fix to require
 				# that keypress be a single char. Otherwise, when a person
 				# presses Ctrl+C to cancel, the event is "TIMEOUT" (due to
@@ -245,6 +246,63 @@ module TASKMAN
 			w['status_display'].var__display= 1
 			w['status_prompt'].var__display= 0
 			w.set_focus_default
+			nil
+		end
+
+		def add_folder arg= {}
+			fmt= 'Folder name to add:'
+			args= []
+			$app.screen.ask( ( _( fmt)% args).truncate2, {
+				instant: false,
+				function: Proc.new { |arg|
+				## window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				wi= arg[:widget]
+				#e= arg[:event]
+
+				t= wi.var_text_now.strip
+				if t.length> 0 and t=~ /\S/
+					to= Folder.find_or_create_by( name: t)
+					list( pos_name: to.id)
+				end
+
+				w['status_display'].var__display= 1
+				w['status_prompt'].var__display= 0
+				w.set_focus_default
+				nil
+			}})
+			nil
+		end
+		def delete_folder arg= {}
+			fmt= 'DELETE "%s"?'
+			cat= Folder.find( arg[:widget].name.to_i)
+			args= [ cat.name]
+			bw= arg[:base_widget]
+			$app.screen.ask( ( _( fmt)% args).truncate2, {
+				instant: true,
+				# No need to specify ENTER among hotkeys because ENTER always
+				# runs first action associated with widget.
+				hotkey: [ _('Y'), _('N')],
+				function: Proc.new { |arg|
+				# window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				wi= arg[:widget]
+				e= arg[:event]
+
+				a= e.to_bool #wi.var_text_now.to_bool|| e.to_bool
+
+				if a!= nil
+					if a
+						cat.destroy
+						list( pos: bw.var_pos_now)
+					else
+						w['status_display'].var__display= 1
+						w['status_prompt'].var__display= 0
+						w.set_focus_default
+					end
+				end
+				nil
+			}})
 			nil
 		end
 
@@ -446,7 +504,7 @@ module TASKMAN
 				pfl e
 			end
 
-			index arg.merge( id: t2.id)
+			index arg.merge( pos_name: t2.id)
 			nil
 		end
 
@@ -521,7 +579,7 @@ module TASKMAN
 					pfl e
 				end
 
-				index arg.merge( id: i.id)
+				index arg.merge( pos_name: i.id)
 
 			# XXX We replace/complement this with StandardError?
 			rescue Exception => e
