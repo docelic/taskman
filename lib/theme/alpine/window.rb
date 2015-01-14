@@ -22,7 +22,7 @@ module TASKMAN
 		end
 
 		# Args: Question text, Proc
-		def ask q, p
+		def ask q, o
 			if s= $app.screen['status']
 				s['status_display'].var__display= 0
 				s['status_prompt'].var__display= 1
@@ -31,16 +31,15 @@ module TASKMAN
 				sa= s['status_answer']
 				sa.var_text= ''
 				sa.set_focus
-				#sa.action.function= p
 
 				# Remove all actions (if any) and set up for new prompt
 				sa>> MenuAction
-				pfl sa.widgets.size, sa.actions.size
-				sa<< a= MenuAction.new( p.merge( name: "#{@name}_handle_answer"))
+				o.name= "#{@name}_handle_answer"
+				sa<< o
 				sa<< MenuAction.new( name: 'cancel_question') # Cancels on ESC
 
 				# If instant action requested, disable in-widget keypress processing
-				sa.var_process= if a.instant then 0 else 1 end
+				sa.var_process= if o.instant then 0 else 1 end
 			end
 		end
 

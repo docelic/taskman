@@ -178,7 +178,7 @@ module TASKMAN
 				args.push nr, nr.unit( _('task'))
 			end
 			fmt+= '?'
-			$app.screen.ask( ( _( fmt)% args).truncate2, {
+			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
 				instant: true,
 				# No need to specify ENTER among hotkeys because ENTER always
 				# runs first action associated with widget.
@@ -211,11 +211,11 @@ module TASKMAN
 					end
 				end
 				nil
-			}})
+			}))
 			nil
 		end
 		def cancel arg= {}
-			$app.screen.ask( _('Cancel task?'), {
+			$app.screen.ask( _('Cancel task?'), MenuAction.new(
 				instant: true,
 				hotkey: [ _('Y'), _('N')],
 				function: Proc.new { |arg|
@@ -240,7 +240,7 @@ module TASKMAN
 					end
 				end
 				nil
-			}})
+			}))
 			nil
 		end
 		def cancel_question arg= {}
@@ -254,7 +254,7 @@ module TASKMAN
 		def add_folder arg= {}
 			fmt= 'Folder name to add:'
 			args= []
-			$app.screen.ask( ( _( fmt)% args).truncate2, {
+			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
 				instant: false,
 				function: Proc.new { |arg|
 				## window, widget, action, function, event-- WWAFE
@@ -272,7 +272,7 @@ module TASKMAN
 				w['status_prompt'].var__display= 0
 				w.set_focus_default
 				nil
-			}})
+			}))
 			nil
 		end
 		def delete_folder arg= {}
@@ -280,7 +280,7 @@ module TASKMAN
 			cat= Folder.find( arg[:widget].name.to_i)
 			args= [ cat.name]
 			bw= arg[:base_widget]
-			$app.screen.ask( ( _( fmt)% args).truncate2, {
+			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
 				instant: true,
 				# No need to specify ENTER among hotkeys because ENTER always
 				# runs first action associated with widget.
@@ -304,7 +304,7 @@ module TASKMAN
 					end
 				end
 				nil
-			}})
+			}))
 			nil
 		end
 
@@ -313,7 +313,7 @@ module TASKMAN
 			swl1= $session.whereis.last
 			args= [ swl1]
 			bw= arg[:base_widget]
-			$app.screen.ask( ( _( fmt)% args).truncate2, {
+			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
 				instant: false,
 				function: Proc.new { |arg|
 				## window, widget, action, function, event-- WWAFE
@@ -332,7 +332,6 @@ module TASKMAN
 					r= Regexp.new t, Regexp::IGNORECASE
 					pos= bw.var_pos_now
 					posids= [ *( ( pos+1)..( bw.widgets.size- 1)), *( 0..pos)]
-					pfl :WHEREIS
 					posids.each do |i|
 						if bw.widgets[i].var_text_now=~ r
 							bw.var_pos= i
@@ -346,7 +345,7 @@ module TASKMAN
 				w['status_prompt'].var__display= 0
 				w.set_focus_default
 				nil
-			}})
+			}))
 			nil
 		end
 
@@ -354,7 +353,7 @@ module TASKMAN
 			fmt= ':'
 			args= []
 			bw= arg[:base_widget]
-			$app.screen.ask( ( _( fmt)% args).truncate2, {
+			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
 				instant: false,
 				function: Proc.new { |arg|
 				## window, widget, action, function, event-- WWAFE
@@ -365,7 +364,6 @@ module TASKMAN
 				t= wi.var_text_now.to_i- 1 #.strip
 				t= 0 if t< 0
 				if t.to_s.length>= 0 and t>= 0 and t.to_s=~ /^\d+$/
-					pfl :SETTING_POS_TO, t
 					bw.var_pos= t
 				end
 
@@ -373,7 +371,7 @@ module TASKMAN
 				w['status_prompt'].var__display= 0
 				w.set_focus_default
 				nil
-			}})
+			}))
 			nil
 		end
 

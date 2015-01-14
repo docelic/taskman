@@ -224,7 +224,11 @@ module TASKMAN
 			end
 			if MenuAction=== arg
 				arg.hotkey.force_array.each do |h|
-					@hotkeys_hash[h]= arg
+					# XXX Ugly IF() -- instead, nil or empty hotkeys should
+					# never even enter the hotkey array.
+					if h and h.length> 0
+						@hotkeys_hash[h]= arg
+					end
 				end
 			end
 			@widgets_hash[arg.name]= arg
@@ -239,7 +243,6 @@ module TASKMAN
 		# widget>> ListItem - removes all child ListItems
 		def >> arg
 			to_remove= []
-			pfl arg.class
 			if String=== arg and self[arg]
 				to_remove.push self[arg]
 			elsif Class=== arg
