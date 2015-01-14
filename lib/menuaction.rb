@@ -327,22 +327,37 @@ module TASKMAN
 					t= swl2
 				end
 
+				pos= 0
+				setter= 'var_pos='
+				items= bw.widgets
+				if List=== bw
+					pos= bw.var_pos_now
+				elsif Textview=== bw
+					pos= bw.var_offset_now
+					setter= 'var_offset='
+				end
+
+				wrap_around= false
 				if t.length> 0
 					$session.whereis.push t
 					r= Regexp.new t, Regexp::IGNORECASE
-					pos= bw.var_pos_now
-					posids= [ *( ( pos+1)..( bw.widgets.size- 1)), *( 0..pos)]
+					posids= [ *( ( pos+1)..( items.size- 1)), *( 0..pos)]
+					prev_i= posids[0]
 					posids.each do |i|
-						if bw.widgets[i].var_text_now=~ r
-							bw.var_pos= i
+						if prev_i> i then wrap_around= true end
+						prev_i= i
+						if items[i].var_text_now=~ r
+							bw.send setter, i
 							break
 						end
-						i+= 1
 					end
 				end
 
 				w['status_display'].var__display= 1
 				w['status_prompt'].var__display= 0
+				if wrap_around
+					w.status_label_text= _('Search hit BOTTOM, continuing at TOP')
+				end
 				w.set_focus_default
 				nil
 			}))

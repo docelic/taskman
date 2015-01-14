@@ -36,19 +36,19 @@ module TASKMAN
 				:exit_help,
 				:'',
 				:prevpage,
-				:'',
 				# Note that this firstpage/lastpage won't actually execute their action,
 				# since HOME/END are handled by textview itself and our main loop will
 				# get an empty event. However, we add them here just so that they would
 				# appear as available in the window menu.
 				:firstpage,
+				:'',
 				:tablebr,
 				:'',
 				:quit,
 				:'',
 				:nextpage,
-				:'', #to be :whereis, and placed last
 				:lastpage,
+				:whereis,
 			)
 
 			vbox<< m1
