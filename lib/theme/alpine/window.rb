@@ -22,7 +22,7 @@ module TASKMAN
 		end
 
 		# Args: Question text, Proc
-		def ask q, o
+		def ask q, o, *actions
 			if s= $app.screen['status']
 				s['status_display'].var__display= 0
 				s['status_prompt'].var__display= 1
@@ -38,6 +38,11 @@ module TASKMAN
 				sa<< o
 				sa<< MenuAction.new( name: 'cancel_question') # Cancels on ESC
 
+				# Push any extra actions onto the box, e.g. like pgup/pgdown etc.
+				actions.each do |ea|
+					sa<< ea
+				end
+
 				# If instant action requested, disable in-widget keypress processing
 				sa.var_process= if o.instant then 0 else 1 end
 			end
@@ -48,7 +53,5 @@ module TASKMAN
 				self.status_label_text= @slt
 			end
 		end
-
 	end
-
 end

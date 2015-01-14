@@ -55,6 +55,8 @@ module TASKMAN
 			'timeout'            => 0,
 			'tooltips'           => true,
 
+			'history-lines'      => 100,
+
 			'focus-on-edit'      => 'message',
 			'focus-on-create'    => 'subject',
 		}
@@ -82,6 +84,7 @@ $description= {
   'theme'                  => _('GUI layout scheme to use'),
   'style'                  => _('GUI color scheme to use'),
   'colors'                 => _('Nr. of colors (8, 16, 256)'),
+  'history-lines'          => _('Length of history buffers'),
   'term'                   => _('Value for TERM= emulator'),
   'term-width'             => _('Term width to use'),
   'debug'                  => _('Show general debug'),

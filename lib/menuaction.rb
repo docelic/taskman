@@ -63,6 +63,10 @@ module TASKMAN
 			'pos_home'=>   { hotkey: 'HOME',shortname: '',  menuname: '', description: '', function: :pos_home},
 			'pos_end'=>    { hotkey: 'END', shortname: '',  menuname: '', description: '', function: :pos_end},
 
+			# For moving within an array and printing current entry text into a box
+			'array_up'=>     { hotkey: 'UP',  shortname: '',  menuname: '', description: '', function: :array_up},
+			'array_down'=>   { hotkey: 'DOWN',shortname: '',  menuname: '', description: '', function: :array_down},
+
 			# Misc
 			'toggle_timing_options'=> { description: 'Toggle Timing Options', function: :toggle_timing_options},
 			'toggle_reminding_options'=> { description: 'Toggle Remind Options', function: :toggle_reminding_options},
@@ -96,7 +100,7 @@ module TASKMAN
 			#'parent_names'    => { hotkey: '^P',   shortname: 'Parent Tree',      description: '', function: :parent_names},
 		}
 
-		attr_accessor :name, :hotkey, :hotkey_label, :shortname, :menuname, :description, :function, :instant
+		attr_accessor :name, :hotkey, :hotkey_label, :shortname, :menuname, :description, :function, :instant, :data
 
 		def initialize arg= {}
 			name= arg[:name]= arg[:name].to_s
@@ -116,6 +120,10 @@ module TASKMAN
 			@function= arg.has_key?( :function) ? arg.delete( :function) : @@Menus[name] ? @@Menus[name][:function] : nil
 
 			super
+
+			# Allow provided blocks to store local state or shared state
+			# between objects etc. in @data
+			if block_given? then @data= yield end
 		end
 
 		# XXX Maybe do this the other way around with .merge, so that all
@@ -313,6 +321,15 @@ module TASKMAN
 			swl1= $session.whereis.last
 			args= [ swl1]
 			bw= arg[:base_widget]
+
+			# This is done in this way so that both UP and DOWN (moving up
+			# and down the history list) would be moving along the same data
+			# structure ($session.whereis) and be aware of the current
+			# position (pos).
+			data= { array: $session.whereis, pos: nil}
+			up= MenuAction.new( name: 'array_up') { data}
+			down= MenuAction.new( name: 'array_down') { data}
+
 			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
 				instant: false,
 				function: Proc.new { |arg|
@@ -332,14 +349,19 @@ module TASKMAN
 				items= bw.widgets
 				if List=== bw
 					pos= bw.var_pos_now
-				elsif Textview=== bw
+				elsif Textview=== bw or Textedit=== bw
 					pos= bw.var_offset_now
 					setter= 'var_offset='
 				end
 
 				wrap_around= false
+				found= false
 				if t.length> 0
-					$session.whereis.push t
+					# Remove any ocurrences of this string already existing in
+					# search history, and add the string at the end (most recent)
+					$session.whereis>> t
+					$session.whereis<< t
+
 					r= Regexp.new t, Regexp::IGNORECASE
 					posids= [ *( ( pos+1)..( items.size- 1)), *( 0..pos)]
 					prev_i= posids[0]
@@ -347,6 +369,7 @@ module TASKMAN
 						if prev_i> i then wrap_around= true end
 						prev_i= i
 						if items[i].var_text_now=~ r
+							found= true
 							bw.send setter, i
 							break
 						end
@@ -355,12 +378,14 @@ module TASKMAN
 
 				w['status_display'].var__display= 1
 				w['status_prompt'].var__display= 0
-				if wrap_around
+				if found and wrap_around
 					w.status_label_text= _('Search hit BOTTOM, continuing at TOP')
+				elsif !found
+					w.status_label_text= _('Pattern not found: %s')% t
 				end
 				w.set_focus_default
 				nil
-			}))
+			}), up, down)
 			nil
 		end
 
@@ -820,6 +845,26 @@ module TASKMAN
 			bw.prev_row= row
 
 			nil
+		end
+
+		def array_up arg= {}
+			# Here, we do not say size- 1 because we -1 in the
+			# line before it.
+			a= arg[:action]
+			pos= a.data[:pos]|| a.data[:array].size
+			pos-= 1 if pos> 0
+			a.data[:pos]= pos
+			arg[:widget].var_text= a.data[:array][pos]
+		end
+		def array_down arg= {}
+			# Here, we do not say size- 1 because we want the
+			# .size() index (which is nonexistent) to result in
+			# user being able to return to empty line.
+			max= @data[:array].size
+			pos= @data[:pos]|| max
+			pos+=1 if pos< max
+			@data[:pos]= pos
+			arg[:widget].var_text= $session.whereis[pos]
 		end
 
 	end

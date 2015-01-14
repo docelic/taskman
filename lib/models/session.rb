@@ -30,6 +30,13 @@ module TASKMAN
 			#@item= nil
 
 			@whereis= []
+			def @whereis.<< arg
+				super
+				# Make sure history length does not exceed config setting
+				while self.size> $opts['history-lines']
+					self.shift
+				end
+			end
 
 			self.update
 		end

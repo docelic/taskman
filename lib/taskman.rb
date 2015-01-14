@@ -57,6 +57,7 @@ module TASKMAN
 				[ '--echo-time',           '--ec',       GetoptLong::REQUIRED_ARGUMENT],
 				[ '--timeout',             '--loop',     GetoptLong::REQUIRED_ARGUMENT],
 				[ '--tooltips',            '--tips',     GetoptLong::NO_ARGUMENT],
+				[ '--history-lines',       '--hist',     GetoptLong::REQUIRED_ARGUMENT],
 
 				[ '--focus-on-edit',       '--foe',      GetoptLong::REQUIRED_ARGUMENT],
 				[ '--focus-on-create',     '--foc',      GetoptLong::REQUIRED_ARGUMENT],
@@ -114,6 +115,10 @@ module TASKMAN
 							propagate= false
 							$opts[opt]= arg.to_i
 							$opts['colors_set']= true
+
+						when 'history-lines'
+							propagate= false
+							$opts[opt]= arg.to_i
 
 						when 'timeout'
 							propagate= false
