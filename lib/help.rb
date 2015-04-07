@@ -53,7 +53,7 @@ The most important window is the Create/Edit window, and creating or editing a t
 
 4. Time: time of day when the task is due. By default, it is set to 12:00:00.
 
-5. Due dates: days on which the task is due. A task can be due on multiple days, defined as specific dates (e.g. Jan 1, 2015) as well as various repetition rules (e.g. every Monday, every two days between 12th and 22th of a month, last working day of a week, etc.).
+5. Due dates: days on which the task is due. A task can be due on multiple days, defined as specific dates (e.g. Jan 1, 2015) as well as various repetition rules (e.g. every Monday, every two days between 12th and 22nd of a month, last working day of a week, etc.).
 
 6. Omit dates: days on which the task should not be due, even if it would otherwise be due on those days. This field accounts for days being holidays, non-working days (weekends) or any other exceptions to the rule. It supports the same syntax as Due dates.
 
@@ -107,7 +107,7 @@ Example: MON..FRI (every workday)
 Example: JAN..DEC(2) (every day of every second month)
 Example: 2012..2014 (every day in 2012, 2013 and 2014)
 Example: *+-aXb
-Example: >2014 (every day in 2014 and onwards)
+Example: >2014 (every day in 2014 and onward)
 
 OMIT DATES
 Syntax: same as above
@@ -230,7 +230,7 @@ Actions are basically functions to execute on events, usually keypresses. For ex
 
 Actions can be invisible (be added to widgets and work, but not be visible anywhere), or they can have a visual representation to be more convenient or indicate their availability. When they are visible, they are usually found in the window's menu bar. An example of it are all the menu options visible the bottom of the main window as soon as you start the program.
 
-Invisible actions are created by either using obj<< MenuAction.new( name: NAME), which instantiates a stock action, or by creating an action manually and overriding/defining its functionality in more detail (a= MenuAction.new( ...)) and then usinb obj<< a.
+Invisible actions are created by either using obj<< MenuAction.new( name: NAME), which instantiates a stock action, or by creating an action manually and overriding/defining its functionality in more detail (a= MenuAction.new( ...)) and then using obj<< a.
 
 Another way to add pre-defined, stock actions to a widget, is to call <your widget>.add_action( :name1, :name2, ...).
 

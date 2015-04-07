@@ -6,6 +6,9 @@ module TASKMAN
 			super
 
 			@widget= nil
+			# Is this a new task or edit of an existing one?
+			new= if arg[:id] then false else true end
+
 			i= arg[:id] ? $session.dbh.find( arg[:id]) : $session.dbh.new
 			db= $session.dbn.to_s
 
@@ -42,7 +45,7 @@ module TASKMAN
 
 			h2= Hbox.new(                     '.expand'=> 'h')
 			h2<< Label.new(                   '.expand'=> '',  text: 'Category    : ')
-			h2<< Input.new( name: :folder_names,   '.expand'=> 'h', text: i.folders.map{ |f| f.name}.join( ' '), tooltip: 'Task categories, e.g. Personal | Work | Work Client1')
+			h2<< Input.new( name: :folder_names,   '.expand'=> 'h', text: ( if new and $session.folder then $session.folder.name else i.folders.map{ |f| f.name}.join( ' ') end), tooltip: 'Task categories, e.g. Personal | Work | Work Client1')
 			v<< h2
 
 			# "Options" toggles
