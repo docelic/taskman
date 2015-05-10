@@ -89,7 +89,11 @@ module TASKMAN
 			'gotofolder'=> { hotkey: 'G',   shortname: 'GotoFldr',    menuname: 'GotoFldr',    description: '', function: nil },
 			'journal'   => { hotkey: 'J',   shortname: 'Journal',     menuname: 'Journal',     description: '', function: nil },
 			'addrbook'  => { hotkey: 'A',   shortname: 'AddrBook',    menuname: 'AddrBook',    description: '', function: nil },
+
 			'whereis'   => { hotkey: 'W',   shortname: 'WhereIs',     menuname: 'Find String', description: 'Find a string', function: :whereis },
+			'whereis_next'   => { hotkey: 'N',   shortname: 'Find Next',     menuname: 'Find Next', description: 'Find next occurrence', function: :whereis, function_arg: { find_next: true} },
+			'whereis_prev'   => { hotkey: 'P',   shortname: 'Find Prev',     menuname: 'Find Prev', description: 'Find previous occurrence', function: :whereis, function_arg: { find_prev: true} },
+
 			'cut_line'  => { hotkey: '^K',   shortname: 'Cut Line',         description: 'Cut line', function: nil},
 			'postpone'  => { hotkey: '^O',   shortname: 'Postpone',         description: '', function: :postpone},
 			'cancel'    => { hotkey: 'TIMEOUT', hotkey_label: '^C',  shortname: 'Cancel',           description: '', function: :cancel},
@@ -118,11 +122,11 @@ module TASKMAN
 			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name] ? @@Menus[name][:menuname] : nil
 			@description= arg.has_key?( :description) ? arg.delete( :description).truncate2: @@Menus[name] ? @@Menus[name][:description].truncate2 : nil
 
-
 			@instant= arg.has_key?( :instant) ? arg.delete( :instant): @@Menus[name] ? @@Menus[name][:instant] : nil
 
 			# Function to execute can be specified in a parameter or come from a default.
 			@function= arg.has_key?( :function) ? arg.delete( :function) : @@Menus[name] ? @@Menus[name][:function] : nil
+			@function_arg= arg.has_key?( :function_arg) ? arg.delete( :function_arg) : @@Menus[name][:function_arg] ? @@Menus[name][:function_arg] : {}
 
 			super
 
@@ -136,9 +140,9 @@ module TASKMAN
 		# arguments in arg, they override the ones here.
 		def run arg= {}
 			if Symbol=== f= @function
-				self.send( f, arg.merge( action: self, function: f))
+				self.send( f, arg.merge( action: self, function: f).merge( @function_arg))
 			elsif Proc=== f= @function
-				f.yield( arg.merge( action: self, function: f))
+				f.yield( arg.merge( action: self, function: f).merge( @function_arg))
 			end
 		end
 
@@ -335,17 +339,23 @@ module TASKMAN
 			up= MenuAction.new( name: 'array_up') { data}
 			down= MenuAction.new( name: 'array_down') { data}
 
-			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
+			a= MenuAction.new(
 				instant: false,
 				function: Proc.new { |arg|
 				## window, widget, action, function, event-- WWAFE
 				w= arg[:window]
-				wi= arg[:widget]
-				#e= arg[:event]
+				t= ''
 
-				t= wi.var_text_now #.strip
+				# Important to have !arg[...]s here, otherwise arg[:widget]
+				# refers to the current ListItem instead of the text typed into
+				# the interactive whereis prompt
+				if !arg[:find_next] and !arg[:find_prev] and wi= arg[:widget]
+					#e= arg[:event]
+					t= wi.var_text_now #.strip
+				end
+
 				swl2= $session.whereis.last
-				if t.length== 0 and swl2
+				if !t or( t.length== 0 and swl2)
 					t= swl2
 				end
 
@@ -368,10 +378,18 @@ module TASKMAN
 					$session.whereis<< t
 
 					r= Regexp.new t, Regexp::IGNORECASE
-					posids= [ *( ( pos+1)..( items.size- 1)), *( 0..pos)]
+					posids= nil
+					if arg[:find_prev]
+						# Find-Prev searches in the backward direction
+						posids= [ *( 0..pos-1).to_a.reverse, *( ( pos)..( items.size- 1)).to_a.reverse]
+					else
+						# WhereIs or Find-Next search in the forward direction
+						posids= [ *( ( pos+1)..( items.size- 1)), *( 0..pos)]
+					end
 					prev_i= posids[0]
 					posids.each do |i|
-						if prev_i> i then wrap_around= true end
+						if prev_i> i and !arg[:find_prev] then wrap_around= true end
+						if prev_i< i and arg[:find_prev] then wrap_around= true end
 						prev_i= i
 						if items[i].var_text_now=~ r
 							found= true
@@ -383,14 +401,22 @@ module TASKMAN
 
 				w['status_display'].var__display= 1
 				w['status_prompt'].var__display= 0
-				if found and wrap_around
+				if found and wrap_around and arg[:find_prev]
+					w.status_label_text= _('Search hit TOP, continuing at BOTTOM')
+				elsif found and wrap_around
 					w.status_label_text= _('Search hit BOTTOM, continuing at TOP')
 				elsif !found
 					w.status_label_text= _('Pattern not found: %s')% t
 				end
 				w.set_focus_default
 				nil
-			}), up, down)
+			})
+			
+			if arg[:find_next] or arg[:find_prev]
+				a.run arg
+			else
+				$app.screen.ask( ( _( fmt)% args).truncate2, a, up, down)
+			end
 			nil
 		end
 

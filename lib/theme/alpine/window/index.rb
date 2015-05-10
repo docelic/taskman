@@ -40,15 +40,15 @@ module TASKMAN
 				:help2,
 				:mainm,
 				:create,
-				:goto_line,
-				:'',
+				:whereis,
+				:whereis_next,
 				:'',
 				:tablebr,
 				:other2,
 				:quit,
-				:whereis,
-				:'', #nextmsg
-				:'', #undelete (mark as not done?)
+				:'',
+				:goto_line,
+				:whereis_prev,
 				:'', #duplicate
 			)
 
