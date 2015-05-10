@@ -20,7 +20,7 @@ module TASKMAN
 			m1.add_action(
 				:get_help,
 				( arg[:id] ? :save_task : :create_task),
-				:'',
+				( arg[:id] ? :write_task : :''),
 				:'',
 				:'', #:cut_line,
 				:'',

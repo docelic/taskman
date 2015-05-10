@@ -13,6 +13,8 @@ module TASKMAN
 		has_many :categorizations, dependent: :destroy
 		has_many :folders, through: :categorizations
 
+		#has :status # TODO: references :status
+
 		attr_writer :folder_names
 		after_save :assign_folders
 
@@ -163,6 +165,8 @@ module TASKMAN
 		def parse_subject=( l) self.parse_subject=  l end
 		def parse_message( l) self.message= l end
 		def parse_message=( l) self.parse_message=  l end
+		def parse_status( l) self.status= l end
+		def parse_status=( l) self.parse_status l end
 
 		# Limited 'remind' compatibility
 

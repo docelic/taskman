@@ -51,7 +51,7 @@ module TASKMAN
 			'exit-key'           => 'F10',
 			'main-db'            => 'main',
 
-			'echo-time'          => 0.5,
+			'echo-time'          => 0.3,
 			'timeout'            => 0,
 			'tooltips'           => true,
 

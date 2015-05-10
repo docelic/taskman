@@ -9,7 +9,7 @@ module TASKMAN
 
 			@@sources= {
 				main: [ adapter:'mysql2', host:'localhost', username:'taskman', password:'taskman', database:'taskman'],
-				main2: [ adapter:'mysql2', host:'localhost', username:'taskman2', password:'taskman2', database:'taskman2'],
+				#main2: [ adapter:'mysql2', host:'localhost', username:'taskman2', password:'taskman2', database:'taskman2'],
 			}
 			@@classes= {
 			}

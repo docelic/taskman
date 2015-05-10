@@ -48,6 +48,11 @@ module TASKMAN
 			h2<< Input.new( name: :folder_names,   '.expand'=> 'h', text: ( if new and $session.folder then $session.folder.name else i.folders.map{ |f| f.name}.join( ' ') end), tooltip: 'Task categories, e.g. Personal | Work | Work Client1')
 			v<< h2
 
+			h2= Hbox.new(                     '.expand'=> 'h')
+			h2<< Label.new(                   '.expand'=> '',  text: 'Status      : ')
+			h2<< Input.new( name: :status,    '.expand'=> 'h', text: i._status, tooltip: 'Task status, e.g. OPEN | WORKING | DONE')
+			v<< h2
+
 			# "Options" toggles
 
 			#

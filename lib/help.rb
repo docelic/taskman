@@ -74,6 +74,11 @@ Syntax: free-form text
 Example: Test 123
 Example: Meeting with X
 
+STATUS
+Syntax: one of configured/allowed task statuses
+Example: WORKING
+Example: DONE
+
 START
 Syntax: simple date specification
 Example: 2014-01-30

@@ -25,7 +25,7 @@ module TASKMAN
 			# XXX WIP-- this needs to be per-window, and basically be an array
 			# that is joined, so that we know how many args to give in
 			#  %..., and it should also be named if possible.
-			@format= ' %1s %-4s %-6s %s'
+			@format= ' %1s %-4s %-7s %s'
 
 			#@item= nil
 

@@ -33,7 +33,7 @@ module TASKMAN
 		end
 
 		@@Def= [
-			[ :header,            normal: "fg=#{white},bg=#{darkgray}", ],
+			[ :header,            normal: "fg=#{green},bg=#{darkgray}", ],
 
 			[ :'@vbox',           normal: "fg=#{white},bg=#{gray}", ], # Default fg/bg
 			[ :'@vspace',         normal: "fg=#{white},bg=#{gray}", ], # - for spacers

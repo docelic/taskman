@@ -38,6 +38,8 @@ module TASKMAN
 			'delete_task'=>{ hotkey: 'D',   shortname: 'Delete',    menuname: 'Delete Task', description: '', function: :delete_task},
 			'undelete_task'=>{ hotkey: 'U',   shortname: 'Undelete',  menuname: 'Undelete Task', description: '', function: :undelete_task},
 			'save_task' => { hotkey: '^X',  shortname: 'Save',        menuname: 'Save Changes',description: '', function: :create_task},
+			# Write task does not exit task view after saving it
+			'write_task' => { hotkey: '^W',  shortname: 'Write',        menuname: 'Write Changes',description: '', function: :create_task},
 
 			'add_folder'=>{ hotkey: 'A',  shortname: 'Add',     menuname: 'Add Folder',description: '', function: :add_folder},
 			'delete_folder'=>{ hotkey: 'D',  shortname: 'Delete',     menuname: 'Delete Folder',description: '', function: :delete_folder},
@@ -642,6 +644,7 @@ module TASKMAN
 
 			begin
 
+				# These are single-value, non-null keys
 				[
 					:subject,
 					:folder_names,
@@ -651,6 +654,7 @@ module TASKMAN
 					:omit_shift,
 					:omit_remind,
 					:message,
+					:status,
 				].each do |f|
 					v= w[f.to_s].var_text_now.strip
 					next unless v.length> 0
@@ -660,6 +664,19 @@ module TASKMAN
 					i.send "parse_#{f}", v
 				end
 
+				# These are single-value, null keys
+				[
+					:status,
+				].each do |f|
+					v= w[f.to_s].var_text_now.strip
+					#next unless v.length> 0
+					# Save person's original input for eventual
+					# editing/modification later
+					i.send "_#{f}=", v
+					i.send "parse_#{f}", v
+				end
+
+				# These are multi-value keys
 				[
 					:due,
 					:omit,

@@ -8,7 +8,7 @@ module TASKMAN
 			super
 
 			f= $session.format
-			h= f% [ ' ', 'ID', ' DB ', 'SUBJECT']
+			h= f% [ ' ', 'ID', 'STATUS ', 'SUBJECT']
 			self<< Label.new( name: 'TH', text: h, :'.expand'=> 'h')
 
 			@l= MVCList.new( name: 'list', autobind: 0, focus: 1)
@@ -20,7 +20,7 @@ module TASKMAN
 			l<< MenuAction.new( name: 'pos_end')
 
 			$session.sth.each do |t|
-				s= $session.format% [ t.flag, t.id, s, t.subject]
+				s= $session.format% [ t.flag, t.id, t.status, t.subject]
 				@l<< ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
 			end
 			if $session.sth.size== 0
