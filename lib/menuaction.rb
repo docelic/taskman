@@ -97,6 +97,8 @@ module TASKMAN
 
 			'goto_line'=> { hotkey: ':',   shortname: 'Goto Line',    menuname: 'Goto Line',    description: '', function: :goto_line },
 
+			'show_next_key'=> { hotkey: '^V',   shortname: 'Show Key',        menuname: 'Show Next Key',        description: 'Show keycode of next key pressed', function: :show_next_key },
+
 			# Testing shortcuts
 			#'inc_folder_count'=> { hotkey: 'SR',   shortname: 'Folder Cnt+1',     description: '', function: :inc_folder_count },
 			#'all_widgets_hash'=> { hotkey: 'SF',   shortname: 'All Children',     description: '', function: :all_widgets},
@@ -559,6 +561,13 @@ module TASKMAN
 			h= w._h_now # Height of widget
 			a= arg.merge( step: h)
 			pos_down a
+			nil
+		end
+
+		def show_next_key arg= {}
+			#w= arg[:window]
+			#e= arg[:event]
+			$session.show_next_key= true
 			nil
 		end
 

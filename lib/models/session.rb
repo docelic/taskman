@@ -8,6 +8,7 @@ module TASKMAN
 		attr_accessor :format
 		attr_accessor :flags
 		attr_accessor :whereis
+		attr_accessor :show_next_key
 
 		def initialize arg= {}
 			super()

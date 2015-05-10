@@ -135,6 +135,12 @@ module TASKMAN
 #					base_widget.mvc
 #				end
 
+				# If a person has pressed Ctrl+V previously, show what the key is
+				if $session.show_next_key
+					$session.show_next_key= false
+					$app.screen.status_label_text= event
+				end
+
 				# Break if a single-loop was requested (code< 0)
 				# Next if the event has been handled by the widget and key is empty
 				if code< 0
