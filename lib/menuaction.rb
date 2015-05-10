@@ -35,6 +35,7 @@ module TASKMAN
 			'create_task'=>{ hotkey: '^X',  shortname: 'Create',     menuname: 'Create Task',description: '', function: :create_task},
 			'clone_task' =>{ hotkey: '^D',  shortname: 'Clone',      menuname: 'Clone current Task',description: '', function: :clone_task},
 			'select_task'=>{ hotkey: 'ENTER', hotkey_label: 'RET', shortname: 'Select',    menuname: 'Select Task', description: '', function: :select_task},
+			'select_task_e'=>{ hotkey: 'E', hotkey_label: 'E', shortname: 'Select',    menuname: 'Select Task', description: '', function: :select_task},
 			'delete_task'=>{ hotkey: 'D',   shortname: 'Delete',    menuname: 'Delete Task', description: '', function: :delete_task},
 			'undelete_task'=>{ hotkey: 'U',   shortname: 'Undelete',  menuname: 'Undelete Task', description: '', function: :undelete_task},
 			'save_task' => { hotkey: '^X',  shortname: 'Save',        menuname: 'Save Changes',description: '', function: :create_task},

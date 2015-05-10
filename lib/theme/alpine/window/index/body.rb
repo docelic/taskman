@@ -21,7 +21,9 @@ module TASKMAN
 
 			$session.sth.each do |t|
 				s= $session.format% [ t.flag, t.id, t.status, t.subject]
-				@l<< ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
+				i= ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
+				i<< MenuAction.new( name: 'select_task_e')
+				@l<< i
 			end
 			if $session.sth.size== 0
 				@l<< ListItem.new( name: 'empty')
