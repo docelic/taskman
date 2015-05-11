@@ -49,6 +49,9 @@ module TASKMAN
 				[ '--theme',               '-t',         GetoptLong::REQUIRED_ARGUMENT],
 				[ '--style',               '-s',         GetoptLong::REQUIRED_ARGUMENT],
 
+				[ '--state-save',          '--ss',       GetoptLong::NO_ARGUMENT],
+				[ '--state-load',          '--sl',       GetoptLong::NO_ARGUMENT],
+
 				[ '--data-dir',            '--dd',       GetoptLong::REQUIRED_ARGUMENT],
 				[ '--data-file',           '--df',       GetoptLong::REQUIRED_ARGUMENT],
 
@@ -72,6 +75,8 @@ module TASKMAN
 				[ '--no-cache-stfl',       '--no-tsc',   GetoptLong::NO_ARGUMENT],
 				[ '--no-cache-avh',        '--no-avhc',  GetoptLong::NO_ARGUMENT],
 				[ '--no-tooltips',         '--no-tips',  GetoptLong::NO_ARGUMENT],
+				[ '--no-state-save',       '--no-ss',    GetoptLong::NO_ARGUMENT],
+				[ '--no-state-load',       '--no-sl',    GetoptLong::NO_ARGUMENT],
 
 				[ '--debug',               '-d',         GetoptLong::NO_ARGUMENT],
 				[ '--debug-widget',        '--dw',       GetoptLong::REQUIRED_ARGUMENT],
@@ -272,6 +277,9 @@ module TASKMAN
 		def start
 			$tasklist= Tasklist.new
 			$session= Session.new
+			if $opts['state-load']
+				$session.load
+			end
 
 			# Two quick variables for controlling main loop. $main_loop
 			# tells whether we already are in main loop (recursion

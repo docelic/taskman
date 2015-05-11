@@ -52,6 +52,7 @@ module TASKMAN
 				focus= $app.ui.get_focus
 
 				if event.length> 0 and event== $opts['exit-key']
+					if $opts['state-save'] then $session.save end
 					Stfl.reset
 					puts 'Taskman finished.'
 					exit 0

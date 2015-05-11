@@ -68,5 +68,37 @@ module TASKMAN
 				@sth= Item.all
 			end
 		end
+
+		def save
+			s= {
+				#folder: self.folder,
+				folder_name: self.folder_name,
+				flags: self.flags,
+				whereis: self.whereis,
+			}
+			begin
+				File.open( File.join( $opts['data-dir'], 'session.json'), 'w') do |f|
+					f.write JSON.pretty_generate s
+				end
+			rescue Exception => e
+				$stderr.puts e
+			end
+		end
+		def load
+			begin
+				f= File.join $opts['data-dir'], 'session.json'
+				if File.exists? f
+					j= File.read f
+					s= JSON.parse j
+					self.folder_name= s['folder_name']
+					self.folder= Folder.find_by name: s['folder_name']
+					self.flags= s['flags']
+					self.whereis= s['whereis']
+					# TODO Restore item on which list was positioned
+				end
+			rescue Exception => e
+				$stderr.puts e
+			end
+		end
 	end
 end

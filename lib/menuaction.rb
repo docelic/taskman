@@ -216,13 +216,16 @@ module TASKMAN
 				if a!= nil
 					if a
 						$session.flags.select{ |k, v|
+							ki= k.to_i
 							if v== 'D'
-								if i= begin $session.sth.find( k) end
+								if i= begin $session.sth.find( ki) end
 									i.destroy
+									$session.flags.delete k
 								end
 							end
 						}
 
+						if $opts['state-save'] then $session.save end
 						Stfl.reset
 						puts _('Taskman finished.')
 						exit 0
@@ -944,6 +947,10 @@ module TASKMAN
 
 			w.var_text= t
 			w.var_pos= w.var_pos_now+ timestr.length
+		end
+
+		def save_session arg= {}
+			$session.save
 		end
 
 	end

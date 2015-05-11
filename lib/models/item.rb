@@ -483,10 +483,10 @@ module TASKMAN
 		end
 
 		def flag
-			$session.flags[self.id]
+			$session.flags[self.id.to_s]
 		end
 		def flag= arg
-			$session.flags[self.id]= arg
+			$session.flags[self.id.to_s]= arg
 		end
 
 		private

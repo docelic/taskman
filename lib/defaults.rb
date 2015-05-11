@@ -28,6 +28,9 @@ module TASKMAN
 			'garbage-collector'  => true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector'   => false, # Stress Ruby garbage collector? (DEBUG OPTION)
 
+			'state-save'         => true, # Save state on exit?
+			'state-load'         => true, # Load state on startup?
+
 			# The version corresponds to date on which the changes/release
 			# has been made, like this:
 			# E.g. 0.12(21) === 2014/12/21
@@ -90,6 +93,8 @@ $description= {
   'history-lines'          => _('Length of history buffers'),
   'term'                   => _('Value for TERM= emulator'),
   'term-width'             => _('Term width to use'),
+  'state-save'             => _('Save state on exit?'),
+  'state-load'             => _('Load state on startup?'),
   'debug'                  => _('Show general debug'),
   'debug-widget'           => _('Show all for named widget'),
   'debug-style'            => _('Show application of style'),
