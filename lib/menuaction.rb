@@ -40,7 +40,7 @@ module TASKMAN
 			'undelete_task'=>{ hotkey: 'U',   shortname: 'Undelete',  menuname: 'Undelete Task', description: '', function: :undelete_task},
 			'save_task' => { hotkey: '^X',  shortname: 'Save',        menuname: 'Save Changes',description: '', function: :create_task},
 			# Write task does not exit task view after saving it
-			'write_task' => { hotkey: '^W',  shortname: 'Write',        menuname: 'Write Changes',description: '', function: :create_task},
+			'write_task' => { hotkey: '^W',  shortname: 'Write',        menuname: 'Write Changes',description: '', function: :create_task, function_arg: { window_change: false}},
 
 			'add_folder'=>{ hotkey: 'A',  shortname: 'Add',     menuname: 'Add Folder',description: '', function: :add_folder},
 			'delete_folder'=>{ hotkey: 'D',  shortname: 'Delete',     menuname: 'Delete Folder',description: '', function: :delete_folder},
@@ -742,12 +742,14 @@ module TASKMAN
 				if w.respond_to? :status_label_text=
 					w.status_label_text= if created then _('Task created') else _('Task saved') end
 					$app.ui.run -1
-					sleep $opts['echo-time']
+					sleep $opts['echo-time'] if arg[:window_change]!= false
 				else
 					pfl e
 				end
 
-				index arg.merge( pos_name: i.id)
+				if arg[:window_change]!= false
+					index arg.merge( pos_name: i.id)
+				end
 
 			# XXX We replace/complement this with StandardError?
 			rescue Exception => e
