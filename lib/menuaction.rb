@@ -954,7 +954,7 @@ module TASKMAN
 		end
 
 		def prev_window arg= {}
-			w= $session.history[-2]|| 'main'
+			w= $session.window_history[-2]|| 'main'
 			$app.exec( arg.merge( window: w))
 			nil
 		end

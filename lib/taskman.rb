@@ -316,10 +316,10 @@ module TASKMAN
 			arg[:theme]= $opts['theme']
 			@theme= Theme.new arg
 
-			$session.history.push wname
+			$session.window_history.push wname
 			# Keep last 10 window changes
-			if $session.history.count> 10
-				$session.history= $session.history[-10..-1]
+			if $session.window_history.count> $opts['history-lines']
+				$session.window_history= $session.window_history[$opts['history-lines']..-1]
 			end
 
 			# @ui: lowlevel STFL object (e.g. Stfl.get() in the manual
