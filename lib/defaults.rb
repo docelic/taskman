@@ -51,6 +51,9 @@ module TASKMAN
 			'exit-key'           => 'F10',
 			'main-db'            => 'main',
 
+			'datetime-key'       => 'F6',
+			'datetime-format'    => '%Y-%m-%d %H:%M:%S',
+
 			'echo-time'          => 0.3,
 			'timeout'            => 0,
 			'tooltips'           => true,
@@ -101,6 +104,8 @@ $description= {
   'data-dir'               => _('Data directory'),
   'data-file'              => _('Tasklist file'),
   'exit-key'               => _('One-key exit from program'),
+  'datetime-key'           => _('One-key to insert date/time'),
+  'datetime-format'        => _('Strftime format of date/time'),
   'main-db'                => _('Name of main/own database'),
   'echo-time'              => _('Duration of msg visibility'),
   'tooltips'               => _('Show automatic tooltips'),

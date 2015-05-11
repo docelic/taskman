@@ -32,6 +32,16 @@ module TASKMAN
 				end
 			end
 		end
+
+		# Implementation of pos setter which respects max number of items
+		# in a list and prevents crashes
+		def var_pos=( arg)
+			if arg< 0 then arg= 0 end
+			max= @widgets.size- 1
+			p= [ arg, max].min
+			$app.ui.set "#{@name}_pos", ( @variables['pos']= p).to_s
+		end
+
 	end
 
 	class MVCList < List

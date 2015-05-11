@@ -103,13 +103,15 @@ module TASKMAN
 
 			'show_next_key'=> { hotkey: '^V',   shortname: 'Show Key',        menuname: 'Show Next Key',        description: 'Show keycode of next key pressed', function: :show_next_key },
 
+			'insert_datetime'=> { hotkey: $opts['datetime-key'],   shortname: 'Insert DateTime',        menuname: 'Insert Date/Time',        description: 'Insert current date and time', function: :insert_datetime},
+
 			# Testing shortcuts
 			#'inc_folder_count'=> { hotkey: 'SR',   shortname: 'Folder Cnt+1',     description: '', function: :inc_folder_count },
 			#'all_widgets_hash'=> { hotkey: 'SF',   shortname: 'All Children',     description: '', function: :all_widgets},
 			#'parent_names'    => { hotkey: '^P',   shortname: 'Parent Tree',      description: '', function: :parent_names},
 		}
 
-		attr_accessor :name, :hotkey, :hotkey_label, :shortname, :menuname, :description, :function, :instant, :data
+		attr_accessor :name, :hotkey, :hotkey_label, :shortname, :menuname, :description, :function, :instant, :data, :default
 
 		def initialize arg= {}
 			name= arg[:name]= arg[:name].to_s
@@ -122,9 +124,12 @@ module TASKMAN
 			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name] ? @@Menus[name][:menuname] : nil
 			@description= arg.has_key?( :description) ? arg.delete( :description).truncate2: @@Menus[name] ? @@Menus[name][:description].truncate2 : nil
 
+			# Whether keypress instantly runs action, or only ENTER
 			@instant= arg.has_key?( :instant) ? arg.delete( :instant): @@Menus[name] ? @@Menus[name][:instant] : nil
+			# Whether this action is considered when searching for "default" action to execute (By default, yes, unless default== false)
+			@default= arg.has_key?( :default) ? arg.delete( :default): @@Menus[name] ? @@Menus[name][:default] : nil
 
-			# Function to execute can be specified in a parameter or come from a default.
+			# Function to execute
 			@function= arg.has_key?( :function) ? arg.delete( :function) : @@Menus[name] ? @@Menus[name][:function] : nil
 			@function_arg= arg.has_key?( :function_arg) ? arg.delete( :function_arg) : @@Menus[name][:function_arg] ? @@Menus[name][:function_arg] : {}
 
@@ -918,6 +923,24 @@ module TASKMAN
 			pos+=1 if pos< max
 			@data[:pos]= pos
 			arg[:widget].var_text= $session.whereis[pos]
+		end
+
+
+		def insert_datetime arg= {}
+			w= arg[:widget]
+			#pfl w.name
+
+			t= w.var_text_now
+			timestr= Time.now.strftime( $opts['datetime-format'])
+			pos= w.var_pos_now+ w.var_scroll_x_now+ w.var_cursor_x_now
+
+			# This works for inputs only, not textedits?
+			pre= t[0...pos]|| ''
+			post= t[pos..-1]|| ''
+			t= pre+ timestr+ post
+
+			w.var_text= t
+			w.var_pos= w.var_pos_now+ timestr.length
 		end
 
 	end

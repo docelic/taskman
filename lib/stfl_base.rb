@@ -88,6 +88,10 @@ module TASKMAN
 				'focus'          => 0,
 				'can_focus'      => 1,
 				'process'        => 1,
+				'cursor_x'       => '',
+				'cursor_y'       => '',
+				'scroll_x'       => '',
+				'scroll_y'       => '',
 			}
 
 			# # XXX when vars are replaced with symbols, then
@@ -126,6 +130,11 @@ module TASKMAN
 		def var_value()          @variables['value']          end
 		def var_process()        @variables['process']        end
 
+		def var_cursor_x()       @variables['cursor_x']       end
+		def var_cursor_y()       @variables['cursor_y']       end
+		def var_scroll_x()       @variables['scroll_x']       end
+		def var_scroll_y()       @variables['scroll_y']       end
+
 		def var__display_now()       @variables['.display']=       ( $app.ui.get "#{@name}_.display"      ).to_i end
 		def var_style_normal_now()   @variables['style_normal']=   ( $app.ui.get "#{@name}_style_normal"  )      end
 		def var_style_focus_now()    @variables['style_focus']=    ( $app.ui.get "#{@name}_style_focus"   )      end
@@ -143,20 +152,20 @@ module TASKMAN
 		def var_value_now()          @variables['value']=          ( $app.ui.get "#{@name}_value"         ).to_i end
 		def var_process_now()        @variables['process']=        ( $app.ui.get "#{@name}_process"       ).to_i end
 
+		def var_cursor_x_now()       @variables['cursor_x']=       ( $app.ui.get "#{@name}_cursor_x"      ).to_i end
+		def var_cursor_y_now()       @variables['cursor_y']=       ( $app.ui.get "#{@name}_cursor_y"      ).to_i end
+		def var_scroll_x_now()       @variables['scroll_x']=       ( $app.ui.get "#{@name}_scroll_x"      ).to_i end
+		def var_scroll_y_now()       @variables['scroll_y']=       ( $app.ui.get "#{@name}_scroll_y"      ).to_i end
+
 		def var__display=( arg)        $app.ui.set "#{@name}_.display"      , ( @variables['.display']= arg       ).to_s end
 		def var_style_normal=( arg)    $app.ui.set "#{@name}_style_normal"  , ( @variables['style_normal']= arg   ).to_s end
 		def var_style_focus=( arg)     $app.ui.set "#{@name}_style_focus"   , ( @variables['style_focus']= arg    ).to_s end
 		def var_style_selected=( arg)  $app.ui.set "#{@name}_style_selected", ( @variables['style_selected']= arg ).to_s end
-		def var_style_end=( arg)       $app.ui.set "#{@name}_style_end"     , ( @variables['style_end']= arg ).to_s      end
+		def var_style_end=( arg)       $app.ui.set "#{@name}_style_end"     , ( @variables['style_end']= arg      ).to_s end
 		def var_autobind=( arg)        $app.ui.set "#{@name}_autobind"      , ( @variables['autobind']= arg       ).to_s end
 		def var_modal=( arg)           $app.ui.set "#{@name}_modal"         , ( @variables['modal']= arg          ).to_s end
+		def var_pos=( arg)             $app.ui.set "#{@name}_pos"           , ( @variables['pos']= arg            ).to_s end
 		def var_pos_name=( arg)        $app.ui.set "#{@name}_pos_name"      , ( @variables['pos_name']= arg       ).to_s end
-		def var_pos=( arg)
-			if arg< 0 then arg= 0 end
-			max= @widgets.size- 1
-			p= [ arg, max].min
-			$app.ui.set "#{@name}_pos", ( @variables['pos']= p).to_s
-		end
 		def var_offset=( arg)          $app.ui.set "#{@name}_offset"        , ( @variables['offset']= arg         ).to_s end
 		def var_text=( arg)            $app.ui.set "#{@name}_text"          , ( @variables['text']= arg           ).to_s end
 		def var_function=( arg)        $app.ui.set "#{@name}_function"      , ( @variables['function']= arg       ).to_s end
@@ -164,6 +173,11 @@ module TASKMAN
 		def var_can_focus=( arg)       $app.ui.set "#{@name}_can_focus"     , ( @variables['can_focus']= arg      ).to_s end
 		def var_value=( arg)           $app.ui.set "#{@name}_value"         , ( @variables['value']= arg          ).to_s end
 		def var_process=( arg)         $app.ui.set "#{@name}_process"       , ( @variables['process']= arg        ).to_s end
+
+		def var_cursor_x=( arg)        $app.ui.set "#{@name}_cursor_x"      , ( @variables['cursor_x']= arg       ).to_s end
+		def var_cursor_y=( arg)        $app.ui.set "#{@name}_cursor_y"      , ( @variables['cursor_y']= arg       ).to_s end
+		def var_scroll_x=( arg)        $app.ui.set "#{@name}_scroll_x"      , ( @variables['scroll_x']= arg       ).to_s end
+		def var_scroll_y=( arg)        $app.ui.set "#{@name}_scroll_y"      , ( @variables['scroll_y']= arg       ).to_s end
 
 		# Implement all pseudo-variables supported by STFL as read-only functions
 		def _x_now()    $app.ui.get( "#{@name}:x"   ).to_i end
@@ -389,7 +403,7 @@ module TASKMAN
 		#end
 		# Return actions associated to a widget
 		def action
-			self.actions.first
+			self.actions.select{ |a| a.default!= false}.first
 		end
 
 		# This function applies style to a widget by using a couple fallbacks.
