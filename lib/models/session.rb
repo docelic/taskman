@@ -10,6 +10,7 @@ module TASKMAN
 		attr_accessor :whereis
 		attr_accessor :show_next_key
 		attr_accessor :window_history
+		attr_accessor :task_history
 
 		def initialize arg= {}
 			super()
@@ -31,6 +32,7 @@ module TASKMAN
 
 			# History of navigation between windows
 			@window_history= []
+			@task_history= []
 
 			#@item= nil
 
@@ -80,6 +82,7 @@ module TASKMAN
 				flags: self.flags,
 				whereis: self.whereis,
 				window_history: self.window_history,
+				task_history: self.task_history,
 			}
 			begin
 				File.open( File.join( $opts['data-dir'], 'session.json'), 'w') do |f|
@@ -100,6 +103,7 @@ module TASKMAN
 					self.flags= s['flags']
 					self.whereis= s['whereis']
 					self.window_history= s['window_history']|| []
+					self.task_history= s['task_history']|| []
 					# TODO Restore item on which list was positioned
 				end
 			rescue Exception => e

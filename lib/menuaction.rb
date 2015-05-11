@@ -36,6 +36,7 @@ module TASKMAN
 			'clone_task' =>{ hotkey: '^D',  shortname: 'Clone',      menuname: 'Clone current Task',description: '', function: :clone_task},
 			'select_task'=>{ hotkey: 'ENTER', hotkey_label: 'RET', shortname: 'Select',    menuname: 'Select Task', description: '', function: :select_task},
 			'select_task_e'=>{ hotkey: 'E', hotkey_label: 'E', shortname: 'Select',    menuname: 'Select Task', description: '', function: :select_task},
+			'prev_task'  => { hotkey: '^P',  shortname: 'To Prev',    menuname: 'To Previous',    description: 'Switch to previous task', function: :prev_task},
 			'delete_task'=>{ hotkey: 'D',   shortname: 'Delete',    menuname: 'Delete Task', description: '', function: :delete_task},
 			'undelete_task'=>{ hotkey: 'U',   shortname: 'Undelete',  menuname: 'Undelete Task', description: '', function: :undelete_task},
 			'save_task' => { hotkey: '^X',  shortname: 'Save',        menuname: 'Save Changes',description: '', function: :create_task},
@@ -767,15 +768,29 @@ module TASKMAN
 		end
 
 		def select_task arg= {}
-			id= $app.ui.get( 'list_pos_name').to_i
+			id= if arg[:function_arg] then arg[:function_arg] else $app.ui.get( 'list_pos_name') end
+
+			$session.task_history.push id
+			# Keep last 10 task changes
+			if $session.task_history.count> $opts['history-lines']
+				$session.task_history= $session.task_history[$opts['history-lines']..-1]
+			end
+
 			arg2= {
 				window: 'create',
 				title: 'VIEW / EDIT TASK',
 				open_timing: true,
 				open_reminding: true,
-				id: id
+				id: id.to_i
 			}
 			create arg2
+			nil
+		end
+		def prev_task arg= {}
+			pt= $session.task_history[-2]
+			if pt
+				select_task arg.merge( function_arg: pt.to_i)
+			end
 			nil
 		end
 		def delete_task arg= {}
