@@ -218,7 +218,7 @@ module TASKMAN
 						$session.flags.select{ |k, v|
 							ki= k.to_i
 							if v== 'D'
-								if i= begin $session.sth.find( ki) end
+								if i= begin $session.sth.unscoped.find( ki) end
 									i.destroy
 									$session.flags.delete k
 								end
