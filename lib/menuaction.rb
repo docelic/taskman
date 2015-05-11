@@ -646,6 +646,7 @@ module TASKMAN
 
 			t= $session.dbh.find id #$tasklist.by_aid [db, id]
 			t2= t.dup
+			t2.folders= t.folders
 			t2.save
 
 			if w.respond_to? :status_label_text=
