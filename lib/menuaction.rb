@@ -8,7 +8,7 @@ module TASKMAN
 			'help'      => { hotkey: '?',   shortname: 'Help',        menuname: 'Help',        description: 'Get help using Taskman', function: :help},
 			'help2'     => { hotkey: nil, hotkey_label: '?',  shortname: 'Help',        menuname: 'Help',        description: 'Get help using Taskman', function: nil},
 			'get_help'  => { hotkey: '^G',  shortname: 'Get Help',    menuname: 'Get Help',    description: 'Get help',               function: :help},
-			'exit_help' => { hotkey: 'E',   shortname: 'Exit Help',   menuname: 'Exit Help',   description: 'Exit Help', function: :main },
+			'exit_help' => { hotkey: 'E',   shortname: 'Exit Help',   menuname: 'Exit Help',   description: 'Exit Help', function: :prev_window },
 
 			# For the empty slot, no need to use a different name even if it appears multiple times, because empty name results in the name being auto-generated
 			''          => { hotkey: '',    shortname: '',            menuname: '',            description: '', function: nil }, # Empty one
@@ -951,6 +951,12 @@ module TASKMAN
 
 		def save_session arg= {}
 			$session.save
+		end
+
+		def prev_window arg= {}
+			w= $session.history[-2]|| 'main'
+			$app.exec( arg.merge( window: w))
+			nil
 		end
 
 	end

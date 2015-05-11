@@ -9,6 +9,7 @@ module TASKMAN
 		attr_accessor :flags
 		attr_accessor :whereis
 		attr_accessor :show_next_key
+		attr_accessor :history
 
 		def initialize arg= {}
 			super()
@@ -27,6 +28,9 @@ module TASKMAN
 			# that is joined, so that we know how many args to give in
 			#  %..., and it should also be named if possible.
 			@format= ' %1s %-4s %-7s %s'
+
+			# History of navigation between windows
+			@history= []
 
 			#@item= nil
 
@@ -75,6 +79,7 @@ module TASKMAN
 				folder_name: self.folder_name,
 				flags: self.flags,
 				whereis: self.whereis,
+				history: self.history,
 			}
 			begin
 				File.open( File.join( $opts['data-dir'], 'session.json'), 'w') do |f|
@@ -94,6 +99,7 @@ module TASKMAN
 					self.folder= Folder.find_by name: s['folder_name']
 					self.flags= s['flags']
 					self.whereis= s['whereis']
+					self.history= s['history']|| []
 					# TODO Restore item on which list was positioned
 				end
 			rescue Exception => e
