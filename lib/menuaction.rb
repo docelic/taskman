@@ -251,6 +251,7 @@ module TASKMAN
 				w= arg[:window]
 				wi= arg[:widget]
 				e= arg[:event]
+				id= w['id'].var_text_now.to_i
 				# We're using char_to_bool here as an ugly fix to require
 				# that keypress be a single char. Otherwise, when a person
 				# presses Ctrl+C to cancel, the event is "TIMEOUT" (due to
@@ -260,7 +261,7 @@ module TASKMAN
 
 				if a!= nil
 					if a
-						main arg
+						prev_window( arg.merge( pos_name: id))
 					else
 						w['status_display'].var__display= 1
 						w['status_prompt'].var__display= 0
