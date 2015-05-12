@@ -20,7 +20,7 @@ module TASKMAN
 
 			m1= Theme::Window::Main::Menu.new(      arg.merge( name: :menu1))
 			m1.add_action(
-				:help,
+				:get_help,
 				:listfolders,
 				:'', #prevmsg
 				:'', #prevpage
@@ -37,7 +37,7 @@ module TASKMAN
 
 			m2= Theme::Window::Main::Menu.new(      arg.merge( name: :menu2, :'.display'=> 0))
 			m2.add_action(
-				:help2,
+				:get_help2,
 				:mainm,
 				:create,
 				:'',

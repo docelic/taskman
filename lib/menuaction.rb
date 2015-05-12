@@ -8,6 +8,7 @@ module TASKMAN
 			'help'      => { hotkey: '?',   shortname: 'Help',        menuname: 'Help',        description: 'Get help using Taskman', function: :help},
 			'help2'     => { hotkey: nil, hotkey_label: '?',  shortname: 'Help',        menuname: 'Help',        description: 'Get help using Taskman', function: nil},
 			'get_help'  => { hotkey: '^G',  shortname: 'Get Help',    menuname: 'Get Help',    description: 'Get help',               function: :help},
+			'get_help2' => { hotkey: nil, hotkey_label: '^G', shortname: 'Get Help',    menuname: 'Get Help',    description: 'Get help',               function: :help},
 			'exit_help' => { hotkey: 'E',   shortname: 'Exit Help',   menuname: 'Exit Help',   description: 'Exit Help', function: :prev_window },
 
 			# For the empty slot, no need to use a different name even if it appears multiple times, because empty name results in the name being auto-generated
@@ -92,8 +93,9 @@ module TASKMAN
 			'addrbook'  => { hotkey: 'A',   shortname: 'AddrBook',    menuname: 'AddrBook',    description: '', function: nil },
 
 			'whereis'   => { hotkey: 'W',   shortname: 'WhereIs',     menuname: 'Find String', description: 'Find a string', function: :whereis },
-			'whereis_next'   => { hotkey: 'N',   shortname: 'Find Next',     menuname: 'Find Next', description: 'Find next occurrence', function: :whereis, function_arg: { find_next: true} },
-			'whereis_prev'   => { hotkey: 'P',   shortname: 'Find Prev',     menuname: 'Find Prev', description: 'Find previous occurrence', function: :whereis, function_arg: { find_prev: true} },
+			'whereis_reverse'   => { hotkey: '?',   shortname: 'WhereIs',     menuname: 'Find String', description: 'Find a string', function: :whereis, function_arg: { direction: :prev} },
+			'whereis_next'   => { hotkey: 'N',   shortname: 'Find Next',     menuname: 'Find Next', description: 'Find next occurrence', function: :whereis, function_arg: { interactive: false} },
+			'whereis_prev'   => { hotkey: 'P',   shortname: 'Find Prev',     menuname: 'Find Prev', description: 'Find previous occurrence', function: :whereis, function_arg: { interactive: false, direction: :prev} },
 
 			'cut_line'  => { hotkey: '^K',   shortname: 'Cut Line',         description: 'Cut line', function: nil},
 			'postpone'  => { hotkey: '^O',   shortname: 'Postpone',         description: '', function: :postpone},
@@ -350,6 +352,7 @@ module TASKMAN
 
 			a= MenuAction.new(
 				instant: false,
+				function_arg: { direction: arg[:direction]},
 				function: Proc.new { |arg|
 				## window, widget, action, function, event-- WWAFE
 				w= arg[:window]
@@ -358,7 +361,7 @@ module TASKMAN
 				# Important to have !arg[...]s here, otherwise arg[:widget]
 				# refers to the current ListItem instead of the text typed into
 				# the interactive whereis prompt
-				if !arg[:find_next] and !arg[:find_prev] and wi= arg[:widget]
+				if arg[:interactive]!= false and wi= arg[:widget]
 					#e= arg[:event]
 					t= wi.var_text_now #.strip
 				end
@@ -388,7 +391,7 @@ module TASKMAN
 
 					r= Regexp.new t, Regexp::IGNORECASE
 					posids= nil
-					if arg[:find_prev]
+					if arg[:direction]== :prev
 						# Find-Prev searches in the backward direction
 						posids= [ *( 0..pos-1).to_a.reverse, *( ( pos)..( items.size- 1)).to_a.reverse]
 					else
@@ -397,8 +400,8 @@ module TASKMAN
 					end
 					prev_i= posids[0]
 					posids.each do |i|
-						if prev_i> i and !arg[:find_prev] then wrap_around= true end
-						if prev_i< i and arg[:find_prev] then wrap_around= true end
+						if prev_i> i and arg[:direction]!= :prev then wrap_around= true end
+						if prev_i< i and arg[:direction]== :prev then wrap_around= true end
 						prev_i= i
 						if items[i].var_text_now=~ r
 							found= true
@@ -410,7 +413,7 @@ module TASKMAN
 
 				w['status_display'].var__display= 1
 				w['status_prompt'].var__display= 0
-				if found and wrap_around and arg[:find_prev]
+				if found and wrap_around and arg[:direction]== :prev
 					w.status_label_text= _('Search hit TOP, continuing at BOTTOM')
 				elsif found and wrap_around
 					w.status_label_text= _('Search hit BOTTOM, continuing at TOP')
@@ -421,7 +424,7 @@ module TASKMAN
 				nil
 			})
 			
-			if arg[:find_next] or arg[:find_prev]
+			if arg[:interactive]== false
 				a.run arg
 			else
 				$app.screen.ask( ( _( fmt)% args).truncate2, a, up, down)
