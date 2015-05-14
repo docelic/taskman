@@ -237,7 +237,7 @@ module TASKMAN
 				@avhc= nil
 			end
 			if MenuAction=== arg
-				arg.hotkey.force_array.each do |h|
+				arg.hotkeys.each do |h|
 					# XXX Ugly IF() -- instead, nil or empty hotkeys should
 					# never even enter the hotkey array.
 					if h and h.length> 0

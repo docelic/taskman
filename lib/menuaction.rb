@@ -102,7 +102,7 @@ module TASKMAN
 			'cancel'    => { hotkey: 'TIMEOUT', hotkey_label: '^C',  shortname: 'Cancel',           description: '', function: :cancel},
 			'listfolders'=>{ hotkey: 'L',   shortname: 'FldrList',   menuname: 'FOLDER LIST', description: 'Select a folder to view', function: :list },
 
-			'goto_line'=> { hotkey: ':',   shortname: 'Goto Line',    menuname: 'Goto Line',    description: '', function: :goto_line },
+			'goto_line'=> { hotkey: [ 'J', ':' ],   shortname: 'Jump',    menuname: 'Jump to Line #',    description: '', function: :goto_line },
 
 			'show_next_key'=> { hotkey: '^V',   shortname: 'ShowNextKey',        menuname: 'Show Next Key',        description: 'Show keycode of next key pressed', function: :show_next_key },
 
