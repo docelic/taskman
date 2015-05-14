@@ -288,7 +288,8 @@ module TASKMAN
 			$stop_loop= false
 
 			# Initialize the window which is to be displayed first
-			arg= exec( window: $opts['window'])
+			win= $opts['window'] || ( $opts['state-load'] and $session.window_history.last ) || 'main'
+			arg= exec( window: win)
 
 			loop do
 				if debug?
