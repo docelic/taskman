@@ -136,12 +136,6 @@ module TASKMAN
 #					base_widget.mvc
 #				end
 
-				# If a person has pressed Ctrl+V previously, show what the key is
-				if $session.show_next_key
-					$session.show_next_key= false
-					$app.screen.status_label_text= event
-				end
-
 				# Break if a single-loop was requested (code< 0)
 				# Next if the event has been handled by the widget and key is empty
 				if code< 0
@@ -150,46 +144,54 @@ module TASKMAN
 
 				event.upcase!
 
-				# This if() works as follows:
-				# It evaluates to true if widget is known, and the widget's action is
-				# of instant type (triggers as soon as its widget is focused), or it
-				# is not of 'instant' type but the user pressed ENTER on it.
-				if widget and a= widget.action and( event== 'ENTER' ? !a.instant : a.instant)
-					#event= a.run( window: self, widget: widget, base_widget: base_widget, event: event)
-					event= a.run( window: self, widget: widget, base_widget: base_widget, action: a, function: a.function, event: event)
-				end
+				# If a person has pressed Ctrl+V previously, show what the key is, else go into normal processing
+				if $session.show_next_key
+					$session.show_next_key= false
+					$app.screen.status_label_text= event
 
-				# Note that this if() will be true even if the STFL widget handles the
-				# action and sets event to ''. It will be false only if we processed
-				# the action and returned 'nil' to indicate that processing should
-				# stop.
-				if event
-					ary= []
-					if widget
-						ary.push widget
-						if widget.var_modal== 0
-							ary.push *menus(), *widget.parent_tree()
-						end
-					else
-						ary.push *menus()
+				else
+					# This if() works as follows:
+					# It evaluates to true if widget is known, and the widget's action is
+					# of instant type (triggers as soon as its widget is focused), or it
+					# is not of 'instant' type but the user pressed ENTER on it.
+					if widget and a= widget.action and( event== 'ENTER' ? !a.instant : a.instant)
+						#event= a.run( window: self, widget: widget, base_widget: base_widget, event: event)
+						event= a.run( window: self, widget: widget, base_widget: base_widget, action: a, function: a.function, event: event)
 					end
-					ary.each do |w|
-						next if w.nil?
-						if a= w.hotkeys_hash[event]
 
-							# Here we allow multiple actions to execute. Action which believes it has serviced
-							# the event adequately should return "" to clear the event but allow other actions
-							# to be tested, or nil to stop keypress handling.
-							# Using this mechanism, since actions are tested in order of definition, it is
-							# possible for one action to replace "event", thus triggering another action
-							# after it. (E.g. a handler for "DOWN" could return "UP" to trigger some other
-							# action (defined after it) that was bound to UP)
-							event= a.run( window: self, widget: widget, base_widget: base_widget, action: a, function: a.function, event: event)
-							if event== nil
-								break
+					# Note that this if() will be true even if the STFL widget handles the
+					# action and sets event to ''. It will be false only if we processed
+					# the action and returned 'nil' to indicate that processing should
+					# stop.
+					if event
+						ary= []
+						if widget
+							ary.push widget
+							if widget.var_modal== 0
+								ary.push *menus(), *widget.parent_tree()
+							end
+						else
+							ary.push *menus()
+						end
+						ary.each do |w|
+							next if w.nil?
+							if a= w.hotkeys_hash[event]
+
+								# Here we allow multiple actions to execute. Action which believes it has serviced
+								# the event adequately should return "" to clear the event but allow other actions
+								# to be tested, or nil to stop keypress handling.
+								# Using this mechanism, since actions are tested in order of definition, it is
+								# possible for one action to replace "event", thus triggering another action
+								# after it. (E.g. a handler for "DOWN" could return "UP" to trigger some other
+								# action (defined after it) that was bound to UP)
+								event= a.run( window: self, widget: widget, base_widget: base_widget, action: a, function: a.function, event: event)
+								if event== nil
+									break
+								end
 							end
 						end
 					end
+
 				end
 
 				# Now, when everything was said and done, exit from this

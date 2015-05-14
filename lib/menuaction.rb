@@ -34,18 +34,18 @@ module TASKMAN
 			'to_index'  => { hotkey: '^T',  shortname: 'To Index',    menuname: 'Task Index',    description: 'View tasks in current folder', function: :index },
 
 			'create_task'=>{ hotkey: '^X',  shortname: 'Create',     menuname: 'Create Task',description: '', function: :create_task},
-			'clone_task' =>{ hotkey: '^D',  shortname: 'Clone',      menuname: 'Clone current Task',description: '', function: :clone_task},
+			'clone_task' =>{ hotkey: '^D',  shortname: 'Clone',      menuname: 'Clone current Task',description: '', function: :clone_task, history: true},
 			'select_task'=>{ hotkey: 'ENTER', hotkey_label: 'RET', shortname: 'Select',    menuname: 'Select Task', description: '', function: :select_task},
 			'select_task_e'=>{ hotkey: 'E', hotkey_label: 'E', shortname: 'Select',    menuname: 'Select Task', description: '', function: :select_task},
 			'prev_task'  => { hotkey: '^P',  shortname: 'To Prev',    menuname: 'To Previous',    description: 'Switch to previous task', function: :prev_task},
-			'delete_task'=>{ hotkey: 'D',   shortname: 'Delete',    menuname: 'Delete Task', description: '', function: :delete_task},
-			'undelete_task'=>{ hotkey: 'U',   shortname: 'Undelete',  menuname: 'Undelete Task', description: '', function: :undelete_task},
+			'delete_task'=>{ hotkey: 'D',   shortname: 'Delete',    menuname: 'Delete Task', description: '', function: :delete_task, history: true},
+			'undelete_task'=>{ hotkey: 'U',   shortname: 'Undelete',  menuname: 'Undelete Task', description: '', function: :undelete_task, history: true},
 			'save_task' => { hotkey: '^X',  shortname: 'Save',        menuname: 'Save Changes',description: '', function: :create_task},
 			# Write task does not exit task view after saving it
 			'write_task' => { hotkey: '^W',  shortname: 'Write',        menuname: 'Write Changes',description: '', function: :create_task, function_arg: { window_change: false}},
 
-			'add_folder'=>{ hotkey: 'A',  shortname: 'Add',     menuname: 'Add Folder',description: '', function: :add_folder},
-			'delete_folder'=>{ hotkey: 'D',  shortname: 'Delete',     menuname: 'Delete Folder',description: '', function: :delete_folder},
+			'add_folder'=>{ hotkey: 'A',  shortname: 'Add',     menuname: 'Add Folder',description: '', function: :add_folder, history: true},
+			'delete_folder'=>{ hotkey: 'D',  shortname: 'Delete',     menuname: 'Delete Folder',description: '', function: :delete_folder, history: true},
 
 			'quit'      => { hotkey: 'Q',   shortname: 'Quit',        menuname: 'Quit',        description: 'Leave the Taskman program', function: :quit },
 			# Handler for Quit Now can be nil because this is checked for and executed directly in the main loop. This entry exists only for showing in menu when you want.
@@ -97,16 +97,18 @@ module TASKMAN
 			'whereis_next'   => { hotkey: 'N',   shortname: 'Find Next',     menuname: 'Find Next', description: 'Find next occurrence', function: :whereis, function_arg: { interactive: false} },
 			'whereis_prev'   => { hotkey: 'P',   shortname: 'Find Prev',     menuname: 'Find Prev', description: 'Find previous occurrence', function: :whereis, function_arg: { interactive: false, direction: :prev} },
 
-			'cut_line'  => { hotkey: '^K',   shortname: 'Cut Line',         description: 'Cut line', function: nil},
+			'cut_line'  => { hotkey: '^K',   shortname: 'Cut Line',         description: 'Cut line', function: nil, history: true},
 			'postpone'  => { hotkey: '^O',   shortname: 'Postpone',         description: '', function: :postpone},
 			'cancel'    => { hotkey: 'TIMEOUT', hotkey_label: '^C',  shortname: 'Cancel',           description: '', function: :cancel},
 			'listfolders'=>{ hotkey: 'L',   shortname: 'FldrList',   menuname: 'FOLDER LIST', description: 'Select a folder to view', function: :list },
 
 			'goto_line'=> { hotkey: ':',   shortname: 'Goto Line',    menuname: 'Goto Line',    description: '', function: :goto_line },
 
-			'show_next_key'=> { hotkey: '^V',   shortname: 'Show Key',        menuname: 'Show Next Key',        description: 'Show keycode of next key pressed', function: :show_next_key },
+			'show_next_key'=> { hotkey: '^V',   shortname: 'ShowNextKey',        menuname: 'Show Next Key',        description: 'Show keycode of next key pressed', function: :show_next_key },
 
-			'insert_datetime'=> { hotkey: $opts['datetime-key'],   shortname: 'Insert DateTime',        menuname: 'Insert Date/Time',        description: 'Insert current date and time', function: :insert_datetime},
+			'insert_datetime'=> { hotkey: $opts['datetime-key'],   shortname: 'Insert DateTime',        menuname: 'Insert Date/Time',        description: 'Insert current date and time', function: :insert_datetime, history: true },
+
+			'repeat_last_action'  => { hotkey: '.',   shortname: 'RepeatLast',    menuname: 'Repeat Last Action',    description: 'Repeat Last Action', function: :repeat_last_action },
 
 			# Testing shortcuts
 			#'inc_folder_count'=> { hotkey: 'SR',   shortname: 'Folder Cnt+1',     description: '', function: :inc_folder_count },
@@ -114,7 +116,7 @@ module TASKMAN
 			#'parent_names'    => { hotkey: '^P',   shortname: 'Parent Tree',      description: '', function: :parent_names},
 		}
 
-		attr_accessor :name, :hotkey, :hotkey_label, :shortname, :menuname, :description, :function, :instant, :data, :default
+		attr_accessor :name, :hotkey, :hotkey_label, :shortname, :menuname, :description, :function, :instant, :data, :default, :history
 
 		def initialize arg= {}
 			name= arg[:name]= arg[:name].to_s
@@ -136,6 +138,8 @@ module TASKMAN
 			@function= arg.has_key?( :function) ? arg.delete( :function) : @@Menus[name] ? @@Menus[name][:function] : nil
 			@function_arg= arg.has_key?( :function_arg) ? arg.delete( :function_arg) : @@Menus[name][:function_arg] ? @@Menus[name][:function_arg] : {}
 
+			@history= arg.has_key?( :history) ? arg.delete( :history) : @@Menus[name] ? @@Menus[name][:history] : true
+
 			super
 
 			# Allow provided blocks to store local state or shared state
@@ -147,6 +151,15 @@ module TASKMAN
 		# the values are filled in here, but if a person sends in any
 		# arguments in arg, they override the ones here.
 		def run arg= {}
+			# Save this action for later calling again possibly, with '.'
+			if @history
+				$session.action_history.push @name
+				if $session.action_history.count> $opts['history-lines']
+					$session.action_history= $session.action_history[$opts['history-lines']..-1]
+				end
+				$session.last_action= self
+			end
+
 			if Symbol=== f= @function
 				self.send( f, arg.merge( action: self, function: f).merge( @function_arg))
 			elsif Proc=== f= @function
@@ -976,6 +989,11 @@ module TASKMAN
 			w= $session.window_history[-2]|| 'main'
 			$app.exec( arg.merge( window: w))
 			nil
+		end
+
+		def repeat_last_action arg= {}
+			# See if this needs to be limited to actions of the same name, type or other criteria
+			( a= $session.last_action) and a.run arg
 		end
 
 	end

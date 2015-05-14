@@ -334,6 +334,7 @@ module TASKMAN
 
 			# Unconditionally add "Show next key" action to all created windows
 			#$app.screen<< MenuAction.new( name: 'show_next_key')
+			#$app.screen<< MenuAction.new( name: 'repeat_last_action')
 
 			$app.screen.all_widgets_hash.each do |name, w|
 				w.apply_style

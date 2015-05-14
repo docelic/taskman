@@ -10,6 +10,7 @@ module TASKMAN
 			self<< MenuAction.new( name: :bottom_list)
 			self<< MenuAction.new( name: :whereis, hotkey: '/')
 			self<< MenuAction.new( name: :whereis_reverse)
+			self<< MenuAction.new( name: 'repeat_last_action')
 
 			@prev_offset= nil
 

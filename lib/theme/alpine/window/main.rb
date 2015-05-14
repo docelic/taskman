@@ -30,7 +30,7 @@ module TASKMAN
 				:nextcmd2,
 				:'', #gotofolder,
 				:'',
-				:'', #:quit_now,
+				:show_next_key
 			)
 
 #			m2= Theme::Window::Main::Menu.new( name: :menu2, :'.display'=> 0)
