@@ -19,18 +19,22 @@ module TASKMAN
 			vbox= Vbox.new( name: 'menu', :'.expand' => 'h')
 
 			m1= Theme::Window::Main::Menu.new(      arg.merge( name: :menu1))
+			pu= Theme::MenuAction.new( name: 'pos_pgup', hotkey: '-')
+			pd= Theme::MenuAction.new( name: 'pos_pgdown', hotkey: 'SPACE', hotkey_label: 'SPC')
+			ph= Theme::MenuAction.new( name: 'pos_home', hotkey: nil)
+			pe= Theme::MenuAction.new( name: 'pos_end', hotkey: nil)
 			m1.add_action(
 				:get_help,
 				:listfolders,
 				:'', #prevmsg
-				:'', #prevpage
+				pu,
 				:delete_task, # Where to put mark as done
 				:'', #edit
 				:tablebr,
 				:other, # O boy, there are some!
 				:hotkey_in, #hotkey in that goes to task
 				:'', #nextmsg
-				:'', #nextpage
+				pd,
 				:undelete_task, # Where to put mark as not done
 				:'', #duplicate
 			)
@@ -41,15 +45,15 @@ module TASKMAN
 				:mainm,
 				:create,
 				:'',
-				:whereis_next,
-				:'',
+				:whereis_prev,
+				ph,
 				:tablebr,
 				:other2,
 				:quit,
 				:goto_line,
 				:whereis,
-				:whereis_prev,
-				:'', #duplicate
+				:whereis_next,
+				pe,
 			)
 
 			vbox<< m1
