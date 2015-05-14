@@ -19,7 +19,7 @@ module TASKMAN
 			l<< MenuAction.new( name: 'pos_home')
 			l<< MenuAction.new( name: 'pos_end')
 
-			$session.sth.each do |t|
+			$session.sth.reload.each do |t|
 				s= $session.format% [ t.flag, t.id, t.status, t.subject]
 				i= ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
 				i<< MenuAction.new( name: 'select_task_e', shortname: 'View')
