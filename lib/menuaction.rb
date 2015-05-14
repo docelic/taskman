@@ -63,10 +63,10 @@ module TASKMAN
 			# Actions for manual, MVC-based handling of lists
 			'pos_up'=>     { hotkey: 'UP',  shortname: '',  menuname: '', description: '', function: :pos_up},
 			'pos_down'=>   { hotkey: 'DOWN',shortname: '',  menuname: '', description: '', function: :pos_down},
-			'pos_pgup'=>   { hotkey: 'PPAGE',shortname: '', menuname: '', description: '', function: :pos_pgup},
-			'pos_pgdown'=> { hotkey: 'NPAGE',shortname: '', menuname: '', description: '', function: :pos_pgdown},
-			'pos_home'=>   { hotkey: 'HOME',shortname: '',  menuname: '', description: '', function: :pos_home},
-			'pos_end'=>    { hotkey: 'END', shortname: '',  menuname: '', description: '', function: :pos_end},
+			'pos_pgup'=>   { hotkey: 'PPAGE',shortname: 'PrevPage', menuname: '', description: '', function: :pos_pgup},
+			'pos_pgdown'=> { hotkey: 'NPAGE',shortname: 'NextPage', menuname: '', description: '', function: :pos_pgdown},
+			'pos_home'=>   { hotkey: 'HOME', hotkey_label: 'HOME', shortname: 'FirstPage',  menuname: '', description: '', function: :pos_home},
+			'pos_end'=>    { hotkey: 'END', hotkey_label: 'END',  shortname: 'LastPage',  menuname: '', description: '', function: :pos_end},
 
 			# For moving within an array and printing current entry text into a box
 			'array_up'=>     { hotkey: 'UP',  shortname: '',  menuname: '', description: '', function: :array_up},

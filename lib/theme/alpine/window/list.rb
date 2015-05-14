@@ -18,18 +18,22 @@ module TASKMAN
 
 			m1= Theme::Window::Main::Menu.new(      arg.merge( name: :menu1))
 			hk= Theme::MenuAction.new( name: 'hotkey_in', shortname: 'List Fldr')
+			pu= Theme::MenuAction.new( name: 'pos_pgup', hotkey: '-')
+			pd= Theme::MenuAction.new( name: 'pos_pgdown', hotkey: 'SPACE', hotkey_label: 'SPC')
+			ph= Theme::MenuAction.new( name: 'pos_home', hotkey: nil)
+			pe= Theme::MenuAction.new( name: 'pos_end', hotkey: nil)
 			m1.add_action(
 				:help,
 				:hotkey_out,
-				:'', #prev fldr
-				:'', #prev page
+				ph,
+				pu,
 				:add_folder,
 				:'', #edit
 				:tablebr,
 				:other,
 				hk,
-				:'', #nextmsg
-				:'', #nextpage
+				pe,
+				pd,
 				:delete_folder,
 				:whereis, #duplicate
 			)

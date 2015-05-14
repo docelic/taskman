@@ -45,14 +45,14 @@ module TASKMAN
 				# appear as available in the window menu.
 				:firstpage,
 				:'',
-				:whereis_next,
+				:whereis_prev,
 				:tablebr,
 				:'',
 				:quit,
 				:nextpage,
 				:lastpage,
 				:whereis,
-				:whereis_prev
+				:whereis_next
 			)
 
 			vbox<< m1
