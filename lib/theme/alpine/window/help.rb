@@ -16,6 +16,10 @@ module TASKMAN
 			t= Textview.new( name: 'body', focus: 1, text: Help.text)
 			t<< MenuAction.new( name: :top_help)
 			t<< MenuAction.new( name: :bottom_help)
+			t<< MenuAction.new( name: :whereis, hotkey: '/')
+			t<< MenuAction.new( name: :whereis_reverse)
+			#t<< MenuAction.new( name: :whereis_next)
+			#t<< MenuAction.new( name: :whereis_prev)
 
 			self<< t
 			#########################################################
@@ -34,7 +38,6 @@ module TASKMAN
 			m1.add_action(
 				m,
 				:exit_help,
-				:'',
 				:prevpage,
 				# Note that this firstpage/lastpage won't actually execute their action,
 				# since HOME/END are handled by textview itself and our main loop will
@@ -42,13 +45,14 @@ module TASKMAN
 				# appear as available in the window menu.
 				:firstpage,
 				:'',
+				:whereis_next,
 				:tablebr,
 				:'',
 				:quit,
-				:'',
 				:nextpage,
 				:lastpage,
 				:whereis,
+				:whereis_prev
 			)
 
 			vbox<< m1

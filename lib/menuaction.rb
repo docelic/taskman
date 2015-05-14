@@ -95,7 +95,7 @@ module TASKMAN
 			'whereis'   => { hotkey: 'W',   shortname: 'WhereIs',     menuname: 'Find String', description: 'Find a string', function: :whereis },
 			'whereis_reverse'   => { hotkey: '?',   shortname: 'WhereIs',     menuname: 'Find String', description: 'Find a string', function: :whereis, function_arg: { direction: :prev} },
 			'whereis_next'   => { hotkey: 'N',   shortname: 'Find Next',     menuname: 'Find Next', description: 'Find next occurrence', function: :whereis, function_arg: { interactive: false} },
-			'whereis_prev'   => { hotkey: 'P',   shortname: 'Find Prev',     menuname: 'Find Prev', description: 'Find previous occurrence', function: :whereis, function_arg: { interactive: false, direction: :prev} },
+			'whereis_prev'   => { hotkey: 'P',   shortname: 'Find Prev',     menuname: 'Find Previous', description: 'Find previous occurrence', function: :whereis, function_arg: { interactive: false, direction: :prev} },
 
 			'cut_line'  => { hotkey: '^K',   shortname: 'Cut Line',         description: 'Cut line', function: nil, history: true},
 			'postpone'  => { hotkey: '^O',   shortname: 'Postpone',         description: '', function: :postpone},
