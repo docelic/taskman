@@ -22,7 +22,7 @@ module TASKMAN
 			$session.sth.each do |t|
 				s= $session.format% [ t.flag, t.id, t.status, t.subject]
 				i= ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
-				i<< MenuAction.new( name: 'select_task_e')
+				i<< MenuAction.new( name: 'select_task_e', shortname: 'View')
 				@l<< i
 			end
 			if $session.sth.size== 0

@@ -17,6 +17,7 @@ module TASKMAN
 			vbox= Vbox.new( name: 'menu', :'.expand' => 'h')
 
 			m1= Theme::Window::Main::Menu.new(      arg.merge( name: :menu1))
+			hk= Theme::MenuAction.new( name: 'hotkey_in', shortname: 'List Fldr')
 			m1.add_action(
 				:help,
 				:mainlt,
@@ -26,7 +27,7 @@ module TASKMAN
 				:'', #edit
 				:tablebr,
 				:other,
-				:'', #:quit, # Select/goto folder
+				hk,
 				:'', #nextmsg
 				:'', #nextpage
 				:delete_folder,

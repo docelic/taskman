@@ -28,7 +28,7 @@ module TASKMAN
 				:'', #edit
 				:tablebr,
 				:other, # O boy, there are some!
-				:select_task, #hotkey in that goes to task
+				:hotkey_in, #hotkey in that goes to task
 				:'', #nextmsg
 				:'', #nextpage
 				:undelete_task, # Where to put mark as not done
