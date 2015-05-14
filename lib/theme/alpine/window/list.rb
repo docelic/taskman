@@ -20,7 +20,7 @@ module TASKMAN
 			hk= Theme::MenuAction.new( name: 'hotkey_in', shortname: 'List Fldr')
 			m1.add_action(
 				:help,
-				:mainlt,
+				:hotkey_out,
 				:'', #prev fldr
 				:'', #prev page
 				:add_folder,

@@ -49,7 +49,7 @@ module TASKMAN
 
 			'quit'      => { hotkey: 'Q',   shortname: 'Quit',        menuname: 'Quit',        description: 'Leave the Taskman program', function: :quit },
 			# Handler for Quit Now can be nil because this is checked for and executed directly in the main loop. This entry exists only for showing in menu when you want.
-			'quit_now'  => { hotkey: $opts['exit-key'], shortname: 'QuitNow',        menuname: 'Quit Now',        description: 'Quit Taskman now', function: nil },
+			'quit_now'  => { hotkey: $opts['exit-key'], shortname: 'QuitNow',        menuname: 'Quit Now',        description: 'Quit Taskman Now', function: nil },
 			'cancel_question'=> { hotkey: 'ESC', shortname: 'Cancel',        menuname: 'Cancel Question',        description: 'Cancel question', function: :cancel_question },
 
 			# Actions related to status messages when a person tries to move beyond widget/page/window limits
@@ -84,7 +84,7 @@ module TASKMAN
 			'other'     => { hotkey: 'O',   shortname: 'OTHER CMDS',  menuname: 'OTHER CMDS',  description: '', function: :menu_next_page },
 			'other2'    => { hotkey: nil, hotkey_label:'O',  shortname: 'OTHER CMDS',  menuname: 'OTHER CMDS',  description: '', function: nil },
 			'relnotes'  => { hotkey: 'R',   shortname: 'RelNotes',    menuname: 'RelNotes',    description: '', function: nil },
-			'hotkey_out'=> { hotkey: '<',   shortname: '',            menuname: '',            description: '', function: nil },
+			'hotkey_out'=> { hotkey: [ '<', 'BACKSPACE' ],   shortname: 'Go Back',            menuname: 'Back',            description: 'Go Back to Previous Window', function: :prev_window, block: proc{ |arg| } },
 			'kblock'    => { hotkey: 'K',   shortname: 'KBLock',      menuname: 'KBLock',      description: '', function: nil },
 			'setup'     => { hotkey: 'S',   shortname: 'Setup',       menuname: 'Setup',       description: '', function: nil },
 			'role'      => { hotkey: '#',   shortname: 'Role',        menuname: 'Role',        description: '', function: nil },
@@ -116,15 +116,18 @@ module TASKMAN
 			#'parent_names'    => { hotkey: '^P',   shortname: 'Parent Tree',      description: '', function: :parent_names},
 		}
 
-		attr_accessor :name, :hotkey, :hotkey_label, :shortname, :menuname, :description, :function, :instant, :data, :default, :history
+		attr_accessor :name, :hotkey_label, :shortname, :menuname, :description, :function, :instant, :data, :default, :history, :block
+		attr_reader :hotkey, :hotkeys
 
 		def initialize arg= {}
 			name= arg[:name]= arg[:name].to_s
 			if name.length> 0
 				@name= name
 			end
-			@hotkey= arg.has_key?( :hotkey) ? arg.delete( :hotkey): @@Menus[name] ? @@Menus[name][:hotkey] : nil
+
+			self.hotkeys= arg.has_key?( :hotkey) ? arg.delete( :hotkey): @@Menus[name] ? @@Menus[name][:hotkey] : nil
 			@hotkey_label= arg.has_key?( :hotkey_label) ? arg.delete( :hotkey_label): @@Menus[name] ? ( @@Menus[name][:hotkey_label]|| @hotkey) : nil
+
 			@shortname= arg.has_key?( :shortname) ? arg.delete( :shortname): @@Menus[name] ? @@Menus[name][:shortname] : nil
 			@menuname= arg.has_key?( :menuname) ? arg.delete( :menuname): @@Menus[name] ? @@Menus[name][:menuname] : nil
 			@description= arg.has_key?( :description) ? arg.delete( :description).truncate2: @@Menus[name] ? @@Menus[name][:description].truncate2 : nil
@@ -140,11 +143,27 @@ module TASKMAN
 
 			@history= arg.has_key?( :history) ? arg.delete( :history) : @@Menus[name] ? @@Menus[name][:history] : true
 
+			@block= arg.has_key?( :block) ? arg.delete( :block) : @@Menus[name] ? @@Menus[name][:block] : nil
+
 			super
 
 			# Allow provided blocks to store local state or shared state
 			# between objects etc. in @data
-			if block_given? then @data= yield end
+
+			if block_given? then @data= yield arg.merge( self: self) end
+			if @block then @block.call arg.merge( self: self) end
+
+
+
+		end
+
+		def hotkey= arg
+			@hotkeys[0]= arg
+			@hotkey= arg
+		end
+		def hotkeys= arg
+			@hotkeys= arg.force_array
+			@hotkey= @hotkeys[0]
 		end
 
 		# XXX Maybe do this the other way around with .merge, so that all
