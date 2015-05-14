@@ -432,6 +432,12 @@ module TASKMAN
 						posids= [ *( ( pos+1)..( items.size- 1)), *( 0..pos)]
 					end
 					prev_i= posids[0]
+
+					# Handles case when a person starts searching while on the first or
+					# last item in the list
+					if prev_i< pos and arg[:direction]!= :prev then wrap_around= true end
+					if prev_i> pos and arg[:direction]== :prev then wrap_around= true end
+
 					posids.each do |i|
 						if prev_i> i and arg[:direction]!= :prev then wrap_around= true end
 						if prev_i< i and arg[:direction]== :prev then wrap_around= true end
