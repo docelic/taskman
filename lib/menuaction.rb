@@ -172,10 +172,7 @@ module TASKMAN
 		def run arg= {}
 			# Save this action for later calling again possibly, with '.'
 			if @history
-				$session.action_history.push @name
-				if $session.action_history.count> $opts['history-lines']
-					$session.action_history= $session.action_history[$opts['history-lines']..-1]
-				end
+				$session.action_history<< @name
 				$session.last_action= self
 			end
 
@@ -812,11 +809,7 @@ module TASKMAN
 		def select_task arg= {}
 			id= if arg[:function_arg] then arg[:function_arg] else $app.ui.get( 'list_pos_name') end
 
-			$session.task_history.push id
-			# Keep last 10 task changes
-			if $session.task_history.count> $opts['history-lines']
-				$session.task_history= $session.task_history[$opts['history-lines']..-1]
-			end
+			$session.task_history<< id
 
 			arg2= {
 				window: 'create',
