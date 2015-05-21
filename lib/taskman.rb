@@ -30,12 +30,7 @@ module TASKMAN
 			$opts= TASKMAN::Defaults.new
 
 			rc= File.join $opts['data-dir'], 'taskmanrc'
-			if File.readable? rc
-				File.open( rc){ |f|
-					args= Shellwords.split f.read
-					ARGV.unshift *args
-				}
-			end
+			rc.unshift_to_argv
 
 			$getopts= [
 				# # Important options
@@ -219,20 +214,14 @@ module TASKMAN
 			require 'theme'
 			require 'style'
 
-			#if $opts['data-dir'] and not File.directory? $opts['data-dir']
-			#	Dir.mkdir $opts['data-dir'], 0700
-			#end
+			if $opts['data-dir'] and not File.directory? $opts['data-dir']
+				$opts['data-dir'].make_directory
+			end
 
 			GC.stress= $opts['stress-collector']
 			GC.disable unless $opts['garbage-collector']
 
-			ActiveRecord::Base.establish_connection(
-				adapter:  'mysql2',
-				host:     'localhost',
-				username: 'taskman',
-				password: 'taskman',
-				database: 'taskman'
-			)
+			ActiveRecord::Base.establish_connection( *( $opts['connection'][$opts['main-db'].to_sym]))
 		end
 
 		def start_console
