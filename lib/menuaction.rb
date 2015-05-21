@@ -76,6 +76,7 @@ module TASKMAN
 			# Misc
 			'toggle_timing_options'=> { description: 'Toggle Timing Options', function: :toggle_timing_options},
 			'toggle_reminding_options'=> { description: 'Toggle Remind Options', function: :toggle_reminding_options},
+			'toggle'=> { hotkey: [ 'ENTER', 'SPACE'], hotkey_label: 'RET', description: 'Toggle', function: :toggle},
 			'redraw'=>     { hotkey: '^L',  shortname: 'RedrawScr',menuname: 'Redraw Screen', description: '', function: :redraw},
 
 			# For custom implementation of TableList
@@ -749,17 +750,17 @@ module TASKMAN
 					i.send "parse_#{f}", v
 				end
 
-				# These are single-value, null keys
-				[
-					:status,
-				].each do |f|
-					v= w[f.to_s].var_text_now.strip
-					#next unless v.length> 0
-					# Save person's original input for eventual
-					# editing/modification later
-					i.send "_#{f}=", v
-					i.send "parse_#{f}", v
-				end
+				## These are single-value, null keys
+				#[
+				#	:status,
+				#].each do |f|
+				#	v= w[f.to_s].var_text_now.strip
+				#	#next unless v.length> 0
+				#	# Save person's original input for eventual
+				#	# editing/modification later
+				#	i.send "_#{f}=", v
+				#	i.send "parse_#{f}", v
+				#end
 
 				# These are multi-value keys
 				[
@@ -786,6 +787,19 @@ module TASKMAN
 				fnames= fnames.join ' '
 				i.send "_folder_names=", fnames
 				i.send "parse_folder_names", fnames
+
+				# Extract status
+				#awh= $app.screen.all_widgets_hash
+				ws= awh.keys.select{ |f| f.match '^statusname_'}
+				ss= []
+				ws.each do |w|
+					if awh[w].var_value_now== 1
+						ss.push w[11..-1]
+					end
+				end
+				ss= ss.join ' '
+				i.send "_status=", ss
+				i.send "parse_status", ss
 
 				i.save
 
@@ -861,6 +875,12 @@ module TASKMAN
 				pos: arg[:base_widget].var_pos_now,
 				status_label_text: _(%q^Deletion mark removed, task won't be deleted^)
 			})
+			nil
+		end
+
+		def toggle arg= {}
+			w= arg[:widget]
+			w.toggle
 			nil
 		end
 

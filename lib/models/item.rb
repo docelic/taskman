@@ -16,8 +16,6 @@ module TASKMAN
 		has_many :priorities
 		belongs_to :folder
 
-		#has :status # TODO: references :status
-
 		attr_writer :folder_names
 		after_save :assign_folders
 

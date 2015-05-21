@@ -79,10 +79,47 @@ module TASKMAN
 
 			#### Categories checkboxes END ####
 
-			h2= Hbox.new(                     '.expand'=> 'h')
-			h2<< Label.new(                   '.expand'=> '',  text: 'Status      : ')
-			h2<< Input.new( name: :status,    '.expand'=> 'h', text: i._status, tooltip: 'Task status, e.g. OPEN | WORKING | DONE')
-			v<< h2
+			# Status checkboxes START ####
+
+			#h2= Hbox.new(                     '.expand'=> 'h')
+			#h2<< Label.new(                   '.expand'=> '',  text: 'Status      : ')
+			#h2<< Input.new( name: :status,    '.expand'=> 'h', text: i._status, tooltip: 'Task status, e.g. OPEN | WORKING | DONE')
+			#v<< h2
+
+			mystatus= if new then '' else i.status end
+			@statuses= []
+			lt= _('Status      : ')
+			has= $COLUMNS- lt.length+ 2 # (2 is the spacer between elements)
+			used= 0
+			hbs= [ Hbox.new( '.expand'=> '')]
+			Status.all.each do |f|
+				text_len= 6+ f.name.length # 6 == '[ ] ' and 2 spaces at the end, after name
+				used+= text_len
+				if used> has
+					hbs.push Hbox.new( '.expand'=> '')
+					used= 0
+				end
+				cbv= if mystatus== f.name then 1 else 0 end
+				f= Optionbox.new(
+					name: "statusname_#{f.name}",
+					text_0: "[ ] #{f.name}  ",
+					text_1: "[*] #{f.name}  ",
+					value: cbv,
+					tooltip: 'Task status, e.g. OPEN | WORKING | DONE',
+					group: 'status'
+				)
+			  f<< MenuAction.new( name: :toggle)
+				@statuses.push f
+				hbs.last<< f
+			end
+			hbs.each_with_index do |hb, i|
+				h2= Hbox.new(                     '.expand'=> 'h')
+				h2<< Label.new(                   '.expand'=> '',  '.width' => lt.length, text: i==0 ? lt: '')
+				h2<< hb
+				v<< h2
+			end
+
+			#### Status checkboxes END ####
 
 			# "Options" toggles
 

@@ -187,6 +187,7 @@ module TASKMAN
 			require 'models/categorization'
 			require 'models/session'
 			require 'models/priority'
+			require 'models/status'
 
 			require 'tasklist'
 

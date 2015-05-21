@@ -2,7 +2,7 @@ module TASKMAN
 
 	class Checkbox < Widget
 
-		def initialize *arg
+		def initialize arg= {}
 			super
 			@widget= 'checkbox'
 		end
