@@ -23,14 +23,14 @@ module TASKMAN
 				:prevcmd2,
 				:listfolders,
 				:index,
-				:redraw,
+				:show_next_key,
 				:tablebr,
 				:quit,
 				:hotkey_in,
 				:nextcmd2,
 				:'', #gotofolder,
 				:'',
-				:show_next_key
+				:redraw,
 			)
 
 #			m2= Theme::Window::Main::Menu.new( name: :menu2, :'.display'=> 0)

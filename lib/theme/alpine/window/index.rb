@@ -29,14 +29,14 @@ module TASKMAN
 				:'', #prevmsg
 				pu,
 				:delete_task, # Where to put mark as done
-				:'', #edit
+				:set_priority, #'', #edit
 				:tablebr,
 				:other, # O boy, there are some!
 				:hotkey_in, #hotkey in that goes to task
 				:'', #nextmsg
 				pd,
 				:undelete_task, # Where to put mark as not done
-				:'', #duplicate
+				:redraw, #duplicate
 			)
 
 			m2= Theme::Window::Main::Menu.new(      arg.merge( name: :menu2, :'.display'=> 0))

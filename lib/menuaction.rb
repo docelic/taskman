@@ -43,6 +43,7 @@ module TASKMAN
 			'save_task' => { hotkey: '^X',  shortname: 'Save',        menuname: 'Save Changes',description: '', function: :create_task},
 			# Write task does not exit task view after saving it
 			'write_task' => { hotkey: '^W',  shortname: 'Write',        menuname: 'Write Changes',description: '', function: :create_task, function_arg: { window_change: false}},
+			'set_priority'=>{ hotkey: [*(0..9).map{|x|x.to_s}], hotkey_label: '1-9', shortname: 'SetPriority',    menuname: 'Set Priority', description: '', function: :set_priority},
 
 			'add_folder'=>{ hotkey: 'A',  shortname: 'Add',     menuname: 'Add Folder',description: '', function: :add_folder, history: true},
 			'delete_folder'=>{ hotkey: 'D',  shortname: 'Delete',     menuname: 'Delete Folder',description: '', function: :delete_folder, history: true},
@@ -1012,6 +1013,24 @@ module TASKMAN
 		def repeat_last_action arg= {}
 			# See if this needs to be limited to actions of the same name, type or other criteria
 			( a= $session.last_action) and a.run arg
+		end
+
+		def set_priority arg= {}
+			id= if arg[:function_arg] then arg[:function_arg] else $app.ui.get( 'list_pos_name') end
+			id= id.to_i
+			prio= arg[:event].to_i* $opts['priority-granularity']
+			sfid = if $session.folder then $session.folder.id else nil end
+
+			begin
+				i= Item.unscoped.find id
+				p= i.priorities.create_with( priority: prio).find_or_create_by( folder_id: sfid)
+				p.priority= prio
+				p.save
+			rescue Exception => e
+				p "Task ID #{id}: #{e}"
+			end
+
+			nil
 		end
 
 	end

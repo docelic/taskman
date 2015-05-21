@@ -13,6 +13,9 @@ module TASKMAN
 		has_many :categorizations, dependent: :destroy
 		has_many :folders, through: :categorizations
 
+		has_many :priorities
+		belongs_to :folder
+
 		#has :status # TODO: references :status
 
 		attr_writer :folder_names

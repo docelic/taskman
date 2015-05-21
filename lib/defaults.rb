@@ -24,6 +24,7 @@ module TASKMAN
 			'debug-style-widget' => nil, # Particular widget to debug style on
 			'debug-mvc'          => false, # Debug MVC accesses
 			'debug-mvc-widget'   => nil, # Particular widget to debug MVC on
+			'debug-sql'          => false, # Debug SQL accesses
 
 			'garbage-collector'  => true,  # Use Ruby garbage collector? (DEBUG OPTION)
 			'stress-collector'   => false, # Stress Ruby garbage collector? (DEBUG OPTION)
@@ -32,6 +33,9 @@ module TASKMAN
 			'state-load'         => true, # Load state on startup?
 
 			'connection'         => {},   # List of configured databases
+
+			# Default priority multiplier. E.g. keypress 3 = priority 3 * 10 = 30
+			'priority-granularity'=> 10,
 
 			# The version corresponds to date on which the changes/release
 			# has been made, like this:

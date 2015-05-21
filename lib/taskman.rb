@@ -73,13 +73,7 @@ module TASKMAN
 				[ '--cache-avh',           '--avhc',     GetoptLong::NO_ARGUMENT],
 
 				[ '--connection',          '--conn',     GetoptLong::REQUIRED_ARGUMENT],
-
-				# The --no versions just for getopt to not complain:
-				[ '--no-cache-stfl',       '--no-tsc',   GetoptLong::NO_ARGUMENT],
-				[ '--no-cache-avh',        '--no-avhc',  GetoptLong::NO_ARGUMENT],
-				[ '--no-tooltips',         '--no-tips',  GetoptLong::NO_ARGUMENT],
-				[ '--no-state-save',       '--no-ss',    GetoptLong::NO_ARGUMENT],
-				[ '--no-state-load',       '--no-sl',    GetoptLong::NO_ARGUMENT],
+				[ '--priority-granularity','--pg',       GetoptLong::REQUIRED_ARGUMENT],
 
 				[ '--debug',               '-d',         GetoptLong::NO_ARGUMENT],
 				[ '--debug-widget',        '--dw',       GetoptLong::REQUIRED_ARGUMENT],
@@ -92,6 +86,15 @@ module TASKMAN
 				[ '--debug-stfl-widget' ,  '--dstflw',   GetoptLong::REQUIRED_ARGUMENT],
 				[ '--debug-mvc',           '--dmvc',     GetoptLong::NO_ARGUMENT],
 				[ '--debug-mvc-widget' ,   '--dmvcw',    GetoptLong::REQUIRED_ARGUMENT],
+				[ '--debug-sql',           '--dsql',     GetoptLong::NO_ARGUMENT],
+
+				# The --no versions just for getopt to not complain:
+				[ '--no-cache-stfl',       '--no-tsc',   GetoptLong::NO_ARGUMENT],
+				[ '--no-cache-avh',        '--no-avhc',  GetoptLong::NO_ARGUMENT],
+				[ '--no-tooltips',         '--no-tips',  GetoptLong::NO_ARGUMENT],
+				[ '--no-state-save',       '--no-ss',    GetoptLong::NO_ARGUMENT],
+				[ '--no-state-load',       '--no-sl',    GetoptLong::NO_ARGUMENT],
+				[ '--no-debug-sql',        '--no-dsql',  GetoptLong::NO_ARGUMENT],
 			]
 
 			args= GetoptLong.new *$getopts
@@ -160,6 +163,10 @@ module TASKMAN
 								p "Error in --connection '#{arg}': %s" % e
 							end
 							$opts['connection'].merge! record
+
+						when 'priority-granularity'
+							propagate= false
+							$opts[opt]= arg.to_i
 					end
 
 					$opts[opt]= arg if propagate
@@ -179,6 +186,7 @@ module TASKMAN
 			require 'models/folder'
 			require 'models/categorization'
 			require 'models/session'
+			require 'models/priority'
 
 			require 'tasklist'
 
@@ -295,6 +303,10 @@ module TASKMAN
 			$session= Session.new
 			if $opts['state-load']
 				$session.load
+			end
+
+			if $opts['debug-sql']
+				ActiveRecord::Base.logger = Logger.new STDERR
 			end
 
 			# Two quick variables for controlling main loop. $main_loop
