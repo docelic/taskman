@@ -201,6 +201,7 @@ module TASKMAN
 			require 'widget/list'
 			require 'widget/textedit'
 			require 'widget/checkbox'
+			require 'widget/optionbox'
 			require 'widget/button'
 			require 'widget/textview'
 			require 'widget/hspace'

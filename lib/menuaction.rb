@@ -733,7 +733,6 @@ module TASKMAN
 				# These are single-value, non-null keys
 				[
 					:subject,
-					:folder_names,
 					:start,
 					:stop,
 					:time_ssm,
@@ -778,6 +777,15 @@ module TASKMAN
 						i.send "parse_#{f}", v
 					end
 				end
+
+				# Extract categories
+				awh= $app.screen.all_widgets_hash
+				cats= awh.keys.select{ |f| f.match '^foldername_'}
+				fnames= []
+				cats.each do |c| fnames.push c[11..-1] if awh[c].var_value_now== 1 end
+				fnames= fnames.join ' '
+				i.send "_folder_names=", fnames
+				i.send "parse_folder_names", fnames
 
 				i.save
 

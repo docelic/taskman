@@ -43,10 +43,41 @@ module TASKMAN
 			h2<< Input.new( name: :subject, '.expand'=> 'h', text: i._subject, tooltip: nil)
 			v<< h2
 
-			h2= Hbox.new(                     '.expand'=> 'h')
-			h2<< Label.new(                   '.expand'=> '',  text: 'Category    : ')
-			h2<< Input.new( name: :folder_names,   '.expand'=> 'h', text: ( if new and $session.folder then $session.folder.name else i.folders.map{ |f| f.name}.join( ' ') end), tooltip: 'Task categories, e.g. Personal | Work | Work Client1')
-			v<< h2
+			# Categories checkboxes START ####
+
+			cats= if new and $session.folder then [ $session.folder.name ] else i.folders.map{ |f| f.name} end
+			@folders= []
+
+			lt= _('Category    : ')
+			has= $COLUMNS- lt.length+ 2 # (2 is the spacer between elements)
+			used= 0
+			hbs= [ Hbox.new( '.expand'=> '')]
+			Folder.all.each do |f|
+				text_len= 6+ f.name.length # 6 == '[ ] ' and 2 spaces at the end, after name
+				used+= text_len
+				if used> has
+					hbs.push Hbox.new( '.expand'=> '')
+					used= 0
+				end
+				cbv= if cats.include? f.name then 1 else 0 end
+				f= Checkbox.new(
+					name: "foldername_#{f.name}",
+					text_0: "[ ] #{f.name}  ",
+					text_1: "[*] #{f.name}  ",
+					value: cbv,
+					tooltip: 'Task categories, e.g. Personal | Work | Work Client1'
+				)
+				@folders.push f
+				hbs.last<< f
+			end
+			hbs.each_with_index do |hb, i|
+				h2= Hbox.new(                     '.expand'=> 'h')
+				h2<< Label.new(                   '.expand'=> '',  '.width' => lt.length, text: i==0 ? lt: '')
+				h2<< hb
+				v<< h2
+			end
+
+			#### Categories checkboxes END ####
 
 			h2= Hbox.new(                     '.expand'=> 'h')
 			h2<< Label.new(                   '.expand'=> '',  text: 'Status      : ')
