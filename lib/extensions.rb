@@ -255,6 +255,16 @@ class Array
 
 end
 
+class FixedArray < Array
+	def << arg
+		super
+		# Make sure window_history length does not exceed config setting
+		while self.size> $opts['history-lines']
+			self.shift
+		end
+	end
+end
+
 class Symbol
 	def to_str() to_s end
 

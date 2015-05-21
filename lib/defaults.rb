@@ -67,7 +67,7 @@ module TASKMAN
 			'timeout'            => 0,
 			'tooltips'           => true,
 
-			'history-lines'      => 100,
+			'history-lines'      => 10,
 
 			'focus-on-edit'      => 'message',
 			'focus-on-create'    => 'subject',
