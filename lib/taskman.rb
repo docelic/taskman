@@ -71,6 +71,9 @@ module TASKMAN
 
 				[ '--cache-stfl',          '--tsc',      GetoptLong::NO_ARGUMENT],
 				[ '--cache-avh',           '--avhc',     GetoptLong::NO_ARGUMENT],
+
+				[ '--connection',          '--conn',     GetoptLong::REQUIRED_ARGUMENT],
+
 				# The --no versions just for getopt to not complain:
 				[ '--no-cache-stfl',       '--no-tsc',   GetoptLong::NO_ARGUMENT],
 				[ '--no-cache-avh',        '--no-avhc',  GetoptLong::NO_ARGUMENT],
@@ -144,6 +147,19 @@ module TASKMAN
 						when 'cache-avh'
 							propagate= false
 							$opts['cache-avh']= arg
+
+						when 'connection'
+							propagate= false
+							record= nil
+							begin
+								record= eval '{'+ arg+ '}'
+								# Very ugly habit of getoptlong not to honor quotes
+								raise _('--connection must be a hash definition with no spaces') \
+									unless record.class== Hash
+							rescue Exception => e
+								p "Error in --connection '#{arg}': %s" % e
+							end
+							$opts['connection'].merge! record
 					end
 
 					$opts[opt]= arg if propagate

@@ -7,12 +7,8 @@ module TASKMAN
 		def initialize
 			super
 
-			@@sources= {
-				main: [ adapter:'mysql2', host:'localhost', username:'taskman', password:'taskman', database:'taskman'],
-				#main2: [ adapter:'mysql2', host:'localhost', username:'taskman2', password:'taskman2', database:'taskman2'],
-			}
-			@@classes= {
-			}
+			@@sources= $opts['connection']
+			@@classes= {}
 
 			@@sources.each do |k, v|
 				n= k.to_s.ucfirst

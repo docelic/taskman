@@ -31,11 +31,13 @@ module TASKMAN
 			'state-save'         => true, # Save state on exit?
 			'state-load'         => true, # Load state on startup?
 
+			'connection'         => {},   # List of configured databases
+
 			# The version corresponds to date on which the changes/release
 			# has been made, like this:
 			# E.g. 0.12(21) === 2014/12/21
 			# E.g. 1.10(14) === 2015/10/14
-			'version'	           => '1.05(16)',
+			'version'	           => '1.05(20)',
 
 		#	'local'              => false,
 		#	'default-time'       => false,
