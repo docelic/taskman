@@ -10,7 +10,7 @@ module TASKMAN
 		def toggle single= false
 			val= super()
 
-			unless single
+			if val== 1 and !single
 				mygroup= self.variables['group']
 				options= $app.screen.all_widgets_hash.select{ |k, v| mygroup== v.variables['group']}
 				options.each do |k, v|

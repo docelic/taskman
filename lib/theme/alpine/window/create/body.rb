@@ -50,8 +50,9 @@ module TASKMAN
 
 			lt= _('Category    : ')
 			has= $COLUMNS- lt.length+ 2 # (2 is the spacer between elements)
-			used= 0
-			hbs= [ Hbox.new( '.expand'=> '')]
+			# With 'used= has' as specified here, Category: is not shown until at least one category exists.
+			used= has
+			hbs= []
 			Folder.all.each do |f|
 				text_len= 6+ f.name.length # 6 == '[ ] ' and 2 spaces at the end, after name
 				used+= text_len
