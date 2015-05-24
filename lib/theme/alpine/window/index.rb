@@ -33,7 +33,7 @@ module TASKMAN
 				:tablebr,
 				:other, # O boy, there are some!
 				:hotkey_in, #hotkey in that goes to task
-				:'', #nextmsg
+				:sortby, #'', #nextmsg
 				pd,
 				:undelete_task, # Where to put mark as not done
 				:redraw, #duplicate

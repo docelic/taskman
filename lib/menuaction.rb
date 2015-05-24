@@ -112,6 +112,8 @@ module TASKMAN
 
 			'repeat_last_action'  => { hotkey: '.',   shortname: 'RepeatLast',    menuname: 'Repeat Last Action',    description: 'Repeat Last Action', function: :repeat_last_action },
 
+			'sortby'  => { hotkey: '$',   shortname: 'SortBy',    menuname: 'Sort By Column',    description: 'Sort By Column', function: :sortby },
+
 			# Testing shortcuts
 			#'inc_folder_count'=> { hotkey: 'SR',   shortname: 'Folder Cnt+1',     description: '', function: :inc_folder_count },
 			#'all_widgets_hash'=> { hotkey: 'SF',   shortname: 'All Children',     description: '', function: :all_widgets},
@@ -1051,13 +1053,69 @@ module TASKMAN
 
 			begin
 				i= Item.unscoped.find id
-				p= i.priorities.create_with( priority: prio).find_or_create_by( folder_id: sfid)
+				#p= i.priorities.create_with( priority: prio).find_or_create_by( folder_id: sfid)
+				p= i.categorizations.create_with( priority: prio).find_or_create_by( folder_id: sfid, item_id: id)
 				p.priority= prio
 				p.save
 			rescue Exception => e
 				p "Task ID #{id}: #{e}"
 			end
 
+			nil
+		end
+
+		def sortby arg= {}
+			fmt= _( 'Sort By: [1,!] %s, [2,@] %s, [3,#] %s, [4,$] %s, [Any] %s')
+			args= [ _('ID'),  _('Status'),  _('Subject'),  _('Priority'), _('Cancel')]
+			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
+				instant: true,
+				# No need to specify ENTER among hotkeys because ENTER always
+				# runs first action associated with widget.
+				hotkey: [ '1', '2', '3', '4', 'ENTER'],
+				function: Proc.new { |arg|
+				# window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				wi= arg[:widget]
+				e= arg[:event]
+
+				a= e
+				handled= false
+
+				if a== '1'
+					$session.order= [ 'id ASC']
+					handled= true
+				elsif a== '!'
+					$session.order= [ 'id DESC']
+					handled= true
+				elsif a== '2'
+					$session.order= [ 'status ASC']
+					handled= true
+				elsif a== '@' or a== '"'
+					$session.order= [ 'status DESC']
+					handled= true
+				elsif a== '3'
+					$session.order= [ 'subject ASC']
+					handled= true
+				elsif a== '#'
+					$session.order= [ 'subject DESC']
+					handled= true
+				elsif a== '4'
+					$session.order= [ 'categorizations.priority ASC']
+					handled= true
+				elsif a== '$'
+					$session.order= [ 'categorizations.priority DESC']
+					handled= true
+				end
+
+				if handled
+					index arg
+				else
+					w['status_display'].var__display= 1
+					w['status_prompt'].var__display= 0
+					w.set_focus_default
+				end
+				nil
+			}))
 			nil
 		end
 
