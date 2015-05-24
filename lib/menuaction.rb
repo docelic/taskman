@@ -1042,7 +1042,11 @@ module TASKMAN
 
 		def repeat_last_action arg= {}
 			# See if this needs to be limited to actions of the same name, type or other criteria
-			( a= $session.last_action) and a.run arg
+			if a= $session.last_action
+				a.run arg
+			else
+				$app.screen.status_label_text= _('Action buffer empty')
+			end
 		end
 
 		def set_priority arg= {}
@@ -1057,6 +1061,7 @@ module TASKMAN
 				p= i.categorizations.create_with( priority: prio).find_or_create_by( folder_id: sfid, item_id: id)
 				p.priority= prio
 				p.save
+				index arg
 			rescue Exception => e
 				p "Task ID #{id}: #{e}"
 			end
@@ -1082,10 +1087,10 @@ module TASKMAN
 				handled= false
 
 				if a== '1'
-					$session.order= [ 'id ASC']
+					$session.order= [ '-items.id DESC']
 					handled= true
 				elsif a== '!'
-					$session.order= [ 'id DESC']
+					$session.order= [ '-items.id ASC']
 					handled= true
 				elsif a== '2'
 					$session.order= [ 'status ASC']
@@ -1100,10 +1105,10 @@ module TASKMAN
 					$session.order= [ 'subject DESC']
 					handled= true
 				elsif a== '4'
-					$session.order= [ 'categorizations.priority ASC']
+					$session.order= [ '-categorizations.priority DESC']
 					handled= true
 				elsif a== '$'
-					$session.order= [ 'categorizations.priority DESC']
+					$session.order= [ '-categorizations.priority ASC']
 					handled= true
 				end
 
