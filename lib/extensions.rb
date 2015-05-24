@@ -125,6 +125,27 @@ class String
 			$stderr.puts e
 		end
 	end
+
+	# From https://www.ruby-forum.com/topic/144310
+	alias old_percent %
+	def % arg
+		names = []
+		target = gsub /(^|[^%])%(\w+):/ do
+			name, space = $2, $1 # don't forget to replace whatever wasn't %
+			names << name unless names.include? name
+			"#{space}%#{names.rindex(name) + 1}$"
+		end
+		args = case arg
+			when Hash
+				names.map {|n| arg[n] or arg[n.to_sym]} # keys are often symbols
+			when Array
+				arg
+			else
+				[arg]
+		end
+		target.old_percent args
+	end
+
 end
 
 class Fixnum

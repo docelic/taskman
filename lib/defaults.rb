@@ -35,7 +35,7 @@ module TASKMAN
 			'connection'         => {},   # List of configured databases
 
 			# Default priority multiplier. E.g. keypress 3 = priority 3 * 10 = 30
-			'priority-granularity'=> 10,
+			'priority-granularity'=> 1,
 
 			# The version corresponds to date on which the changes/release
 			# has been made, like this:
@@ -71,6 +71,25 @@ module TASKMAN
 
 			'focus-on-edit'      => 'message',
 			'focus-on-create'    => 'subject',
+
+			'index-fields'       => [ :pre, :flags, :id, :status, :subject],
+			'index-titles'       => nil, # Will be auto-generated
+			'index-delimiter'    => ' ',
+			'content-pre'        => '',
+			'format-pre'         => '%s',
+			'format-flags'       => '%1s',
+			'format-id'          => '%-4s',
+			'format-status'      => '%-7s',
+			'format-subject'     => '%s',
+			'format-priority'    => '%3s ',
+			'format-DEFAULT'     => '%10s',
+			'title-pre'          => _(''),
+			'title-flags'        => _(' '),
+			'title-id'           => _('ID'),
+			'title-status'       => _('STATUS'),
+			'title-subject'      => _('SUBJECT'),
+			'title-priority'     => _('PRI'),
+			'title-DEFAULT'      => _(''),
 		}
 
 		def initialize *arg

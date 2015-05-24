@@ -5,7 +5,7 @@ module TASKMAN
 
 		attr_accessor :folder, :folder_name
 		attr_accessor :dbh, :dbn, :sth #, :item
-		attr_accessor :format
+		attr_accessor :fields, :format
 		attr_accessor :flags
 		attr_accessor :whereis
 		attr_accessor :show_next_key
@@ -30,7 +30,14 @@ module TASKMAN
 			# XXX WIP-- this needs to be per-window, and basically be an array
 			# that is joined, so that we know how many args to give in
 			#  %..., and it should also be named if possible.
-			@format= ' %1s %-4s %-7s %s'
+			@fields= $opts['index-fields']
+			@format= []
+			@fields.each do |f|
+				ff= $opts["format-#{f}"]|| $opts['format-DEFAULT']
+				ff= ff.sub '%', "%#{f}:"
+				@format.push ff
+			end
+			@format= @format.join $opts['index-delimiter']
 
 			# History of navigation between windows
 			@window_history= []

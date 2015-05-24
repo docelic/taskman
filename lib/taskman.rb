@@ -83,6 +83,23 @@ module TASKMAN
 				[ '--debug-mvc-widget' ,   '--dmvcw',    GetoptLong::REQUIRED_ARGUMENT],
 				[ '--debug-sql',           '--dsql',     GetoptLong::NO_ARGUMENT],
 
+				[ '--index-fields' ,       '--fields',   GetoptLong::REQUIRED_ARGUMENT],
+				[ '--index-delimiter' ,    '--delimiter',GetoptLong::REQUIRED_ARGUMENT],
+				[ '--content-pre' ,        '--cpre',     GetoptLong::REQUIRED_ARGUMENT],
+				[ '--format-pre' ,         '--fpre',     GetoptLong::REQUIRED_ARGUMENT],
+				[ '--format-flags' ,       '--fflags',   GetoptLong::REQUIRED_ARGUMENT],
+				[ '--format-id' ,          '--fid',      GetoptLong::REQUIRED_ARGUMENT],
+				[ '--format-status' ,      '--fstatus',  GetoptLong::REQUIRED_ARGUMENT],
+				[ '--format-subject' ,     '--fsubject', GetoptLong::REQUIRED_ARGUMENT],
+				[ '--format-priority' ,    '--fpriority',GetoptLong::REQUIRED_ARGUMENT],
+				[ '--format-DEFAULT' ,     '--fDEFAULT', GetoptLong::REQUIRED_ARGUMENT],
+				[ '--title-pre' ,          '--tpre',     GetoptLong::REQUIRED_ARGUMENT],
+				[ '--title-flags' ,        '--tflags',   GetoptLong::REQUIRED_ARGUMENT],
+				[ '--title-id' ,           '--tid',      GetoptLong::REQUIRED_ARGUMENT],
+				[ '--title-status' ,       '--tstatus',  GetoptLong::REQUIRED_ARGUMENT],
+				[ '--title-subject' ,      '--tsubject', GetoptLong::REQUIRED_ARGUMENT],
+				[ '--title-priority' ,     '--tpriority',GetoptLong::REQUIRED_ARGUMENT],
+				[ '--title-DEFAULT' ,      '--tDEFAULT', GetoptLong::REQUIRED_ARGUMENT],
 				# The --no versions just for getopt to not complain:
 				[ '--no-cache-stfl',       '--no-tsc',   GetoptLong::NO_ARGUMENT],
 				[ '--no-cache-avh',        '--no-avhc',  GetoptLong::NO_ARGUMENT],
@@ -146,6 +163,10 @@ module TASKMAN
 							propagate= false
 							$opts['cache-avh']= arg
 
+						when 'index-fields'
+							propagate= false
+							$opts['index-fields']= arg.split ','
+
 						when 'connection'
 							propagate= false
 							record= nil
@@ -168,6 +189,12 @@ module TASKMAN
 				end
 			rescue GetoptLong::InvalidOption
 				exit 1
+			end
+
+			# Column titles are generated based on what the person wanted to see
+			$opts['index-titles']= {}
+			$opts['index-fields'].each do |f|
+				$opts['index-titles'][f]= $opts["title-#{f}"]
 			end
 
 			if $opts['debug-opts']
