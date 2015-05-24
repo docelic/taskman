@@ -63,13 +63,14 @@ module TASKMAN
 				cbv= if cats.include? f.name then 1 else 0 end
 				f= Checkbox.new(
 					name: "foldername_#{f.name}",
-					text_0: "[ ] #{f.name}  ",
-					text_1: "[*] #{f.name}  ",
+					text_0: "[ ] #{f.name} ",
+					text_1: "[*] #{f.name} ",
 					value: cbv,
 					tooltip: 'Task categories, e.g. Personal | Work | Work Client1'
 				)
 				@folders.push f
 				hbs.last<< f
+				hbs.last<< Label.new( '.width' => 1, '.expand' => '', text: ' ')
 			end
 			hbs.each_with_index do |hb, i|
 				h2= Hbox.new(                     '.expand'=> 'h')
@@ -103,8 +104,8 @@ module TASKMAN
 				cbv= if mystatus== f.name then 1 else 0 end
 				f= Optionbox.new(
 					name: "statusname_#{f.name}",
-					text_0: "[ ] #{f.name}  ",
-					text_1: "[*] #{f.name}  ",
+					text_0: "[ ] #{f.name} ",
+					text_1: "[*] #{f.name} ",
 					value: cbv,
 					tooltip: 'Task status, e.g. OPEN | WORKING | DONE',
 					group: 'status'
@@ -112,6 +113,7 @@ module TASKMAN
 			  f<< MenuAction.new( name: :toggle)
 				@statuses.push f
 				hbs.last<< f
+				hbs.last<< Label.new( '.width' => 1, '.expand' => '', text: ' ')
 			end
 			hbs.each_with_index do |hb, i|
 				h2= Hbox.new(                     '.expand'=> 'h')
