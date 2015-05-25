@@ -194,9 +194,8 @@ module TASKMAN
 			# Column titles are generated based on what the person wanted to see
 			$opts['index-titles']= {}
 			$opts['index-fields'].each do |f|
-				$opts['index-titles'][f]= $opts["title-#{f}"]
+				$opts['index-titles'][f.to_sym]= $opts["title-#{f}"]
 			end
-
 			if $opts['debug-opts']
 				pfl $opts
 			end

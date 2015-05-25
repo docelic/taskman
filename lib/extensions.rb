@@ -127,12 +127,15 @@ class String
 	end
 
 	# From https://www.ruby-forum.com/topic/144310
-	alias old_percent %
-	def % arg
+	def superformat arg
 		names = []
-		target = gsub /(^|[^%])%(\w+):/ do
-			name, space = $2, $1 # don't forget to replace whatever wasn't %
-			names << name unless names.include? name
+		target = gsub /(^|[^%])%(\w+):(\-?\d*)/ do
+			space, name, len= $1, $2.to_sym, $3.to_i # don't forget to replace whatever wasn't %
+			if arg.has_key? name
+				arg[name]= sprintf "%#{len}s", arg[name].to_s.slice( 0..( len.abs- 1))
+			end
+			names<< name unless names.include? name
+			#num= '' if num== 0
 			"#{space}%#{names.rindex(name) + 1}$"
 		end
 		args = case arg
@@ -143,7 +146,7 @@ class String
 			else
 				[arg]
 		end
-		target.old_percent args
+		target% args
 	end
 
 end

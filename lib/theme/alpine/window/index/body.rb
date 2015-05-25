@@ -8,7 +8,7 @@ module TASKMAN
 			super
 
 			f= $session.format
-			h= f% $opts['index-titles']
+			h= f.superformat $opts['index-titles']
 			self<< Label.new( name: 'TH', text: h, :'.expand'=> 'h')
 
 			@l= MVCList.new( name: 'list', autobind: 0, focus: 1)
@@ -21,14 +21,14 @@ module TASKMAN
 
 			$session.sth.reload.order( $session.order).each do |t|
 
-				s= $session.format% {
+				s= $session.format.superformat( {
 				  :pre => $opts['content-pre'],
 					:flags =>  t.flag,
 					:id => t.id,
 					:status => t.status,
 					:subject => t.subject,
 					:priority => t.categorizations( folder_id: $session.folder.id).first.priority,
-				}
+				})
 
 				i= ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
 				i<< MenuAction.new( name: 'select_task_e', shortname: 'View')
