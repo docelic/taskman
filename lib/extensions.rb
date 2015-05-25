@@ -114,7 +114,7 @@ class String
 		if File.readable? self
 			File.open( self){ |f|
 				f.each_line do |l|
-					l.sub! '#.*', ''
+					l.sub! '\s*#.*', ''
 					args= Shellwords.split l
 					ARGV.unshift *args
 				end
