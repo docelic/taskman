@@ -19,22 +19,29 @@ module TASKMAN
 			l<< MenuAction.new( name: 'pos_home')
 			l<< MenuAction.new( name: 'pos_end')
 
-			$session.sth.reload.order( $session.order).each do |t|
+
+			nitems= 0
+			$session.sth.reload.includes( :status).where( $session.where).order( $session.order).each do |t|
+				nitems+= 1
+
+				sfid= $session.folder ? $session.folder.id : nil
+				cat= t.categorizations( folder_id: sfid).first
+				pri= cat ? cat.priority : nil
 
 				s= $session.format.superformat( {
 				  :pre => $opts['content-pre'],
 					:flags =>  t.flag,
 					:id => t.id,
-					:status => t.status,
+					:status => t.status ? t.status.name : nil,
 					:subject => t.subject,
-					:priority => t.categorizations( folder_id: $session.folder.id).first.priority,
+					:priority => pri,
 				})
 
 				i= ListItem.new( name: t.id.to_s, text: s, can_focus: 1)
 				i<< MenuAction.new( name: 'select_task_e', shortname: 'View')
 				@l<< i
 			end
-			if $session.sth.size== 0
+			if nitems== 0
 				@l<< ListItem.new( name: 'empty')
 			end
 

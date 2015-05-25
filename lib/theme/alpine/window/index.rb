@@ -26,14 +26,14 @@ module TASKMAN
 			m1.add_action(
 				:get_help,
 				:listfolders,
-				:'', #prevmsg
+				:sortby, #'', #nextmsg:'', #prevmsg
 				pu,
 				:delete_task, # Where to put mark as done
 				:set_priority, #'', #edit
 				:tablebr,
 				:other, # O boy, there are some!
 				:hotkey_in, #hotkey in that goes to task
-				:sortby, #'', #nextmsg
+				:show_group,
 				pd,
 				:undelete_task, # Where to put mark as not done
 				:redraw, #duplicate

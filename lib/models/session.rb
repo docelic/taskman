@@ -12,7 +12,7 @@ module TASKMAN
 		attr_accessor :window_history
 		attr_accessor :task_history
 		attr_accessor :action_history, :last_action
-		attr_accessor :order
+		attr_accessor :where, :order
 
 		def initialize arg= {}
 			super()
@@ -46,6 +46,7 @@ module TASKMAN
 			#@last_action= nil
 
 			@order= [ 'id ASC']
+			@where= 1
 
 			#@item= nil
 
@@ -98,6 +99,7 @@ module TASKMAN
 				task_history: self.task_history,
 				action_history: self.action_history,
 				order: self.order,
+				where: self.where,
 			}
 			begin
 				File.open( File.join( $opts['data-dir'], 'session.json'), 'w') do |f|
@@ -121,6 +123,7 @@ module TASKMAN
 					self.task_history= s['task_history']|| []
 					self.action_history= s['action_history']|| []
 					self.order= s['order']|| []
+					self.where= s['where']|| 1
 					# TODO Restore item on which list was positioned
 				end
 			rescue Exception => e

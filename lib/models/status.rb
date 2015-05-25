@@ -3,7 +3,7 @@
 module TASKMAN
 
 	class Status < ActiveRecord::Base
-		#belongs_to :item
+		has_many :items
 	end 
 
 end

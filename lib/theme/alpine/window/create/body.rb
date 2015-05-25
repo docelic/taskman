@@ -88,7 +88,7 @@ module TASKMAN
 			#h2<< Input.new( name: :status,    '.expand'=> 'h', text: i._status, tooltip: 'Task status, e.g. OPEN | WORKING | DONE')
 			#v<< h2
 
-			mystatus= if new then '' else i.status end
+			mystatus= if new or !i.status then '' else i.status.name end
 			@statuses= []
 			lt= _('Status      : ')
 			has= $COLUMNS- lt.length+ 2 # (2 is the spacer between elements)

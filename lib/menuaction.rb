@@ -113,6 +113,7 @@ module TASKMAN
 			'repeat_last_action'  => { hotkey: '.',   shortname: 'RepeatLast',    menuname: 'Repeat Last Action',    description: 'Repeat Last Action', function: :repeat_last_action },
 
 			'sortby'  => { hotkey: '$',   shortname: 'SortBy',    menuname: 'Sort By Column',    description: 'Sort By Column', function: :sortby },
+			'show_group'=> { hotkey: 'G',   shortname: 'Show Group',    menuname: 'Show Tasks in Group',    description: 'Show Tasks in Group', function: :show_group },
 
 			# Testing shortcuts
 			#'inc_folder_count'=> { hotkey: 'SR',   shortname: 'Folder Cnt+1',     description: '', function: :inc_folder_count },
@@ -742,7 +743,6 @@ module TASKMAN
 					:omit_shift,
 					:omit_remind,
 					:message,
-					:status,
 				].each do |f|
 					v= w[f.to_s].var_text_now.strip
 					next unless v.length> 0
@@ -799,6 +799,7 @@ module TASKMAN
 						ss.push w[11..-1]
 					end
 				end
+				# (Even though we know there will always only be one)
 				ss= ss.join ' '
 				i.send "_status=", ss
 				i.send "parse_status", ss
@@ -1044,16 +1045,20 @@ module TASKMAN
 			# See if this needs to be limited to actions of the same name, type or other criteria
 			if a= $session.last_action
 				a.run arg
-			else
-				$app.screen.status_label_text= _('Action buffer empty')
+			#else
+			#	$app.screen.status_label_text= _('Action buffer empty')
 			end
 		end
 
 		def set_priority arg= {}
 			id= if arg[:function_arg] then arg[:function_arg] else $app.ui.get( 'list_pos_name') end
 			id= id.to_i
+
 			prio= arg[:event].to_i* $opts['priority-granularity']
 			sfid = if $session.folder then $session.folder.id else nil end
+
+			pos= arg[:base_widget].var_pos_now
+			pos_name= arg[:base_widget].var_pos_name_now
 
 			begin
 				i= Item.unscoped.find id
@@ -1061,7 +1066,12 @@ module TASKMAN
 				p= i.categorizations.create_with( priority: prio).find_or_create_by( folder_id: sfid, item_id: id)
 				p.priority= prio
 				p.save
-				index arg
+
+				if $opts['follow-jump']
+					index arg.merge( pos_name: pos_name)
+				else
+					index arg.merge( pos: pos)
+				end
 			rescue Exception => e
 				p "Task ID #{id}: #{e}"
 			end
@@ -1112,6 +1122,58 @@ module TASKMAN
 				elsif a== '$'
 					$session.order= [ '-categorizations.priority ASC']
 					handled= true
+				end
+
+				if handled
+					if $opts['follow-jump']
+						index arg.merge( pos_name: pos_name)
+					else
+						index arg.merge( pos: pos)
+					end
+				else
+					w['status_display'].var__display= 1
+					w['status_prompt'].var__display= 0
+					w.set_focus_default
+				end
+				nil
+			}))
+			nil
+		end
+
+		def show_group arg= {}
+			statuses= Status.select( :category).distinct
+			fmt= _( 'Show Group: ')
+			map= { '1' => 'All'}
+			fmts= [ '[1] All']
+			i= 2
+			statuses.each do |s|
+				map[i.to_s]= s.category
+				fmts.push '[%d] %s' % [ i, s.category]
+				i+= 1
+			end
+			fmt+= fmts.join( '  ')+ '  [Any] '+ _('Cancel')
+			pos= arg[:base_widget].var_pos_now
+			pos_name= arg[:base_widget].var_pos_name_now
+
+			$app.screen.ask( ( _( fmt)).truncate2, MenuAction.new(
+				instant: true,
+				hotkey: [ *map.keys, 'ENTER'],
+				function: Proc.new { |arg|
+				# window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				#wi= arg[:widget]
+				e= arg[:event]
+
+				a= e
+				handled= false
+
+				if map.has_key? a
+					handled= true
+					if a== '1'
+						$session.where= 1
+					else
+						$session.where= { statuses: { category: map[a]}}
+					end
 				end
 
 				if handled
