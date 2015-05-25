@@ -71,6 +71,7 @@ module TASKMAN
 
 			'focus-on-edit'      => 'message',
 			'focus-on-create'    => 'subject',
+			'follow-jump'        => true,
 
 			'index-fields'       => [ :pre, :flags, :id, :status, :subject],
 			'index-titles'       => nil, # Will be auto-generated

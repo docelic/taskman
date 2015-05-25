@@ -59,6 +59,7 @@ module TASKMAN
 
 				[ '--focus-on-edit',       '--foe',      GetoptLong::REQUIRED_ARGUMENT],
 				[ '--focus-on-create',     '--foc',      GetoptLong::REQUIRED_ARGUMENT],
+				[ '--follow-jump',         '--fj',       GetoptLong::NO_ARGUMENT],
 
 				[ '--term',                '--te',       GetoptLong::REQUIRED_ARGUMENT],
 				[ '--term-width',          '--tw',       GetoptLong::REQUIRED_ARGUMENT],
@@ -107,6 +108,7 @@ module TASKMAN
 				[ '--no-state-save',       '--no-ss',    GetoptLong::NO_ARGUMENT],
 				[ '--no-state-load',       '--no-sl',    GetoptLong::NO_ARGUMENT],
 				[ '--no-debug-sql',        '--no-dsql',  GetoptLong::NO_ARGUMENT],
+				[ '--no-follow-jump',      '--no-fj',    GetoptLong::NO_ARGUMENT],
 			]
 
 			args= GetoptLong.new *$getopts

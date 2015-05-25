@@ -1072,6 +1072,8 @@ module TASKMAN
 		def sortby arg= {}
 			fmt= _( 'Sort By: [1,!] %s, [2,@] %s, [3,#] %s, [4,$] %s, [Any] %s')
 			args= [ _('ID'),  _('Status'),  _('Subject'),  _('Priority'), _('Cancel')]
+			pos= arg[:base_widget].var_pos_now
+			pos_name= arg[:base_widget].var_pos_name_now
 			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
 				instant: true,
 				# No need to specify ENTER among hotkeys because ENTER always
@@ -1113,7 +1115,11 @@ module TASKMAN
 				end
 
 				if handled
-					index arg
+					if $opts['follow-jump']
+						index arg.merge( pos_name: pos_name)
+					else
+						index arg.merge( pos: pos)
+					end
 				else
 					w['status_display'].var__display= 1
 					w['status_prompt'].var__display= 0
