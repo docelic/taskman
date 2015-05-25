@@ -1086,7 +1086,6 @@ module TASKMAN
 
 			begin
 				i= Item.unscoped.find id
-				#p= i.priorities.create_with( priority: prio).find_or_create_by( folder_id: sfid)
 				p= i.categorizations.create_with( priority: prio).find_or_create_by( folder_id: sfid, item_id: id)
 				p.priority= prio
 				p.save
