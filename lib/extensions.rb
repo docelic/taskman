@@ -1,4 +1,5 @@
 # File implementing various generic extensions to Ruby classes
+require 'shellwords'
 
 class String
 
@@ -112,8 +113,11 @@ class String
 	def unshift_to_argv
 		if File.readable? self
 			File.open( self){ |f|
-				args= Shellwords.split f.read
-				ARGV.unshift *args
+				f.each_line do |l|
+					l.sub! '#.*', ''
+					args= Shellwords.split l
+					ARGV.unshift *args
+				end
 			}
 		end
 	end

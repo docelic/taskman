@@ -41,7 +41,7 @@ module TASKMAN
 			# has been made, like this:
 			# E.g. 0.12(21) === 2014/12/21
 			# E.g. 1.10(14) === 2015/10/14
-			'version'	           => '1.05(24)',
+			'version'	           => '1.05(25)',
 
 		#	'local'              => false,
 		#	'default-time'       => false,
@@ -132,6 +132,7 @@ $description= {
   'debug-keys'             => _('Show keypresses'),
   'debug-keys-widget'      => _('Show keys on named widget'),
   'debug-opts'             => _('Show command line options'),
+  'debug-sql'              => _('Show SQL queries'),
   'data-dir'               => _('Data directory'),
   'data-file'              => _('Tasklist file'),
   'exit-key'               => _('One-key exit from program'),
@@ -145,6 +146,27 @@ $description= {
   'cache-avh'              => _('- internal hierarchy cache'),
   'focus-on-edit'          => _('Field to focus on Edit Task'),
   'focus-on-create'        => _('Field to focus on Create -'),
+	'follow-jump'            => _('In lists, follow current task'),
+	'priority-granularity'   => _('Priority = 0-9 * this_value'),
+	'index-fields'           => _('Columns to show in Task Index'),
+	'index-titles'           => _('Titles of columns shown'),
+	'index-delimiter'        => _('Delimiter between fields'),
+	'connection'             => _('Define MySQL connections'),
+	'content-pre'            => _('Content for spacer element'),
+	'format-pre'             => _('Sprintf format for pre'),
+	'format-flags'           => _('Sprintf format for flags'),
+	'format-id'              => _('Sprintf format for id'),
+	'format-status'          => _('Sprintf format for status'),
+	'format-subject'         => _('Sprintf format for subject'),
+	'format-priority'        => _('Sprintf format for priority'),
+	'format-DEFAULT'         => _('Sprintf format (DEFAULT)'),
+	'title-pre'              => _('Column title for pre'),
+	'title-flags'            => _('Column title for flags'),
+	'title-id'               => _('Column title for id'),
+	'title-status'           => _('Column title for status'),
+	'title-subject'          => _('Column title for subject'),
+	'title-priority'         => _('Column title for priority'),
+	'title-DEFAULT'          => _('Column title (DEFAULT)'),
 
 #  'default-time'         => 'Use 12:00 as default event time',
 }

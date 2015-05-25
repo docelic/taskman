@@ -20,7 +20,6 @@ module TASKMAN
 			super()
 
 			require 'getoptlong'
-			require 'shellwords'
 
 			$:.unshift File.join File.dirname( $0), '../lib'
 
@@ -174,7 +173,6 @@ module TASKMAN
 							record= nil
 							begin
 								record= eval '{'+ arg+ '}'
-								# Very ugly habit of getoptlong not to honor quotes
 								raise _('--connection must be a hash definition with no spaces') \
 									unless record.class== Hash
 							rescue Exception => e

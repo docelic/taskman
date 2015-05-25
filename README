@@ -1,7 +1,7 @@
 
               GENERAL INFORMATION ON THE TASKMAN TASK SCHEDULER
 
-                               Version 1.05(12)
+                               Version 1.05(25)
 
                     Copyright 2014-2015 Spinlock Solutions
                 http://techpubs.spinlocksolutions.com/taskman/
@@ -637,16 +637,16 @@ the terminal's default style for the other might be unreadable.
 6. COMMAND LINE OPTIONS
 
                                    Taskman
-                                Ver. 1.05(12)
+                                Ver. 1.05(25)
 
 OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 ------------------------------------------------------------------------------
 --help                -h           N             List program options
 --help-all            -H           N             Display full help text
---version             -v           N    1.05(12) Display program version
+--version             -v           N    1.05(25) Display program version
 --garbage-collector   --gc         N    true     Run garbage collector?
 --stress-collector    --stress     N    false    Stress garbage collector?
---window              -w           Y    main     Program window to open
+--window              -w           Y             Program window to open
 --theme               -t           Y    alpine   GUI layout scheme to use
 --style               -s           Y    alpine   GUI color scheme to use
 --state-save          --ss         N    true     Save state on exit?
@@ -658,14 +658,17 @@ OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 --echo-time           --ec         Y    0.3      Duration of msg visibility
 --timeout             --loop       Y    0        Force main loop every X ms
 --tooltips            --tips       N    true     Show automatic tooltips
---history-lines       --hist       Y    100      Length of history buffers
+--history-lines       --hist       Y    10       Length of history buffers
 --focus-on-edit       --foe        Y    message  Field to focus on Edit Task
 --focus-on-create     --foc        Y    subject  Field to focus on Create -
+--follow-jump         --fj         N    true     In lists, follow current task
 --term                --te         Y             Value for TERM= emulator
 --term-width          --tw         Y             Term width to use
 --colors              --co         Y    8        Nr. of colors (8, 16, 256)
 --cache-stfl          --tsc        N    true     Enable/disable STFL cache
 --cache-avh           --avhc       N    true     - internal hierarchy cache
+--connection          --conn       Y    {}       Defined MySQL DB connections
+--priority-granularity--pg         Y    1        Priority = 0-9 * this_value
 --debug               -d           N    false    Show general debug
 --debug-widget        --dw         Y             Show all for named widget
 --debug-keys          --dk         N    false    Show keypresses
@@ -677,6 +680,25 @@ OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 --debug-stfl-widget   --dstflw     Y             Show STFL for named widget
 --debug-mvc           --dmvc       N    false    Show MVC logic
 --debug-mvc-widget    --dmvcw      Y             Show MVC on named widget
+--debug-sql           --dsql       N    false    Show SQL queries
+--index-fields --fields Y [:pre, :flags, :id, :status, :subject]Columns to
+show in Task Index
+--index-delimiter     --delimiter  Y             Delimiter between fields
+--content-pre         --cpre       Y             Content for spacer element
+--format-pre          --fpre       Y    %s       Sprintf format for pre
+--format-flags        --fflags     Y    %1s      Sprintf format for flags
+--format-id           --fid        Y    %-4s     Sprintf format for id
+--format-status       --fstatus    Y    %-7s     Sprintf format for status
+--format-subject      --fsubject   Y    %s       Sprintf format for subject
+--format-priority     --fpriority  Y    %3s      Sprintf format for priority
+--format-DEFAULT      --fDEFAULT   Y    %10s     Sprintf format (DEFAULT)
+--title-pre           --tpre       Y             Column title for pre
+--title-flags         --tflags     Y             Column title for flags
+--title-id            --tid        Y    ID       Column title for id
+--title-status        --tstatus    Y    STATUS   Column title for status
+--title-subject       --tsubject   Y    SUBJECT  Column title for subject
+--title-priority      --tpriority  Y    PRI      Column title for priority
+--title-DEFAULT       --tDEFAULT   Y             Column title (DEFAULT)
 ------------------------------------------------------------------------------
 
 Enjoy!

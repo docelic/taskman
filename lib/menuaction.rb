@@ -114,7 +114,7 @@ module TASKMAN
 			'repeat_last_action'  => { hotkey: '.',   shortname: 'RepeatLast',    menuname: 'Repeat Last Action',    description: 'Repeat Last Action', function: :repeat_last_action },
 
 			'sortby'  => { hotkey: [ 'S', '$'],   shortname: 'SortBy',    menuname: 'Sort By Column',    description: 'Sort By Column', function: :sortby },
-			'show_group'=> { hotkey: 'G',   shortname: 'ShowOnly',    menuname: 'Show Only Tasks in Group',    description: 'Show Only Tasks in Group', function: :show_group },
+			'show_group'=> { hotkey: 'G',   shortname: 'ShowGroup',    menuname: 'Show Tasks in Group',    description: 'Show Tasks in Group', function: :show_group },
 
 			# Testing shortcuts
 			#'inc_folder_count'=> { hotkey: 'SR',   shortname: 'Folder Cnt+1',     description: '', function: :inc_folder_count },
