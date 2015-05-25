@@ -3,7 +3,7 @@ module TASKMAN
 		# List of active/existing sessions
 		@@sessions= []
 
-		attr_accessor :folder, :folder_name
+		attr_accessor :folder, :folder_name, :status_group_name
 		attr_accessor :dbh, :dbn, :sth #, :item
 		attr_accessor :fields, :format
 		attr_accessor :flags
@@ -38,6 +38,8 @@ module TASKMAN
 				@format.push ff
 			end
 			@format= @format.join $opts['index-delimiter']
+
+			@status_group_name= 'All'
 
 			# History of navigation between windows
 			@window_history= []
@@ -93,6 +95,7 @@ module TASKMAN
 			s= {
 				#folder: self.folder,
 				folder_name: self.folder_name,
+				status_group_name: self.status_group_name,
 				flags: self.flags,
 				whereis: self.whereis,
 				window_history: self.window_history,
@@ -116,6 +119,7 @@ module TASKMAN
 					j= File.read f
 					s= JSON.parse j
 					self.folder_name= s['folder_name']
+					self.status_group_name= s['status_group_name']
 					self.folder= Folder.find_by name: s['folder_name']
 					self.flags= s['flags']
 					self.whereis= s['whereis']

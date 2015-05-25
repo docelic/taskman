@@ -7,8 +7,8 @@ module TASKMAN
 			# To have multiple "same" menus, you must use different names
 			'help'      => { hotkey: '?',   shortname: 'Help',        menuname: 'Help',        description: 'Get help using Taskman', function: :help},
 			'help2'     => { hotkey: nil, hotkey_label: '?',  shortname: 'Help',        menuname: 'Help',        description: 'Get help using Taskman', function: nil},
-			'get_help'  => { hotkey: '^G',  shortname: 'Get Help',    menuname: 'Get Help',    description: 'Get help',               function: :help},
-			'get_help2' => { hotkey: nil, hotkey_label: '^G', shortname: 'Get Help',    menuname: 'Get Help',    description: 'Get help',               function: :help},
+			'get_help'  => { hotkey: 'H',  shortname: 'Get Help',    menuname: 'Get Help',    description: 'Get help',               function: :help},
+			'get_help2' => { hotkey: nil, hotkey_label: 'H', shortname: 'Get Help',    menuname: 'Get Help',    description: 'Get help',               function: :help},
 			'exit_help' => { hotkey: 'E',   shortname: 'Exit Help',   menuname: 'Exit Help',   description: 'Exit Help', function: :prev_window },
 
 			# For the empty slot, no need to use a different name even if it appears multiple times, because empty name results in the name being auto-generated
@@ -68,6 +68,7 @@ module TASKMAN
 			'pos_pgdown'=> { hotkey: 'NPAGE',shortname: 'NextPage', menuname: '', description: '', function: :pos_pgdown},
 			'pos_home'=>   { hotkey: 'HOME', hotkey_label: 'HOME', shortname: 'FirstPage',  menuname: '', description: '', function: :pos_home},
 			'pos_end'=>    { hotkey: 'END', hotkey_label: 'END',  shortname: 'LastPage',  menuname: '', description: '', function: :pos_end},
+			'pos_lastpos'=>{ hotkey: "'",  hotkey_label: 'GotoLast', shortname: 'GotoLast',  menuname: '', description: '', function: :pos_lastpos},
 
 			# For moving within an array and printing current entry text into a box
 			'array_up'=>     { hotkey: 'UP',  shortname: '',  menuname: '', description: '', function: :array_up},
@@ -112,8 +113,8 @@ module TASKMAN
 
 			'repeat_last_action'  => { hotkey: '.',   shortname: 'RepeatLast',    menuname: 'Repeat Last Action',    description: 'Repeat Last Action', function: :repeat_last_action },
 
-			'sortby'  => { hotkey: '$',   shortname: 'SortBy',    menuname: 'Sort By Column',    description: 'Sort By Column', function: :sortby },
-			'show_group'=> { hotkey: 'G',   shortname: 'Show Group',    menuname: 'Show Tasks in Group',    description: 'Show Tasks in Group', function: :show_group },
+			'sortby'  => { hotkey: [ 'S', '$'],   shortname: 'SortBy',    menuname: 'Sort By Column',    description: 'Sort By Column', function: :sortby },
+			'show_group'=> { hotkey: 'G',   shortname: 'ShowOnly',    menuname: 'Show Only Tasks in Group',    description: 'Show Only Tasks in Group', function: :show_group },
 
 			# Testing shortcuts
 			#'inc_folder_count'=> { hotkey: 'SR',   shortname: 'Folder Cnt+1',     description: '', function: :inc_folder_count },
@@ -650,6 +651,15 @@ module TASKMAN
 			nil
 		end
 
+		def pos_lastpos arg= {}
+			w= arg[:window]
+			wi= arg[:base_widget]
+			if wi.last_pos
+				wi.var_pos= wi.last_pos
+			end
+			nil
+		end
+
 		############################### Testing Functions ################################
 
 #		def inc_folder_count arg= {}
@@ -1168,11 +1178,16 @@ module TASKMAN
 				handled= false
 
 				if map.has_key? a
+					$session.status_group_name= map[a]
 					handled= true
 					if a== '1'
 						$session.where= 1
 					else
-						$session.where= { statuses: { category: map[a]}}
+						val= map[a]
+						if map[a]== 'OPEN'
+							val= [ nil, val]
+						end
+						$session.where= { statuses: { category: val}}
 					end
 				end
 
