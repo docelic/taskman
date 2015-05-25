@@ -10,7 +10,10 @@ module TASKMAN
 			self<< MenuAction.new( name: :bottom_list)
 			self<< MenuAction.new( name: :whereis, hotkey: '/')
 			self<< MenuAction.new( name: :whereis_reverse)
-			self<< MenuAction.new( name: 'repeat_last_action')
+			self<< MenuAction.new( name: :repeat_last_action)
+			self<< MenuAction.new( name: :pos_lastpos)
+
+			#ObjectSpace.define_finalizer( self, proc{ $session.window[@title].last_pos= self.var_pos_now})
 
 			@prev_offset= nil
 
@@ -41,7 +44,7 @@ module TASKMAN
 			if arg< 0 then arg= 0 end
 			max= @widgets.size- 1
 			p= [ arg, max].min
-			$app.ui.set "#{@name}_pos", ( @variables['pos']= p).to_s
+			super p
 		end
 
 	end
