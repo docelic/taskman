@@ -11,7 +11,7 @@ module TASKMAN
 			self<< MenuAction.new( name: :whereis, hotkey: '/')
 			self<< MenuAction.new( name: :whereis_reverse)
 			self<< MenuAction.new( name: :repeat_last_action)
-			self<< MenuAction.new( name: :pos_lastpos)
+			#self<< MenuAction.new( name: :pos_lastpos)
 
 			#ObjectSpace.define_finalizer( self, proc{ $session.window[@title].last_pos= self.var_pos_now})
 

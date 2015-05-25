@@ -486,10 +486,24 @@ module TASKMAN
 				wi= arg[:widget]
 				#e= arg[:event]
 
-				t= wi.var_text_now.to_i- 1 #.strip
-				t= 0 if t< 0
-				if t.to_s.length>= 0 and t>= 0 and t.to_s=~ /^\d+$/
-					bw.var_pos= t
+				t= wi.var_text_now
+				case t
+					when /h/i
+						bw.var_pos= bw.var_offset_now
+					when /m/i
+						bw.var_pos= bw.var_offset_now+ ( bw.var_offset_now+ bw._h_now/ 2).to_i
+					when /l/i
+						bw.var_pos= bw.var_offset_now+ bw._h_now- 1
+					when /g/
+						bw.var_pos= 0
+					when /G/
+						bw.var_pos= bw.widgets.size- 1
+					else
+						t= t.to_i- 1 #.strip
+						t= 0 if t< 0
+						if t.to_s.length>= 0 and t>= 0 and t.to_s=~ /^\d+$/
+							bw.var_pos= t
+						end
 				end
 
 				w['status_display'].var__display= 1
