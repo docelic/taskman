@@ -113,6 +113,7 @@ $description= {
   'garbage-collector'      => _('Run garbage collector?'),
   'stress-collector'       => _('Stress garbage collector?'),
   'help'                   => _('List program options'),
+  'help-install'           => _('Display install help text'),
   'help-all'               => _('Display full help text'),
   'version'                => _('Display program version'),
   'window'                 => _('Program window to open'),
