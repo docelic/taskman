@@ -1,4 +1,5 @@
 module TASKMAN
+  require 'time'
   class Help
 
 		def self.text() @@text end
@@ -7,7 +8,8 @@ module TASKMAN
 
 		@@text= "\n"+
 'GENERAL INFORMATION ON THE TASKMAN TASK SCHEDULER'.center + "\n\n"+
-"Version #{opts['version']}".center+ "\n\n"+
+"Version #{opts['version']}".center+ "\n"+
+"#{Time.now.utc.iso8601}".center+ "\n\n"+
 "Copyright 2014-2015 Spinlock Solutions".center+ "\n"+
 "http://techpubs.spinlocksolutions.com/taskman/".center+ "\n\n"+
 %q^

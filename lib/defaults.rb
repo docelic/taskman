@@ -32,7 +32,10 @@ module TASKMAN
 			'state-save'         => true, # Save state on exit?
 			'state-load'         => true, # Load state on startup?
 
-			'connection'         => {},   # List of configured databases
+			# List of configured databases. Default is here just for convenience.
+			'connection'         => {
+				main:[adapter:'mysql2',host:'localhost',username:'taskman',password:'taskman',database:'taskman']
+			},
 
 			# Default priority multiplier. E.g. keypress 3 = priority 3 * 10 = 30
 			'priority-granularity'=> 1,
