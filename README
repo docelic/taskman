@@ -1,7 +1,8 @@
 
               GENERAL INFORMATION ON THE TASKMAN TASK SCHEDULER
 
-                               Version 1.05(25)
+                               Version 1.05(26)
+                             2015-05-26T00:53:57Z
 
                     Copyright 2014-2015 Spinlock Solutions
                 http://techpubs.spinlocksolutions.com/taskman/
@@ -637,13 +638,14 @@ the terminal's default style for the other might be unreadable.
 6. COMMAND LINE OPTIONS
 
                                    Taskman
-                                Ver. 1.05(25)
+                                Ver. 1.05(26)
 
 OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 ------------------------------------------------------------------------------
 --help                -h           N             List program options
 --help-all            -H           N             Display full help text
---version             -v           N    1.05(25) Display program version
+--help-install        --hinstall   N             Display install help text
+--version             -v           N    1.05(26) Display program version
 --garbage-collector   --gc         N    true     Run garbage collector?
 --stress-collector    --stress     N    false    Stress garbage collector?
 --window              -w           Y             Program window to open
@@ -651,7 +653,7 @@ OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 --style               -s           Y    alpine   GUI color scheme to use
 --state-save          --ss         N    true     Save state on exit?
 --state-load          --sl         N    true     Load state on startup?
---data-dir            --dd         Y    /root/.taskmanData directory
+--data-dir            --dd         Y    /home/docelic/.taskmanData directory
 --data-file           --df         Y             Tasklist file
 --exit-key            --ek         Y    F10      One-key exit from program
 --main-db             --db         Y    main     Name of main/own database
@@ -667,7 +669,9 @@ OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 --colors              --co         Y    8        Nr. of colors (8, 16, 256)
 --cache-stfl          --tsc        N    true     Enable/disable STFL cache
 --cache-avh           --avhc       N    true     - internal hierarchy cache
---connection          --conn       Y    {}       Defined MySQL DB connections
+--connection --conn Y {:main=>[{:adapter=>"mysql2", :host=>"localhost",
+:username=>"taskman", :password=>"taskman", :database=>"taskman"}]}Define
+MySQL connections
 --priority-granularity--pg         Y    1        Priority = 0-9 * this_value
 --debug               -d           N    false    Show general debug
 --debug-widget        --dw         Y             Show all for named widget

@@ -36,6 +36,7 @@ module TASKMAN
 				#	[ '--default-time',        '--dt',       GetoptLong::REQUIRED_ARGUMENT],
 				[ '--help',                '-h',         GetoptLong::NO_ARGUMENT],
 				[ '--help-all',            '-H',         GetoptLong::NO_ARGUMENT],
+				[ '--help-install',        '--hinstall', GetoptLong::NO_ARGUMENT],
 				[ '--version',             '-v',         GetoptLong::NO_ARGUMENT],
 				[ '--garbage-collector',   '--gc',       GetoptLong::NO_ARGUMENT],
 				[ '--stress-collector',    '--stress',   GetoptLong::NO_ARGUMENT],
@@ -311,6 +312,10 @@ module TASKMAN
 				# $columns is initialized accordingly.
 				require 'help'
 				puts TASKMAN::Help.text.format_to_screen.join( "\n")
+				exit 0
+			elsif $opts['help-install']
+				require 'install'
+				puts TASKMAN::Install.text.format_to_screen.join( "\n")
 				exit 0
 			end
 		end

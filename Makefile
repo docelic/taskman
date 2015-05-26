@@ -1,8 +1,9 @@
-all: README_B
-
-README_B:
-	make -B README
+all:
+	make -B README INSTALL
 
 README:
 	./bin/taskman --tw 78 -H  > README
+
+INSTALL:
+	./bin/taskman --tw 78 --hinstall  > INSTALL
 
