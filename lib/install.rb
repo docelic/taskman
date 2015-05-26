@@ -43,7 +43,7 @@ sudo gem install gettext activerecord mysql2 ruby-terminfo
 1.3. STFL:
 ----------
 
-STFL is a "Structured Terminal Forms Language/Library".
+STFL is a "Structured Terminal Forms Language/Library", available at http://www.clifford.at/stfl/.
 
 Please pay attention that ruby/stfl.so exists, which it will if 'swig' and Ruby header/development files have been installed:
 
