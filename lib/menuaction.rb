@@ -44,6 +44,7 @@ module TASKMAN
 			# Write task does not exit task view after saving it
 			'write_task' => { hotkey: '^W',  shortname: 'Write',        menuname: 'Write Changes',description: '', function: :create_task, function_arg: { window_change: false}},
 			'set_priority'=>{ hotkey: [*(0..9).map{|x|x.to_s}], hotkey_label: '1-9', shortname: 'SetPriority',    menuname: 'Set Priority', description: '', function: :set_priority},
+			'set_status'=>{ hotkey: [ 'T'], shortname: 'SetStatus',    menuname: 'Set Status', description: '', function: :set_status},
 
 			'add_folder'=>{ hotkey: 'A',  shortname: 'Add',     menuname: 'Add Folder',description: '', function: :add_folder, history: true},
 			'delete_folder'=>{ hotkey: 'D',  shortname: 'Delete',     menuname: 'Delete Folder',description: '', function: :delete_folder, history: true},
@@ -1102,6 +1103,72 @@ module TASKMAN
 			nil
 		end
 
+		def set_status arg= {}
+			id= if arg[:function_arg] then arg[:function_arg] else $app.ui.get( 'list_pos_name') end
+			id= id.to_i
+
+			statuses= Status.all
+			fmt= _( 'Set Status: ')
+			map= { }
+			fmts= [ ]
+			i= 1
+			statuses.each do |s|
+				map[i.to_s]= s.name
+				fmts.push '[%d] %s' % [ i, s.name]
+				i+= 1
+			end
+			fmt+= fmts.join( '  ')+ '  [Any] '+ _('Cancel')
+			pos= arg[:base_widget].var_pos_now
+			pos_name= arg[:base_widget].var_pos_name_now
+
+			$app.screen.ask( ( _( fmt)).truncate2, MenuAction.new(
+				instant: true,
+				hotkey: [ *map.keys, 'ENTER'],
+				function: Proc.new { |arg|
+				# window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				#wi= arg[:widget]
+				e= arg[:event]
+
+				a= e
+				handled= false
+
+				if map.has_key? a
+					handled= true
+					val= map[a]
+
+					begin
+						s= Status.unscoped.find a.to_i
+						i= Item.unscoped.find id
+						i.status_id= s.id
+						i.save
+
+						if $opts['follow-jump']
+							index arg.merge( pos_name: pos_name)
+						else
+							index arg.merge( pos: pos)
+						end
+					rescue Exception => e
+						p "Task ID #{id}: #{e}"
+					end
+				end
+
+				if handled
+					if $opts['follow-jump']
+						index arg.merge( pos_name: pos_name)
+					else
+						index arg.merge( pos: pos)
+					end
+				else
+					w['status_display'].var__display= 1
+					w['status_prompt'].var__display= 0
+					w.set_focus_default
+				end
+				nil
+			}))
+			nil
+		end
+
 		def sortby arg= {}
 			fmt= _( 'Sort By: [1,!] %s, [2,@] %s, [3,#] %s, [4,$] %s, [Any] %s')
 			args= [ _('ID'),  _('Status'),  _('Subject'),  _('Priority'), _('Cancel')]
@@ -1128,10 +1195,10 @@ module TASKMAN
 					$session.order= [ '-items.id ASC']
 					handled= true
 				elsif a== '2'
-					$session.order= [ 'status ASC']
+					$session.order= [ 'status_id ASC']
 					handled= true
 				elsif a== '@' or a== '"'
-					$session.order= [ 'status DESC']
+					$session.order= [ 'status_id DESC']
 					handled= true
 				elsif a== '3'
 					$session.order= [ 'subject ASC']

@@ -27,16 +27,16 @@ module TASKMAN
 				:get_help,
 				:listfolders,
 				:sortby,
-				pu,
-				:delete_task, # Where to put mark as done
 				:set_priority, #'', #edit
+				:delete_task, # Where to put mark as done
+				pu,
 				:tablebr,
 				:other, # O boy, there are some!
 				:hotkey_in, #hotkey in that goes to task
 				:show_group, #'', #nextmsg:'', #prevmsg
-				pd,
+				:set_status,
 				:undelete_task, # Where to put mark as not done
-				:redraw, #duplicate
+				pd,
 			)
 
 			m2= Theme::Window::Main::Menu.new(      arg.merge( name: :menu2, :'.display'=> 0))
