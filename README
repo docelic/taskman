@@ -1,8 +1,8 @@
 
               GENERAL INFORMATION ON THE TASKMAN TASK SCHEDULER
 
-                               Version 1.05(26)
-                             2015-05-26T01:00:38Z
+                               Version 1.05(31)
+                             2015-05-31T20:15:37Z
 
                     Copyright 2014-2015 Spinlock Solutions
                 http://techpubs.spinlocksolutions.com/taskman/
@@ -638,14 +638,14 @@ the terminal's default style for the other might be unreadable.
 6. COMMAND LINE OPTIONS
 
                                    Taskman
-                                Ver. 1.05(26)
+                                Ver. 1.05(31)
 
 OPTION                SHORT       ARG?  DEFAULT  DESCRIPTION
 ------------------------------------------------------------------------------
 --help                -h           N             List program options
 --help-all            -H           N             Display full help text
 --help-install        --hinstall   N             Display install help text
---version             -v           N    1.05(26) Display program version
+--version             -v           N    1.05(31) Display program version
 --garbage-collector   --gc         N    true     Run garbage collector?
 --stress-collector    --stress     N    false    Stress garbage collector?
 --window              -w           Y             Program window to open
