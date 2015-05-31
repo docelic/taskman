@@ -28,10 +28,10 @@ Table of Contents:
 
 1. PREREQUISITES
 
-To run Taskman, you need some generic packages, Ruby >= 1.9, a couple Ruby GEMs, STFL and MySQL.
+To run Taskman, you need some generic software packages plus Ruby >= 1.9, a couple Ruby GEMs, STFL and MySQL.
 
-1.1. Packages:
---------------
+1.1. Software Packages:
+-----------------------
 
 sudo apt-get install swig mysql-server libmysqlclient-dev
 
@@ -44,6 +44,8 @@ sudo gem install gettext activerecord mysql2 ruby-terminfo
 ----------
 
 STFL is a "Structured Terminal Forms Language/Library", available at http://www.clifford.at/stfl/.
+
+Minimum STFL version required is 0.24.
 
 Please pay attention that ruby/stfl.so exists, which it will if 'swig' and Ruby header/development files have been installed:
 
@@ -85,19 +87,19 @@ The default configuration file is ~/.taskman/taskmanrc. Please create it with th
 
 2. RUNNING TASKMAN
 
-When all the prerequisites have been installed and the MySQL configuration data is in place, Taskman can be tested with:
+When all the prerequisites have been installed and the MySQL configuration data is in place, Taskman options can be seen with:
 
 taskman -h
 
-Then, a default GUI can be tested:
+A default GUI can be opened with:
 
 taskman
 
-Then, a 256-color theme can be tested:
+A 256-color theme can be opened with:
 
 taskman --theme desert --colors 256
 
-** NOTE: Keys like HOME/END/PGUP/PGDOWN seem to not work if --colors 256 is specified. (Option --colors changes the terminal's TERM variable, inadvertently also affecting the keys.)
+** NOTE: Keys like HOME/END/PGUP/PGDOWN seem to not work if --colors 256 is specified. (This is because the option --colors changes the terminal's TERM variable, inadvertently also affecting the keys.)
 
 Enjoy!
 ^
