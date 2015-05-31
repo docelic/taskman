@@ -47,7 +47,7 @@ module TASKMAN
 			@action_history= []
 			#@last_action= nil
 
-			@order= [ 'id ASC']
+			@order= [ 'items.id ASC']
 			@where= 1
 
 			#@item= nil

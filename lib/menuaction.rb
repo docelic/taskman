@@ -1109,8 +1109,8 @@ module TASKMAN
 
 			statuses= Status.all
 			fmt= _( 'Set Status: ')
-			map= { }
-			fmts= [ ]
+			map= { '0' => _('No Status')}
+			fmts= [ '[0] '+ _('No Status')]
 			i= 1
 			statuses.each do |s|
 				map[i.to_s]= s.name
@@ -1138,7 +1138,7 @@ module TASKMAN
 					val= map[a]
 
 					begin
-						s= Status.unscoped.find a.to_i
+						s= Status.unscoped.find_by( name: map[a])
 						i= Item.unscoped.find id
 						i.status_id= s.id
 						i.save
@@ -1233,8 +1233,8 @@ module TASKMAN
 		def show_group arg= {}
 			statuses= Status.select( :category).distinct
 			fmt= _( 'Show Group: ')
-			map= { '1' => 'All'}
-			fmts= [ '[1] All']
+			map= { '0' => 'All'}
+			fmts= [ '[0] All']
 			i= 2
 			statuses.each do |s|
 				map[i.to_s]= s.category
