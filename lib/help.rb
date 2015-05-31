@@ -35,7 +35,7 @@ Taskman's scheduling features have been inspired by a program called Remind, alt
 
 Taskman's default user interface has been inspired by the venerable mailer program Pine (or free Alpine), although Taskman supports completely different/customizable layouts ("themes") and color schemes ("styles").
 
-Taskman's displayed key bindings and shortcuts have largely been adjusted to match those of Pine. However, Taskman has also been influenced by standard/generic Unix shortcuts, bash, vim and mutt. (E.g. Ctrl+L for clear screen, / and ? for searching, N and P for Find Next/Find Prev, e for View/Edit).
+Taskman's displayed key bindings and shortcuts have largely been adjusted to match those of Pine. However, Taskman has also been influenced by standard/generic Unix shortcuts, bash, vim and mutt. (E.g. Ctrl+L for clear screen, / and ? for searching, : for Go-to-Line, N and P for Find Next/Find Prev, e for View/Edit).
 
 Taskman's data store is powered by ActiveRecord. Tasks can be viewed and/or edited depending on your privileges in the corresponding databases.
 
@@ -78,9 +78,14 @@ Syntax: free-form text
 Example: Test 123
 Example: Meeting with X
 
+CATEGORY
+Syntax: none or more of configured/available task categories
+Example: Work
+Example: Private
+
 STATUS
-Syntax: one of configured/allowed task statuses
-Example: WORKING
+Syntax: none or one of configured/available task statuses
+Example: OPEN
 Example: DONE
 
 START
