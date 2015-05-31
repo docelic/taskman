@@ -1104,7 +1104,10 @@ module TASKMAN
 		end
 
 		def set_status arg= {}
-			id= if arg[:function_arg] then arg[:function_arg] else $app.ui.get( 'list_pos_name') end
+			pos= arg[:base_widget].var_pos_now
+			pos_name= arg[:base_widget].var_pos_name_now
+
+			id= if arg[:function_arg] then arg[:function_arg] else pos_name end
 			id= id.to_i
 
 			statuses= Status.all
@@ -1118,8 +1121,6 @@ module TASKMAN
 				i+= 1
 			end
 			fmt+= fmts.join( '  ')+ '  [Any] '+ _('Cancel')
-			pos= arg[:base_widget].var_pos_now
-			pos_name= arg[:base_widget].var_pos_name_now
 
 			$app.screen.ask( ( _( fmt)).truncate2, MenuAction.new(
 				instant: true,
@@ -1155,7 +1156,7 @@ module TASKMAN
 
 				if handled
 					if $opts['follow-jump']
-						index arg.merge( pos_name: pos_name)
+						index arg.merge( pos_name: pos_name, pos: pos)
 					else
 						index arg.merge( pos: pos)
 					end
@@ -1235,7 +1236,7 @@ module TASKMAN
 			fmt= _( 'Show Group: ')
 			map= { '0' => 'All'}
 			fmts= [ '[0] All']
-			i= 2
+			i= 1
 			statuses.each do |s|
 				map[i.to_s]= s.category
 				fmts.push '[%d] %s' % [ i, s.category]
@@ -1260,8 +1261,8 @@ module TASKMAN
 				if map.has_key? a
 					$session.status_group_name= map[a]
 					handled= true
-					if a== '1'
-						$session.where= 1
+					if a== '0'
+						$session.where= { statuses: { category: nil}}
 					else
 						val= map[a]
 						if map[a]== 'OPEN'

@@ -21,7 +21,7 @@ module TASKMAN
 
 
 			nitems= 0
-			$session.sth.reload.includes( :status).where( $session.where).order( $session.order).each do |t|
+			$session.sth.reload.includes( :status).includes( :categorizations).where( $session.where).order( $session.order).each do |t|
 				nitems+= 1
 
 				sfid= $session.folder ? $session.folder.id : nil
