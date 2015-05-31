@@ -1208,10 +1208,10 @@ module TASKMAN
 					$session.order= [ 'subject DESC']
 					handled= true
 				elsif a== '4'
-					$session.order= [ '-categorizations.priority DESC']
+					$session.order= [ '-c2.priority DESC']
 					handled= true
 				elsif a== '$'
-					$session.order= [ '-categorizations.priority ASC']
+					$session.order= [ '-c2.priority ASC']
 					handled= true
 				end
 
