@@ -21,7 +21,7 @@ module TASKMAN
 
 
 			nitems= 0
-			$session.sth.reload.includes( :status).joins( "LEFT JOIN `categorizations` ON `categorizations`.`item_id` = `items`.`id`").where( $session.where).order( $session.order).each do |t|
+			$session.sth.reload.includes( :status).joins( "LEFT JOIN `categorizations` c2 ON `c2`.`item_id` = `items`.`id`").where( $session.where).order( $session.order).each do |t|
 				nitems+= 1
 
 				sfid= $session.folder ? $session.folder.id : nil

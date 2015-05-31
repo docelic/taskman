@@ -338,7 +338,10 @@ module TASKMAN
 			$stop_loop= false
 
 			# Initialize the window which is to be displayed first
-			win= $opts['window'] || ( $opts['state-load'] and $session.window_history.last ) || 'main'
+			# We only want to restore last window if it is one which makes
+			# sense to return to
+			ll= [ 'help', 'index', 'list'].include? $session.window_history.last
+			win= $opts['window']|| ( $opts['state-load'] and ll and $session.window_history.last )|| 'main'
 			arg= exec( window: win)
 
 			loop do
