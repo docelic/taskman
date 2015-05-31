@@ -1092,9 +1092,9 @@ module TASKMAN
 				p.save
 
 				if $opts['follow-jump']
-					index arg.merge( pos_name: pos_name)
+					index arg.merge( pos_name: pos_name, pos: pos) #, status_label_text: _('Priority: ')+ prio.to_s)
 				else
-					index arg.merge( pos: pos)
+					index arg.merge( pos: pos) #, status_label_text: _('Priority: ')+ prio.to_s)
 				end
 			rescue Exception => e
 				p "Task ID #{id}: #{e}"
@@ -1145,7 +1145,7 @@ module TASKMAN
 						i.save
 
 						if $opts['follow-jump']
-							index arg.merge( pos_name: pos_name)
+							index arg.merge( pos_name: pos_name, pos: pos)
 						else
 							index arg.merge( pos: pos)
 						end
@@ -1262,7 +1262,7 @@ module TASKMAN
 					$session.status_group_name= map[a]
 					handled= true
 					if a== '0'
-						$session.where= { statuses: { category: nil}}
+						$session.where= 1
 					else
 						val= map[a]
 						if map[a]== 'OPEN'
