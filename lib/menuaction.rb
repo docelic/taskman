@@ -22,7 +22,7 @@ module TASKMAN
 			'firstpage' => { hotkey: 'HOME',shortname: 'FirstPage',   menuname: 'FirstPage',   description: '', function: :firstpage },
 			'lastpage'  => { hotkey: 'END', shortname: 'LastPage',    menuname: 'LastPage',    description: '', function: :lastpage },
 			'nextpage'  => { hotkey: 'SPACE', hotkey_label: 'SPC', shortname: 'NextPage',   menuname: 'NextPage',    description: '', function: :nextpage },
-			'prevpage'  => { hotkey: '-',   shortname: 'PrevPage',    menuname: 'PrevPage',    description: '', function: :prevpage },
+			'prevpage'  => { hotkey: 'BACKSPACE',   shortname: 'PrevPage',    menuname: 'PrevPage',    description: '', function: :prevpage },
 
 			'main'      => { hotkey: '^M',  shortname: 'Main Menu',   menuname: 'Main Menu',   description: 'Main Menu', function: :main },
 			'main2'     => { hotkey: nil, hotkey_label: '^M', shortname: 'Main Menu',   menuname: 'Main Menu',   description: 'Main Menu', function: nil },
@@ -40,6 +40,7 @@ module TASKMAN
 			'prev_task'  => { hotkey: '^P',  shortname: 'To Prev',    menuname: 'To Previous',    description: 'Switch to previous task', function: :prev_task},
 			'delete_task'=>{ hotkey: 'D',   shortname: 'Delete',    menuname: 'Delete Task', description: '', function: :delete_task, history: true},
 			'undelete_task'=>{ hotkey: 'U',   shortname: 'Undelete',  menuname: 'Undelete Task', description: '', function: :undelete_task, history: true},
+			'flag_task'=>{ hotkey: '*',   shortname: 'SetFlag',    menuname: 'Set Flag', description: '', function: :flag_task, history: true},
 			'save_task' => { hotkey: '^X',  shortname: 'Save',        menuname: 'Save Changes',description: '', function: :create_task},
 			# Write task does not exit task view after saving it
 			'write_task' => { hotkey: '^W',  shortname: 'Write',        menuname: 'Write Changes',description: '', function: :create_task, function_arg: { window_change: false}},
@@ -88,7 +89,7 @@ module TASKMAN
 			'other'     => { hotkey: 'O',   shortname: 'OTHER CMDS',  menuname: 'OTHER CMDS',  description: '', function: :menu_next_page },
 			'other2'    => { hotkey: nil, hotkey_label:'O',  shortname: 'OTHER CMDS',  menuname: 'OTHER CMDS',  description: '', function: nil },
 			'relnotes'  => { hotkey: 'R',   shortname: 'RelNotes',    menuname: 'RelNotes',    description: '', function: nil },
-			'hotkey_out'=> { hotkey: [ '<', 'BACKSPACE' ],   shortname: 'Go Back',            menuname: 'Back',            description: 'Go Back to Previous Window', function: :prev_window, block: proc{ |arg| } },
+			'hotkey_out'=> { hotkey: '<',   shortname: 'Go Back',            menuname: 'Back',            description: 'Go Back to Previous Window', function: :prev_window, block: proc{ |arg| } },
 			'kblock'    => { hotkey: 'K',   shortname: 'KBLock',      menuname: 'KBLock',      description: '', function: nil },
 			'setup'     => { hotkey: 'S',   shortname: 'Setup',       menuname: 'Setup',       description: '', function: nil },
 			'role'      => { hotkey: '#',   shortname: 'Role',        menuname: 'Role',        description: '', function: nil },
@@ -902,6 +903,23 @@ module TASKMAN
 			index( {
 				pos: arg[:base_widget].var_pos_now,
 				status_label_text: _(%q^Deletion mark removed, task won't be deleted^)
+			})
+			nil
+		end
+		def flag_task arg= {}
+			w= arg[:widget]
+			id= w.name.to_i
+			#db= id[0].to_item_class
+			#id= id[1]
+			t= $session.dbh.find( id) #db.find( id)
+			if t.flag!= '*'
+				t.flag= '*'
+			else
+				t.flag= nil
+			end
+			index( {
+				pos: arg[:base_widget].var_pos_now,
+				#status_label_text: _("Task %s flagged")% w.name
 			})
 			nil
 		end

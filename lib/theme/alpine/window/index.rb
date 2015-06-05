@@ -44,7 +44,7 @@ module TASKMAN
 				:get_help2,
 				:mainm,
 				:create,
-				:'',
+				:flag_task,
 				:whereis_prev,
 				ph,
 				:tablebr,
