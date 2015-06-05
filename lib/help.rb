@@ -51,21 +51,25 @@ The most important window is the Create/Edit window, and creating or editing a t
 
 1. Subject: task title / summary
 
-2. Start: absolute start date for the task. Before the start date, task will be considered inactive and Taskman will never show it as due or remind you about it. By default, there is no start date (the task is always considered active if it matches other criteria).
+2. Category: list of categories the task belongs to. (A task can belong to multiple categories and it has a separate/individual Priority in each.)
 
-3. End: absolute end date for the task. After the end date, task will be considered inactive and Taskman will never show it as due or remind you about it. By default, there is no end date (the task is always considered active if it matches other criteria).
+3. Status: status of the task. (A task can only have one status (or no status at all).)
 
-4. Time: time of day when the task is due. By default, it is set to 12:00:00.
+4. Start: absolute start date for the task. Before the start date, task will be considered inactive and Taskman will never show it as due or remind you about it. By default, there is no start date (the task is always considered active if it matches other criteria).
 
-5. Due dates: days on which the task is due. A task can be due on multiple days, defined as specific dates (e.g. Jan 1, 2015) as well as various repetition rules (e.g. every Monday, every two days between 12th and 22nd of a month, last working day of a week, etc.).
+5. End: absolute end date for the task. After the end date, task will be considered inactive and Taskman will never show it as due or remind you about it. By default, there is no end date (the task is always considered active if it matches other criteria).
 
-6. Omit dates: days on which the task should not be due, even if it would otherwise be due on those days. This field accounts for days being holidays, non-working days (weekends) or any other exceptions to the rule. It supports the same syntax as Due dates.
+6. Time: time of day when the task is due. By default, it is set to 12:00:00.
 
-7. Omit shift: behavior in case a task would be due on an omitted day. Task can either be ignored (not triggered) or Taskman can reschedule it, either to the first earlier or first later non-omitted day.
+7. Due dates: days on which the task is due. A task can be due on multiple days, defined as specific dates (e.g. Jan 1, 2015) as well as various repetition rules (e.g. every Monday, every two days between 12th and 22nd of a month, last working day of a week, etc.).
 
-8. Remind: days and times when Taskman should remind you about the upcoming task or event. It can remind on a specific day or relative to the due date. For example, you might desire Taskman to start reminding you 90 minutes before the event and remind a total of 3 times with 10 minutes in between.
+8. Omit dates: days on which the task should not be due, even if it would otherwise be due on those days. This field accounts for days being holidays, non-working days (weekends) or any other exceptions to the rule. It supports the same syntax as Due dates.
 
-9. Omit remind: behavior in case that a reminder is due on an omitted day. Reminder can be ignored (not triggered), or Taskman can remind anyway.
+9. Omit shift: behavior in case a task would be due on an omitted day. Task can either be ignored (not triggered) or Taskman can reschedule it, either to the first earlier or first later non-omitted day.
+
+10. Remind: days and times when Taskman should remind you about the upcoming task or event. It can remind on a specific day or relative to the due date. For example, you might desire Taskman to start reminding you 90 minutes before the event and remind a total of 3 times with 10 minutes in between.
+
+11. Omit remind: behavior in case that a reminder is due on an omitted day. Reminder can be ignored (not triggered), or Taskman can remind anyway.
 
 ^+ '-'* ( $COLUMNS- 1)+ %q^
 
