@@ -24,17 +24,21 @@ module TASKMAN
 		end
 
 		def init arg= {}
-			if arg[:pos]
-				self.var_pos= arg[:pos]
-			elsif arg[:pos_name]
+			found= nil
+			if arg[:pos_name]
+				found= false
 				n= arg[:pos_name].to_s
 				i= 0
 				@widgets.each do |t|
 					if n== t.name
 						self.var_pos= i
+						found= true
 					end
 					i+= 1
 				end
+			end
+			if arg[:pos] and !found
+				self.var_pos= arg[:pos]
 			end
 		end
 
