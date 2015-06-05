@@ -494,7 +494,11 @@ module TASKMAN
 			$session.flags[self.id.to_s]
 		end
 		def flag= arg
-			$session.flags[self.id.to_s]= arg
+			if arg== nil
+				$session.flags.delete self.id.to_s
+			else
+				$session.flags[self.id.to_s]= arg
+			end
 		end
 
 		private

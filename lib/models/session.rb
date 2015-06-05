@@ -42,9 +42,9 @@ module TASKMAN
 			@status_group_name= 'All'
 
 			# History of navigation between windows
-			@window_history= []
-			@task_history= []
-			@action_history= []
+			@window_history= FixedArray.new
+			@task_history= FixedArray.new
+			@action_history= FixedArray.new
 			#@last_action= nil
 
 			@order= [ 'items.id ASC']
@@ -123,9 +123,12 @@ module TASKMAN
 					self.folder= Folder.find_by name: s['folder_name']
 					self.flags= s['flags']
 					self.whereis= s['whereis']
-					self.window_history= s['window_history']|| []
-					self.task_history= s['task_history']|| []
-					self.action_history= s['action_history']|| []
+					t= self.window_history= FixedArray.new
+					t.push *s['window_history']
+					t= self.task_history= FixedArray.new
+					t.push *s['task_history']
+					t= self.action_history= FixedArray.new
+					t.push *s['action_history']
 					self.order= s['order']|| []
 					self.where= s['where']|| 1
 					# TODO Restore item on which list was positioned
