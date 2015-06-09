@@ -34,7 +34,7 @@ module TASKMAN
 
 			# List of configured databases. Default is here just for convenience.
 			'connection'         => {
-				main:[adapter:'mysql2',host:'localhost',username:'taskman',password:'taskman',database:'taskman']
+				main:[adapter:'mysql2',host:'localhost',username:ENV['LOGNAME']+'_taskman',password:'taskman',database:ENV['LOGNAME']+'_taskman']
 			},
 
 			# Default priority multiplier. E.g. keypress 3 = priority 3 * 10 = 30
@@ -44,7 +44,7 @@ module TASKMAN
 			# has been made, like this:
 			# E.g. 0.12(21) === 2014/12/21
 			# E.g. 1.10(14) === 2015/10/14
-			'version'	           => '1.05(31)',
+			'version'	           => '1.06(08)',
 
 		#	'local'              => false,
 		#	'default-time'       => false,

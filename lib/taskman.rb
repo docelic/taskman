@@ -248,7 +248,21 @@ module TASKMAN
 			GC.stress= $opts['stress-collector']
 			GC.disable unless $opts['garbage-collector']
 
-			ActiveRecord::Base.establish_connection( *( $opts['connection'][$opts['main-db'].to_sym]))
+			dbargs= *( $opts['connection'][$opts['main-db'].to_sym])
+			dbargs= dbargs.first
+			begin
+				ActiveRecord::Base.establish_connection dbargs
+			rescue Exception => e
+				$stderr.puts %Q{Can't connect to MySQL using:
+#{dbargs}
+
+Run:
+mysql -e 'create database #{dbargs[:database]}'
+mysql #{dbargs[:database]} < /path/to/taskman/sql/taskman.sql
+mysql -e 'grant all privileges on #{dbargs[:database]}.* to #{dbargs[:username]} identified by #{dbargs[:password]}'
+}
+				exit 1
+			end
 		end
 
 		def start_console

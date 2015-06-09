@@ -19,8 +19,9 @@ Table of Contents:
 1.1. Packages
 1.2. Ruby and Ruby GEMs
 1.3. STFL
-1.4. MySQL
-1.5. Taskman Database Configuration
+1.4. Taskman
+1.5. MySQL
+1.6. Taskman Database Configuration
 2. Running Taskman
 
 
@@ -33,7 +34,7 @@ To run Taskman, you need some generic software packages plus Ruby >= 1.9, a coup
 1.1. Software Packages:
 -----------------------
 
-sudo apt-get install swig mysql-server libmysqlclient-dev
+sudo apt-get install swig mysql-server libmysqlclient-dev libncurses5-dev libncursesw5-dev
 
 1.2. Ruby and Ruby GEMs:
 ------------------------
@@ -57,7 +58,12 @@ ls -al ruby/stfl.so # <-- Must be present
 sudo make install
 sudo ldconfig
 
-1.4. MySQL:
+1.4. Taskman:
+-------------
+
+git clone https://github.com/docelic/taskman.git
+
+1.5. MySQL:
 -----------
 
 Once MySQL server is installed, the following configuration has to be performed:
@@ -70,7 +76,7 @@ This will create the database and grant permissions on the default database to t
 
 If you want to change these defaults, please do so and then read the following section.
 
-1.5. Taskman Database Configuration:
+1.6. Taskman Database Configuration:
 ------------------------------------
 
 By default, Taskman connects to the local MySQL database 'taskman' as user 'taskman' with the password 'taskman'.
