@@ -9,7 +9,12 @@ module TASKMAN
 		def initialize arg= {}
 			super()
 
-			require File.join :theme, arg[:theme], :init
+			begin
+				require File.join :theme, arg[:theme], :init
+			rescue Exception => e
+				$stderr.puts e
+				exit 1
+			end
 
 			@init||= Theme::Init.new
 

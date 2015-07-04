@@ -773,7 +773,7 @@ module TASKMAN
 			#db= w['db'].var_text_now.to_sym
 			return unless id #and db
 
-			t= $session.dbh.find id #$tasklist.by_aid [db, id]
+			t= $session.dbh.find id
 			t2= t.dup
 			t2.folders= t.folders
 			t2.save

@@ -110,6 +110,7 @@ class String
 		outbuf
 	end
 
+	# TODO: This doesn't support spaces even if enclosed in " "
 	def unshift_to_argv
 		if File.readable? self
 			File.open( self){ |f|

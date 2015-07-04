@@ -8,7 +8,12 @@ module TASKMAN
 
 		def initialize arg= {}
 			super()
-			require File.join :style, arg[:style]
+			begin
+				require File.join :style, arg[:style]
+			rescue Exception => e
+				$stderr.puts e
+				exit 1
+			end
 		end
 
 		# Current approach where all style specs are iterated over,
