@@ -48,6 +48,7 @@ module TASKMAN
 			'set_status'=>{ hotkey: [ 'T'], shortname: 'SetStatus',    menuname: 'Set Status', description: '', function: :set_status},
 
 			'add_folder'=>{ hotkey: 'A',  shortname: 'Add',     menuname: 'Add Folder',description: '', function: :add_folder, history: true},
+			'rename_folder'=>{ hotkey: [ 'R', 'E'],  shortname: 'Rename',     menuname: 'Rename Folder',description: '', function: :rename_folder, history: true},
 			'delete_folder'=>{ hotkey: 'D',  shortname: 'Delete',     menuname: 'Delete Folder',description: '', function: :delete_folder, history: true},
 
 			'quit'      => { hotkey: 'Q',   shortname: 'Quit',        menuname: 'Quit',        description: 'Leave the Taskman program', function: :quit },
@@ -240,7 +241,7 @@ module TASKMAN
 				args.push nr, nr.unit( _('task'))
 			end
 			fmt+= '?'
-			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
+			$app.screen.ask( ( _( fmt)% args).truncate2, '', MenuAction.new(
 				instant: true,
 				# No need to specify ENTER among hotkeys because ENTER always
 				# runs first action associated with widget.
@@ -280,7 +281,7 @@ module TASKMAN
 			nil
 		end
 		def cancel arg= {}
-			$app.screen.ask( _('Cancel task?'), MenuAction.new(
+			$app.screen.ask( _('Cancel task?'), '', MenuAction.new(
 				instant: true,
 				hotkey: [ _('Y'), _('N')],
 				function: Proc.new { |arg|
@@ -320,7 +321,7 @@ module TASKMAN
 		def add_folder arg= {}
 			fmt= 'Folder name to add:'
 			args= []
-			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
+			$app.screen.ask( ( _( fmt)% args).truncate2, '', MenuAction.new(
 				instant: false,
 				function: Proc.new { |arg|
 				## window, widget, action, function, event-- WWAFE
@@ -341,12 +342,66 @@ module TASKMAN
 			}))
 			nil
 		end
+		def rename_folder arg= {}
+			w= arg[:window]
+			ow= arg[:widget]
+			if ow.name== '0'
+				w.status_label_text= _(%q|Can't change special folder name "ALL"|)
+				return
+			end
+			cat= Folder.find ow.name.to_i
+			fmt= _('Rename folder to : ')
+			args= [ ]
+			bw= arg[:base_widget]
+			$app.screen['status_answer'].var_text= ow.name
+			$app.screen.ask( ( _( fmt)% args).truncate2, cat.name, MenuAction.new(
+				instant: false,
+				# No need to specify ENTER among hotkeys because ENTER always
+				# runs first action associated with widget.
+				function: Proc.new { |arg|
+				# window, widget, action, function, event-- WWAFE
+				w= arg[:window]
+				wi= arg[:widget]
+
+				t= wi.var_text_now.strip
+
+				changed= false
+				if t.length> 0
+					if cat and cat.name!= t
+						oname= cat.name
+						cat.name = t
+						cat.save
+						changed= true
+					end
+				end
+
+				w['status_display'].var__display= 1
+				w['status_prompt'].var__display= 0
+				w.set_focus_default
+
+				if changed
+					w.status_label_text= %q|Folder "%s" renamed to "%s"| % [ oname, t]
+					#$app.ui.run -1
+					#sleep $opts['echo-time'] if arg[:window_change]!= false
+					#list arg.merge( pos_name: t)
+					ow.var_text= '  '+ t
+				end
+
+				nil
+			}))
+			nil
+		end
 		def delete_folder arg= {}
+			w= arg[:window]
+			if arg[:widget].name == '0'
+				w.status_label_text= _(%q|Can't delete special folder name "ALL"|)
+				return
+			end
 			fmt= 'DELETE "%s"?'
 			cat= Folder.find( arg[:widget].name.to_i)
 			args= [ cat.name]
 			bw= arg[:base_widget]
-			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
+			$app.screen.ask( ( _( fmt)% args).truncate2, '', MenuAction.new(
 				instant: true,
 				# No need to specify ENTER among hotkeys because ENTER always
 				# runs first action associated with widget.
@@ -471,7 +526,7 @@ module TASKMAN
 			if arg[:interactive]== false
 				a.run arg
 			else
-				$app.screen.ask( ( _( fmt)% args).truncate2, a, up, down)
+				$app.screen.ask( ( _( fmt)% args).truncate2, '', a, up, down)
 			end
 			nil
 		end
@@ -480,7 +535,7 @@ module TASKMAN
 			fmt= ':'
 			args= []
 			bw= arg[:base_widget]
-			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
+			$app.screen.ask( ( _( fmt)% args).truncate2, '', MenuAction.new(
 				instant: false,
 				function: Proc.new { |arg|
 				## window, widget, action, function, event-- WWAFE
@@ -1140,7 +1195,7 @@ module TASKMAN
 			end
 			fmt+= fmts.join( '  ')+ '  [Any] '+ _('Cancel')
 
-			$app.screen.ask( ( _( fmt)).truncate2, MenuAction.new(
+			$app.screen.ask( ( _( fmt)).truncate2, '', MenuAction.new(
 				instant: true,
 				hotkey: [ *map.keys, 'ENTER'],
 				function: Proc.new { |arg|
@@ -1193,7 +1248,7 @@ module TASKMAN
 			args= [ _('ID'),  _('Status'),  _('Subject'),  _('Priority'), _('Cancel')]
 			pos= arg[:base_widget].var_pos_now
 			pos_name= arg[:base_widget].var_pos_name_now
-			$app.screen.ask( ( _( fmt)% args).truncate2, MenuAction.new(
+			$app.screen.ask( ( _( fmt)% args).truncate2, '', MenuAction.new(
 				instant: true,
 				# No need to specify ENTER among hotkeys because ENTER always
 				# runs first action associated with widget.
@@ -1264,7 +1319,7 @@ module TASKMAN
 			pos= arg[:base_widget].var_pos_now
 			pos_name= arg[:base_widget].var_pos_name_now
 
-			$app.screen.ask( ( _( fmt)).truncate2, MenuAction.new(
+			$app.screen.ask( ( _( fmt)).truncate2, '', MenuAction.new(
 				instant: true,
 				hotkey: [ *map.keys, 'ENTER'],
 				function: Proc.new { |arg|

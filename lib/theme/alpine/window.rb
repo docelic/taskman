@@ -22,14 +22,18 @@ module TASKMAN
 		end
 
 		# Args: Question text, Proc
-		def ask q, o, *actions
+		def ask q, a, o, *actions
 			if s= $app.screen['status']
 				s['status_display'].var__display= 0
 				s['status_prompt'].var__display= 1
 				s['status_question'].var_text= q
 
 				sa= s['status_answer']
-				sa.var_text= ''
+				sa.var_text= a
+				sa.var_pos= a.length
+				# TODO: Is there some error with input? Seems the size is uninitialized
+				# if it is created empty and hidden?
+				#pfl sa._x_now, sa._y_now, sa._h_now, sa._w_now
 				sa.set_focus
 
 				# Remove all actions (if any) and set up for new prompt

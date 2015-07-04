@@ -28,7 +28,7 @@ module TASKMAN
 				ph,
 				pu,
 				:add_folder,
-				:'', #edit
+				:rename_folder,
 				:tablebr,
 				:other,
 				hk,

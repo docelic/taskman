@@ -7,7 +7,7 @@ module TASKMAN
 
 			@l= List.new( name: "#{@name}_list", focus: 1)
 
-			li= ListItem.new( name: '', text: '  ALL')
+			li= ListItem.new( name: '0', text: '  ALL')
 			a= MenuAction.new( name: 'index', hotkey: 'ENTER', shortname: _('View Fldr'))
 			a.function= proc{ |arg| $session.folder= nil; a.index }
 			li<< a
