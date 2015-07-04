@@ -1,34 +1,23 @@
 module TASKMAN
 	class Style
 
-		# Defaults for 8-color terminals
-		black  = 'black'
-		red    = 'red'
-		green  = 'green'
-		yellow = 'yellow'
-		blue   = 'blue'
-		magenta= 'magenta'
-		cyan   = 'cyan'
-		white  = 'white'
-
-		# For higher color ones (16, 88, 256)
-		if $opts['colors']>= 16
-			white=  'color15'
-			yellow= 'color11'
-		end
+		# This is a basic 2-color theme that is using standard colors of
+		# your terminal, whatever they are. Also displays reverse colors
+		# properly, due to using attr=reverse instead of specifying any
+		# particular fg= or bg=.
 
 		@@Def= [
-			[ :'header',          normal: "fg=#{black},bg=#{white}", ],
+			[ :'header',          normal: "attr=reverse", ],
 
-			[ :'@list',           focus:  "fg=#{black},bg=#{white}", ],
-			[ :'@button',         focus:  "fg=#{black},bg=#{white}", ],
+			[ :'@list',           focus:  "attr=reverse", ],
+			[ :'@button',         focus:  "attr=reverse", ],
 
-			[ :'status_label',    normal: "fg=#{black},bg=#{white}", ],
-			[ :'status_prompt',   normal: "fg=#{black},bg=#{white}", ],
+			[ :'status_label',    normal: "attr=reverse", ],
+			[ :'status_prompt',   normal: "attr=reverse", ],
 
-			[ :'menu @hotkey',    normal: "fg=#{black},bg=#{white}", ],
-			[ :'menu @hspace',    normal: "fg=#{white},bg=#{black}", ],
-			[ :'menu @shortname', normal: "fg=#{white},bg=#{black}", ],
+			[ :'menu @hotkey',    normal: "attr=reverse", ],
+			[ :'menu @hspace',    normal: "attr=reverse", ],
+			[ :'menu @shortname', normal: "attr=reverse", ],
 		]
 	end
 end
