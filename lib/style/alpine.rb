@@ -7,17 +7,17 @@ module TASKMAN
 		# particular fg= or bg=.
 
 		@@Def= [
-			[ :'header',          normal: "attr=reverse", ],
+			[ :'header',          normal: 'attr=reverse', ],
 
-			[ :'@list',           focus:  "attr=reverse", ],
-			[ :'@button',         focus:  "attr=reverse", ],
+			[ :'@list',           focus:  'attr=reverse', ],
+			[ :'@button',         focus:  'attr=reverse', ],
 
-			[ :'status_label',    normal: "attr=reverse", ],
-			[ :'status_prompt',   normal: "attr=reverse", ],
+			[ :'status_label',    normal: 'attr=reverse', ],
+			[ :'status_prompt',   normal: 'attr=reverse', ],
 
-			[ :'menu @hotkey',    normal: "attr=reverse", ],
-			[ :'menu @hspace',    normal: "attr=reverse", ],
-			[ :'menu @shortname', normal: "attr=reverse", ],
+			[ :'menu @hotkey',    normal: 'attr=reverse', ],
+			[ :'menu @hspace',    normal: '', ],
+			[ :'menu @shortname', normal: '', ],
 		]
 	end
 end
