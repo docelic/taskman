@@ -30,10 +30,11 @@ module TASKMAN
 
 				sa= s['status_answer']
 				sa.var_text= a
-				sa.var_pos= a.length
 				# TODO: Is there some error with input? Seems the size is uninitialized
 				# if it is created empty and hidden?
+				# Re-enable var_pos= when the issue is figured out
 				#pfl sa._x_now, sa._y_now, sa._h_now, sa._w_now
+				#sa.var_pos= a.length
 				sa.set_focus
 
 				# Remove all actions (if any) and set up for new prompt

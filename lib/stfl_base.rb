@@ -124,6 +124,7 @@ module TASKMAN
 		def var_pos()            @variables['pos']            end
 		def var_offset()         @variables['offset']         end
 		def var_text()           @variables['text']           end
+		def var_size()           @variables['size']           end
 		def var_function()       @variables['function']       end
 		def var_focus()          @variables['focus']          end
 		def var_can_focus()      @variables['can_focus']      end
@@ -146,6 +147,7 @@ module TASKMAN
 		def var_pos_now()            @variables['pos']=            ( $app.ui.get "#{@name}_pos"           ).to_i end
 		def var_offset_now()         @variables['offset']=         ( $app.ui.get "#{@name}_offset"        ).to_i end
 		def var_text_now()           @variables['text']=           ( $app.ui.get "#{@name}_text"          )      end
+		def var_size_now()           @variables['size']=           ( $app.ui.get "#{@name}_size"          ).to_i end
 		def var_function_now()       @variables['function']=       ( $app.ui.get "#{@name}_function"      )      end
 		def var_focus_now()          @variables['focus']=          ( $app.ui.get "#{@name}_focus"         ).to_i end
 		def var_can_focus_now()      @variables['can_focus']=      ( $app.ui.get "#{@name}_can_focus"     ).to_i end
@@ -168,6 +170,7 @@ module TASKMAN
 		def var_pos_name=( arg)        $app.ui.set "#{@name}_pos_name"      , ( @variables['pos_name']= arg       ).to_s end
 		def var_offset=( arg)          $app.ui.set "#{@name}_offset"        , ( @variables['offset']= arg         ).to_s end
 		def var_text=( arg)            $app.ui.set "#{@name}_text"          , ( @variables['text']= arg           ).to_s end
+		def var_size=( arg)            $app.ui.set "#{@name}_size"          , ( @variables['size']= arg           ).to_s end
 		def var_function=( arg)        $app.ui.set "#{@name}_function"      , ( @variables['function']= arg       ).to_s end
 		def var_focus=( arg)           $app.ui.set "#{@name}_focus"         , ( @variables['focus']= arg          ).to_s end
 		def var_can_focus=( arg)       $app.ui.set "#{@name}_can_focus"     , ( @variables['can_focus']= arg      ).to_s end
